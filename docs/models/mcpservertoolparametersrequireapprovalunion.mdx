@@ -1,0 +1,27 @@
+---
+title: "McpServerToolParametersRequireApprovalUnion"
+---
+
+Approval policy for tool calls. Defaults to always: a call that needs approval ends the response with an mcp_approval_request item, answered with an mcp_approval_response on the next request.
+
+
+## Supported Types
+
+### `models.McpServerToolParametersRequireApproval`
+
+```typescript
+const value: models.McpServerToolParametersRequireApproval = {};
+```
+
+### `models.McpServerToolParametersRequireApprovalAlways`
+
+```typescript
+const value: models.McpServerToolParametersRequireApprovalAlways = "always";
+```
+
+### `models.McpServerToolParametersRequireApprovalNever`
+
+```typescript
+const value: models.McpServerToolParametersRequireApprovalNever = "never";
+```
+

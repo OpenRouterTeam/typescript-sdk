@@ -5,58 +5,60 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { ClosedEnum, OpenEnum } from "../types/enums.js";
+import {
+  collectExtraKeys as collectExtraKeys$,
+  safeParse,
+} from "../lib/schemas.js";
+import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export type AllowedTools = {
+export type McpServerToolAllowedTools = {
   readOnly?: boolean | undefined;
   toolNames?: Array<string> | undefined;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
-export type AllowedToolsUnion = Array<string> | AllowedTools;
+export type McpServerToolAllowedToolsUnion =
+  | Array<string>
+  | McpServerToolAllowedTools;
 
-export const ConnectorId = {
-  ConnectorDropbox: "connector_dropbox",
-  ConnectorGmail: "connector_gmail",
-  ConnectorGooglecalendar: "connector_googlecalendar",
-  ConnectorGoogledrive: "connector_googledrive",
-  ConnectorMicrosoftteams: "connector_microsoftteams",
-  ConnectorOutlookcalendar: "connector_outlookcalendar",
-  ConnectorOutlookemail: "connector_outlookemail",
-  ConnectorSharepoint: "connector_sharepoint",
-} as const;
-export type ConnectorId = OpenEnum<typeof ConnectorId>;
-
-export const RequireApprovalNever = {
+export const McpServerToolRequireApprovalNever = {
   Never: "never",
 } as const;
-export type RequireApprovalNever = ClosedEnum<typeof RequireApprovalNever>;
+export type McpServerToolRequireApprovalNever = ClosedEnum<
+  typeof McpServerToolRequireApprovalNever
+>;
 
-export const RequireApprovalAlways = {
+export const McpServerToolRequireApprovalAlways = {
   Always: "always",
 } as const;
-export type RequireApprovalAlways = ClosedEnum<typeof RequireApprovalAlways>;
+export type McpServerToolRequireApprovalAlways = ClosedEnum<
+  typeof McpServerToolRequireApprovalAlways
+>;
 
-export type Always = {
+export type McpServerToolAlways = {
+  readOnly?: boolean | undefined;
   toolNames?: Array<string> | undefined;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
-export type Never = {
+export type McpServerToolNever = {
+  readOnly?: boolean | undefined;
   toolNames?: Array<string> | undefined;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
-export type RequireApproval = {
-  always?: Always | undefined;
-  never?: Never | undefined;
+export type McpServerToolRequireApproval = {
+  always?: McpServerToolAlways | undefined;
+  never?: McpServerToolNever | undefined;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
-export type RequireApprovalUnion =
-  | RequireApproval
-  | RequireApprovalAlways
-  | RequireApprovalNever;
+export type McpServerToolRequireApprovalUnion =
+  | McpServerToolRequireApproval
+  | McpServerToolRequireApprovalAlways
+  | McpServerToolRequireApprovalNever;
 
 export const McpServerToolType = {
   Mcp: "mcp",
@@ -67,270 +69,358 @@ export type McpServerToolType = ClosedEnum<typeof McpServerToolType>;
  * MCP (Model Context Protocol) tool configuration
  */
 export type McpServerTool = {
-  allowedTools?: Array<string> | AllowedTools | null | undefined;
+  allowedTools?: Array<string> | McpServerToolAllowedTools | null | undefined;
   authorization?: string | undefined;
-  connectorId?: ConnectorId | undefined;
+  connectorId?: string | undefined;
   headers?: { [k: string]: string } | null | undefined;
   requireApproval?:
-    | RequireApproval
-    | RequireApprovalAlways
-    | RequireApprovalNever
+    | McpServerToolRequireApproval
+    | McpServerToolRequireApprovalAlways
+    | McpServerToolRequireApprovalNever
     | null
     | undefined;
   serverDescription?: string | undefined;
   serverLabel: string;
   serverUrl?: string | undefined;
   type: McpServerToolType;
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
-export const AllowedTools$inboundSchema: z.ZodType<AllowedTools, unknown> = z
-  .object({
+export const McpServerToolAllowedTools$inboundSchema: z.ZodType<
+  McpServerToolAllowedTools,
+  unknown
+> = collectExtraKeys$(
+  z.object({
     read_only: z.boolean().optional(),
     tool_names: z.array(z.string()).optional(),
-  }).transform((v) => {
-    return remap$(v, {
-      "read_only": "readOnly",
-      "tool_names": "toolNames",
-    });
+  }).catchall(z.any()),
+  "additionalProperties",
+  true,
+).transform((v) => {
+  return remap$(v, {
+    "read_only": "readOnly",
+    "tool_names": "toolNames",
   });
+});
 /** @internal */
-export type AllowedTools$Outbound = {
+export type McpServerToolAllowedTools$Outbound = {
   read_only?: boolean | undefined;
   tool_names?: Array<string> | undefined;
+  [additionalProperties: string]: unknown;
 };
 
 /** @internal */
-export const AllowedTools$outboundSchema: z.ZodType<
-  AllowedTools$Outbound,
-  AllowedTools
+export const McpServerToolAllowedTools$outboundSchema: z.ZodType<
+  McpServerToolAllowedTools$Outbound,
+  McpServerToolAllowedTools
 > = z.object({
   readOnly: z.boolean().optional(),
   toolNames: z.array(z.string()).optional(),
+  additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
-  return remap$(v, {
-    readOnly: "read_only",
-    toolNames: "tool_names",
-  });
+  return {
+    ...v.additionalProperties,
+    ...remap$(v, {
+      readOnly: "read_only",
+      toolNames: "tool_names",
+      additionalProperties: null,
+    }),
+  };
 });
 
-export function allowedToolsToJSON(allowedTools: AllowedTools): string {
-  return JSON.stringify(AllowedTools$outboundSchema.parse(allowedTools));
-}
-export function allowedToolsFromJSON(
-  jsonString: string,
-): SafeParseResult<AllowedTools, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => AllowedTools$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'AllowedTools' from JSON`,
-  );
-}
-
-/** @internal */
-export const AllowedToolsUnion$inboundSchema: z.ZodType<
-  AllowedToolsUnion,
-  unknown
-> = z.union([z.array(z.string()), z.lazy(() => AllowedTools$inboundSchema)]);
-/** @internal */
-export type AllowedToolsUnion$Outbound = Array<string> | AllowedTools$Outbound;
-
-/** @internal */
-export const AllowedToolsUnion$outboundSchema: z.ZodType<
-  AllowedToolsUnion$Outbound,
-  AllowedToolsUnion
-> = z.union([z.array(z.string()), z.lazy(() => AllowedTools$outboundSchema)]);
-
-export function allowedToolsUnionToJSON(
-  allowedToolsUnion: AllowedToolsUnion,
+export function mcpServerToolAllowedToolsToJSON(
+  mcpServerToolAllowedTools: McpServerToolAllowedTools,
 ): string {
   return JSON.stringify(
-    AllowedToolsUnion$outboundSchema.parse(allowedToolsUnion),
+    McpServerToolAllowedTools$outboundSchema.parse(mcpServerToolAllowedTools),
   );
 }
-export function allowedToolsUnionFromJSON(
+export function mcpServerToolAllowedToolsFromJSON(
   jsonString: string,
-): SafeParseResult<AllowedToolsUnion, SDKValidationError> {
+): SafeParseResult<McpServerToolAllowedTools, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => AllowedToolsUnion$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'AllowedToolsUnion' from JSON`,
+    (x) => McpServerToolAllowedTools$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'McpServerToolAllowedTools' from JSON`,
   );
 }
 
 /** @internal */
-export const ConnectorId$inboundSchema: z.ZodType<ConnectorId, unknown> =
-  openEnums.inboundSchema(ConnectorId);
-/** @internal */
-export const ConnectorId$outboundSchema: z.ZodType<string, ConnectorId> =
-  openEnums.outboundSchema(ConnectorId);
-
-/** @internal */
-export const RequireApprovalNever$inboundSchema: z.ZodEnum<
-  typeof RequireApprovalNever
-> = z.enum(RequireApprovalNever);
-/** @internal */
-export const RequireApprovalNever$outboundSchema: z.ZodEnum<
-  typeof RequireApprovalNever
-> = RequireApprovalNever$inboundSchema;
-
-/** @internal */
-export const RequireApprovalAlways$inboundSchema: z.ZodEnum<
-  typeof RequireApprovalAlways
-> = z.enum(RequireApprovalAlways);
-/** @internal */
-export const RequireApprovalAlways$outboundSchema: z.ZodEnum<
-  typeof RequireApprovalAlways
-> = RequireApprovalAlways$inboundSchema;
-
-/** @internal */
-export const Always$inboundSchema: z.ZodType<Always, unknown> = z.object({
-  tool_names: z.array(z.string()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "tool_names": "toolNames",
-  });
-});
-/** @internal */
-export type Always$Outbound = {
-  tool_names?: Array<string> | undefined;
-};
-
-/** @internal */
-export const Always$outboundSchema: z.ZodType<Always$Outbound, Always> = z
-  .object({
-    toolNames: z.array(z.string()).optional(),
-  }).transform((v) => {
-    return remap$(v, {
-      toolNames: "tool_names",
-    });
-  });
-
-export function alwaysToJSON(always: Always): string {
-  return JSON.stringify(Always$outboundSchema.parse(always));
-}
-export function alwaysFromJSON(
-  jsonString: string,
-): SafeParseResult<Always, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Always$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Always' from JSON`,
-  );
-}
-
-/** @internal */
-export const Never$inboundSchema: z.ZodType<Never, unknown> = z.object({
-  tool_names: z.array(z.string()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    "tool_names": "toolNames",
-  });
-});
-/** @internal */
-export type Never$Outbound = {
-  tool_names?: Array<string> | undefined;
-};
-
-/** @internal */
-export const Never$outboundSchema: z.ZodType<Never$Outbound, Never> = z.object({
-  toolNames: z.array(z.string()).optional(),
-}).transform((v) => {
-  return remap$(v, {
-    toolNames: "tool_names",
-  });
-});
-
-export function neverToJSON(never: Never): string {
-  return JSON.stringify(Never$outboundSchema.parse(never));
-}
-export function neverFromJSON(
-  jsonString: string,
-): SafeParseResult<Never, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Never$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Never' from JSON`,
-  );
-}
-
-/** @internal */
-export const RequireApproval$inboundSchema: z.ZodType<
-  RequireApproval,
-  unknown
-> = z.object({
-  always: z.lazy(() => Always$inboundSchema).optional(),
-  never: z.lazy(() => Never$inboundSchema).optional(),
-});
-/** @internal */
-export type RequireApproval$Outbound = {
-  always?: Always$Outbound | undefined;
-  never?: Never$Outbound | undefined;
-};
-
-/** @internal */
-export const RequireApproval$outboundSchema: z.ZodType<
-  RequireApproval$Outbound,
-  RequireApproval
-> = z.object({
-  always: z.lazy(() => Always$outboundSchema).optional(),
-  never: z.lazy(() => Never$outboundSchema).optional(),
-});
-
-export function requireApprovalToJSON(
-  requireApproval: RequireApproval,
-): string {
-  return JSON.stringify(RequireApproval$outboundSchema.parse(requireApproval));
-}
-export function requireApprovalFromJSON(
-  jsonString: string,
-): SafeParseResult<RequireApproval, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => RequireApproval$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'RequireApproval' from JSON`,
-  );
-}
-
-/** @internal */
-export const RequireApprovalUnion$inboundSchema: z.ZodType<
-  RequireApprovalUnion,
+export const McpServerToolAllowedToolsUnion$inboundSchema: z.ZodType<
+  McpServerToolAllowedToolsUnion,
   unknown
 > = z.union([
-  z.lazy(() => RequireApproval$inboundSchema),
-  RequireApprovalAlways$inboundSchema,
-  RequireApprovalNever$inboundSchema,
+  z.array(z.string()),
+  z.lazy(() => McpServerToolAllowedTools$inboundSchema),
 ]);
 /** @internal */
-export type RequireApprovalUnion$Outbound =
-  | RequireApproval$Outbound
+export type McpServerToolAllowedToolsUnion$Outbound =
+  | Array<string>
+  | McpServerToolAllowedTools$Outbound;
+
+/** @internal */
+export const McpServerToolAllowedToolsUnion$outboundSchema: z.ZodType<
+  McpServerToolAllowedToolsUnion$Outbound,
+  McpServerToolAllowedToolsUnion
+> = z.union([
+  z.array(z.string()),
+  z.lazy(() => McpServerToolAllowedTools$outboundSchema),
+]);
+
+export function mcpServerToolAllowedToolsUnionToJSON(
+  mcpServerToolAllowedToolsUnion: McpServerToolAllowedToolsUnion,
+): string {
+  return JSON.stringify(
+    McpServerToolAllowedToolsUnion$outboundSchema.parse(
+      mcpServerToolAllowedToolsUnion,
+    ),
+  );
+}
+export function mcpServerToolAllowedToolsUnionFromJSON(
+  jsonString: string,
+): SafeParseResult<McpServerToolAllowedToolsUnion, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => McpServerToolAllowedToolsUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'McpServerToolAllowedToolsUnion' from JSON`,
+  );
+}
+
+/** @internal */
+export const McpServerToolRequireApprovalNever$inboundSchema: z.ZodEnum<
+  typeof McpServerToolRequireApprovalNever
+> = z.enum(McpServerToolRequireApprovalNever);
+/** @internal */
+export const McpServerToolRequireApprovalNever$outboundSchema: z.ZodEnum<
+  typeof McpServerToolRequireApprovalNever
+> = McpServerToolRequireApprovalNever$inboundSchema;
+
+/** @internal */
+export const McpServerToolRequireApprovalAlways$inboundSchema: z.ZodEnum<
+  typeof McpServerToolRequireApprovalAlways
+> = z.enum(McpServerToolRequireApprovalAlways);
+/** @internal */
+export const McpServerToolRequireApprovalAlways$outboundSchema: z.ZodEnum<
+  typeof McpServerToolRequireApprovalAlways
+> = McpServerToolRequireApprovalAlways$inboundSchema;
+
+/** @internal */
+export const McpServerToolAlways$inboundSchema: z.ZodType<
+  McpServerToolAlways,
+  unknown
+> = collectExtraKeys$(
+  z.object({
+    read_only: z.boolean().optional(),
+    tool_names: z.array(z.string()).optional(),
+  }).catchall(z.any()),
+  "additionalProperties",
+  true,
+).transform((v) => {
+  return remap$(v, {
+    "read_only": "readOnly",
+    "tool_names": "toolNames",
+  });
+});
+/** @internal */
+export type McpServerToolAlways$Outbound = {
+  read_only?: boolean | undefined;
+  tool_names?: Array<string> | undefined;
+  [additionalProperties: string]: unknown;
+};
+
+/** @internal */
+export const McpServerToolAlways$outboundSchema: z.ZodType<
+  McpServerToolAlways$Outbound,
+  McpServerToolAlways
+> = z.object({
+  readOnly: z.boolean().optional(),
+  toolNames: z.array(z.string()).optional(),
+  additionalProperties: z.record(z.string(), z.any()).optional(),
+}).transform((v) => {
+  return {
+    ...v.additionalProperties,
+    ...remap$(v, {
+      readOnly: "read_only",
+      toolNames: "tool_names",
+      additionalProperties: null,
+    }),
+  };
+});
+
+export function mcpServerToolAlwaysToJSON(
+  mcpServerToolAlways: McpServerToolAlways,
+): string {
+  return JSON.stringify(
+    McpServerToolAlways$outboundSchema.parse(mcpServerToolAlways),
+  );
+}
+export function mcpServerToolAlwaysFromJSON(
+  jsonString: string,
+): SafeParseResult<McpServerToolAlways, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => McpServerToolAlways$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'McpServerToolAlways' from JSON`,
+  );
+}
+
+/** @internal */
+export const McpServerToolNever$inboundSchema: z.ZodType<
+  McpServerToolNever,
+  unknown
+> = collectExtraKeys$(
+  z.object({
+    read_only: z.boolean().optional(),
+    tool_names: z.array(z.string()).optional(),
+  }).catchall(z.any()),
+  "additionalProperties",
+  true,
+).transform((v) => {
+  return remap$(v, {
+    "read_only": "readOnly",
+    "tool_names": "toolNames",
+  });
+});
+/** @internal */
+export type McpServerToolNever$Outbound = {
+  read_only?: boolean | undefined;
+  tool_names?: Array<string> | undefined;
+  [additionalProperties: string]: unknown;
+};
+
+/** @internal */
+export const McpServerToolNever$outboundSchema: z.ZodType<
+  McpServerToolNever$Outbound,
+  McpServerToolNever
+> = z.object({
+  readOnly: z.boolean().optional(),
+  toolNames: z.array(z.string()).optional(),
+  additionalProperties: z.record(z.string(), z.any()).optional(),
+}).transform((v) => {
+  return {
+    ...v.additionalProperties,
+    ...remap$(v, {
+      readOnly: "read_only",
+      toolNames: "tool_names",
+      additionalProperties: null,
+    }),
+  };
+});
+
+export function mcpServerToolNeverToJSON(
+  mcpServerToolNever: McpServerToolNever,
+): string {
+  return JSON.stringify(
+    McpServerToolNever$outboundSchema.parse(mcpServerToolNever),
+  );
+}
+export function mcpServerToolNeverFromJSON(
+  jsonString: string,
+): SafeParseResult<McpServerToolNever, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => McpServerToolNever$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'McpServerToolNever' from JSON`,
+  );
+}
+
+/** @internal */
+export const McpServerToolRequireApproval$inboundSchema: z.ZodType<
+  McpServerToolRequireApproval,
+  unknown
+> = collectExtraKeys$(
+  z.object({
+    always: z.lazy(() => McpServerToolAlways$inboundSchema).optional(),
+    never: z.lazy(() => McpServerToolNever$inboundSchema).optional(),
+  }).catchall(z.any()),
+  "additionalProperties",
+  true,
+);
+/** @internal */
+export type McpServerToolRequireApproval$Outbound = {
+  always?: McpServerToolAlways$Outbound | undefined;
+  never?: McpServerToolNever$Outbound | undefined;
+  [additionalProperties: string]: unknown;
+};
+
+/** @internal */
+export const McpServerToolRequireApproval$outboundSchema: z.ZodType<
+  McpServerToolRequireApproval$Outbound,
+  McpServerToolRequireApproval
+> = z.object({
+  always: z.lazy(() => McpServerToolAlways$outboundSchema).optional(),
+  never: z.lazy(() => McpServerToolNever$outboundSchema).optional(),
+  additionalProperties: z.record(z.string(), z.any()).optional(),
+}).transform((v) => {
+  return {
+    ...v.additionalProperties,
+    ...remap$(v, {
+      additionalProperties: null,
+    }),
+  };
+});
+
+export function mcpServerToolRequireApprovalToJSON(
+  mcpServerToolRequireApproval: McpServerToolRequireApproval,
+): string {
+  return JSON.stringify(
+    McpServerToolRequireApproval$outboundSchema.parse(
+      mcpServerToolRequireApproval,
+    ),
+  );
+}
+export function mcpServerToolRequireApprovalFromJSON(
+  jsonString: string,
+): SafeParseResult<McpServerToolRequireApproval, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => McpServerToolRequireApproval$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'McpServerToolRequireApproval' from JSON`,
+  );
+}
+
+/** @internal */
+export const McpServerToolRequireApprovalUnion$inboundSchema: z.ZodType<
+  McpServerToolRequireApprovalUnion,
+  unknown
+> = z.union([
+  z.lazy(() => McpServerToolRequireApproval$inboundSchema),
+  McpServerToolRequireApprovalAlways$inboundSchema,
+  McpServerToolRequireApprovalNever$inboundSchema,
+]);
+/** @internal */
+export type McpServerToolRequireApprovalUnion$Outbound =
+  | McpServerToolRequireApproval$Outbound
   | string
   | string;
 
 /** @internal */
-export const RequireApprovalUnion$outboundSchema: z.ZodType<
-  RequireApprovalUnion$Outbound,
-  RequireApprovalUnion
+export const McpServerToolRequireApprovalUnion$outboundSchema: z.ZodType<
+  McpServerToolRequireApprovalUnion$Outbound,
+  McpServerToolRequireApprovalUnion
 > = z.union([
-  z.lazy(() => RequireApproval$outboundSchema),
-  RequireApprovalAlways$outboundSchema,
-  RequireApprovalNever$outboundSchema,
+  z.lazy(() => McpServerToolRequireApproval$outboundSchema),
+  McpServerToolRequireApprovalAlways$outboundSchema,
+  McpServerToolRequireApprovalNever$outboundSchema,
 ]);
 
-export function requireApprovalUnionToJSON(
-  requireApprovalUnion: RequireApprovalUnion,
+export function mcpServerToolRequireApprovalUnionToJSON(
+  mcpServerToolRequireApprovalUnion: McpServerToolRequireApprovalUnion,
 ): string {
   return JSON.stringify(
-    RequireApprovalUnion$outboundSchema.parse(requireApprovalUnion),
+    McpServerToolRequireApprovalUnion$outboundSchema.parse(
+      mcpServerToolRequireApprovalUnion,
+    ),
   );
 }
-export function requireApprovalUnionFromJSON(
+export function mcpServerToolRequireApprovalUnionFromJSON(
   jsonString: string,
-): SafeParseResult<RequireApprovalUnion, SDKValidationError> {
+): SafeParseResult<McpServerToolRequireApprovalUnion, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => RequireApprovalUnion$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'RequireApprovalUnion' from JSON`,
+    (x) => McpServerToolRequireApprovalUnion$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'McpServerToolRequireApprovalUnion' from JSON`,
   );
 }
 
@@ -344,26 +434,29 @@ export const McpServerToolType$outboundSchema: z.ZodEnum<
 > = McpServerToolType$inboundSchema;
 
 /** @internal */
-export const McpServerTool$inboundSchema: z.ZodType<McpServerTool, unknown> = z
-  .object({
-    allowed_tools: z.nullable(
-      z.union([z.array(z.string()), z.lazy(() => AllowedTools$inboundSchema)]),
-    ).optional(),
-    authorization: z.string().optional(),
-    connector_id: ConnectorId$inboundSchema.optional(),
-    headers: z.nullable(z.record(z.string(), z.string())).optional(),
-    require_approval: z.nullable(
-      z.union([
-        z.lazy(() => RequireApproval$inboundSchema),
-        RequireApprovalAlways$inboundSchema,
-        RequireApprovalNever$inboundSchema,
-      ]),
-    ).optional(),
-    server_description: z.string().optional(),
-    server_label: z.string(),
-    server_url: z.string().optional(),
-    type: McpServerToolType$inboundSchema,
-  }).transform((v) => {
+export const McpServerTool$inboundSchema: z.ZodType<McpServerTool, unknown> =
+  collectExtraKeys$(
+    z.object({
+      allowed_tools: z.nullable(z.union([
+        z.array(z.string()),
+        z.lazy(() => McpServerToolAllowedTools$inboundSchema),
+      ])).optional(),
+      authorization: z.string().optional(),
+      connector_id: z.string().optional(),
+      headers: z.nullable(z.record(z.string(), z.string())).optional(),
+      require_approval: z.nullable(z.union([
+        z.lazy(() => McpServerToolRequireApproval$inboundSchema),
+        McpServerToolRequireApprovalAlways$inboundSchema,
+        McpServerToolRequireApprovalNever$inboundSchema,
+      ])).optional(),
+      server_description: z.string().optional(),
+      server_label: z.string(),
+      server_url: z.string().optional(),
+      type: McpServerToolType$inboundSchema,
+    }).catchall(z.any()),
+    "additionalProperties",
+    true,
+  ).transform((v) => {
     return remap$(v, {
       "allowed_tools": "allowedTools",
       "connector_id": "connectorId",
@@ -375,12 +468,16 @@ export const McpServerTool$inboundSchema: z.ZodType<McpServerTool, unknown> = z
   });
 /** @internal */
 export type McpServerTool$Outbound = {
-  allowed_tools?: Array<string> | AllowedTools$Outbound | null | undefined;
+  allowed_tools?:
+    | Array<string>
+    | McpServerToolAllowedTools$Outbound
+    | null
+    | undefined;
   authorization?: string | undefined;
   connector_id?: string | undefined;
   headers?: { [k: string]: string } | null | undefined;
   require_approval?:
-    | RequireApproval$Outbound
+    | McpServerToolRequireApproval$Outbound
     | string
     | string
     | null
@@ -389,6 +486,7 @@ export type McpServerTool$Outbound = {
   server_label: string;
   server_url?: string | undefined;
   type: string;
+  [additionalProperties: string]: unknown;
 };
 
 /** @internal */
@@ -397,31 +495,39 @@ export const McpServerTool$outboundSchema: z.ZodType<
   McpServerTool
 > = z.object({
   allowedTools: z.nullable(
-    z.union([z.array(z.string()), z.lazy(() => AllowedTools$outboundSchema)]),
+    z.union([
+      z.array(z.string()),
+      z.lazy(() => McpServerToolAllowedTools$outboundSchema),
+    ]),
   ).optional(),
   authorization: z.string().optional(),
-  connectorId: ConnectorId$outboundSchema.optional(),
+  connectorId: z.string().optional(),
   headers: z.nullable(z.record(z.string(), z.string())).optional(),
   requireApproval: z.nullable(
     z.union([
-      z.lazy(() => RequireApproval$outboundSchema),
-      RequireApprovalAlways$outboundSchema,
-      RequireApprovalNever$outboundSchema,
+      z.lazy(() => McpServerToolRequireApproval$outboundSchema),
+      McpServerToolRequireApprovalAlways$outboundSchema,
+      McpServerToolRequireApprovalNever$outboundSchema,
     ]),
   ).optional(),
   serverDescription: z.string().optional(),
   serverLabel: z.string(),
   serverUrl: z.string().optional(),
   type: McpServerToolType$outboundSchema,
+  additionalProperties: z.record(z.string(), z.any()).optional(),
 }).transform((v) => {
-  return remap$(v, {
-    allowedTools: "allowed_tools",
-    connectorId: "connector_id",
-    requireApproval: "require_approval",
-    serverDescription: "server_description",
-    serverLabel: "server_label",
-    serverUrl: "server_url",
-  });
+  return {
+    ...v.additionalProperties,
+    ...remap$(v, {
+      allowedTools: "allowed_tools",
+      connectorId: "connector_id",
+      requireApproval: "require_approval",
+      serverDescription: "server_description",
+      serverLabel: "server_label",
+      serverUrl: "server_url",
+      additionalProperties: null,
+    }),
+  };
 });
 
 export function mcpServerToolToJSON(mcpServerTool: McpServerTool): string {
