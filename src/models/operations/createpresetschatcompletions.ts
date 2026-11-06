@@ -53,6 +53,10 @@ export type CreatePresetsChatCompletionsRequest = {
    * URL-safe slug identifying the preset. Created if it does not exist.
    */
   slug: string;
+  /**
+   * Workspace to create the preset in. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace.
+   */
+  workspaceId?: string | undefined;
   chatRequest: models.ChatRequest;
 };
 
@@ -62,6 +66,7 @@ export type CreatePresetsChatCompletionsRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   slug: string;
+  workspace_id?: string | undefined;
   ChatRequest: models.ChatRequest$Outbound;
 };
 
@@ -74,10 +79,12 @@ export const CreatePresetsChatCompletionsRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   slug: z.string(),
+  workspaceId: z.string().optional(),
   chatRequest: models.ChatRequest$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    workspaceId: "workspace_id",
     chatRequest: "ChatRequest",
   });
 });
