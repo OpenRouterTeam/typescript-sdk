@@ -1,0 +1,30 @@
+---
+title: "CreateAccountPolicyRequest"
+---
+
+## Example Usage
+
+```typescript
+import { CreateAccountPolicyRequest } from "@openrouter/sdk/models/operations";
+
+let value: CreateAccountPolicyRequest = {
+  accountGuardrailPolicyRequest: {
+    config: {
+      includeByokInBudgets: false,
+      limitUsd: 200,
+      resetInterval: "monthly",
+    },
+    name: "Engineering monthly budget",
+    policyType: "budget",
+  },
+};
+```
+
+## Fields
+
+| Field                                                                                                                                             | Type                                                                                                                                              | Required                                                                                                                                          | Description                                                                                                                                       |
+| ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `httpReferer`                                                                                                                                     | *string*                                                                                                                                          | ➖                                                                                                                                | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br/>This is used to track API usage per application.<br/> |
+| `appTitle`                                                                                                                                        | *string*                                                                                                                                          | ➖                                                                                                                                | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br/>                                                 |
+| `appCategories`                                                                                                                                   | *string*                                                                                                                                          | ➖                                                                                                                                | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br/>                                        |
+| `accountGuardrailPolicyRequest`                                                                                                                   | *models.AccountGuardrailPolicyRequest*                                                                                                            | ✔️                                                                                                                                | N/A                                                                                                                                               |

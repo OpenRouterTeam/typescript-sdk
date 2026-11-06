@@ -1,0 +1,32 @@
+---
+title: "ListModerationPoliciesResponse"
+---
+
+## Example Usage
+
+```typescript
+import { ListModerationPoliciesResponse } from "@openrouter/sdk/models/operations";
+
+let value: ListModerationPoliciesResponse = {
+  result: {
+    data: [
+      {
+        apiKeyCount: 456356,
+        config: {},
+        id: "550e8400-e29b-41d4-a716-446655440000",
+        memberCount: 560740,
+        name: "Engineering monthly budget",
+        policyType: "moderation",
+        updatedAt: "1735629446834",
+      },
+    ],
+    totalCount: 1,
+  },
+};
+```
+
+## Fields
+
+| Field                                                                                                     | Type                                                                                                      | Required                                                                                                  | Description                                                                                               |
+| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `result`                                                                                                  | [models.ListModerationGuardrailPoliciesResponse](../../models/listmoderationguardrailpoliciesresponse.mdx) | ✔️                                                                                        | N/A                                                                                                       |

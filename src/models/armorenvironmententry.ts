@@ -4,12 +4,23 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type ArmorEnvironmentEntry = {
   name: string;
   value: string;
 };
 
+/** @internal */
+export const ArmorEnvironmentEntry$inboundSchema: z.ZodType<
+  ArmorEnvironmentEntry,
+  unknown
+> = z.object({
+  name: z.string(),
+  value: z.string(),
+});
 /** @internal */
 export type ArmorEnvironmentEntry$Outbound = {
   name: string;
@@ -30,5 +41,14 @@ export function armorEnvironmentEntryToJSON(
 ): string {
   return JSON.stringify(
     ArmorEnvironmentEntry$outboundSchema.parse(armorEnvironmentEntry),
+  );
+}
+export function armorEnvironmentEntryFromJSON(
+  jsonString: string,
+): SafeParseResult<ArmorEnvironmentEntry, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ArmorEnvironmentEntry$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ArmorEnvironmentEntry' from JSON`,
   );
 }

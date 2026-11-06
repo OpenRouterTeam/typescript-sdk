@@ -5,16 +5,21 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ArmorEnvironmentEntry,
+  ArmorEnvironmentEntry$inboundSchema,
   ArmorEnvironmentEntry$Outbound,
   ArmorEnvironmentEntry$outboundSchema,
 } from "./armorenvironmententry.js";
 import {
   ArmorRule,
+  ArmorRule$inboundSchema,
   ArmorRule$Outbound,
   ArmorRule$outboundSchema,
 } from "./armorrule.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type Allow = ArmorRule | string;
 
@@ -32,6 +37,11 @@ export type ArmorAutoMode = {
 };
 
 /** @internal */
+export const Allow$inboundSchema: z.ZodType<Allow, unknown> = z.union([
+  ArmorRule$inboundSchema,
+  z.string(),
+]);
+/** @internal */
 export type Allow$Outbound = ArmorRule$Outbound | string;
 
 /** @internal */
@@ -43,7 +53,19 @@ export const Allow$outboundSchema: z.ZodType<Allow$Outbound, Allow> = z.union([
 export function allowToJSON(allow: Allow): string {
   return JSON.stringify(Allow$outboundSchema.parse(allow));
 }
+export function allowFromJSON(
+  jsonString: string,
+): SafeParseResult<Allow, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Allow$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Allow' from JSON`,
+  );
+}
 
+/** @internal */
+export const Environment$inboundSchema: z.ZodType<Environment, unknown> = z
+  .union([ArmorEnvironmentEntry$inboundSchema, z.string()]);
 /** @internal */
 export type Environment$Outbound = ArmorEnvironmentEntry$Outbound | string;
 
@@ -56,7 +78,21 @@ export const Environment$outboundSchema: z.ZodType<
 export function environmentToJSON(environment: Environment): string {
   return JSON.stringify(Environment$outboundSchema.parse(environment));
 }
+export function environmentFromJSON(
+  jsonString: string,
+): SafeParseResult<Environment, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Environment$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Environment' from JSON`,
+  );
+}
 
+/** @internal */
+export const HardDeny$inboundSchema: z.ZodType<HardDeny, unknown> = z.union([
+  ArmorRule$inboundSchema,
+  z.string(),
+]);
 /** @internal */
 export type HardDeny$Outbound = ArmorRule$Outbound | string;
 
@@ -67,7 +103,21 @@ export const HardDeny$outboundSchema: z.ZodType<HardDeny$Outbound, HardDeny> = z
 export function hardDenyToJSON(hardDeny: HardDeny): string {
   return JSON.stringify(HardDeny$outboundSchema.parse(hardDeny));
 }
+export function hardDenyFromJSON(
+  jsonString: string,
+): SafeParseResult<HardDeny, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => HardDeny$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'HardDeny' from JSON`,
+  );
+}
 
+/** @internal */
+export const SoftDeny$inboundSchema: z.ZodType<SoftDeny, unknown> = z.union([
+  ArmorRule$inboundSchema,
+  z.string(),
+]);
 /** @internal */
 export type SoftDeny$Outbound = ArmorRule$Outbound | string;
 
@@ -78,7 +128,33 @@ export const SoftDeny$outboundSchema: z.ZodType<SoftDeny$Outbound, SoftDeny> = z
 export function softDenyToJSON(softDeny: SoftDeny): string {
   return JSON.stringify(SoftDeny$outboundSchema.parse(softDeny));
 }
+export function softDenyFromJSON(
+  jsonString: string,
+): SafeParseResult<SoftDeny, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => SoftDeny$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'SoftDeny' from JSON`,
+  );
+}
 
+/** @internal */
+export const ArmorAutoMode$inboundSchema: z.ZodType<ArmorAutoMode, unknown> = z
+  .object({
+    allow: z.array(z.union([ArmorRule$inboundSchema, z.string()])).optional(),
+    environment: z.array(
+      z.union([ArmorEnvironmentEntry$inboundSchema, z.string()]),
+    ).optional(),
+    hard_deny: z.array(z.union([ArmorRule$inboundSchema, z.string()]))
+      .optional(),
+    soft_deny: z.array(z.union([ArmorRule$inboundSchema, z.string()]))
+      .optional(),
+  }).transform((v) => {
+    return remap$(v, {
+      "hard_deny": "hardDeny",
+      "soft_deny": "softDeny",
+    });
+  });
 /** @internal */
 export type ArmorAutoMode$Outbound = {
   allow?: Array<ArmorRule$Outbound | string> | undefined;
@@ -107,4 +183,13 @@ export const ArmorAutoMode$outboundSchema: z.ZodType<
 
 export function armorAutoModeToJSON(armorAutoMode: ArmorAutoMode): string {
   return JSON.stringify(ArmorAutoMode$outboundSchema.parse(armorAutoMode));
+}
+export function armorAutoModeFromJSON(
+  jsonString: string,
+): SafeParseResult<ArmorAutoMode, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ArmorAutoMode$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ArmorAutoMode' from JSON`,
+  );
 }

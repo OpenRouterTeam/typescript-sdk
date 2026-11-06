@@ -1,5 +1,5 @@
 ---
-title: "OnError"
+title: "GuardrailModerationPolicyConfigOnError"
 ---
 
 When the classifier cannot answer (timeout, upstream error, context too long) the call is reported `unavailable`; `block` rejects it and `log` releases it. Default `block`.
@@ -7,9 +7,9 @@ When the classifier cannot answer (timeout, upstream error, context too long) th
 ## Example Usage
 
 ```typescript
-import { OnError } from "@openrouter/sdk/models";
+import { GuardrailModerationPolicyConfigOnError } from "@openrouter/sdk/models";
 
-let value: OnError = "block";
+let value: GuardrailModerationPolicyConfigOnError = "block";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```

@@ -1,0 +1,40 @@
+---
+title: "ListAccountGuardrailPoliciesResponse"
+---
+
+## Example Usage
+
+```typescript
+import { ListAccountGuardrailPoliciesResponse } from "@openrouter/sdk/models";
+
+let value: ListAccountGuardrailPoliciesResponse = {
+  data: [
+    {
+      config: {},
+      createdAt: "2025-08-24T10:30:00Z",
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      isDefault: true,
+      isSynced: false,
+      isWorkspaceDefaultSynced: false,
+      name: "Engineering monthly budget",
+      optedOutWorkspaceIds: [
+        "0df9e665-d932-5740-b2c7-b52af166bc11",
+      ],
+      policyType: "budget",
+      updatedAt: "1735634292786",
+      workspaceCount: 138712,
+      workspaceIds: [
+        "0df9e665-d932-5740-b2c7-b52af166bc11",
+      ],
+    },
+  ],
+  totalCount: 1,
+};
+```
+
+## Fields
+
+| Field                             | Type                              | Required                          | Description                       | Example                           |
+| --------------------------------- | --------------------------------- | --------------------------------- | --------------------------------- | --------------------------------- |
+| `data`                            | *models.AccountGuardrailPolicy*[] | ✔️                | N/A                               |                                   |
+| `totalCount`                      | *number*                          | ✔️                | Total number of policies          | 1                                 |
