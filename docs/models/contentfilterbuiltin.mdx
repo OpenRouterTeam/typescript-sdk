@@ -1,0 +1,23 @@
+---
+title: "ContentFilterBuiltin"
+---
+
+## Example Usage
+
+```typescript
+import { ContentFilterBuiltin } from "@openrouter/sdk/models";
+
+let value: ContentFilterBuiltin = {
+  action: "block",
+  slug: "ssn",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                      | Type                                                                                                                                       | Required                                                                                                                                   | Description                                                                                                                                |
+| ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `action`                                                                                                                                   | [models.GuardrailModerationPolicyConfigContentFilterBuiltinAction](../models/guardrailmoderationpolicyconfigcontentfilterbuiltinaction.mdx) | ✔️                                                                                                                         | N/A                                                                                                                                        |
+| `label`                                                                                                                                    | *string*                                                                                                                                   | ➖                                                                                                                         | N/A                                                                                                                                        |
+| `scanScope`                                                                                                                                | [models.ScanScope](../models/scanscope.mdx)                                                                                                 | ➖                                                                                                                         | N/A                                                                                                                                        |
+| `slug`                                                                                                                                     | [models.Slug](../models/slug.mdx)                                                                                                           | ✔️                                                                                                                         | N/A                                                                                                                                        |

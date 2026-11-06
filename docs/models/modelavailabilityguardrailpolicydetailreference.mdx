@@ -1,0 +1,21 @@
+---
+title: "ModelAvailabilityGuardrailPolicyDetailReference"
+---
+
+`legacy_mapping` when the policy is synced from a v1 guardrail, `account_default` when it is an account-wide default, otherwise `null`
+
+## Example Usage
+
+```typescript
+import { ModelAvailabilityGuardrailPolicyDetailReference } from "@openrouter/sdk/models";
+
+let value: ModelAvailabilityGuardrailPolicyDetailReference = "legacy_mapping";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"legacy_mapping" | "account_default" | Unrecognized<string>
+```

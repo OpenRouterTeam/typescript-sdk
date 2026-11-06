@@ -1,0 +1,32 @@
+---
+title: "UpdateBudgetGuardrailPolicyRequest"
+---
+
+## Example Usage
+
+```typescript
+import { UpdateBudgetGuardrailPolicyRequest } from "@openrouter/sdk/models";
+
+let value: UpdateBudgetGuardrailPolicyRequest = {
+  config: {
+    includeByokInBudgets: false,
+    limitUsd: 200,
+    resetInterval: "monthly",
+  },
+  name: "Engineering monthly budget",
+  workspaceId: "0df9e665-d932-5740-b2c7-b52af166bc11",
+};
+```
+
+## Fields
+
+| Field                                                                                                                    | Type                                                                                                                     | Required                                                                                                                 | Description                                                                                                              | Example                                                                                                                  |
+| ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| `apiKeyHashes`                                                                                                           | *string*[]                                                                                                               | ➖                                                                                                       | Complete new list of assigned API keys. Send together with `member_ids`, or omit both to keep the stored assignments.    | [<br/>"c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93"<br/>]                                           |
+| `config`                                                                                                                 | [models.GuardrailBudgetPolicyAuthoringConfig](../models/guardrailbudgetpolicyauthoringconfig.mdx)                         | ✔️                                                                                                       | N/A                                                                                                                      | \{<br/>"include_byok_in_budgets": false,<br/>"limit_usd": 200,<br/>"reset_interval": "monthly"<br/>}                      |
+| `isWorkspaceDefault`                                                                                                     | *boolean*                                                                                                                | ➖                                                                                                       | Omit to keep the stored default status; `false` unsets the policy as the workspace default.                              |                                                                                                                          |
+| `memberIds`                                                                                                              | *string*[]                                                                                                               | ➖                                                                                                       | Complete new list of assigned members. Send together with `api_key_hashes`, or omit both to keep the stored assignments. | [<br/>"user_2abcDEFghiJKLmnoPQRstu"<br/>]                                                                                |
+| `name`                                                                                                                   | *string*                                                                                                                 | ✔️                                                                                                       | Policy name                                                                                                              | Engineering monthly budget                                                                                               |
+| `optedOutApiKeyHashes`                                                                                                   | *string*[]                                                                                                               | ➖                                                                                                       | API key hashes                                                                                                           | [<br/>"c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93"<br/>]                                           |
+| `optedOutMemberIds`                                                                                                      | *string*[]                                                                                                               | ➖                                                                                                       | Organization member user IDs                                                                                             | [<br/>"user_2abcDEFghiJKLmnoPQRstu"<br/>]                                                                                |
+| `workspaceId`                                                                                                            | *string*                                                                                                                 | ✔️                                                                                                       | Workspace the policy belongs to                                                                                          | 0df9e665-d932-5740-b2c7-b52af166bc11                                                                                     |

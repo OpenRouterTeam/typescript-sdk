@@ -1,0 +1,34 @@
+---
+title: "CreateBudgetGuardrailPolicyRequest"
+---
+
+## Example Usage
+
+```typescript
+import { CreateBudgetGuardrailPolicyRequest } from "@openrouter/sdk/models";
+
+let value: CreateBudgetGuardrailPolicyRequest = {
+  config: {
+    includeByokInBudgets: false,
+    limitUsd: 200,
+    resetInterval: "monthly",
+  },
+  name: "Engineering monthly budget",
+  policyType: "budget",
+  workspaceId: "0df9e665-d932-5740-b2c7-b52af166bc11",
+};
+```
+
+## Fields
+
+| Field                                                                                                            | Type                                                                                                             | Required                                                                                                         | Description                                                                                                      | Example                                                                                                          |
+| ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `apiKeyHashes`                                                                                                   | *string*[]                                                                                                       | ➖                                                                                               | API key hashes                                                                                                   | [<br/>"c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93"<br/>]                                   |
+| `config`                                                                                                         | [models.GuardrailBudgetPolicyAuthoringConfig](../models/guardrailbudgetpolicyauthoringconfig.mdx)                 | ✔️                                                                                               | N/A                                                                                                              | \{<br/>"include_byok_in_budgets": false,<br/>"limit_usd": 200,<br/>"reset_interval": "monthly"<br/>}              |
+| `isWorkspaceDefault`                                                                                             | *boolean*                                                                                                        | ➖                                                                                               | Make this the workspace default for its policy type. Defaults to `false`.                                        |                                                                                                                  |
+| `memberIds`                                                                                                      | *string*[]                                                                                                       | ➖                                                                                               | Organization member user IDs                                                                                     | [<br/>"user_2abcDEFghiJKLmnoPQRstu"<br/>]                                                                        |
+| `name`                                                                                                           | *string*                                                                                                         | ✔️                                                                                               | Policy name                                                                                                      | Engineering monthly budget                                                                                       |
+| `optedOutApiKeyHashes`                                                                                           | *string*[]                                                                                                       | ➖                                                                                               | API keys that should not inherit the policy when it is the workspace default                                     | [<br/>"c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93"<br/>]                                   |
+| `optedOutMemberIds`                                                                                              | *string*[]                                                                                                       | ➖                                                                                               | Members that should not inherit the policy when it is the workspace default                                      | [<br/>"user_2abcDEFghiJKLmnoPQRstu"<br/>]                                                                        |
+| `policyType`                                                                                                     | [models.CreateBudgetGuardrailPolicyRequestPolicyType](../models/createbudgetguardrailpolicyrequestpolicytype.mdx) | ✔️                                                                                               | N/A                                                                                                              |                                                                                                                  |
+| `workspaceId`                                                                                                    | *string*                                                                                                         | ✔️                                                                                               | Workspace the policy belongs to                                                                                  | 0df9e665-d932-5740-b2c7-b52af166bc11                                                                             |

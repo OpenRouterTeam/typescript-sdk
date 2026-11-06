@@ -1,0 +1,31 @@
+---
+title: "ListModerationGuardrailPoliciesResponse"
+---
+
+## Example Usage
+
+```typescript
+import { ListModerationGuardrailPoliciesResponse } from "@openrouter/sdk/models";
+
+let value: ListModerationGuardrailPoliciesResponse = {
+  data: [
+    {
+      apiKeyCount: 456356,
+      config: {},
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      memberCount: 560740,
+      name: "Engineering monthly budget",
+      policyType: "moderation",
+      updatedAt: "1735629446834",
+    },
+  ],
+  totalCount: 1,
+};
+```
+
+## Fields
+
+| Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                | Example                                                                                    |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `data`                                                                                     | [models.ModerationGuardrailPolicySummary](../models/moderationguardrailpolicysummary.mdx)[] | ✔️                                                                         | N/A                                                                                        |                                                                                            |
+| `totalCount`                                                                               | *number*                                                                                   | ✔️                                                                         | Total number of policies                                                                   | 1                                                                                          |

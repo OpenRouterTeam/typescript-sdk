@@ -1,0 +1,21 @@
+---
+title: "GuardrailModerationPolicyConfigMode"
+---
+
+`enforce` withholds blocked calls; `audit` evaluates and reports the same verdicts without withholding any calls, regardless of `on_error`. Default `enforce`.
+
+## Example Usage
+
+```typescript
+import { GuardrailModerationPolicyConfigMode } from "@openrouter/sdk/models";
+
+let value: GuardrailModerationPolicyConfigMode = "audit";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"enforce" | "audit" | Unrecognized<string>
+```
