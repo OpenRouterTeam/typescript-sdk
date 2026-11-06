@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 801f8bc871129560b2d6002c84ebef44
+  docChecksum: e5ccb1e9db12e5632c1ac001fe5e2a95
   docVersion: 1.0.0
   speakeasyVersion: 1.803.2
   generationVersion: 2.950.13
-  releaseVersion: 1.5.60
-  configChecksum: d963916fc17b437d9589939703dba6ca
+  releaseVersion: 1.5.61
+  configChecksum: f13bde1549e24c7f03b3ddecbc53e526
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 7f83b212-fd08-4158-bb2d-272d1ff68e0f
-  pristine_commit_hash: 169689ae3eefd0f27d3d46c098cc03f24e475fdf
-  pristine_tree_hash: babb7975bfa45be536da5bc3b0ab0f05ab64f813
+  generation_id: abce31fb-b50e-4951-949e-dc267e432c0f
+  pristine_commit_hash: 0f5e7c67fbc0e3072f3bb59e9b3cee9c24cb670c
+  pristine_tree_hash: 8f750fd9cc2ee43b6906eda1f4601e9375065bf7
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -15860,8 +15860,8 @@ trackedFiles:
     pristine_git_object: dde28434d13dc6fbedf7a78c1bb3c05267064db9
   docs/models/updateprivateendpointrequest.mdx:
     id: d298e4499123
-    last_write_checksum: sha1:22552dd5251dd54e2200dd5cb5a92df56f06b185
-    pristine_git_object: 983afddf4833822cedd8b0b3a3fb35f4b0c9143f
+    last_write_checksum: sha1:b91e881f4c7736e4014283364186fdc096b90aa0
+    pristine_git_object: 06283498adae7f66b0a15463c2d191d79a8831fe
   docs/models/updateprivateendpointrequestdeclaredregion.mdx:
     id: 6b0ff8868102
     last_write_checksum: sha1:747fcad75cd5d2ea5d0d5a1da76054f876f10a40
@@ -16646,8 +16646,8 @@ trackedFiles:
     pristine_git_object: d55ffc103678c62503718b980a7e55150b155b44
   docs/sdks/privateendpoints/README.mdx:
     id: 54dee70b8cc7
-    last_write_checksum: sha1:8f1b8395ad4fdfdc61e4700b1b173aaa2a97fd43
-    pristine_git_object: 1c1ea286e3a49eea3d6c88c11c24be4727f0cbfe
+    last_write_checksum: sha1:6c45c55fefd99d52bd8204d17b7212e6785fee5a
+    pristine_git_object: d61259723ea99be88369df3a6cb8597cf1f785be
   docs/sdks/privateproviders/README.mdx:
     id: 517c31195442
     last_write_checksum: sha1:cacc54a8bd3f270d98635cdadb2563cd369752d2
@@ -16747,12 +16747,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:91bf443f6a4822bbca29ff7522953d3f0343a053
-    pristine_git_object: 40b9ebafca1d31307d53cc40f6d657c64e7bc808
+    last_write_checksum: sha1:6fcb6f103a19490d2cacf0e6c6c9b288100c22f1
+    pristine_git_object: 6a5e112665e3706b2546b9bd3174c74601c260a0
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:dac62b858bcd8a3f8352b4776edcc8be53f72990
-    pristine_git_object: 121b19ab96b889a52e465276bfc15eaf6e4f3ef1
+    last_write_checksum: sha1:c98f3971c713dbb28256e1eaaff3a7d902794c20
+    pristine_git_object: 1e1b48fb471d425a759c57e5696684d2d7db749f
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -17227,8 +17227,8 @@ trackedFiles:
     pristine_git_object: 61c7fc448f2bd33033ef33f7f47ef97413ffd563
   src/funcs/privateEndpointsUpdate.ts:
     id: a2d429fd280a
-    last_write_checksum: sha1:440b928a4fdccf9840e3aa3b9d07948a062dca21
-    pristine_git_object: ed0aacbf784aa4b7ed02a0f4c5e5a2e44aa32950
+    last_write_checksum: sha1:3f6529d1b18c8df60622ba304d9fc3ef5ddb7ce0
+    pristine_git_object: 6f2808f6dd5fd609b2d0a0d3653623ae7c3bd232
   src/funcs/privateEndpointsValidate.ts:
     id: 4337dd4863e1
     last_write_checksum: sha1:98efd9c508dc51a0d5c0a6998c316961f86d33b2
@@ -17443,8 +17443,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:68529670497ae528e6adb1edf168acff85598b2c
-    pristine_git_object: 8b4e641d7aaf06a717995190011ad7e19b8a13a3
+    last_write_checksum: sha1:79b5e1991c6dfca4503403246b7b832f2e11094d
+    pristine_git_object: 8bbf75d5eb82a420e5406e41277add1e55594b6c
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -21897,8 +21897,8 @@ trackedFiles:
     pristine_git_object: 7cd434b08a9403d243e4808c65e090f369865efc
   src/models/updateprivateendpointrequest.ts:
     id: 998472d2d99c
-    last_write_checksum: sha1:86c2d2a86cd283b98c8140614d33460ebd227cee
-    pristine_git_object: 9b96cdf102e23c7b832669ed69056bb375c1051f
+    last_write_checksum: sha1:ae3d1670e6e8119657b4274efe67b6c0580c5a08
+    pristine_git_object: 0ddee12df6ff3a67f733e9e37602a7cc53396870
   src/models/updateprivateendpointsettingsrequest.ts:
     id: 5104217fe6cc
     last_write_checksum: sha1:d09402e938ef821499f89aa359bb854a3901f1a8
@@ -22221,8 +22221,8 @@ trackedFiles:
     pristine_git_object: 954592d2ab2afdd31bf5f55458672a787a1a767b
   src/sdk/privateendpoints.ts:
     id: ed31ec182fa7
-    last_write_checksum: sha1:81c13dd24437222f04520a89e49712c0ffe964db
-    pristine_git_object: e209846fbf51e1b2e9242f0d4b0b668dc1008032
+    last_write_checksum: sha1:2139449036b96e57c1b29f2b25b7c808851910dd
+    pristine_git_object: b07dc490780bd52735aa88771f09e170a3b1dc6c
   src/sdk/privateproviders.ts:
     id: 3fb163efa9be
     last_write_checksum: sha1:7fd9aba203d461962eb9a7ae0da4aaeb832d1a4d
@@ -27389,28 +27389,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `openrouter.guardrailPolicies.listAccountPolicies()`: **Added**
-  * `openrouter.guardrailPolicies.createAccountPolicy()`: **Added**
-  * `openrouter.guardrailPolicies.deleteAccountPolicy()`: **Added**
-  * `openrouter.guardrailPolicies.updateAccountPolicy()`: **Added**
-  * `openrouter.guardrailPolicies.getApiKeyPolicyAssignment()`: **Added**
-  * `openrouter.guardrailPolicies.changeApiKeyPolicyAssignment()`: **Added**
-  * `openrouter.guardrailPolicies.getMemberPolicyAssignment()`: **Added**
-  * `openrouter.guardrailPolicies.changeMemberPolicyAssignment()`: **Added**
-  * `openrouter.guardrailPolicies.listBudgetPolicies()`: **Added**
-  * `openrouter.guardrailPolicies.createBudgetPolicy()`: **Added**
-  * `openrouter.guardrailPolicies.deleteBudgetPolicy()`: **Added**
-  * `openrouter.guardrailPolicies.getBudgetPolicy()`: **Added**
-  * `openrouter.guardrailPolicies.updateBudgetPolicy()`: **Added**
-  * `openrouter.guardrailPolicies.listModelAvailabilityPolicies()`: **Added**
-  * `openrouter.guardrailPolicies.createModelAvailabilityPolicy()`: **Added**
-  * `openrouter.guardrailPolicies.deleteModelAvailabilityPolicy()`: **Added**
-  * `openrouter.guardrailPolicies.getModelAvailabilityPolicy()`: **Added**
-  * `openrouter.guardrailPolicies.updateModelAvailabilityPolicy()`: **Added**
-  * `openrouter.guardrailPolicies.listModerationPolicies()`: **Added**
-  * `openrouter.guardrailPolicies.createModerationPolicy()`: **Added**
-  * `openrouter.guardrailPolicies.deleteModerationPolicy()`: **Added**
-  * `openrouter.guardrailPolicies.getModerationPolicy()`: **Added**
-  * `openrouter.guardrailPolicies.updateModerationPolicy()`: **Added**
