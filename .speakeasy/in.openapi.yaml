@@ -11693,6 +11693,9 @@ components:
       type: 'object'
     DecisionsNoulAnswer:
       properties:
+        confidence:
+          format: 'double'
+          type: 'number'
         noul:
           format: 'double'
           type: 'number'
@@ -52964,7 +52967,7 @@ paths:
       x-speakeasy-name-override: 'get'
   /presets/{slug}/chat/completions:
     post:
-      description: 'Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored.'
+      description: 'Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored. Requires a read-write [management key](/docs/guides/overview/auth/management-api-keys); inference API keys are rejected.'
       operationId: 'createPresetsChatCompletions'
       parameters:
         - description: 'URL-safe slug identifying the preset. Created if it does not exist.'
@@ -52975,6 +52978,15 @@ paths:
             description: 'URL-safe slug identifying the preset. Created if it does not exist.'
             example: 'my-preset'
             minLength: 1
+            type: 'string'
+        - description: 'Workspace to create the preset in. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+          in: 'query'
+          name: 'workspace_id'
+          required: false
+          schema:
+            description: 'Workspace to create the preset in. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+            example: '750e8400-e29b-41d4-a716-446655440002'
+            format: 'uuid'
             type: 'string'
       requestBody:
         content:
@@ -53088,7 +53100,7 @@ paths:
         - 'Presets'
   /presets/{slug}/messages:
     post:
-      description: 'Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored.'
+      description: 'Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored. Requires a read-write [management key](/docs/guides/overview/auth/management-api-keys); inference API keys are rejected.'
       operationId: 'createPresetsMessages'
       parameters:
         - description: 'URL-safe slug identifying the preset. Created if it does not exist.'
@@ -53099,6 +53111,15 @@ paths:
             description: 'URL-safe slug identifying the preset. Created if it does not exist.'
             example: 'my-preset'
             minLength: 1
+            type: 'string'
+        - description: 'Workspace to create the preset in. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+          in: 'query'
+          name: 'workspace_id'
+          required: false
+          schema:
+            description: 'Workspace to create the preset in. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+            example: '750e8400-e29b-41d4-a716-446655440002'
+            format: 'uuid'
             type: 'string'
       requestBody:
         content:
@@ -53211,7 +53232,7 @@ paths:
         - 'Presets'
   /presets/{slug}/responses:
     post:
-      description: 'Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored.'
+      description: 'Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored. Requires a read-write [management key](/docs/guides/overview/auth/management-api-keys); inference API keys are rejected.'
       operationId: 'createPresetsResponses'
       parameters:
         - description: 'URL-safe slug identifying the preset. Created if it does not exist.'
@@ -53222,6 +53243,15 @@ paths:
             description: 'URL-safe slug identifying the preset. Created if it does not exist.'
             example: 'my-preset'
             minLength: 1
+            type: 'string'
+        - description: 'Workspace to create the preset in. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+          in: 'query'
+          name: 'workspace_id'
+          required: false
+          schema:
+            description: 'Workspace to create the preset in. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+            example: '750e8400-e29b-41d4-a716-446655440002'
+            format: 'uuid'
             type: 'string'
       requestBody:
         content:
