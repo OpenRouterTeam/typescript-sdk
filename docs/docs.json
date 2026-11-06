@@ -29,6 +29,7 @@
       "sdks/extractions/README",
       "sdks/files/README",
       "sdks/generations/README",
+      "sdks/guardrailpolicies/README",
       "sdks/guardrails/README",
       "sdks/images/README",
       "sdks/models/README",
