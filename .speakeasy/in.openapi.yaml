@@ -12061,6 +12061,12 @@ components:
           type: 'bm25'
         validation: 'runtime'
       properties:
+        interface:
+          description: 'How the universal profile exposes the hidden catalog to the provider. Absent or `wrappers`: the `tool_search` and `tool_exec` tools. `code_mode`: one `tool_code` tool that runs a short JavaScript program in which `search()` and `call()` reach the catalog, so several searches and calls complete in one tool result. Experimental.'
+          enum:
+            - 'wrappers'
+            - 'code_mode'
+          type: 'string'
         profile:
           description: 'Loading profile. `portable` serves the `defer_loading` tools with router-built search and call wrappers on any model and keeps the catalog fixed. `universal` defers every wrappable tool behind the same wrappers so the provider-facing tool list never changes, and rebuilds the catalog from each request so tools can be added or removed mid-conversation.'
           enum:
@@ -12070,6 +12076,12 @@ components:
         protocol:
           enum:
             - 'v1'
+          type: 'string'
+        scope:
+          description: 'Which tools the universal profile defers. Absent or `all`: every wrappable tool outside the coding-harness core set. `mcp`: only MCP server tools (`mcp__*` names and Responses namespaces outside `functions`); the harness keeps its own built-in tools direct. Experimental.'
+          enum:
+            - 'all'
+            - 'mcp'
           type: 'string'
         search:
           $ref: '#/components/schemas/DeferredToolsSearchStrategy'
