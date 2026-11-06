@@ -1,0 +1,25 @@
+---
+title: "ModerationGuardrailPolicy"
+---
+
+## Example Usage
+
+```typescript
+import { ModerationGuardrailPolicy } from "@openrouter/sdk/models";
+
+let value: ModerationGuardrailPolicy = {
+  config: {},
+  id: "550e8400-e29b-41d4-a716-446655440000",
+  name: "Engineering monthly budget",
+  policyType: "moderation",
+};
+```
+
+## Fields
+
+| Field                                                                                          | Type                                                                                           | Required                                                                                       | Description                                                                                    | Example                                                                                        |
+| ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `config`                                                                                       | [models.GuardrailModerationPolicyConfig](../models/guardrailmoderationpolicyconfig.mdx)         | ✔️                                                                             | N/A                                                                                            | \{<br/>"content_filter_builtins": [<br/>\{<br/>"action": "block",<br/>"slug": "secrets"<br/>}<br/>]<br/>} |
+| `id`                                                                                           | *string*                                                                                       | ✔️                                                                             | Policy ID                                                                                      | 550e8400-e29b-41d4-a716-446655440000                                                           |
+| `name`                                                                                         | *string*                                                                                       | ✔️                                                                             | Policy name                                                                                    | Engineering monthly budget                                                                     |
+| `policyType`                                                                                   | [models.ModerationGuardrailPolicyPolicyType](../models/moderationguardrailpolicypolicytype.mdx) | ✔️                                                                             | N/A                                                                                            |                                                                                                |

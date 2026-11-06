@@ -28,14 +28,14 @@ export type ArmorPluginMode = OpenEnum<typeof ArmorPluginMode>;
 /**
  * When the classifier cannot answer (timeout, upstream error, context too long) the call is reported `unavailable`; `block` rejects it and `log` releases it. Default `block`.
  */
-export const OnError = {
+export const ArmorPluginOnError = {
   Log: "log",
   Block: "block",
 } as const;
 /**
  * When the classifier cannot answer (timeout, upstream error, context too long) the call is reported `unavailable`; `block` rejects it and `log` releases it. Default `block`.
  */
-export type OnError = OpenEnum<typeof OnError>;
+export type ArmorPluginOnError = OpenEnum<typeof ArmorPluginOnError>;
 
 /**
  * How a blocked call reaches the caller. `text` (the default): the call is withheld and an `<openrouter_armor_blocked>` marker stands in assistant text. `custom_item` (Responses API only): the call is withheld and an `openrouter:armor_blocked` output item carries its id, name, arguments and the rule that fired. `claude_code_compatibility` (Messages API only; the default when the request carries a `dangerous_tool_use` safeguard, i.e. the client speaks Claude Code's protocol): the `tool_use` stays in `content[]` and the verdict is `flagged` in `safeguard_results`, so the client withholds execution and writes the error tool result as under the native classifier. Under `text` and `custom_item` the model received a failure result in the loop and continued in the same request; under `claude_code_compatibility` the turn ends on the flagged call and the model continues on the next request, after the client's denial.
@@ -74,7 +74,7 @@ export type ArmorPlugin = {
   /**
    * When the classifier cannot answer (timeout, upstream error, context too long) the call is reported `unavailable`; `block` rejects it and `log` releases it. Default `block`.
    */
-  onError?: OnError | undefined;
+  onError?: ArmorPluginOnError | undefined;
   /**
    * How a blocked call reaches the caller. `text` (the default): the call is withheld and an `<openrouter_armor_blocked>` marker stands in assistant text. `custom_item` (Responses API only): the call is withheld and an `openrouter:armor_blocked` output item carries its id, name, arguments and the rule that fired. `claude_code_compatibility` (Messages API only; the default when the request carries a `dangerous_tool_use` safeguard, i.e. the client speaks Claude Code's protocol): the `tool_use` stays in `content[]` and the verdict is `flagged` in `safeguard_results`, so the client withholds execution and writes the error tool result as under the native classifier. Under `text` and `custom_item` the model received a failure result in the loop and continued in the same request; under `claude_code_compatibility` the turn ends on the flagged call and the model continues on the next request, after the client's denial.
    */
@@ -92,8 +92,10 @@ export const ArmorPluginMode$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(ArmorPluginMode);
 
 /** @internal */
-export const OnError$outboundSchema: z.ZodType<string, OnError> = openEnums
-  .outboundSchema(OnError);
+export const ArmorPluginOnError$outboundSchema: z.ZodType<
+  string,
+  ArmorPluginOnError
+> = openEnums.outboundSchema(ArmorPluginOnError);
 
 /** @internal */
 export const OutputMode$outboundSchema: z.ZodType<string, OutputMode> =
@@ -121,7 +123,7 @@ export const ArmorPlugin$outboundSchema: z.ZodType<
   evaluateNativeTools: z.boolean().optional(),
   id: z.literal("armor"),
   mode: ArmorPluginMode$outboundSchema.optional(),
-  onError: OnError$outboundSchema.optional(),
+  onError: ArmorPluginOnError$outboundSchema.optional(),
   outputMode: OutputMode$outboundSchema.optional(),
   useCcStyleDefaultRules: z.boolean().optional(),
 }).transform((v) => {

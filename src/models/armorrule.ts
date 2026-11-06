@@ -4,6 +4,9 @@
  */
 
 import * as z from "zod/v4";
+import { safeParse } from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type ArmorRule = {
   /**
@@ -25,6 +28,13 @@ export type ArmorRule = {
 };
 
 /** @internal */
+export const ArmorRule$inboundSchema: z.ZodType<ArmorRule, unknown> = z.object({
+  id: z.string(),
+  instructions: z.string(),
+  name: z.string().optional(),
+  threshold: z.number().optional(),
+});
+/** @internal */
 export type ArmorRule$Outbound = {
   id: string;
   instructions: string;
@@ -45,4 +55,13 @@ export const ArmorRule$outboundSchema: z.ZodType<
 
 export function armorRuleToJSON(armorRule: ArmorRule): string {
   return JSON.stringify(ArmorRule$outboundSchema.parse(armorRule));
+}
+export function armorRuleFromJSON(
+  jsonString: string,
+): SafeParseResult<ArmorRule, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ArmorRule$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ArmorRule' from JSON`,
+  );
 }

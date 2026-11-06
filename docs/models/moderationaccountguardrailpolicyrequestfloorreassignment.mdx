@@ -1,0 +1,25 @@
+---
+title: "ModerationAccountGuardrailPolicyRequestFloorReassignment"
+---
+
+Move workspaces off this policy onto another workspace-wide policy in the same write
+
+## Example Usage
+
+```typescript
+import { ModerationAccountGuardrailPolicyRequestFloorReassignment } from "@openrouter/sdk/models";
+
+let value: ModerationAccountGuardrailPolicyRequestFloorReassignment = {
+  policyId: "550e8400-e29b-41d4-a716-446655440000",
+  workspaceIds: [
+    "0df9e665-d932-5740-b2c7-b52af166bc11",
+  ],
+};
+```
+
+## Fields
+
+| Field                                      | Type                                       | Required                                   | Description                                | Example                                    |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| `policyId`                                 | *string*                                   | ✔️                         | Policy ID                                  | 550e8400-e29b-41d4-a716-446655440000       |
+| `workspaceIds`                             | *string*[]                                 | ✔️                         | N/A                                        | [<br/>"0df9e665-d932-5740-b2c7-b52af166bc11"<br/>] |

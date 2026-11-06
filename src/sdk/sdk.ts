@@ -22,6 +22,7 @@ import { EndUsers } from "./endusers.js";
 import { ExternalUsers } from "./externalusers.js";
 import { Files } from "./files.js";
 import { Generations } from "./generations.js";
+import { GuardrailPolicies } from "./guardrailpolicies.js";
 import { Guardrails } from "./guardrails.js";
 import { Images } from "./images.js";
 import { Models } from "./models.js";
@@ -144,6 +145,11 @@ export class OpenRouter extends ClientSDK {
   private _guardrails?: Guardrails;
   get guardrails(): Guardrails {
     return (this._guardrails ??= new Guardrails(this._options));
+  }
+
+  private _guardrailPolicies?: GuardrailPolicies;
+  get guardrailPolicies(): GuardrailPolicies {
+    return (this._guardrailPolicies ??= new GuardrailPolicies(this._options));
   }
 
   private _images?: Images;

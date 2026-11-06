@@ -6,10 +6,17 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import {
+  collectExtraKeys as collectExtraKeys$,
+  safeParse,
+} from "../lib/schemas.js";
+import { Result as SafeParseResult } from "../types/fp.js";
+import {
   ArmorAutoMode,
+  ArmorAutoMode$inboundSchema,
   ArmorAutoMode$Outbound,
   ArmorAutoMode$outboundSchema,
 } from "./armorautomode.js";
+import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
  * The Armor context: Claude Code's `classifier_context` (v1), with `auto_mode.{hard_deny,soft_deny,allow}` rules as strings or `{ id, instructions, threshold? }` objects and `auto_mode.environment` entries as `"Name: value"` strings or `{ name, value }` objects. `threshold` applies when Armor evaluates; when the provider evaluates natively (Anthropic dangerous-tool-use beta) rules are judged at the provider's own boundary.
@@ -20,6 +27,20 @@ export type ArmorContext = {
   additionalProperties?: { [k: string]: any } | undefined;
 };
 
+/** @internal */
+export const ArmorContext$inboundSchema: z.ZodType<ArmorContext, unknown> =
+  collectExtraKeys$(
+    z.object({
+      auto_mode: ArmorAutoMode$inboundSchema.optional(),
+      v: z.number(),
+    }).catchall(z.any()),
+    "additionalProperties",
+    true,
+  ).transform((v) => {
+    return remap$(v, {
+      "auto_mode": "autoMode",
+    });
+  });
 /** @internal */
 export type ArmorContext$Outbound = {
   auto_mode?: ArmorAutoMode$Outbound | undefined;
@@ -47,4 +68,13 @@ export const ArmorContext$outboundSchema: z.ZodType<
 
 export function armorContextToJSON(armorContext: ArmorContext): string {
   return JSON.stringify(ArmorContext$outboundSchema.parse(armorContext));
+}
+export function armorContextFromJSON(
+  jsonString: string,
+): SafeParseResult<ArmorContext, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ArmorContext$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ArmorContext' from JSON`,
+  );
 }
