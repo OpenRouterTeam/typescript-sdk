@@ -2,7 +2,7 @@
 // README at: https://github.com/devcontainers/images/tree/main/src/typescript-node
 {
     "name": "TypeScript",
-    "image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bullseye",
+    "image": "mcr.microsoft.com/devcontainers/typescript-node:1-24-bookworm",
     // Features to add to the dev container. More info: https://containers.dev/features.
     // "features": {},
     // Use 'forwardPorts' to make a list of ports inside the container available locally.
