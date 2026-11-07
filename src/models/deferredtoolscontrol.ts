@@ -4,6 +4,7 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
@@ -11,6 +12,18 @@ import {
   DeferredToolsSearchStrategy$Outbound,
   DeferredToolsSearchStrategy$outboundSchema,
 } from "./deferredtoolssearchstrategy.js";
+
+/**
+ * How a universal `tool_search` query reaches the client's own tool search. Absent or `keywords`: a `select:` query becomes the words of the selected names and the limit is always filled. `native`: a `select:` query passes through verbatim when the client search documents `select:`, and the limit field is sent only when the model gave one, unless the client search requires it, in which case its documented default is sent. Experimental.
+ */
+export const CascadeMode = {
+  Keywords: "keywords",
+  Native: "native",
+} as const;
+/**
+ * How a universal `tool_search` query reaches the client's own tool search. Absent or `keywords`: a `select:` query becomes the words of the selected names and the limit is always filled. `native`: a `select:` query passes through verbatim when the client search documents `select:`, and the limit field is sent only when the model gave one, unless the client search requires it, in which case its documented default is sent. Experimental.
+ */
+export type CascadeMode = OpenEnum<typeof CascadeMode>;
 
 /**
  * How the universal profile exposes the hidden catalog to the provider. Absent or `wrappers`: the `tool_search` and `tool_exec` tools. `code_mode`: one `tool_code` tool that runs a short JavaScript program in which `search()` and `call()` reach the catalog, so several searches and calls complete in one tool result. Experimental.
@@ -42,14 +55,15 @@ export const Protocol = {
 export type Protocol = ClosedEnum<typeof Protocol>;
 
 /**
- * Which tools the universal profile defers. Absent or `all`: every wrappable tool outside the coding-harness core set. `mcp`: only MCP server tools (`mcp__*` names and Responses namespaces outside `functions`); the harness keeps its own built-in tools direct. Experimental.
+ * Which tools the universal profile defers. Absent or `all`: every wrappable tool outside the coding-harness core set. `mcp`: only MCP server tools (`mcp__*` names and Responses namespaces outside `functions`); the harness keeps its own built-in tools direct. `client`: only the tools the client itself marked `defer_loading`, so a harness with its own tool search keeps its other direct tools direct; an adopted client tool search is still replaced by the router wrappers, and a client-deferred tool the router cannot wrap stays direct. Experimental.
  */
 export const DeferredToolsControlScope = {
   All: "all",
   Mcp: "mcp",
+  Client: "client",
 } as const;
 /**
- * Which tools the universal profile defers. Absent or `all`: every wrappable tool outside the coding-harness core set. `mcp`: only MCP server tools (`mcp__*` names and Responses namespaces outside `functions`); the harness keeps its own built-in tools direct. Experimental.
+ * Which tools the universal profile defers. Absent or `all`: every wrappable tool outside the coding-harness core set. `mcp`: only MCP server tools (`mcp__*` names and Responses namespaces outside `functions`); the harness keeps its own built-in tools direct. `client`: only the tools the client itself marked `defer_loading`, so a harness with its own tool search keeps its other direct tools direct; an adopted client tool search is still replaced by the router wrappers, and a client-deferred tool the router cannot wrap stays direct. Experimental.
  */
 export type DeferredToolsControlScope = OpenEnum<
   typeof DeferredToolsControlScope
@@ -71,6 +85,10 @@ export type Validation = ClosedEnum<typeof Validation>;
  */
 export type DeferredToolsControl = {
   /**
+   * How a universal `tool_search` query reaches the client's own tool search. Absent or `keywords`: a `select:` query becomes the words of the selected names and the limit is always filled. `native`: a `select:` query passes through verbatim when the client search documents `select:`, and the limit field is sent only when the model gave one, unless the client search requires it, in which case its documented default is sent. Experimental.
+   */
+  cascadeMode?: CascadeMode | undefined;
+  /**
    * How the universal profile exposes the hidden catalog to the provider. Absent or `wrappers`: the `tool_search` and `tool_exec` tools. `code_mode`: one `tool_code` tool that runs a short JavaScript program in which `search()` and `call()` reach the catalog, so several searches and calls complete in one tool result. Experimental.
    */
   interface?: Interface | undefined;
@@ -80,7 +98,7 @@ export type DeferredToolsControl = {
   profile: Profile;
   protocol: Protocol;
   /**
-   * Which tools the universal profile defers. Absent or `all`: every wrappable tool outside the coding-harness core set. `mcp`: only MCP server tools (`mcp__*` names and Responses namespaces outside `functions`); the harness keeps its own built-in tools direct. Experimental.
+   * Which tools the universal profile defers. Absent or `all`: every wrappable tool outside the coding-harness core set. `mcp`: only MCP server tools (`mcp__*` names and Responses namespaces outside `functions`); the harness keeps its own built-in tools direct. `client`: only the tools the client itself marked `defer_loading`, so a harness with its own tool search keeps its other direct tools direct; an adopted client tool search is still replaced by the router wrappers, and a client-deferred tool the router cannot wrap stays direct. Experimental.
    */
   scope?: DeferredToolsControlScope | undefined;
   /**
@@ -92,6 +110,10 @@ export type DeferredToolsControl = {
    */
   validation: Validation;
 };
+
+/** @internal */
+export const CascadeMode$outboundSchema: z.ZodType<string, CascadeMode> =
+  openEnums.outboundSchema(CascadeMode);
 
 /** @internal */
 export const Interface$outboundSchema: z.ZodType<string, Interface> = openEnums
@@ -119,6 +141,7 @@ export const Validation$outboundSchema: z.ZodEnum<typeof Validation> = z.enum(
 
 /** @internal */
 export type DeferredToolsControl$Outbound = {
+  cascade_mode?: string | undefined;
   interface?: string | undefined;
   profile: string;
   protocol: string;
@@ -132,12 +155,17 @@ export const DeferredToolsControl$outboundSchema: z.ZodType<
   DeferredToolsControl$Outbound,
   DeferredToolsControl
 > = z.object({
+  cascadeMode: CascadeMode$outboundSchema.optional(),
   interface: Interface$outboundSchema.optional(),
   profile: Profile$outboundSchema,
   protocol: Protocol$outboundSchema,
   scope: DeferredToolsControlScope$outboundSchema.optional(),
   search: DeferredToolsSearchStrategy$outboundSchema,
   validation: Validation$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    cascadeMode: "cascade_mode",
+  });
 });
 
 export function deferredToolsControlToJSON(

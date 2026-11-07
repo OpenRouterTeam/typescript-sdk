@@ -2,14 +2,14 @@
 title: "DeferredToolsControlScope"
 ---
 
-Which tools the universal profile defers. Absent or `all`: every wrappable tool outside the coding-harness core set. `mcp`: only MCP server tools (`mcp__*` names and Responses namespaces outside `functions`); the harness keeps its own built-in tools direct. Experimental.
+Which tools the universal profile defers. Absent or `all`: every wrappable tool outside the coding-harness core set. `mcp`: only MCP server tools (`mcp__*` names and Responses namespaces outside `functions`); the harness keeps its own built-in tools direct. `client`: only the tools the client itself marked `defer_loading`, so a harness with its own tool search keeps its other direct tools direct; an adopted client tool search is still replaced by the router wrappers, and a client-deferred tool the router cannot wrap stays direct. Experimental.
 
 ## Example Usage
 
 ```typescript
 import { DeferredToolsControlScope } from "@openrouter/sdk/models";
 
-let value: DeferredToolsControlScope = "mcp";
+let value: DeferredToolsControlScope = "client";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -17,5 +17,5 @@ let value: DeferredToolsControlScope = "mcp";
 ## Values
 
 ```typescript
-"all" | "mcp" | Unrecognized<string>
+"all" | "mcp" | "client" | Unrecognized<string>
 ```

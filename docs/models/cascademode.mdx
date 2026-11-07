@@ -1,0 +1,21 @@
+---
+title: "CascadeMode"
+---
+
+How a universal `tool_search` query reaches the client's own tool search. Absent or `keywords`: a `select:` query becomes the words of the selected names and the limit is always filled. `native`: a `select:` query passes through verbatim when the client search documents `select:`, and the limit field is sent only when the model gave one, unless the client search requires it, in which case its documented default is sent. Experimental.
+
+## Example Usage
+
+```typescript
+import { CascadeMode } from "@openrouter/sdk/models";
+
+let value: CascadeMode = "keywords";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"keywords" | "native" | Unrecognized<string>
+```
