@@ -9454,7 +9454,7 @@ components:
         - 'logs'
       type: 'object'
     CodeInterpreterServerTool:
-      description: 'Code interpreter tool configuration'
+      description: 'Code interpreter tool configuration. An existing container id or `container.file_ids` requires BYOK (your own OpenAI key); requests on OpenRouter credits must use `auto` with no `file_ids`.'
       example:
         container: 'auto'
         type: 'code_interpreter'
@@ -12064,6 +12064,12 @@ components:
           type: 'bm25'
         validation: 'runtime'
       properties:
+        cascade_mode:
+          description: 'How a universal `tool_search` query reaches the client''s own tool search. Absent or `keywords`: a `select:` query becomes the words of the selected names and the limit is always filled. `native`: a `select:` query passes through verbatim when the client search documents `select:`, and the limit field is sent only when the model gave one, unless the client search requires it, in which case its documented default is sent. Experimental.'
+          enum:
+            - 'keywords'
+            - 'native'
+          type: 'string'
         interface:
           description: 'How the universal profile exposes the hidden catalog to the provider. Absent or `wrappers`: the `tool_search` and `tool_exec` tools. `code_mode`: one `tool_code` tool that runs a short JavaScript program in which `search()` and `call()` reach the catalog, so several searches and calls complete in one tool result. Experimental.'
           enum:
@@ -12081,10 +12087,11 @@ components:
             - 'v1'
           type: 'string'
         scope:
-          description: 'Which tools the universal profile defers. Absent or `all`: every wrappable tool outside the coding-harness core set. `mcp`: only MCP server tools (`mcp__*` names and Responses namespaces outside `functions`); the harness keeps its own built-in tools direct. Experimental.'
+          description: 'Which tools the universal profile defers. Absent or `all`: every wrappable tool outside the coding-harness core set. `mcp`: only MCP server tools (`mcp__*` names and Responses namespaces outside `functions`); the harness keeps its own built-in tools direct. `client`: only the tools the client itself marked `defer_loading`, so a harness with its own tool search keeps its other direct tools direct; an adopted client tool search is still replaced by the router wrappers, and a client-deferred tool the router cannot wrap stays direct. Experimental.'
           enum:
             - 'all'
             - 'mcp'
+            - 'client'
           type: 'string'
         search:
           $ref: '#/components/schemas/DeferredToolsSearchStrategy'
@@ -13639,7 +13646,7 @@ components:
         - $ref: '#/components/schemas/OpenAIFile'
         - $ref: '#/components/schemas/AnthropicFile'
     FileSearchServerTool:
-      description: 'File search tool configuration'
+      description: 'File search tool configuration. `vector_store_ids` names OpenAI vector stores, so it requires BYOK (your own OpenAI key); requests on OpenRouter credits get a 400.'
       example:
         type: 'file_search'
         vector_store_ids:
