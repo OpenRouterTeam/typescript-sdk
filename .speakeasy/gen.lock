@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 8feb30d506bc2827c1b0091e86344676
+  docChecksum: bf78a1277615f2849ed790c64ef9c464
   docVersion: 1.0.0
   speakeasyVersion: 1.803.2
   generationVersion: 2.950.13
-  releaseVersion: 1.5.63
-  configChecksum: aa0f38683e03744e47a0c9574f7b6474
+  releaseVersion: 1.5.64
+  configChecksum: c1579cce7849a10bf38f0932ab7ba5b1
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 7bbdda60-b3f9-4a8f-a3d2-a12c59c4b434
-  pristine_commit_hash: 7f8b7964f7ece56e728aeb40eb9a53f77b6b9383
-  pristine_tree_hash: fb460782054568509d603dfc19243a08190a4e2c
+  generation_id: 5fc00b62-25f5-4170-b9d0-0ae1253f472c
+  pristine_commit_hash: db6dc95b599cb836acfa22fab86ec25ea2c59d94
+  pristine_tree_hash: 950597987e58639bba4f1d25b6e3eff6e56e7d7c
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -6329,8 +6329,8 @@ trackedFiles:
     deleted: true
   docs/models/imagegenerationservertoolconfig.mdx:
     id: 6075f1984a44
-    last_write_checksum: sha1:fa39458d28417c4a5d29fbeb07677ab093de6a41
-    pristine_git_object: 94853a30b95edfd26dbe3a28392a1bfb6346c730
+    last_write_checksum: sha1:fdcd13b1ac8a834c029564eed60607872c16ba3b
+    pristine_git_object: 0632b6439ffa08be692d83a0af03a18752174cc2
   docs/models/imagegenerationservertoolconfigunion.md:
     id: 692c7fca4803
     last_write_checksum: sha1:f06a852565475ef5747f47697eeeb64c267e1654
@@ -6347,8 +6347,8 @@ trackedFiles:
     deleted: true
   docs/models/imagegenerationservertoolopenrouter.mdx:
     id: 58d3b639009a
-    last_write_checksum: sha1:b911d1fc4c762cc6b2d41c87679aacf508a9db4e
-    pristine_git_object: 0d2c7a0819c9c22d0b5df6dbc4b69e6ae088b507
+    last_write_checksum: sha1:9db97aa93e131d3deba7a94945e31e4dc030c4b7
+    pristine_git_object: 6352765047183bbb7ae6607c95c15300774586e8
   docs/models/imagegenerationservertoolopenroutertype.md:
     id: 0a149698cd85
     last_write_checksum: sha1:c91d1c5d0b2380a759c9d61a76eba05abd32d3f2
@@ -16755,12 +16755,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:aa85e354d5be108a16a63ae21a69036ffb70f832
-    pristine_git_object: 84b6687e679757d0b2fc9ee4289ed66ef67a265f
+    last_write_checksum: sha1:c365f8edc8136304f45c21a75c8ade6b7ab3dfb2
+    pristine_git_object: f53933eeac97e002b7027d372c0c136b0aac0d00
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:15377e10149176261f2be185d4391ecb2381555f
-    pristine_git_object: 06ddd3e9e0765dd5bd86553a482c3127fe563ef0
+    last_write_checksum: sha1:7ffef8f0a8d53caf5616d434cfcb28f3082585a7
+    pristine_git_object: fba6c5f593658c16022354734a972e32e141eadf
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -17451,8 +17451,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:34dc789a9ebc78d0d7018f8edb698d05a5eab6d1
-    pristine_git_object: 1963b7fa8cf161f69266dda0f125180df7406683
+    last_write_checksum: sha1:5c25f9ea5467c6914cc0779a445c36a27289debf
+    pristine_git_object: 93e588be6cf39c4ccc44d0a446d89849b9d9b488
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -19461,8 +19461,8 @@ trackedFiles:
     pristine_git_object: e985569d00ae3260cab3b061b1831a6684659d4b
   src/models/imagegenerationservertoolconfig.ts:
     id: 1d04d0100527
-    last_write_checksum: sha1:c7265b445fab34f56906dfd7549c55949503a665
-    pristine_git_object: c099a27774c6ac547361061aaea52b68eb797931
+    last_write_checksum: sha1:dd288d2b21860c5a8b510438e4f378b13d246acf
+    pristine_git_object: 254fd253978ae55d6ae624a16b750614d570bdcf
   src/models/imagegenerationservertoolconfigunion.ts:
     id: 7215dce3dfc7
     last_write_checksum: sha1:3dbc1bc2757a34235d2aae107bf4674f18ce3d92
@@ -27397,4 +27397,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.alpha.decisions.create()`:  `response.answers.Map<answers>.union(noul).confidence` **Added**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.workspaceId` **Added**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.workspaceId` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.workspaceId` **Added**\n* `openrouter.systemOne.create()`:  `response.answers.Map<answers>.union(noul).confidence` **Added**\n"
