@@ -72,6 +72,10 @@ export type OutputToolSearchServerToolItem = {
   id?: string | undefined;
   matches?: Array<Match> | undefined;
   query?: string | undefined;
+  /**
+   * The other deferred tools of each source a match came from, by name, when the search listed siblings. Replaying the item shows the same names.
+   */
+  sources?: { [k: string]: Array<string> } | undefined;
   status: FailableToolCallStatus;
   /**
    * The IDs of every tool call in the model response that ran the search, in order. Replaying the item keeps those calls in one turn.
@@ -155,6 +159,7 @@ export const OutputToolSearchServerToolItem$inboundSchema: z.ZodType<
   id: z.string().optional(),
   matches: z.array(z.lazy(() => Match$inboundSchema)).optional(),
   query: z.string().optional(),
+  sources: z.record(z.string(), z.array(z.string())).optional(),
   status: FailableToolCallStatus$inboundSchema,
   turn_call_ids: z.array(z.string()).optional(),
   type: OutputToolSearchServerToolItemType$inboundSchema,
@@ -176,6 +181,7 @@ export type OutputToolSearchServerToolItem$Outbound = {
   id?: string | undefined;
   matches?: Array<Match$Outbound> | undefined;
   query?: string | undefined;
+  sources?: { [k: string]: Array<string> } | undefined;
   status: string;
   turn_call_ids?: Array<string> | undefined;
   type: string;
@@ -195,6 +201,7 @@ export const OutputToolSearchServerToolItem$outboundSchema: z.ZodType<
   id: z.string().optional(),
   matches: z.array(z.lazy(() => Match$outboundSchema)).optional(),
   query: z.string().optional(),
+  sources: z.record(z.string(), z.array(z.string())).optional(),
   status: FailableToolCallStatus$outboundSchema,
   turnCallIds: z.array(z.string()).optional(),
   type: OutputToolSearchServerToolItemType$outboundSchema,
