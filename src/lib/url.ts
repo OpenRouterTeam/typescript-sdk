@@ -27,9 +27,17 @@ export function pathToFunc(
           );
         }
 
-        return options?.charEncoding === "percent"
+        const encoded = options?.charEncoding === "percent"
           ? encodeURIComponent(`${value}`)
           : `${value}`;
+        // Percent encoding leaves "." and "..", which URL resolution would
+        // collapse into a different route.
+        if (encoded === "." || encoded === "..") {
+          throw new Error(
+            `Parameter '${placeholder}' cannot be the dot segment '${encoded}'`,
+          );
+        }
+        return encoded;
       })
       .replace(/^\/+/, "");
   };
