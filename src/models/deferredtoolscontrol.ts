@@ -89,6 +89,10 @@ export type DeferredToolsControl = {
    */
   cascadeMode?: CascadeMode | undefined;
   /**
+   * Universal profile only. Caller text announced to the model with the deferred catalog before its first turn, for example which sources the task needs. Repeated only when it changes. Trimmed before the length bounds apply. Recorded in the `catalog_index` discovery record of the response, so it is replayed with the conversation.
+   */
+  hint?: string | undefined;
+  /**
    * How the universal profile exposes the hidden catalog to the provider. Absent or `wrappers`: the `tool_search` and `tool_exec` tools. `code_mode`: one `tool_code` tool that runs a short JavaScript program in which `search()` and `call()` reach the catalog, so several searches and calls complete in one tool result. Experimental.
    */
   interface?: Interface | undefined;
@@ -142,6 +146,7 @@ export const Validation$outboundSchema: z.ZodEnum<typeof Validation> = z.enum(
 /** @internal */
 export type DeferredToolsControl$Outbound = {
   cascade_mode?: string | undefined;
+  hint?: string | undefined;
   interface?: string | undefined;
   profile: string;
   protocol: string;
@@ -156,6 +161,7 @@ export const DeferredToolsControl$outboundSchema: z.ZodType<
   DeferredToolsControl
 > = z.object({
   cascadeMode: CascadeMode$outboundSchema.optional(),
+  hint: z.string().optional(),
   interface: Interface$outboundSchema.optional(),
   profile: Profile$outboundSchema,
   protocol: Protocol$outboundSchema,
