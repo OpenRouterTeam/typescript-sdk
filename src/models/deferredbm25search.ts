@@ -11,12 +11,17 @@ import { remap as remap$ } from "../lib/primitives.js";
  */
 export type DeferredBm25Search = {
   maxResults?: number | undefined;
+  /**
+   * Universal profile only, for searches the router answers through the `tool_search` wrapper; code-mode `search()` and a client-owned tool search list the matched tools alone. When true, each result also names up to 16 other deferred tools of every source a match came from, so a model that found one tool of an MCP server learns its neighbours without another search. Absent or false: results list the matched tools alone.
+   */
+  siblings?: boolean | undefined;
   type: "bm25";
 };
 
 /** @internal */
 export type DeferredBm25Search$Outbound = {
   max_results?: number | undefined;
+  siblings?: boolean | undefined;
   type: "bm25";
 };
 
@@ -26,6 +31,7 @@ export const DeferredBm25Search$outboundSchema: z.ZodType<
   DeferredBm25Search
 > = z.object({
   maxResults: z.int().optional(),
+  siblings: z.boolean().optional(),
   type: z.literal("bm25"),
 }).transform((v) => {
   return remap$(v, {
