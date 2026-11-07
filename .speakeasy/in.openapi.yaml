@@ -16671,7 +16671,7 @@ components:
       description: 'OpenRouter built-in server tool: generates images from text prompts using an image generation model'
       example:
         parameters:
-          model: 'openai/gpt-5-image'
+          model: 'openai/gpt-image-2.6-flare'
           quality: 'high'
           size: '1024x1024'
         type: 'openrouter:image_generation'
@@ -16696,12 +16696,12 @@ components:
       description: 'Configuration for the openrouter:image_generation server tool. Accepts all image_config params (aspect_ratio, quality, size, background, output_format, output_compression, moderation, etc.) plus a model field.'
       example:
         aspect_ratio: '16:9'
-        model: 'openai/gpt-5-image'
+        model: 'openai/gpt-image-2.6-flare'
         quality: 'high'
       properties:
         model:
-          description: 'Which image generation model to use (e.g. "openai/gpt-5-image"). Defaults to "openai/gpt-5-image".'
-          example: 'openai/gpt-5-image'
+          description: 'Which image generation model to use (e.g. "openai/gpt-image-2.6-flare"). Defaults to "openai/gpt-image-2.6-flare".'
+          example: 'openai/gpt-image-2.6-flare'
           type: 'string'
       type: 'object'
     ImageGenerationStatus:
