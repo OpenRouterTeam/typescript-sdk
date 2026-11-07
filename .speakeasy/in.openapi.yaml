@@ -12007,6 +12007,9 @@ components:
       properties:
         max_results:
           type: 'integer'
+        siblings:
+          description: 'Universal profile only, for searches the router answers through the `tool_search` wrapper; code-mode `search()` and a client-owned tool search list the matched tools alone. When true, each result also names up to 16 other deferred tools of every source a match came from, so a model that found one tool of an MCP server learns its neighbours without another search. Absent or false: results list the matched tools alone.'
+          type: 'boolean'
         type:
           enum:
             - 'bm25'
@@ -12047,6 +12050,9 @@ components:
       properties:
         max_results:
           type: 'integer'
+        siblings:
+          description: 'Universal profile only, for searches the router answers through the `tool_search` wrapper; code-mode `search()` and a client-owned tool search list the matched tools alone. When true, each result also names up to 16 other deferred tools of every source a match came from, so a model that found one tool of an MCP server learns its neighbours without another search. Absent or false: results list the matched tools alone.'
+          type: 'boolean'
         type:
           enum:
             - 'regex'
@@ -12069,6 +12075,11 @@ components:
           enum:
             - 'keywords'
             - 'native'
+          type: 'string'
+        hint:
+          description: 'Universal profile only. Caller text announced to the model with the deferred catalog before its first turn, for example which sources the task needs. Repeated only when it changes. Trimmed before the length bounds apply. Recorded in the `catalog_index` discovery record of the response, so it is replayed with the conversation.'
+          maxLength: 2000
+          minLength: 1
           type: 'string'
         interface:
           description: 'How the universal profile exposes the hidden catalog to the provider. Absent or `wrappers`: the `tool_search` and `tool_exec` tools. `code_mode`: one `tool_code` tool that runs a short JavaScript program in which `search()` and `call()` reach the catalog, so several searches and calls complete in one tool result. Experimental.'
@@ -28429,6 +28440,17 @@ components:
           type: 'array'
         query:
           type: 'string'
+        sources:
+          additionalProperties:
+            items:
+              type: 'string'
+            type: 'array'
+          description: 'The other deferred tools of each source a match came from, by name, when the search listed siblings. Replaying the item shows the same names.'
+          example:
+            mcp__tavily:
+              - 'mcp__tavily__tavily_extract'
+              - 'mcp__tavily__tavily_crawl'
+          type: 'object'
         status:
           $ref: '#/components/schemas/FailableToolCallStatus'
         turn_call_ids:
