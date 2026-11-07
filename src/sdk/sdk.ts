@@ -22,6 +22,7 @@ import { EndUsers } from "./endusers.js";
 import { ExternalUsers } from "./externalusers.js";
 import { Files } from "./files.js";
 import { Generations } from "./generations.js";
+import { GuardrailPolicies } from "./guardrailpolicies.js";
 import { Guardrails } from "./guardrails.js";
 import { Images } from "./images.js";
 import { Models } from "./models.js";
@@ -43,16 +44,6 @@ import { Vault } from "./vault.js";
 import { VideoGeneration } from "./videogeneration.js";
 import { Workspaces } from "./workspaces.js";
 // #region imports
-import type { $ZodObject, $ZodShape, infer as zodInfer } from "zod/v4/core";
-import {
-  callModel as callModelFunc,
-  type CallModelInput,
-} from "../funcs/call-model.js";
-import type { ModelResult } from "../lib/model-result.js";
-import type { RequestOptions } from "../lib/sdks.js";
-import { type Tool, ToolType } from "../lib/tool-types.js";
-
-export { ToolType };
 // #endregion imports
 
 export class OpenRouter extends ClientSDK {
@@ -156,6 +147,11 @@ export class OpenRouter extends ClientSDK {
     return (this._guardrails ??= new Guardrails(this._options));
   }
 
+  private _guardrailPolicies?: GuardrailPolicies;
+  get guardrailPolicies(): GuardrailPolicies {
+    return (this._guardrailPolicies ??= new GuardrailPolicies(this._options));
+  }
+
   private _images?: Images;
   get images(): Images {
     return (this._images ??= new Images(this._options));
@@ -247,18 +243,5 @@ export class OpenRouter extends ClientSDK {
   }
 
   // #region sdk-class-body
-  callModel<
-    TTools extends readonly Tool[],
-    TSharedSchema extends $ZodObject<$ZodShape> | undefined = undefined,
-    TShared extends Record<string, unknown> = TSharedSchema extends
-      $ZodObject<$ZodShape> ? zodInfer<TSharedSchema> : Record<string, never>,
-  >(
-    request: CallModelInput<TTools, TShared> & {
-      sharedContextSchema?: TSharedSchema;
-    },
-    options?: RequestOptions,
-  ): ModelResult<TTools, TShared> {
-    return callModelFunc(this, request, options);
-  }
   // #endregion sdk-class-body
 }

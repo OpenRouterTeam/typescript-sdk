@@ -15,12 +15,14 @@ import {
   ToolCallStatus$outboundSchema,
 } from "./toolcallstatus.js";
 
-export const ActionEnum = {
+export const OutputMemoryServerToolItemAction = {
   Read: "read",
   Write: "write",
   Delete: "delete",
 } as const;
-export type ActionEnum = OpenEnum<typeof ActionEnum>;
+export type OutputMemoryServerToolItemAction = OpenEnum<
+  typeof OutputMemoryServerToolItemAction
+>;
 
 export const OutputMemoryServerToolItemType = {
   OpenrouterMemory: "openrouter:memory",
@@ -33,7 +35,7 @@ export type OutputMemoryServerToolItemType = ClosedEnum<
  * An openrouter:memory server tool output item
  */
 export type OutputMemoryServerToolItem = {
-  action?: ActionEnum | undefined;
+  action?: OutputMemoryServerToolItemAction | undefined;
   id?: string | undefined;
   key?: string | undefined;
   status: ToolCallStatus;
@@ -42,11 +44,15 @@ export type OutputMemoryServerToolItem = {
 };
 
 /** @internal */
-export const ActionEnum$inboundSchema: z.ZodType<ActionEnum, unknown> =
-  openEnums.inboundSchema(ActionEnum);
+export const OutputMemoryServerToolItemAction$inboundSchema: z.ZodType<
+  OutputMemoryServerToolItemAction,
+  unknown
+> = openEnums.inboundSchema(OutputMemoryServerToolItemAction);
 /** @internal */
-export const ActionEnum$outboundSchema: z.ZodType<string, ActionEnum> =
-  openEnums.outboundSchema(ActionEnum);
+export const OutputMemoryServerToolItemAction$outboundSchema: z.ZodType<
+  string,
+  OutputMemoryServerToolItemAction
+> = openEnums.outboundSchema(OutputMemoryServerToolItemAction);
 
 /** @internal */
 export const OutputMemoryServerToolItemType$inboundSchema: z.ZodEnum<
@@ -62,7 +68,7 @@ export const OutputMemoryServerToolItem$inboundSchema: z.ZodType<
   OutputMemoryServerToolItem,
   unknown
 > = z.object({
-  action: ActionEnum$inboundSchema.optional(),
+  action: OutputMemoryServerToolItemAction$inboundSchema.optional(),
   id: z.string().optional(),
   key: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
@@ -84,7 +90,7 @@ export const OutputMemoryServerToolItem$outboundSchema: z.ZodType<
   OutputMemoryServerToolItem$Outbound,
   OutputMemoryServerToolItem
 > = z.object({
-  action: ActionEnum$outboundSchema.optional(),
+  action: OutputMemoryServerToolItemAction$outboundSchema.optional(),
   id: z.string().optional(),
   key: z.string().optional(),
   status: ToolCallStatus$outboundSchema,

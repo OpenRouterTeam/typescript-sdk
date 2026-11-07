@@ -9,6 +9,7 @@ import { safeParse } from "../lib/schemas.js";
 import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
 import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import { CostDetails, CostDetails$inboundSchema } from "./costdetails.js";
 import {
   DecisionsBoxAnswer,
   DecisionsBoxAnswer$inboundSchema,
@@ -51,12 +52,23 @@ export type DecisionsResponseAnswers =
   | discriminatedUnionTypes.Unknown<"type">;
 
 export type DecisionsResponseUsage = {
+  /**
+   * What OpenRouter charges for the request, in credits. On a BYOK request this is the OpenRouter fee only.
+   */
   cost?: number | undefined;
+  /**
+   * Breakdown of upstream inference costs
+   */
+  costDetails?: CostDetails | null | undefined;
   inputTokens: number;
   /**
    * Of `input_tokens`, those the provider served from its prompt cache.
    */
   inputTokensDetails?: DecisionsUsageInputTokensDetails | undefined;
+  /**
+   * Whether a request was made using a Bring Your Own Key configuration
+   */
+  isByok?: boolean | undefined;
   outputTokens: number;
 };
 
@@ -108,14 +120,18 @@ export const DecisionsResponseUsage$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   cost: z.number().optional(),
+  cost_details: z.nullable(CostDetails$inboundSchema).optional(),
   input_tokens: z.int(),
   input_tokens_details: DecisionsUsageInputTokensDetails$inboundSchema
     .optional(),
+  is_byok: z.boolean().optional(),
   output_tokens: z.int(),
 }).transform((v) => {
   return remap$(v, {
+    "cost_details": "costDetails",
     "input_tokens": "inputTokens",
     "input_tokens_details": "inputTokensDetails",
+    "is_byok": "isByok",
     "output_tokens": "outputTokens",
   });
 });

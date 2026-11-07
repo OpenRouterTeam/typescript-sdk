@@ -1,0 +1,25 @@
+---
+title: "GuardrailPolicyAssignmentState"
+---
+
+## Example Usage
+
+```typescript
+import { GuardrailPolicyAssignmentState } from "@openrouter/sdk/models";
+
+let value: GuardrailPolicyAssignmentState = {
+  optedOut: false,
+  policyIds: [],
+  workspaceDefaultPolicyIds: [
+    "2c6f1a4e-0b7d-4e59-9a61-3f8d2e7c1b90",
+  ],
+};
+```
+
+## Fields
+
+| Field                                                        | Type                                                         | Required                                                     | Description                                                  | Example                                                      |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `optedOut`                                                   | *boolean*                                                    | ✔️                                           | Whether the subject is opted out of the workspace default    | false                                                        |
+| `policyIds`                                                  | *string*[]                                                   | ✔️                                           | Policies of this type assigned directly to the subject       | []                                                           |
+| `workspaceDefaultPolicyIds`                                  | *string*[]                                                   | ✔️                                           | Workspace default policies of this type the subject inherits | [<br/>"2c6f1a4e-0b7d-4e59-9a61-3f8d2e7c1b90"<br/>]           |

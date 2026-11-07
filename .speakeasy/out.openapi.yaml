@@ -58,6 +58,35 @@ components:
         - 'coding_index'
         - 'agentic_index'
       type: 'object'
+    AccountGuardrailPolicy:
+      discriminator:
+        mapping:
+          budget: '#/components/schemas/BudgetAccountGuardrailPolicy'
+          model_availability: '#/components/schemas/ModelAvailabilityAccountGuardrailPolicy'
+          moderation: '#/components/schemas/ModerationAccountGuardrailPolicy'
+        propertyName: 'policy_type'
+      oneOf:
+        - $ref: '#/components/schemas/BudgetAccountGuardrailPolicy'
+        - $ref: '#/components/schemas/ModerationAccountGuardrailPolicy'
+        - $ref: '#/components/schemas/ModelAvailabilityAccountGuardrailPolicy'
+    AccountGuardrailPolicyRequest:
+      discriminator:
+        mapping:
+          budget: '#/components/schemas/BudgetAccountGuardrailPolicyRequest'
+          model_availability: '#/components/schemas/ModelAvailabilityAccountGuardrailPolicyRequest'
+          moderation: '#/components/schemas/ModerationAccountGuardrailPolicyRequest'
+        propertyName: 'policy_type'
+      oneOf:
+        - $ref: '#/components/schemas/BudgetAccountGuardrailPolicyRequest'
+        - $ref: '#/components/schemas/ModerationAccountGuardrailPolicyRequest'
+        - $ref: '#/components/schemas/ModelAvailabilityAccountGuardrailPolicyRequest'
+    AccountGuardrailPolicyResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/AccountGuardrailPolicy'
+      required:
+        - 'data'
+      type: 'object'
     ActivityItem:
       example:
         byok_usage_inference: 0.012
@@ -278,6 +307,7 @@ components:
                 required:
                   - 'type'
                 type: 'object'
+              - $ref: '#/components/schemas/McpServerTool_OpenRouter'
           type: 'array'
         type:
           enum:
@@ -679,6 +709,9 @@ components:
             file_search_call: '#/components/schemas/OutputItemFileSearchCall'
             function_call: '#/components/schemas/OutputItemFunctionCall'
             image_generation_call: '#/components/schemas/OutputItemImageGenerationCall'
+            mcp_approval_request: '#/components/schemas/OutputItemMcpApprovalRequest'
+            mcp_call: '#/components/schemas/OutputItemMcpCall'
+            mcp_list_tools: '#/components/schemas/OutputItemMcpListTools'
             message: '#/components/schemas/OutputMessage'
             reasoning: '#/components/schemas/OutputItemReasoning'
             web_search_call: '#/components/schemas/OutputItemWebSearchCall'
@@ -694,6 +727,9 @@ components:
           - $ref: '#/components/schemas/OutputItemApplyPatchCall'
           - $ref: '#/components/schemas/OutputItemCodeInterpreterCall'
           - $ref: '#/components/schemas/OutputItemCompaction'
+          - $ref: '#/components/schemas/OutputItemMcpListTools'
+          - $ref: '#/components/schemas/OutputItemMcpCall'
+          - $ref: '#/components/schemas/OutputItemMcpApprovalRequest'
       type: 'array'
     AlignmentRule:
       additionalProperties: false
@@ -4883,6 +4919,9 @@ components:
                 file_search_call: '#/components/schemas/OutputItemFileSearchCall'
                 function_call: '#/components/schemas/OutputItemFunctionCall'
                 image_generation_call: '#/components/schemas/OutputItemImageGenerationCall'
+                mcp_approval_request: '#/components/schemas/OutputItemMcpApprovalRequest'
+                mcp_call: '#/components/schemas/OutputItemMcpCall'
+                mcp_list_tools: '#/components/schemas/OutputItemMcpListTools'
                 message: '#/components/schemas/OutputMessage'
                 reasoning: '#/components/schemas/OutputItemReasoning'
                 web_search_call: '#/components/schemas/OutputItemWebSearchCall'
@@ -4898,6 +4937,9 @@ components:
               - $ref: '#/components/schemas/OutputItemApplyPatchCall'
               - $ref: '#/components/schemas/OutputItemCodeInterpreterCall'
               - $ref: '#/components/schemas/OutputItemCompaction'
+              - $ref: '#/components/schemas/OutputItemMcpListTools'
+              - $ref: '#/components/schemas/OutputItemMcpCall'
+              - $ref: '#/components/schemas/OutputItemMcpApprovalRequest'
           type: 'array'
         output_text:
           type: 'string'
@@ -6720,6 +6762,345 @@ components:
       required:
         - 'type'
       type: 'object'
+    BudgetAccountGuardrailPolicy:
+      properties:
+        config:
+          $ref: '#/components/schemas/GuardrailBudgetPolicyConfig'
+        created_at:
+          example: '2025-08-24T10:30:00Z'
+          type: 'string'
+        id:
+          description: 'Policy ID'
+          example: '550e8400-e29b-41d4-a716-446655440000'
+          format: 'uuid'
+          type: 'string'
+        is_default:
+          type: 'boolean'
+        is_synced:
+          description: 'Kept in sync with a v1 guardrail; saving changes creates an account copy'
+          type: 'boolean'
+        is_workspace_default_synced:
+          description: 'Synced from a v1 workspace default guardrail'
+          type: 'boolean'
+        name:
+          description: 'Policy name'
+          example: 'Engineering monthly budget'
+          maxLength: 255
+          minLength: 1
+          type: 'string'
+        opted_out_workspace_ids:
+          example:
+            - '0df9e665-d932-5740-b2c7-b52af166bc11'
+          items:
+            format: 'uuid'
+            type: 'string'
+          type: 'array'
+        policy_type:
+          enum:
+            - 'budget'
+          type: 'string'
+        updated_at:
+          type:
+            - 'string'
+            - 'null'
+        workspace_count:
+          minimum: 0
+          type: 'integer'
+        workspace_ids:
+          example:
+            - '0df9e665-d932-5740-b2c7-b52af166bc11'
+          items:
+            format: 'uuid'
+            type: 'string'
+          type: 'array'
+      required:
+        - 'id'
+        - 'name'
+        - 'policy_type'
+        - 'config'
+        - 'created_at'
+        - 'updated_at'
+        - 'is_default'
+        - 'workspace_count'
+        - 'workspace_ids'
+        - 'opted_out_workspace_ids'
+        - 'is_synced'
+        - 'is_workspace_default_synced'
+      type: 'object'
+    BudgetAccountGuardrailPolicyRequest:
+      example:
+        config:
+          include_byok_in_budgets: false
+          limit_usd: 200
+          reset_interval: 'monthly'
+        name: 'Engineering monthly budget'
+        policy_type: 'budget'
+        workspace_ids:
+          - '0df9e665-d932-5740-b2c7-b52af166bc11'
+      properties:
+        config:
+          $ref: '#/components/schemas/GuardrailBudgetPolicyAuthoringConfig'
+        floor_reassignment:
+          description: 'Move workspaces off this policy onto another workspace-wide policy in the same write'
+          properties:
+            policy_id:
+              description: 'Policy ID'
+              example: '550e8400-e29b-41d4-a716-446655440000'
+              format: 'uuid'
+              type: 'string'
+            workspace_ids:
+              example:
+                - '0df9e665-d932-5740-b2c7-b52af166bc11'
+              items:
+                format: 'uuid'
+                type: 'string'
+              minItems: 1
+              type: 'array'
+          required:
+            - 'policy_id'
+            - 'workspace_ids'
+          type: 'object'
+        is_default:
+          description: 'Cover every workspace in the account except `opted_out_workspace_ids`. On update, `false` on the current default unsets it.'
+          type: 'boolean'
+        keep_previous_default_workspaces:
+          description: 'Keep workspaces that inherited the replaced default on that policy. Cannot be combined with `released_floor_workspace_ids`.'
+          type: 'boolean'
+        name:
+          description: 'Policy name'
+          example: 'Engineering monthly budget'
+          maxLength: 255
+          minLength: 1
+          type: 'string'
+        opted_out_workspace_ids:
+          description: 'Workspaces left out of a default policy'
+          example:
+            - '0df9e665-d932-5740-b2c7-b52af166bc11'
+          items:
+            format: 'uuid'
+            type: 'string'
+          type: 'array'
+        policy_type:
+          enum:
+            - 'budget'
+          type: 'string'
+        released_floor_workspace_ids:
+          description: 'Workspaces whose own workspace-wide policy of this type is dropped so they inherit this default'
+          example:
+            - '0df9e665-d932-5740-b2c7-b52af166bc11'
+          items:
+            format: 'uuid'
+            type: 'string'
+          type: 'array'
+        workspace_ids:
+          description: 'Workspaces the policy covers when it is not the default'
+          example:
+            - '0df9e665-d932-5740-b2c7-b52af166bc11'
+          items:
+            format: 'uuid'
+            type: 'string'
+          type: 'array'
+      required:
+        - 'name'
+        - 'policy_type'
+        - 'config'
+      type: 'object'
+    BudgetGuardrailPolicy:
+      properties:
+        config:
+          $ref: '#/components/schemas/GuardrailBudgetPolicyConfig'
+        id:
+          description: 'Policy ID'
+          example: '550e8400-e29b-41d4-a716-446655440000'
+          format: 'uuid'
+          type: 'string'
+        name:
+          description: 'Policy name'
+          example: 'Engineering monthly budget'
+          maxLength: 255
+          minLength: 1
+          type: 'string'
+        policy_type:
+          enum:
+            - 'budget'
+          type: 'string'
+      required:
+        - 'id'
+        - 'name'
+        - 'policy_type'
+        - 'config'
+      type: 'object'
+    BudgetGuardrailPolicyDetail:
+      properties:
+        api_key_hashes:
+          description: 'API key hashes'
+          example:
+            - 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        config:
+          $ref: '#/components/schemas/GuardrailBudgetPolicyConfig'
+        id:
+          description: 'Policy ID'
+          example: '550e8400-e29b-41d4-a716-446655440000'
+          format: 'uuid'
+          type: 'string'
+        is_workspace_default:
+          type: 'boolean'
+        member_ids:
+          description: 'Organization member user IDs'
+          example:
+            - 'user_2abcDEFghiJKLmnoPQRstu'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        name:
+          description: 'Policy name'
+          example: 'Engineering monthly budget'
+          maxLength: 255
+          minLength: 1
+          type: 'string'
+        opted_out_api_key_hashes:
+          description: 'API key hashes'
+          example:
+            - 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        opted_out_member_ids:
+          description: 'Organization member user IDs'
+          example:
+            - 'user_2abcDEFghiJKLmnoPQRstu'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        overridden_api_key_hashes:
+          description: 'API keys that have a different policy of this type assigned directly'
+          example:
+            - 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        overridden_member_ids:
+          description: 'Members that have a different policy of this type assigned directly'
+          example:
+            - 'user_2abcDEFghiJKLmnoPQRstu'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        policy_type:
+          enum:
+            - 'budget'
+          type: 'string'
+        reference:
+          default: null
+          description: '`legacy_mapping` when the policy is synced from a v1 guardrail, `account_default` when it is an account-wide default, otherwise `null`'
+          enum:
+            - 'legacy_mapping'
+            - 'account_default'
+            - null
+          type:
+            - 'string'
+            - 'null'
+          x-speakeasy-unknown-values: allow
+        replaces_legacy_default:
+          description: 'Whether this workspace copy replaced a v1 workspace default guardrail that still exists; it cannot be deleted'
+          type: 'boolean'
+        updated_at:
+          type:
+            - 'string'
+            - 'null'
+      required:
+        - 'id'
+        - 'name'
+        - 'policy_type'
+        - 'config'
+        - 'updated_at'
+        - 'member_ids'
+        - 'api_key_hashes'
+        - 'opted_out_api_key_hashes'
+        - 'overridden_api_key_hashes'
+      type: 'object'
+    BudgetGuardrailPolicyDetailResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/BudgetGuardrailPolicyDetail'
+      required:
+        - 'data'
+      type: 'object'
+    BudgetGuardrailPolicyResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/BudgetGuardrailPolicy'
+      required:
+        - 'data'
+      type: 'object'
+    BudgetGuardrailPolicySummary:
+      properties:
+        api_key_count:
+          minimum: 0
+          type: 'integer'
+        config:
+          $ref: '#/components/schemas/GuardrailBudgetPolicyConfig'
+        id:
+          description: 'Policy ID'
+          example: '550e8400-e29b-41d4-a716-446655440000'
+          format: 'uuid'
+          type: 'string'
+        is_legacy_mapped:
+          description: 'Whether the policy is kept in sync with a v1 guardrail'
+          type: 'boolean'
+        is_workspace_default:
+          type: 'boolean'
+        legacy_guardrail_ids:
+          description: 'IDs of the v1 guardrails this policy was migrated from'
+          items:
+            type: 'string'
+          type: 'array'
+        member_count:
+          minimum: 0
+          type: 'integer'
+        name:
+          description: 'Policy name'
+          example: 'Engineering monthly budget'
+          maxLength: 255
+          minLength: 1
+          type: 'string'
+        policy_type:
+          enum:
+            - 'budget'
+          type: 'string'
+        replaced_legacy_guardrail_ids:
+          description: 'IDs of the v1 guardrails this policy replaced'
+          items:
+            type: 'string'
+          type: 'array'
+        updated_at:
+          type:
+            - 'string'
+            - 'null'
+      required:
+        - 'id'
+        - 'name'
+        - 'policy_type'
+        - 'config'
+        - 'updated_at'
+        - 'member_count'
+        - 'api_key_count'
+      type: 'object'
     BulkAddWorkspaceMembersRequest:
       example:
         user_ids:
@@ -7141,6 +7522,7 @@ components:
         - 'reka'
         - 'relace'
         - 'respan'
+        - 'river'
         - 'runway'
         - 'sail-research'
         - 'sakana'
@@ -7190,6 +7572,52 @@ components:
         - $ref: '#/components/schemas/EnumCapability'
         - $ref: '#/components/schemas/RangeCapability'
         - $ref: '#/components/schemas/BooleanCapability'
+    ChangeGuardrailPolicyAssignmentRequest:
+      properties:
+        assigned:
+          description: '`true` assigns the policy to the subject, `false` removes it'
+          example: true
+          type: 'boolean'
+        expected_assignment:
+          allOf:
+            - $ref: '#/components/schemas/GuardrailPolicyAssignmentState'
+            - description: 'The assignment state last read for the subject. The request fails with 409 if it changed since.'
+        policy_id:
+          description: 'Policy ID'
+          example: '550e8400-e29b-41d4-a716-446655440000'
+          format: 'uuid'
+          type: 'string'
+        policy_type:
+          description: 'Policy type the assignment is read or changed for'
+          enum:
+            - 'budget'
+            - 'model_availability'
+            - 'moderation'
+            - 'rate_limit'
+          example: 'budget'
+          type: 'string'
+          x-speakeasy-unknown-values: allow
+        workspace_id:
+          description: 'Workspace the policy belongs to'
+          example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+          format: 'uuid'
+          type: 'string'
+      required:
+        - 'workspace_id'
+        - 'policy_type'
+        - 'policy_id'
+        - 'assigned'
+        - 'expected_assignment'
+      type: 'object'
+    ChangeGuardrailPolicyAssignmentResponse:
+      properties:
+        data:
+          description: 'Whether the assignment changed'
+          example: true
+          type: 'boolean'
+      required:
+        - 'data'
+      type: 'object'
     ChatAssistantImages:
       description: 'Generated images from image generation models'
       example:
@@ -8015,6 +8443,12 @@ components:
                 - 'string'
                 - 'null'
               x-speakeasy-unknown-values: allow
+            max_tokens:
+              description: 'Maximum number of tokens the model may spend on reasoning, for models that take a reasoning token budget instead of an effort level. Cannot be combined with `reasoning.effort` or the top-level `reasoning_effort`: a request that sets both is rejected with "Only one of "reasoning.effort" and "reasoning.max_tokens" can be specified".'
+              example: 2000
+              type:
+                - 'integer'
+                - 'null'
             summary:
               $ref: '#/components/schemas/ChatReasoningSummaryVerbosityEnum'
           type: 'object'
@@ -9897,6 +10331,70 @@ components:
       type:
         - 'object'
         - 'null'
+    CreateBudgetGuardrailPolicyRequest:
+      properties:
+        api_key_hashes:
+          description: 'API key hashes'
+          example:
+            - 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        config:
+          $ref: '#/components/schemas/GuardrailBudgetPolicyAuthoringConfig'
+        is_workspace_default:
+          description: 'Make this the workspace default for its policy type. Defaults to `false`.'
+          type: 'boolean'
+        member_ids:
+          description: 'Organization member user IDs'
+          example:
+            - 'user_2abcDEFghiJKLmnoPQRstu'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        name:
+          description: 'Policy name'
+          example: 'Engineering monthly budget'
+          maxLength: 255
+          minLength: 1
+          type: 'string'
+        opted_out_api_key_hashes:
+          description: 'API keys that should not inherit the policy when it is the workspace default'
+          example:
+            - 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        opted_out_member_ids:
+          description: 'Members that should not inherit the policy when it is the workspace default'
+          example:
+            - 'user_2abcDEFghiJKLmnoPQRstu'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        policy_type:
+          enum:
+            - 'budget'
+          type: 'string'
+        workspace_id:
+          description: 'Workspace the policy belongs to'
+          example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+          format: 'uuid'
+          type: 'string'
+      required:
+        - 'name'
+        - 'policy_type'
+        - 'config'
+        - 'workspace_id'
+      type: 'object'
     CreateBYOKKeyRequest:
       example:
         key: 'sk-proj-abc123...'
@@ -10317,6 +10815,134 @@ components:
       required:
         - 'data'
       type: 'object'
+    CreateModelAvailabilityGuardrailPolicyRequest:
+      properties:
+        api_key_hashes:
+          description: 'API key hashes'
+          example:
+            - 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        config:
+          $ref: '#/components/schemas/GuardrailModelAvailabilityPolicyAuthoringConfig'
+        is_workspace_default:
+          description: 'Make this the workspace default for its policy type. Defaults to `false`.'
+          type: 'boolean'
+        member_ids:
+          description: 'Organization member user IDs'
+          example:
+            - 'user_2abcDEFghiJKLmnoPQRstu'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        name:
+          description: 'Policy name'
+          example: 'Engineering monthly budget'
+          maxLength: 255
+          minLength: 1
+          type: 'string'
+        opted_out_api_key_hashes:
+          description: 'API keys that should not inherit the policy when it is the workspace default'
+          example:
+            - 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        opted_out_member_ids:
+          description: 'Members that should not inherit the policy when it is the workspace default'
+          example:
+            - 'user_2abcDEFghiJKLmnoPQRstu'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        policy_type:
+          enum:
+            - 'model_availability'
+          type: 'string'
+        workspace_id:
+          description: 'Workspace the policy belongs to'
+          example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+          format: 'uuid'
+          type: 'string'
+      required:
+        - 'name'
+        - 'policy_type'
+        - 'config'
+        - 'workspace_id'
+      type: 'object'
+    CreateModerationGuardrailPolicyRequest:
+      properties:
+        api_key_hashes:
+          description: 'API key hashes'
+          example:
+            - 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        config:
+          $ref: '#/components/schemas/GuardrailModerationPolicyConfig'
+        is_workspace_default:
+          description: 'Make this the workspace default for its policy type. Defaults to `false`.'
+          type: 'boolean'
+        member_ids:
+          description: 'Organization member user IDs'
+          example:
+            - 'user_2abcDEFghiJKLmnoPQRstu'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        name:
+          description: 'Policy name'
+          example: 'Engineering monthly budget'
+          maxLength: 255
+          minLength: 1
+          type: 'string'
+        opted_out_api_key_hashes:
+          description: 'API keys that should not inherit the policy when it is the workspace default'
+          example:
+            - 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        opted_out_member_ids:
+          description: 'Members that should not inherit the policy when it is the workspace default'
+          example:
+            - 'user_2abcDEFghiJKLmnoPQRstu'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        policy_type:
+          enum:
+            - 'moderation'
+          type: 'string'
+        workspace_id:
+          description: 'Workspace the policy belongs to'
+          example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+          format: 'uuid'
+          type: 'string'
+      required:
+        - 'name'
+        - 'policy_type'
+        - 'config'
+        - 'workspace_id'
+      type: 'object'
     CreateObservabilityDestinationRequest:
       example:
         config:
@@ -10692,6 +11318,7 @@ components:
               - 'openrouter:datetime'
               - 'openrouter:fusion'
               - 'openrouter:image_generation'
+              - 'openrouter:mcp'
               - 'openrouter:experimental__search_models'
               - 'openrouter:shell'
               - 'openrouter:subagent'
@@ -11144,6 +11771,7 @@ components:
               type: 'object'
             - items: {}
               type: 'array'
+            - type: 'null'
           description: 'A plain string, or a JSON object or array of structured guidance.'
         type:
           enum:
@@ -11151,7 +11779,6 @@ components:
           type: 'string'
       required:
         - 'type'
-        - 'instructions'
         - 'criteria'
       type: 'object'
     DecisionsImageAsset:
@@ -11179,6 +11806,9 @@ components:
       type: 'object'
     DecisionsNoulAnswer:
       properties:
+        confidence:
+          format: 'double'
+          type: 'number'
         noul:
           format: 'double'
           type: 'number'
@@ -11201,6 +11831,7 @@ components:
                   type: 'object'
                 - items: {}
                   type: 'array'
+                - type: 'null'
               description: 'A plain string, or a JSON object or array of structured guidance.'
             'true':
               anyOf:
@@ -11209,10 +11840,8 @@ components:
                   type: 'object'
                 - items: {}
                   type: 'array'
+                - type: 'null'
               description: 'A plain string, or a JSON object or array of structured guidance.'
-          required:
-            - 'true'
-            - 'false'
           type: 'object'
         instructions:
           anyOf:
@@ -11221,6 +11850,7 @@ components:
               type: 'object'
             - items: {}
               type: 'array'
+            - type: 'null'
           description: 'A plain string, or a JSON object or array of structured guidance.'
         type:
           enum:
@@ -11228,7 +11858,6 @@ components:
           type: 'string'
       required:
         - 'type'
-        - 'instructions'
       type: 'object'
     DecisionsRefusalAnswer:
       description: 'The provider declined to answer this question; no value or probabilities are returned. Other questions in the same request can still have answers.'
@@ -11326,12 +11955,18 @@ components:
         usage:
           properties:
             cost:
+              description: 'What OpenRouter charges for the request, in credits. On a BYOK request this is the OpenRouter fee only.'
               format: 'double'
               type: 'number'
+            cost_details:
+              $ref: '#/components/schemas/CostDetails'
             input_tokens:
               type: 'integer'
             input_tokens_details:
               $ref: '#/components/schemas/DecisionsUsageInputTokensDetails'
+            is_byok:
+              description: 'Whether a request was made using a Bring Your Own Key configuration'
+              type: 'boolean'
             output_tokens:
               type: 'integer'
           required:
@@ -11394,6 +12029,7 @@ components:
               type: 'object'
             - items: {}
               type: 'array'
+            - type: 'null'
           description: 'A plain string, or a JSON object or array of structured guidance.'
         type:
           enum:
@@ -11401,7 +12037,6 @@ components:
           type: 'string'
       required:
         - 'type'
-        - 'instructions'
         - 'criteria'
       type: 'object'
     DecisionsUrlCitationAnnotation:
@@ -11547,6 +12182,13 @@ components:
           type: 'bm25'
         validation: 'runtime'
       properties:
+        interface:
+          description: 'How the universal profile exposes the hidden catalog to the provider. Absent or `wrappers`: the `tool_search` and `tool_exec` tools. `code_mode`: one `tool_code` tool that runs a short JavaScript program in which `search()` and `call()` reach the catalog, so several searches and calls complete in one tool result. Experimental.'
+          enum:
+            - 'wrappers'
+            - 'code_mode'
+          type: 'string'
+          x-speakeasy-unknown-values: allow
         profile:
           description: 'Loading profile. `portable` serves the `defer_loading` tools with router-built search and call wrappers on any model and keeps the catalog fixed. `universal` defers every wrappable tool behind the same wrappers so the provider-facing tool list never changes, and rebuilds the catalog from each request so tools can be added or removed mid-conversation.'
           enum:
@@ -11558,6 +12200,13 @@ components:
           enum:
             - 'v1'
           type: 'string'
+        scope:
+          description: 'Which tools the universal profile defers. Absent or `all`: every wrappable tool outside the coding-harness core set. `mcp`: only MCP server tools (`mcp__*` names and Responses namespaces outside `functions`); the harness keeps its own built-in tools direct. Experimental.'
+          enum:
+            - 'all'
+            - 'mcp'
+          type: 'string'
+          x-speakeasy-unknown-values: allow
         search:
           $ref: '#/components/schemas/DeferredToolsSearchStrategy'
         validation:
@@ -11625,6 +12274,15 @@ components:
           type: 'boolean'
       required:
         - 'deleted'
+      type: 'object'
+    DeleteGuardrailPolicyResponse:
+      properties:
+        data:
+          description: 'Whether the policy was deleted'
+          example: true
+          type: 'boolean'
+      required:
+        - 'data'
       type: 'object'
     DeleteGuardrailResponse:
       example:
@@ -15176,6 +15834,56 @@ components:
         - 'created_at'
         - 'workspace_id'
       type: 'object'
+    GuardrailBudgetPolicyAuthoringConfig:
+      additionalProperties: false
+      example:
+        include_byok_in_budgets: false
+        limit_usd: 200
+        reset_interval: 'monthly'
+      properties:
+        include_byok_in_budgets:
+          type: 'boolean'
+        limit_usd:
+          exclusiveMinimum: 0
+          minimum: 0
+          type:
+            - 'number'
+            - 'null'
+        reset_interval:
+          enum:
+            - 'daily'
+            - 'weekly'
+            - 'monthly'
+            - null
+          type:
+            - 'string'
+            - 'null'
+          x-speakeasy-unknown-values: allow
+      required:
+        - 'limit_usd'
+        - 'reset_interval'
+        - 'include_byok_in_budgets'
+      type: 'object'
+    GuardrailBudgetPolicyConfig:
+      example:
+        include_byok_in_budgets: false
+        limit_usd: 200
+        reset_interval: 'monthly'
+      properties:
+        include_byok_in_budgets:
+          description: 'Whether BYOK (bring-your-own-key) inference spend counts toward this guardrail''s limit_usd, in addition to OpenRouter credit spend. Defaults to false.'
+          example: false
+          type: 'boolean'
+        limit_usd:
+          description: 'Spending limit in USD. Must be provided together with `reset_interval`: a request that sets only one of the two is rejected with a 400.'
+          example: 50
+          format: 'double'
+          type:
+            - 'number'
+            - 'null'
+        reset_interval:
+          $ref: '#/components/schemas/GuardrailInterval'
+      type: 'object'
     GuardrailDataRegion:
       description: 'An OpenRouter data region: `global` (https://openrouter.ai), `europe` (https://eu.openrouter.ai), or `us` (https://us.openrouter.ai)'
       enum:
@@ -15197,6 +15905,443 @@ components:
         - 'string'
         - 'null'
       x-speakeasy-unknown-values: allow
+    GuardrailModelAvailabilityPolicyAuthoringConfig:
+      additionalProperties: false
+      example:
+        allowed_models:
+          - 'openai/gpt-4o'
+          - 'anthropic/claude-sonnet-4'
+        allowed_providers:
+          - 'openai'
+          - 'anthropic'
+        enforce_zdr_anthropic: true
+        enforce_zdr_openai: true
+      properties:
+        allow_safety_retention_google:
+          type:
+            - 'boolean'
+            - 'null'
+        allow_safety_retention_other:
+          type:
+            - 'boolean'
+            - 'null'
+        allowed_data_regions:
+          items:
+            type: 'string'
+          minItems: 1
+          type:
+            - 'array'
+            - 'null'
+        allowed_models:
+          items:
+            type: 'string'
+          type:
+            - 'array'
+            - 'null'
+        allowed_providers:
+          items:
+            type: 'string'
+          type:
+            - 'array'
+            - 'null'
+        enable_free_model_publication:
+          type:
+            - 'boolean'
+            - 'null'
+        enable_free_model_training:
+          type:
+            - 'boolean'
+            - 'null'
+        enable_paid_model_training:
+          type:
+            - 'boolean'
+            - 'null'
+        enforce_first_party_harness_models:
+          type:
+            - 'boolean'
+            - 'null'
+        enforce_zdr:
+          type:
+            - 'boolean'
+            - 'null'
+        enforce_zdr_anthropic:
+          type:
+            - 'boolean'
+            - 'null'
+        enforce_zdr_google:
+          type:
+            - 'boolean'
+            - 'null'
+        enforce_zdr_openai:
+          type:
+            - 'boolean'
+            - 'null'
+        enforce_zdr_other:
+          type:
+            - 'boolean'
+            - 'null'
+        enforce_zdr_xai:
+          type:
+            - 'boolean'
+            - 'null'
+        ignored_models:
+          items:
+            type: 'string'
+          type:
+            - 'array'
+            - 'null'
+        ignored_providers:
+          items:
+            type: 'string'
+          type:
+            - 'array'
+            - 'null'
+        platform_banned_authors:
+          items:
+            type: 'string'
+          type:
+            - 'array'
+            - 'null'
+        platform_banned_models:
+          items:
+            type: 'string'
+          type:
+            - 'array'
+            - 'null'
+        platform_banned_providers:
+          items:
+            type: 'string'
+          type:
+            - 'array'
+            - 'null'
+        require_eu_data_region:
+          type:
+            - 'boolean'
+            - 'null'
+      type: 'object'
+    GuardrailModelAvailabilityPolicyConfig:
+      additionalProperties: false
+      example:
+        allowed_models:
+          - 'openai/gpt-4o'
+          - 'anthropic/claude-sonnet-4'
+        allowed_providers:
+          - 'openai'
+          - 'anthropic'
+        enforce_zdr_anthropic: true
+        enforce_zdr_openai: true
+      properties:
+        allow_safety_retention_google:
+          type:
+            - 'boolean'
+            - 'null'
+        allow_safety_retention_other:
+          type:
+            - 'boolean'
+            - 'null'
+        allowed_data_regions:
+          items:
+            type: 'string'
+          type:
+            - 'array'
+            - 'null'
+        allowed_models:
+          items:
+            type: 'string'
+          type:
+            - 'array'
+            - 'null'
+        allowed_providers:
+          items:
+            type: 'string'
+          type:
+            - 'array'
+            - 'null'
+        enable_free_model_publication:
+          type:
+            - 'boolean'
+            - 'null'
+        enable_free_model_training:
+          type:
+            - 'boolean'
+            - 'null'
+        enable_paid_model_training:
+          type:
+            - 'boolean'
+            - 'null'
+        enforce_first_party_harness_models:
+          type:
+            - 'boolean'
+            - 'null'
+        enforce_zdr:
+          type:
+            - 'boolean'
+            - 'null'
+        enforce_zdr_anthropic:
+          type:
+            - 'boolean'
+            - 'null'
+        enforce_zdr_google:
+          type:
+            - 'boolean'
+            - 'null'
+        enforce_zdr_openai:
+          type:
+            - 'boolean'
+            - 'null'
+        enforce_zdr_other:
+          type:
+            - 'boolean'
+            - 'null'
+        enforce_zdr_xai:
+          type:
+            - 'boolean'
+            - 'null'
+        ignored_models:
+          items:
+            type: 'string'
+          type:
+            - 'array'
+            - 'null'
+        ignored_providers:
+          items:
+            type: 'string'
+          type:
+            - 'array'
+            - 'null'
+        platform_banned_authors:
+          items:
+            type: 'string'
+          type:
+            - 'array'
+            - 'null'
+        platform_banned_models:
+          items:
+            type: 'string'
+          type:
+            - 'array'
+            - 'null'
+        platform_banned_providers:
+          items:
+            type: 'string'
+          type:
+            - 'array'
+            - 'null'
+        require_eu_data_region:
+          type:
+            - 'boolean'
+            - 'null'
+      type: 'object'
+    GuardrailModerationPolicyConfig:
+      additionalProperties: false
+      example:
+        content_filter_builtins:
+          - action: 'block'
+            slug: 'secrets'
+      properties:
+        armor:
+          additionalProperties: false
+          properties:
+            classifier_context:
+              $ref: '#/components/schemas/ArmorContext'
+            mode:
+              description: '`enforce` withholds blocked calls; `audit` evaluates and reports the same verdicts without withholding any calls, regardless of `on_error`. Default `enforce`.'
+              enum:
+                - 'enforce'
+                - 'audit'
+              type: 'string'
+              x-speakeasy-unknown-values: allow
+            on_error:
+              description: 'When the classifier cannot answer (timeout, upstream error, context too long) the call is reported `unavailable`; `block` rejects it and `log` releases it. Default `block`.'
+              enum:
+                - 'log'
+                - 'block'
+              type: 'string'
+              x-speakeasy-unknown-values: allow
+            use_cc_style_default_rules:
+              description: 'Prepend Claude Code''s built-in auto-mode rule set (1 hard-deny, 72 soft-deny, 17 allow, 21 environment slots) ahead of every configured rule. Defaults to true on the Anthropic Messages API and false elsewhere.'
+              type: 'boolean'
+          type:
+            - 'object'
+            - 'null'
+        broadcast_model_armor_flagged_requests:
+          type:
+            - 'boolean'
+            - 'null'
+        content_filter_blocks_requests:
+          type: 'boolean'
+        content_filter_builtins:
+          items:
+            additionalProperties: false
+            properties:
+              action:
+                enum:
+                  - 'redact'
+                  - 'block'
+                  - 'flag'
+                type: 'string'
+                x-speakeasy-unknown-values: allow
+              label:
+                maxLength: 100
+                type: 'string'
+              scan_scope:
+                enum:
+                  - 'user_only'
+                  - 'all_messages'
+                type: 'string'
+                x-speakeasy-unknown-values: allow
+              slug:
+                enum:
+                  - 'email'
+                  - 'phone'
+                  - 'ssn'
+                  - 'credit-card'
+                  - 'ip-address'
+                  - 'secrets'
+                  - 'person-name'
+                  - 'address'
+                  - 'regex-prompt-injection'
+                type: 'string'
+                x-speakeasy-unknown-values: allow
+            required:
+              - 'slug'
+              - 'action'
+            type: 'object'
+          type:
+            - 'array'
+            - 'null'
+        content_filter_patterns:
+          items:
+            type: 'string'
+          type:
+            - 'array'
+            - 'null'
+        content_filters:
+          items:
+            additionalProperties: false
+            properties:
+              action:
+                enum:
+                  - 'redact'
+                  - 'block'
+                  - 'flag'
+                type: 'string'
+                x-speakeasy-unknown-values: allow
+              label:
+                maxLength: 100
+                type:
+                  - 'string'
+                  - 'null'
+              pattern:
+                maxLength: 100000
+                minLength: 1
+                type: 'string'
+            required:
+              - 'pattern'
+              - 'action'
+            type: 'object'
+          type:
+            - 'array'
+            - 'null'
+        enable_model_armor_injection_protection:
+          type:
+            - 'boolean'
+            - 'null'
+        lakera_injection_protection_mode:
+          enum:
+            - 'block'
+            - 'flag'
+            - null
+          type:
+            - 'string'
+            - 'null'
+          x-speakeasy-unknown-values: allow
+        model_armor_injection_confidence_level:
+          enum:
+            - 'low'
+            - 'medium'
+            - 'high'
+          type: 'string'
+          x-speakeasy-unknown-values: allow
+        model_armor_injection_protection_mode:
+          enum:
+            - 'block'
+            - 'flag'
+            - null
+          type:
+            - 'string'
+            - 'null'
+          x-speakeasy-unknown-values: allow
+        pii_filters:
+          items:
+            additionalProperties: false
+            properties:
+              action:
+                enum:
+                  - 'redact'
+                  - 'block'
+                  - 'flag'
+                type: 'string'
+                x-speakeasy-unknown-values: allow
+              entity_type:
+                type: 'string'
+              score_threshold:
+                maximum: 1
+                minimum: 0
+                type: 'number'
+            required:
+              - 'entity_type'
+              - 'action'
+            type: 'object'
+          type:
+            - 'array'
+            - 'null'
+        platform_image_moderated_providers:
+          items:
+            type: 'string'
+          type:
+            - 'array'
+            - 'null'
+        platform_moderated_providers:
+          items:
+            type: 'string'
+          type:
+            - 'array'
+            - 'null'
+      type: 'object'
+    GuardrailPolicyAssignmentResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/GuardrailPolicyAssignmentState'
+      required:
+        - 'data'
+      type: 'object'
+    GuardrailPolicyAssignmentState:
+      properties:
+        opted_out:
+          description: 'Whether the subject is opted out of the workspace default'
+          example: false
+          type: 'boolean'
+        policy_ids:
+          description: 'Policies of this type assigned directly to the subject'
+          example: []
+          items:
+            format: 'uuid'
+            type: 'string'
+          type: 'array'
+        workspace_default_policy_ids:
+          description: 'Workspace default policies of this type the subject inherits'
+          example:
+            - '2c6f1a4e-0b7d-4e59-9a61-3f8d2e7c1b90'
+          items:
+            format: 'uuid'
+            type: 'string'
+          type: 'array'
+      required:
+        - 'policy_ids'
+        - 'workspace_default_policy_ids'
+        - 'opted_out'
+      type: 'object'
     ImageConfig:
       additionalProperties:
         anyOf:
@@ -15489,7 +16634,7 @@ components:
           type: 'string'
           x-speakeasy-unknown-values: allow
         frame_count:
-          description: 'Number of animation frames (2-64) when `output_format` is `gif`. Only honored by models that produce animations (OpenAI gpt-image-2.6, generations only); ignored otherwise.'
+          description: 'Number of animation frames (2-64) when `output_format` is `gif`. Only honored by models that produce animations; each accepts its own range and rejects values outside it. Ignored otherwise.'
           example: 8
           type: 'integer'
         frame_duration_ms:
@@ -15698,7 +16843,7 @@ components:
       description: 'OpenRouter built-in server tool: generates images from text prompts using an image generation model'
       example:
         parameters:
-          model: 'openai/gpt-5-image'
+          model: 'openai/gpt-image-2.6-flare'
           quality: 'high'
           size: '1024x1024'
         type: 'openrouter:image_generation'
@@ -15723,12 +16868,12 @@ components:
       description: 'Configuration for the openrouter:image_generation server tool. Accepts all image_config params (aspect_ratio, quality, size, background, output_format, output_compression, moderation, etc.) plus a model field.'
       example:
         aspect_ratio: '16:9'
-        model: 'openai/gpt-5-image'
+        model: 'openai/gpt-image-2.6-flare'
         quality: 'high'
       properties:
         model:
-          description: 'Which image generation model to use (e.g. "openai/gpt-5-image"). Defaults to "openai/gpt-5-image".'
-          example: 'openai/gpt-5-image'
+          description: 'Which image generation model to use (e.g. "openai/gpt-image-2.6-flare"). Defaults to "openai/gpt-image-2.6-flare".'
+          example: 'openai/gpt-image-2.6-flare'
           type: 'string'
       type: 'object'
     ImageGenerationStatus:
@@ -16928,6 +18073,36 @@ components:
       required:
         - 'type'
       type: 'object'
+    ListAccountGuardrailPoliciesResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/AccountGuardrailPolicy'
+          type: 'array'
+        total_count:
+          description: 'Total number of policies'
+          example: 1
+          minimum: 0
+          type: 'integer'
+      required:
+        - 'data'
+        - 'total_count'
+      type: 'object'
+    ListBudgetGuardrailPoliciesResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/BudgetGuardrailPolicySummary'
+          type: 'array'
+        total_count:
+          description: 'Total number of policies'
+          example: 1
+          minimum: 0
+          type: 'integer'
+      required:
+        - 'data'
+        - 'total_count'
+      type: 'object'
     ListBYOKKeysResponse:
       example:
         data:
@@ -17189,6 +18364,36 @@ components:
         total_count:
           description: 'Total number of member assignments'
           example: 10
+          type: 'integer'
+      required:
+        - 'data'
+        - 'total_count'
+      type: 'object'
+    ListModelAvailabilityGuardrailPoliciesResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/ModelAvailabilityGuardrailPolicySummary'
+          type: 'array'
+        total_count:
+          description: 'Total number of policies'
+          example: 1
+          minimum: 0
+          type: 'integer'
+      required:
+        - 'data'
+        - 'total_count'
+      type: 'object'
+    ListModerationGuardrailPoliciesResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/ModerationGuardrailPolicySummary'
+          type: 'array'
+        total_count:
+          description: 'Total number of policies'
+          example: 1
+          minimum: 0
           type: 'integer'
       required:
         - 'data'
@@ -17740,6 +18945,10 @@ components:
         server_label: 'database-server'
         type: 'mcp_call'
       properties:
+        approval_request_id:
+          type:
+            - 'string'
+            - 'null'
         arguments:
           type: 'string'
         error:
@@ -17754,6 +18963,15 @@ components:
             - 'null'
         server_label:
           type: 'string'
+        status:
+          enum:
+            - 'in_progress'
+            - 'completed'
+            - 'incomplete'
+            - 'calling'
+            - 'failed'
+          type: 'string'
+          x-speakeasy-unknown-values: allow
         type:
           enum:
             - 'mcp_call'
@@ -17929,6 +19147,7 @@ components:
         - 'message'
       type: 'object'
     McpServerTool:
+      additionalProperties: {}
       description: 'MCP (Model Context Protocol) tool configuration'
       example:
         server_label: 'my-server'
@@ -17940,7 +19159,8 @@ components:
             - items:
                 type: 'string'
               type: 'array'
-            - properties:
+            - additionalProperties: {}
+              properties:
                 read_only:
                   type: 'boolean'
                 tool_names:
@@ -17952,17 +19172,7 @@ components:
         authorization:
           type: 'string'
         connector_id:
-          enum:
-            - 'connector_dropbox'
-            - 'connector_gmail'
-            - 'connector_googlecalendar'
-            - 'connector_googledrive'
-            - 'connector_microsoftteams'
-            - 'connector_outlookcalendar'
-            - 'connector_outlookemail'
-            - 'connector_sharepoint'
           type: 'string'
-          x-speakeasy-unknown-values: allow
         headers:
           additionalProperties:
             type: 'string'
@@ -17971,16 +19181,23 @@ components:
             - 'null'
         require_approval:
           anyOf:
-            - properties:
+            - additionalProperties: {}
+              properties:
                 always:
+                  additionalProperties: {}
                   properties:
+                    read_only:
+                      type: 'boolean'
                     tool_names:
                       items:
                         type: 'string'
                       type: 'array'
                   type: 'object'
                 never:
+                  additionalProperties: {}
                   properties:
+                    read_only:
+                      type: 'boolean'
                     tool_names:
                       items:
                         type: 'string'
@@ -18006,6 +19223,106 @@ components:
           type: 'string'
       required:
         - 'type'
+        - 'server_label'
+      type: 'object'
+    McpServerTool_OpenRouter:
+      description: 'OpenRouter built-in server tool: connects the model to a remote MCP server and runs its tools during the response'
+      example:
+        parameters:
+          server_label: 'huggingface'
+          server_url: 'https://huggingface.co/mcp'
+        type: 'openrouter:mcp'
+      properties:
+        parameters:
+          $ref: '#/components/schemas/McpServerToolParameters'
+        type:
+          enum:
+            - 'openrouter:mcp'
+          type: 'string'
+      required:
+        - 'type'
+        - 'parameters'
+      type: 'object'
+    McpServerToolParameters:
+      description: 'Configuration for a remote MCP server tool.'
+      example:
+        server_label: 'huggingface'
+        server_url: 'https://huggingface.co/mcp'
+      properties:
+        allowed_tools:
+          anyOf:
+            - items:
+                type: 'string'
+              type: 'array'
+            - additionalProperties: {}
+              properties:
+                read_only:
+                  type: 'boolean'
+                tool_names:
+                  items:
+                    type: 'string'
+                  type: 'array'
+              type: 'object'
+            - type: 'null'
+          description: 'Restrict the tools exposed to the model to this list or filter.'
+        authorization:
+          description: 'OAuth access token sent as the Authorization bearer to the server.'
+          type: 'string'
+        connector_id:
+          description: 'Provider-defined connector identifier, forwarded as written to providers that run MCP themselves.'
+          type: 'string'
+        headers:
+          additionalProperties:
+            type: 'string'
+          description: 'Extra headers sent on every request to the server.'
+          type:
+            - 'object'
+            - 'null'
+        require_approval:
+          anyOf:
+            - additionalProperties: {}
+              properties:
+                always:
+                  additionalProperties: {}
+                  properties:
+                    read_only:
+                      type: 'boolean'
+                    tool_names:
+                      items:
+                        type: 'string'
+                      type: 'array'
+                  type: 'object'
+                never:
+                  additionalProperties: {}
+                  properties:
+                    read_only:
+                      type: 'boolean'
+                    tool_names:
+                      items:
+                        type: 'string'
+                      type: 'array'
+                  type: 'object'
+              type: 'object'
+            - enum:
+                - 'always'
+              type: 'string'
+            - enum:
+                - 'never'
+              type: 'string'
+            - type: 'null'
+          description: 'Approval policy for tool calls. Defaults to always: a call that needs approval ends the response with an mcp_approval_request item, answered with an mcp_approval_response on the next request.'
+        server_description:
+          description: 'Extra context about the server, shown to the model.'
+          type: 'string'
+        server_label:
+          description: 'Label for this MCP server, used in mcp_list_tools and mcp_call items.'
+          example: 'huggingface'
+          type: 'string'
+        server_url:
+          description: 'URL of the remote MCP server (streamable HTTP).'
+          example: 'https://huggingface.co/mcp'
+          type: 'string'
+      required:
         - 'server_label'
       type: 'object'
     McpToolCallError:
@@ -19573,6 +20890,7 @@ components:
                 - 'Reka'
                 - 'Relace'
                 - 'Respan'
+                - 'River'
                 - 'Sail Research'
                 - 'Sakana AI'
                 - 'SambaNova'
@@ -20048,6 +21366,350 @@ components:
         - 'input_modalities'
         - 'output_modalities'
       type: 'object'
+    ModelAvailabilityAccountGuardrailPolicy:
+      properties:
+        config:
+          $ref: '#/components/schemas/GuardrailModelAvailabilityPolicyConfig'
+        created_at:
+          example: '2025-08-24T10:30:00Z'
+          type: 'string'
+        id:
+          description: 'Policy ID'
+          example: '550e8400-e29b-41d4-a716-446655440000'
+          format: 'uuid'
+          type: 'string'
+        is_default:
+          type: 'boolean'
+        is_synced:
+          description: 'Kept in sync with a v1 guardrail; saving changes creates an account copy'
+          type: 'boolean'
+        is_workspace_default_synced:
+          description: 'Synced from a v1 workspace default guardrail'
+          type: 'boolean'
+        name:
+          description: 'Policy name'
+          example: 'Engineering monthly budget'
+          maxLength: 255
+          minLength: 1
+          type: 'string'
+        opted_out_workspace_ids:
+          example:
+            - '0df9e665-d932-5740-b2c7-b52af166bc11'
+          items:
+            format: 'uuid'
+            type: 'string'
+          type: 'array'
+        policy_type:
+          enum:
+            - 'model_availability'
+          type: 'string'
+        updated_at:
+          type:
+            - 'string'
+            - 'null'
+        workspace_count:
+          minimum: 0
+          type: 'integer'
+        workspace_ids:
+          example:
+            - '0df9e665-d932-5740-b2c7-b52af166bc11'
+          items:
+            format: 'uuid'
+            type: 'string'
+          type: 'array'
+      required:
+        - 'id'
+        - 'name'
+        - 'policy_type'
+        - 'config'
+        - 'created_at'
+        - 'updated_at'
+        - 'is_default'
+        - 'workspace_count'
+        - 'workspace_ids'
+        - 'opted_out_workspace_ids'
+        - 'is_synced'
+        - 'is_workspace_default_synced'
+      type: 'object'
+    ModelAvailabilityAccountGuardrailPolicyRequest:
+      example:
+        config:
+          allowed_models:
+            - 'openai/gpt-4o'
+            - 'anthropic/claude-sonnet-4'
+          allowed_providers:
+            - 'openai'
+            - 'anthropic'
+          enforce_zdr_anthropic: true
+          enforce_zdr_openai: true
+        name: 'Approved models'
+        policy_type: 'model_availability'
+        workspace_ids:
+          - '0df9e665-d932-5740-b2c7-b52af166bc11'
+      properties:
+        config:
+          $ref: '#/components/schemas/GuardrailModelAvailabilityPolicyAuthoringConfig'
+        floor_reassignment:
+          description: 'Move workspaces off this policy onto another workspace-wide policy in the same write'
+          properties:
+            policy_id:
+              description: 'Policy ID'
+              example: '550e8400-e29b-41d4-a716-446655440000'
+              format: 'uuid'
+              type: 'string'
+            workspace_ids:
+              example:
+                - '0df9e665-d932-5740-b2c7-b52af166bc11'
+              items:
+                format: 'uuid'
+                type: 'string'
+              minItems: 1
+              type: 'array'
+          required:
+            - 'policy_id'
+            - 'workspace_ids'
+          type: 'object'
+        is_default:
+          description: 'Cover every workspace in the account except `opted_out_workspace_ids`. On update, `false` on the current default unsets it.'
+          type: 'boolean'
+        keep_previous_default_workspaces:
+          description: 'Keep workspaces that inherited the replaced default on that policy. Cannot be combined with `released_floor_workspace_ids`.'
+          type: 'boolean'
+        name:
+          description: 'Policy name'
+          example: 'Engineering monthly budget'
+          maxLength: 255
+          minLength: 1
+          type: 'string'
+        opted_out_workspace_ids:
+          description: 'Workspaces left out of a default policy'
+          example:
+            - '0df9e665-d932-5740-b2c7-b52af166bc11'
+          items:
+            format: 'uuid'
+            type: 'string'
+          type: 'array'
+        policy_type:
+          enum:
+            - 'model_availability'
+          type: 'string'
+        released_floor_workspace_ids:
+          description: 'Workspaces whose own workspace-wide policy of this type is dropped so they inherit this default'
+          example:
+            - '0df9e665-d932-5740-b2c7-b52af166bc11'
+          items:
+            format: 'uuid'
+            type: 'string'
+          type: 'array'
+        workspace_ids:
+          description: 'Workspaces the policy covers when it is not the default'
+          example:
+            - '0df9e665-d932-5740-b2c7-b52af166bc11'
+          items:
+            format: 'uuid'
+            type: 'string'
+          type: 'array'
+      required:
+        - 'name'
+        - 'policy_type'
+        - 'config'
+      type: 'object'
+    ModelAvailabilityGuardrailPolicy:
+      properties:
+        config:
+          $ref: '#/components/schemas/GuardrailModelAvailabilityPolicyConfig'
+        id:
+          description: 'Policy ID'
+          example: '550e8400-e29b-41d4-a716-446655440000'
+          format: 'uuid'
+          type: 'string'
+        name:
+          description: 'Policy name'
+          example: 'Engineering monthly budget'
+          maxLength: 255
+          minLength: 1
+          type: 'string'
+        policy_type:
+          enum:
+            - 'model_availability'
+          type: 'string'
+      required:
+        - 'id'
+        - 'name'
+        - 'policy_type'
+        - 'config'
+      type: 'object'
+    ModelAvailabilityGuardrailPolicyDetail:
+      properties:
+        api_key_hashes:
+          description: 'API key hashes'
+          example:
+            - 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        config:
+          $ref: '#/components/schemas/GuardrailModelAvailabilityPolicyConfig'
+        id:
+          description: 'Policy ID'
+          example: '550e8400-e29b-41d4-a716-446655440000'
+          format: 'uuid'
+          type: 'string'
+        is_workspace_default:
+          type: 'boolean'
+        member_ids:
+          description: 'Organization member user IDs'
+          example:
+            - 'user_2abcDEFghiJKLmnoPQRstu'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        name:
+          description: 'Policy name'
+          example: 'Engineering monthly budget'
+          maxLength: 255
+          minLength: 1
+          type: 'string'
+        opted_out_api_key_hashes:
+          description: 'API key hashes'
+          example:
+            - 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        opted_out_member_ids:
+          description: 'Organization member user IDs'
+          example:
+            - 'user_2abcDEFghiJKLmnoPQRstu'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        overridden_api_key_hashes:
+          description: 'API keys that have a different policy of this type assigned directly'
+          example:
+            - 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        overridden_member_ids:
+          description: 'Members that have a different policy of this type assigned directly'
+          example:
+            - 'user_2abcDEFghiJKLmnoPQRstu'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        policy_type:
+          enum:
+            - 'model_availability'
+          type: 'string'
+        reference:
+          default: null
+          description: '`legacy_mapping` when the policy is synced from a v1 guardrail, `account_default` when it is an account-wide default, otherwise `null`'
+          enum:
+            - 'legacy_mapping'
+            - 'account_default'
+            - null
+          type:
+            - 'string'
+            - 'null'
+          x-speakeasy-unknown-values: allow
+        replaces_legacy_default:
+          description: 'Whether this workspace copy replaced a v1 workspace default guardrail that still exists; it cannot be deleted'
+          type: 'boolean'
+        updated_at:
+          type:
+            - 'string'
+            - 'null'
+      required:
+        - 'id'
+        - 'name'
+        - 'policy_type'
+        - 'config'
+        - 'updated_at'
+        - 'member_ids'
+        - 'api_key_hashes'
+        - 'opted_out_api_key_hashes'
+        - 'overridden_api_key_hashes'
+      type: 'object'
+    ModelAvailabilityGuardrailPolicyDetailResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/ModelAvailabilityGuardrailPolicyDetail'
+      required:
+        - 'data'
+      type: 'object'
+    ModelAvailabilityGuardrailPolicyResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/ModelAvailabilityGuardrailPolicy'
+      required:
+        - 'data'
+      type: 'object'
+    ModelAvailabilityGuardrailPolicySummary:
+      properties:
+        api_key_count:
+          minimum: 0
+          type: 'integer'
+        config:
+          $ref: '#/components/schemas/GuardrailModelAvailabilityPolicyConfig'
+        id:
+          description: 'Policy ID'
+          example: '550e8400-e29b-41d4-a716-446655440000'
+          format: 'uuid'
+          type: 'string'
+        is_legacy_mapped:
+          description: 'Whether the policy is kept in sync with a v1 guardrail'
+          type: 'boolean'
+        is_workspace_default:
+          type: 'boolean'
+        legacy_guardrail_ids:
+          description: 'IDs of the v1 guardrails this policy was migrated from'
+          items:
+            type: 'string'
+          type: 'array'
+        member_count:
+          minimum: 0
+          type: 'integer'
+        name:
+          description: 'Policy name'
+          example: 'Engineering monthly budget'
+          maxLength: 255
+          minLength: 1
+          type: 'string'
+        policy_type:
+          enum:
+            - 'model_availability'
+          type: 'string'
+        replaced_legacy_guardrail_ids:
+          description: 'IDs of the v1 guardrails this policy replaced'
+          items:
+            type: 'string'
+          type: 'array'
+        updated_at:
+          type:
+            - 'string'
+            - 'null'
+      required:
+        - 'id'
+        - 'name'
+        - 'policy_type'
+        - 'config'
+        - 'updated_at'
+        - 'member_count'
+        - 'api_key_count'
+      type: 'object'
     ModelBenchmarks:
       description: 'Third-party benchmark rankings for this model. Omitted when no benchmark data is available.'
       example:
@@ -20332,6 +21994,348 @@ components:
       items:
         $ref: '#/components/schemas/Model'
       type: 'array'
+    ModerationAccountGuardrailPolicy:
+      properties:
+        config:
+          $ref: '#/components/schemas/GuardrailModerationPolicyConfig'
+        created_at:
+          example: '2025-08-24T10:30:00Z'
+          type: 'string'
+        id:
+          description: 'Policy ID'
+          example: '550e8400-e29b-41d4-a716-446655440000'
+          format: 'uuid'
+          type: 'string'
+        is_default:
+          type: 'boolean'
+        is_synced:
+          description: 'Kept in sync with a v1 guardrail; saving changes creates an account copy'
+          type: 'boolean'
+        is_workspace_default_synced:
+          description: 'Synced from a v1 workspace default guardrail'
+          type: 'boolean'
+        name:
+          description: 'Policy name'
+          example: 'Engineering monthly budget'
+          maxLength: 255
+          minLength: 1
+          type: 'string'
+        opted_out_workspace_ids:
+          example:
+            - '0df9e665-d932-5740-b2c7-b52af166bc11'
+          items:
+            format: 'uuid'
+            type: 'string'
+          type: 'array'
+        policy_type:
+          enum:
+            - 'moderation'
+          type: 'string'
+        updated_at:
+          type:
+            - 'string'
+            - 'null'
+        workspace_count:
+          minimum: 0
+          type: 'integer'
+        workspace_ids:
+          example:
+            - '0df9e665-d932-5740-b2c7-b52af166bc11'
+          items:
+            format: 'uuid'
+            type: 'string'
+          type: 'array'
+      required:
+        - 'id'
+        - 'name'
+        - 'policy_type'
+        - 'config'
+        - 'created_at'
+        - 'updated_at'
+        - 'is_default'
+        - 'workspace_count'
+        - 'workspace_ids'
+        - 'opted_out_workspace_ids'
+        - 'is_synced'
+        - 'is_workspace_default_synced'
+      type: 'object'
+    ModerationAccountGuardrailPolicyRequest:
+      example:
+        config:
+          content_filter_builtins:
+            - action: 'block'
+              slug: 'secrets'
+        name: 'Block secrets'
+        policy_type: 'moderation'
+        workspace_ids:
+          - '0df9e665-d932-5740-b2c7-b52af166bc11'
+      properties:
+        config:
+          $ref: '#/components/schemas/GuardrailModerationPolicyConfig'
+        floor_reassignment:
+          description: 'Move workspaces off this policy onto another workspace-wide policy in the same write'
+          properties:
+            policy_id:
+              description: 'Policy ID'
+              example: '550e8400-e29b-41d4-a716-446655440000'
+              format: 'uuid'
+              type: 'string'
+            workspace_ids:
+              example:
+                - '0df9e665-d932-5740-b2c7-b52af166bc11'
+              items:
+                format: 'uuid'
+                type: 'string'
+              minItems: 1
+              type: 'array'
+          required:
+            - 'policy_id'
+            - 'workspace_ids'
+          type: 'object'
+        is_default:
+          description: 'Cover every workspace in the account except `opted_out_workspace_ids`. On update, `false` on the current default unsets it.'
+          type: 'boolean'
+        keep_previous_default_workspaces:
+          description: 'Keep workspaces that inherited the replaced default on that policy. Cannot be combined with `released_floor_workspace_ids`.'
+          type: 'boolean'
+        name:
+          description: 'Policy name'
+          example: 'Engineering monthly budget'
+          maxLength: 255
+          minLength: 1
+          type: 'string'
+        opted_out_workspace_ids:
+          description: 'Workspaces left out of a default policy'
+          example:
+            - '0df9e665-d932-5740-b2c7-b52af166bc11'
+          items:
+            format: 'uuid'
+            type: 'string'
+          type: 'array'
+        policy_type:
+          enum:
+            - 'moderation'
+          type: 'string'
+        released_floor_workspace_ids:
+          description: 'Workspaces whose own workspace-wide policy of this type is dropped so they inherit this default'
+          example:
+            - '0df9e665-d932-5740-b2c7-b52af166bc11'
+          items:
+            format: 'uuid'
+            type: 'string'
+          type: 'array'
+        workspace_ids:
+          description: 'Workspaces the policy covers when it is not the default'
+          example:
+            - '0df9e665-d932-5740-b2c7-b52af166bc11'
+          items:
+            format: 'uuid'
+            type: 'string'
+          type: 'array'
+      required:
+        - 'name'
+        - 'policy_type'
+        - 'config'
+      type: 'object'
+    ModerationGuardrailPolicy:
+      properties:
+        config:
+          $ref: '#/components/schemas/GuardrailModerationPolicyConfig'
+        id:
+          description: 'Policy ID'
+          example: '550e8400-e29b-41d4-a716-446655440000'
+          format: 'uuid'
+          type: 'string'
+        name:
+          description: 'Policy name'
+          example: 'Engineering monthly budget'
+          maxLength: 255
+          minLength: 1
+          type: 'string'
+        policy_type:
+          enum:
+            - 'moderation'
+          type: 'string'
+      required:
+        - 'id'
+        - 'name'
+        - 'policy_type'
+        - 'config'
+      type: 'object'
+    ModerationGuardrailPolicyDetail:
+      properties:
+        api_key_hashes:
+          description: 'API key hashes'
+          example:
+            - 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        config:
+          $ref: '#/components/schemas/GuardrailModerationPolicyConfig'
+        id:
+          description: 'Policy ID'
+          example: '550e8400-e29b-41d4-a716-446655440000'
+          format: 'uuid'
+          type: 'string'
+        is_account_policy:
+          description: 'Whether this is an account-owned policy rather than a workspace policy'
+          type: 'boolean'
+        is_workspace_default:
+          type: 'boolean'
+        member_ids:
+          description: 'Organization member user IDs'
+          example:
+            - 'user_2abcDEFghiJKLmnoPQRstu'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        name:
+          description: 'Policy name'
+          example: 'Engineering monthly budget'
+          maxLength: 255
+          minLength: 1
+          type: 'string'
+        opted_out_api_key_hashes:
+          description: 'API key hashes'
+          example:
+            - 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        opted_out_member_ids:
+          description: 'Organization member user IDs'
+          example:
+            - 'user_2abcDEFghiJKLmnoPQRstu'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        overridden_api_key_hashes:
+          description: 'API keys that have a different policy of this type assigned directly'
+          example:
+            - 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        overridden_member_ids:
+          description: 'Members that have a different policy of this type assigned directly'
+          example:
+            - 'user_2abcDEFghiJKLmnoPQRstu'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        policy_type:
+          enum:
+            - 'moderation'
+          type: 'string'
+        reference:
+          default: null
+          description: '`legacy_mapping` when the policy is synced from a v1 guardrail, `account_default` when it is an account-wide default, otherwise `null`'
+          enum:
+            - 'legacy_mapping'
+            - 'account_default'
+            - null
+          type:
+            - 'string'
+            - 'null'
+          x-speakeasy-unknown-values: allow
+        replaces_legacy_default:
+          description: 'Whether this workspace copy replaced a v1 workspace default guardrail that still exists; it cannot be deleted'
+          type: 'boolean'
+        updated_at:
+          type:
+            - 'string'
+            - 'null'
+      required:
+        - 'id'
+        - 'name'
+        - 'policy_type'
+        - 'config'
+        - 'updated_at'
+        - 'member_ids'
+        - 'api_key_hashes'
+        - 'opted_out_api_key_hashes'
+        - 'overridden_api_key_hashes'
+      type: 'object'
+    ModerationGuardrailPolicyDetailResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/ModerationGuardrailPolicyDetail'
+      required:
+        - 'data'
+      type: 'object'
+    ModerationGuardrailPolicyResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/ModerationGuardrailPolicy'
+      required:
+        - 'data'
+      type: 'object'
+    ModerationGuardrailPolicySummary:
+      properties:
+        api_key_count:
+          minimum: 0
+          type: 'integer'
+        config:
+          $ref: '#/components/schemas/GuardrailModerationPolicyConfig'
+        id:
+          description: 'Policy ID'
+          example: '550e8400-e29b-41d4-a716-446655440000'
+          format: 'uuid'
+          type: 'string'
+        is_legacy_mapped:
+          description: 'Whether the policy is kept in sync with a v1 guardrail'
+          type: 'boolean'
+        is_workspace_default:
+          type: 'boolean'
+        legacy_guardrail_ids:
+          description: 'IDs of the v1 guardrails this policy was migrated from'
+          items:
+            type: 'string'
+          type: 'array'
+        member_count:
+          minimum: 0
+          type: 'integer'
+        name:
+          description: 'Policy name'
+          example: 'Engineering monthly budget'
+          maxLength: 255
+          minLength: 1
+          type: 'string'
+        policy_type:
+          enum:
+            - 'moderation'
+          type: 'string'
+        replaced_legacy_guardrail_ids:
+          description: 'IDs of the v1 guardrails this policy replaced'
+          items:
+            type: 'string'
+          type: 'array'
+        updated_at:
+          type:
+            - 'string'
+            - 'null'
+      required:
+        - 'id'
+        - 'name'
+        - 'policy_type'
+        - 'config'
+        - 'updated_at'
+        - 'member_count'
+        - 'api_key_count'
+      type: 'object'
     ModerationPlugin:
       example:
         id: 'moderation'
@@ -23847,6 +25851,7 @@ components:
           required:
             - 'type'
           type: 'object'
+        - $ref: '#/components/schemas/ToolChoiceMcp'
       example: 'auto'
     OpenAIResponsesTruncation:
       enum:
@@ -25390,6 +27395,9 @@ components:
               file_search_call: '#/components/schemas/OutputItemFileSearchCall'
               function_call: '#/components/schemas/OutputItemFunctionCall'
               image_generation_call: '#/components/schemas/OutputItemImageGenerationCall'
+              mcp_approval_request: '#/components/schemas/OutputItemMcpApprovalRequest'
+              mcp_call: '#/components/schemas/OutputItemMcpCall'
+              mcp_list_tools: '#/components/schemas/OutputItemMcpListTools'
               message: '#/components/schemas/OutputMessage'
               reasoning: '#/components/schemas/OutputItemReasoning'
               web_search_call: '#/components/schemas/OutputItemWebSearchCall'
@@ -25405,6 +27413,9 @@ components:
             - $ref: '#/components/schemas/OutputItemApplyPatchCall'
             - $ref: '#/components/schemas/OutputItemCodeInterpreterCall'
             - $ref: '#/components/schemas/OutputItemCompaction'
+            - $ref: '#/components/schemas/OutputItemMcpListTools'
+            - $ref: '#/components/schemas/OutputItemMcpCall'
+            - $ref: '#/components/schemas/OutputItemMcpApprovalRequest'
         output_index:
           type: 'integer'
         sequence_number:
@@ -25604,6 +27615,9 @@ components:
               file_search_call: '#/components/schemas/OutputItemFileSearchCall'
               function_call: '#/components/schemas/OutputItemFunctionCall'
               image_generation_call: '#/components/schemas/OutputItemImageGenerationCall'
+              mcp_approval_request: '#/components/schemas/OutputItemMcpApprovalRequest'
+              mcp_call: '#/components/schemas/OutputItemMcpCall'
+              mcp_list_tools: '#/components/schemas/OutputItemMcpListTools'
               message: '#/components/schemas/OutputMessage'
               reasoning: '#/components/schemas/OutputItemReasoning'
               web_search_call: '#/components/schemas/OutputItemWebSearchCall'
@@ -25619,6 +27633,9 @@ components:
             - $ref: '#/components/schemas/OutputItemApplyPatchCall'
             - $ref: '#/components/schemas/OutputItemCodeInterpreterCall'
             - $ref: '#/components/schemas/OutputItemCompaction'
+            - $ref: '#/components/schemas/OutputItemMcpListTools'
+            - $ref: '#/components/schemas/OutputItemMcpCall'
+            - $ref: '#/components/schemas/OutputItemMcpApprovalRequest'
         output_index:
           type: 'integer'
         sequence_number:
@@ -25729,6 +27746,144 @@ components:
         - 'id'
         - 'status'
       type: 'object'
+    OutputItemMcpApprovalRequest:
+      properties:
+        arguments:
+          type: 'string'
+        id:
+          type: 'string'
+        name:
+          type: 'string'
+        server_label:
+          type: 'string'
+        type:
+          enum:
+            - 'mcp_approval_request'
+          type: 'string'
+      required:
+        - 'type'
+        - 'id'
+        - 'server_label'
+        - 'name'
+        - 'arguments'
+      type: 'object'
+    OutputItemMcpCall:
+      properties:
+        approval_request_id:
+          type:
+            - 'string'
+            - 'null'
+        arguments:
+          type: 'string'
+        error:
+          anyOf:
+            - type: 'string'
+            - properties:
+                code:
+                  type: 'integer'
+                message:
+                  type: 'string'
+                type:
+                  enum:
+                    - 'mcp_protocol_error'
+                  type: 'string'
+              required:
+                - 'type'
+                - 'code'
+                - 'message'
+              type: 'object'
+            - properties:
+                content: {}
+                type:
+                  enum:
+                    - 'mcp_tool_execution_error'
+                  type: 'string'
+              required:
+                - 'type'
+              type: 'object'
+            - properties:
+                code:
+                  type: 'integer'
+                message:
+                  type: 'string'
+                type:
+                  enum:
+                    - 'http_error'
+                  type: 'string'
+              required:
+                - 'type'
+                - 'code'
+                - 'message'
+              type: 'object'
+            - type: 'null'
+        id:
+          type: 'string'
+        name:
+          type: 'string'
+        output:
+          type:
+            - 'string'
+            - 'null'
+        server_label:
+          type: 'string'
+        status:
+          enum:
+            - 'in_progress'
+            - 'completed'
+            - 'incomplete'
+            - 'calling'
+            - 'failed'
+          type: 'string'
+          x-speakeasy-unknown-values: allow
+        type:
+          enum:
+            - 'mcp_call'
+          type: 'string'
+      required:
+        - 'type'
+        - 'id'
+        - 'server_label'
+        - 'name'
+        - 'arguments'
+      type: 'object'
+    OutputItemMcpListTools:
+      properties:
+        error:
+          type:
+            - 'string'
+            - 'null'
+        id:
+          type: 'string'
+        server_label:
+          type: 'string'
+        tools:
+          items:
+            properties:
+              annotations: {}
+              description:
+                type:
+                  - 'string'
+                  - 'null'
+              input_schema:
+                additionalProperties: {}
+                type: 'object'
+              name:
+                type: 'string'
+            required:
+              - 'name'
+              - 'input_schema'
+            type: 'object'
+          type: 'array'
+        type:
+          enum:
+            - 'mcp_list_tools'
+          type: 'string'
+      required:
+        - 'type'
+        - 'id'
+        - 'server_label'
+        - 'tools'
+      type: 'object'
     OutputItemReasoning:
       example:
         id: 'reasoning-abc123'
@@ -25783,6 +27938,7 @@ components:
           file_search_call: '#/components/schemas/OutputFileSearchCallItem'
           function_call: '#/components/schemas/OutputFunctionCallItem'
           image_generation_call: '#/components/schemas/OutputImageGenerationCallItem'
+          mcp_approval_request: '#/components/schemas/McpApprovalRequestItem'
           mcp_call: '#/components/schemas/McpCallItem'
           mcp_list_tools: '#/components/schemas/McpListToolsItem'
           message: '#/components/schemas/OutputMessageItem'
@@ -25847,6 +28003,7 @@ components:
         - $ref: '#/components/schemas/OutputMemoryServerToolItem'
         - $ref: '#/components/schemas/McpListToolsItem'
         - $ref: '#/components/schemas/McpCallItem'
+        - $ref: '#/components/schemas/McpApprovalRequestItem'
         - $ref: '#/components/schemas/OutputSearchModelsServerToolItem'
         - $ref: '#/components/schemas/OutputFusionServerToolItem'
         - $ref: '#/components/schemas/OutputAdvisorServerToolItem'
@@ -28170,6 +30327,7 @@ components:
         - 'Reka'
         - 'Relace'
         - 'Respan'
+        - 'River'
         - 'Sail Research'
         - 'Sakana AI'
         - 'SambaNova'
@@ -28567,6 +30725,9 @@ components:
           additionalProperties: {}
           type: 'object'
         respan:
+          additionalProperties: {}
+          type: 'object'
+        river:
           additionalProperties: {}
           type: 'object'
         runway:
@@ -28984,6 +31145,7 @@ components:
             - 'Reka'
             - 'Relace'
             - 'Respan'
+            - 'River'
             - 'Sail Research'
             - 'Sakana AI'
             - 'SambaNova'
@@ -30351,6 +32513,7 @@ components:
               - $ref: '#/components/schemas/BashServerTool'
               - $ref: '#/components/schemas/ShellServerTool_OpenRouter'
               - $ref: '#/components/schemas/ToolSearchServerTool'
+              - $ref: '#/components/schemas/McpServerTool_OpenRouter'
           type: 'array'
         top_k:
           type: 'integer'
@@ -33129,6 +35292,26 @@ components:
         - 'mode'
         - 'tools'
       type: 'object'
+    ToolChoiceMcp:
+      description: 'Forces a call to the named MCP server; `name` narrows it to one of its tools'
+      example:
+        server_label: 'huggingface'
+        type: 'mcp'
+      properties:
+        name:
+          type:
+            - 'string'
+            - 'null'
+        server_label:
+          type: 'string'
+        type:
+          enum:
+            - 'mcp'
+          type: 'string'
+      required:
+        - 'type'
+        - 'server_label'
+      type: 'object'
     ToolChoiceSupport:
       description: 'Per-variant `tool_choice` support. `tool_choice` in `supported_parameters` only says the parameter is accepted; these flags say which of its values passed testing.'
       example:
@@ -33318,6 +35501,7 @@ components:
                 required:
                   - 'type'
                 type: 'object'
+              - $ref: '#/components/schemas/McpServerTool_OpenRouter'
           type: 'array'
         type:
           enum:
@@ -34040,6 +36224,65 @@ components:
         - 'code'
         - 'message'
       type: 'object'
+    UpdateBudgetGuardrailPolicyRequest:
+      properties:
+        api_key_hashes:
+          description: 'Complete new list of assigned API keys. Send together with `member_ids`, or omit both to keep the stored assignments.'
+          example:
+            - 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        config:
+          $ref: '#/components/schemas/GuardrailBudgetPolicyAuthoringConfig'
+        is_workspace_default:
+          description: 'Omit to keep the stored default status; `false` unsets the policy as the workspace default.'
+          type: 'boolean'
+        member_ids:
+          description: 'Complete new list of assigned members. Send together with `api_key_hashes`, or omit both to keep the stored assignments.'
+          example:
+            - 'user_2abcDEFghiJKLmnoPQRstu'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        name:
+          description: 'Policy name'
+          example: 'Engineering monthly budget'
+          maxLength: 255
+          minLength: 1
+          type: 'string'
+        opted_out_api_key_hashes:
+          description: 'API key hashes'
+          example:
+            - 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        opted_out_member_ids:
+          description: 'Organization member user IDs'
+          example:
+            - 'user_2abcDEFghiJKLmnoPQRstu'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        workspace_id:
+          description: 'Workspace the policy belongs to'
+          example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+          format: 'uuid'
+          type: 'string'
+      required:
+        - 'name'
+        - 'config'
+        - 'workspace_id'
+      type: 'object'
     UpdateBYOKKeyRequest:
       example:
         disabled: false
@@ -34377,6 +36620,124 @@ components:
       required:
         - 'data'
       type: 'object'
+    UpdateModelAvailabilityGuardrailPolicyRequest:
+      properties:
+        api_key_hashes:
+          description: 'Complete new list of assigned API keys. Send together with `member_ids`, or omit both to keep the stored assignments.'
+          example:
+            - 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        config:
+          $ref: '#/components/schemas/GuardrailModelAvailabilityPolicyAuthoringConfig'
+        is_workspace_default:
+          description: 'Omit to keep the stored default status; `false` unsets the policy as the workspace default.'
+          type: 'boolean'
+        member_ids:
+          description: 'Complete new list of assigned members. Send together with `api_key_hashes`, or omit both to keep the stored assignments.'
+          example:
+            - 'user_2abcDEFghiJKLmnoPQRstu'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        name:
+          description: 'Policy name'
+          example: 'Engineering monthly budget'
+          maxLength: 255
+          minLength: 1
+          type: 'string'
+        opted_out_api_key_hashes:
+          description: 'API key hashes'
+          example:
+            - 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        opted_out_member_ids:
+          description: 'Organization member user IDs'
+          example:
+            - 'user_2abcDEFghiJKLmnoPQRstu'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        workspace_id:
+          description: 'Workspace the policy belongs to'
+          example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+          format: 'uuid'
+          type: 'string'
+      required:
+        - 'name'
+        - 'config'
+        - 'workspace_id'
+      type: 'object'
+    UpdateModerationGuardrailPolicyRequest:
+      properties:
+        api_key_hashes:
+          description: 'Complete new list of assigned API keys. Send together with `member_ids`, or omit both to keep the stored assignments.'
+          example:
+            - 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        config:
+          $ref: '#/components/schemas/GuardrailModerationPolicyConfig'
+        is_workspace_default:
+          description: 'Omit to keep the stored default status; `false` unsets the policy as the workspace default.'
+          type: 'boolean'
+        member_ids:
+          description: 'Complete new list of assigned members. Send together with `api_key_hashes`, or omit both to keep the stored assignments.'
+          example:
+            - 'user_2abcDEFghiJKLmnoPQRstu'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        name:
+          description: 'Policy name'
+          example: 'Engineering monthly budget'
+          maxLength: 255
+          minLength: 1
+          type: 'string'
+        opted_out_api_key_hashes:
+          description: 'API key hashes'
+          example:
+            - 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        opted_out_member_ids:
+          description: 'Organization member user IDs'
+          example:
+            - 'user_2abcDEFghiJKLmnoPQRstu'
+          items:
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+          type: 'array'
+        workspace_id:
+          description: 'Workspace the policy belongs to'
+          example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+          format: 'uuid'
+          type: 'string'
+      required:
+        - 'name'
+        - 'config'
+        - 'workspace_id'
+      type: 'object'
     UpdateObservabilityDestinationRequest:
       example:
         enabled: false
@@ -34488,7 +36849,7 @@ components:
         - 'is_filtered_model_catalog_enabled'
       type: 'object'
     UpdatePrivateEndpointRequest:
-      description: 'Only the fields present change. `base_url`, `upstream_model_id`, `declared_zdr` and `declared_region` are accepted on a draft only; `pricing` and `declared_parameters` replace their value; `settings` is itself a partial update where `null` clears a limit or restores the provider default.'
+      description: 'Only the fields present change. `base_url` and `upstream_model_id` are accepted on a draft only; `declared_zdr` and `declared_region` on drafts and active endpoints; `pricing` and `declared_parameters` replace their value; `settings` is itself a partial update where `null` clears a limit or restores the provider default.'
       example:
         declared_parameters:
           - 'seed'
@@ -34745,6 +37106,7 @@ components:
               - 'openrouter:datetime'
               - 'openrouter:fusion'
               - 'openrouter:image_generation'
+              - 'openrouter:mcp'
               - 'openrouter:experimental__search_models'
               - 'openrouter:shell'
               - 'openrouter:subagent'
@@ -38323,18 +40685,6 @@ paths:
                   example: 100
                   format: 'double'
                   type: 'number'
-                spawn_agent:
-                  description: 'Agent identifier for spawn telemetry'
-                  example: 'my-agent'
-                  type: 'string'
-                  x-fern-ignore: true
-                  x-speakeasy-ignore: true
-                spawn_cloud:
-                  description: 'Cloud identifier for spawn telemetry'
-                  example: 'aws-us-east-1'
-                  type: 'string'
-                  x-fern-ignore: true
-                  x-speakeasy-ignore: true
                 usage_limit_type:
                   description: 'Optional credit limit reset interval. When set, the credit limit resets on this interval.'
                   enum:
@@ -39265,6 +41615,7 @@ paths:
               - 'reka'
               - 'relace'
               - 'respan'
+              - 'river'
               - 'runway'
               - 'sail-research'
               - 'sakana'
@@ -44640,6 +46991,2129 @@ paths:
       - $ref: "#/components/parameters/AppIdentifier"
       - $ref: "#/components/parameters/AppDisplayName"
       - $ref: "#/components/parameters/AppCategories"
+  /guardrails/policies/account:
+    get:
+      description: 'List the workspace-wide policies that apply across workspaces in the account. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'listAccountPolicies'
+      parameters:
+        - description: 'Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned'
+          in: 'query'
+          name: 'offset'
+          required: false
+          schema:
+            description: 'Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned'
+            example: 0
+            minimum: 0
+            type: 'integer'
+        - description: 'Maximum number of records to return (max 100). When both offset and limit are omitted, the full list is returned'
+          in: 'query'
+          name: 'limit'
+          required: false
+          schema:
+            description: 'Maximum number of records to return (max 100). When both offset and limit are omitted, the full list is returned'
+            example: 50
+            maximum: 100
+            minimum: 1
+            type: 'integer'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAccountGuardrailPoliciesResponse'
+          description: 'List of workspace-wide policies'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'List workspace-wide policies'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'listAccountPolicies'
+      x-speakeasy-pagination:
+        inputs:
+          - in: 'parameters'
+            name: 'offset'
+            type: 'offset'
+          - in: 'parameters'
+            name: 'limit'
+            type: 'limit'
+        outputs:
+          results: '$.data'
+        type: 'offsetLimit'
+    post:
+      description: 'Create a workspace-wide budget, moderation, or model availability policy. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'createAccountPolicy'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountGuardrailPolicyRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountGuardrailPolicyResponse'
+          description: 'Workspace-wide policy created'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Create a workspace-wide policy'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'createAccountPolicy'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /guardrails/policies/account/{id}:
+    delete:
+      description: 'Delete a workspace-wide policy. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'deleteAccountPolicy'
+      parameters:
+        - description: 'Policy ID'
+          in: 'path'
+          name: 'id'
+          required: true
+          schema:
+            description: 'Policy ID'
+            example: '550e8400-e29b-41d4-a716-446655440000'
+            format: 'uuid'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteGuardrailPolicyResponse'
+          description: 'Workspace-wide policy deleted'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Delete a workspace-wide policy'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'deleteAccountPolicy'
+    put:
+      description: 'Replace a workspace-wide policy and its workspace coverage. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'updateAccountPolicy'
+      parameters:
+        - description: 'Policy ID'
+          in: 'path'
+          name: 'id'
+          required: true
+          schema:
+            description: 'Policy ID'
+            example: '550e8400-e29b-41d4-a716-446655440000'
+            format: 'uuid'
+            type: 'string'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountGuardrailPolicyRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountGuardrailPolicyResponse'
+          description: 'Workspace-wide policy updated'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Update a workspace-wide policy'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'updateAccountPolicy'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /guardrails/policies/assignments/api-keys/{hash}:
+    get:
+      description: 'Get the policies of one type that apply to an API key in a workspace. Requires a management key with write access. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'getApiKeyPolicyAssignment'
+      parameters:
+        - description: 'API key hash'
+          in: 'path'
+          name: 'hash'
+          required: true
+          schema:
+            description: 'API key hash'
+            example: 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+            minLength: 1
+            type: 'string'
+        - description: 'Workspace the policy belongs to'
+          in: 'query'
+          name: 'workspace_id'
+          required: true
+          schema:
+            description: 'Workspace the policy belongs to'
+            example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+            format: 'uuid'
+            type: 'string'
+        - description: 'Policy type the assignment is read or changed for'
+          in: 'query'
+          name: 'policy_type'
+          required: true
+          schema:
+            description: 'Policy type the assignment is read or changed for'
+            enum:
+              - 'budget'
+              - 'model_availability'
+              - 'moderation'
+              - 'rate_limit'
+            example: 'budget'
+            type: 'string'
+            x-speakeasy-unknown-values: allow
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuardrailPolicyAssignmentResponse'
+          description: 'Assignment state'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Get an API key policy assignment'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'getApiKeyPolicyAssignment'
+    put:
+      description: 'Assign or unassign one policy for an API key. Fails with 409 when `expected_assignment` no longer matches the stored state. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'changeApiKeyPolicyAssignment'
+      parameters:
+        - description: 'API key hash'
+          in: 'path'
+          name: 'hash'
+          required: true
+          schema:
+            description: 'API key hash'
+            example: 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
+            minLength: 1
+            type: 'string'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeGuardrailPolicyAssignmentRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangeGuardrailPolicyAssignmentResponse'
+          description: 'Assignment changed'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Change an API key policy assignment'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'changeApiKeyPolicyAssignment'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /guardrails/policies/assignments/members/{member_id}:
+    get:
+      description: 'Get the policies of one type that apply to a member in a workspace. Requires a management key with write access. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'getMemberPolicyAssignment'
+      parameters:
+        - description: 'Organization member user ID'
+          in: 'path'
+          name: 'member_id'
+          required: true
+          schema:
+            description: 'Organization member user ID'
+            example: 'user_2abcDEFghiJKLmnoPQRstu'
+            minLength: 1
+            type: 'string'
+        - description: 'Workspace the policy belongs to'
+          in: 'query'
+          name: 'workspace_id'
+          required: true
+          schema:
+            description: 'Workspace the policy belongs to'
+            example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+            format: 'uuid'
+            type: 'string'
+        - description: 'Policy type the assignment is read or changed for'
+          in: 'query'
+          name: 'policy_type'
+          required: true
+          schema:
+            description: 'Policy type the assignment is read or changed for'
+            enum:
+              - 'budget'
+              - 'model_availability'
+              - 'moderation'
+              - 'rate_limit'
+            example: 'budget'
+            type: 'string'
+            x-speakeasy-unknown-values: allow
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuardrailPolicyAssignmentResponse'
+          description: 'Assignment state'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Get a member policy assignment'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'getMemberPolicyAssignment'
+    put:
+      description: 'Assign or unassign one policy for a member. Fails with 409 when `expected_assignment` no longer matches the stored state. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'changeMemberPolicyAssignment'
+      parameters:
+        - description: 'Organization member user ID'
+          in: 'path'
+          name: 'member_id'
+          required: true
+          schema:
+            description: 'Organization member user ID'
+            example: 'user_2abcDEFghiJKLmnoPQRstu'
+            minLength: 1
+            type: 'string'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeGuardrailPolicyAssignmentRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangeGuardrailPolicyAssignmentResponse'
+          description: 'Assignment changed'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Change a member policy assignment'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'changeMemberPolicyAssignment'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /guardrails/policies/budget:
+    get:
+      description: 'List the budget policies in a workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'listBudgetPolicies'
+      parameters:
+        - description: 'Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned'
+          in: 'query'
+          name: 'offset'
+          required: false
+          schema:
+            description: 'Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned'
+            example: 0
+            minimum: 0
+            type: 'integer'
+        - description: 'Maximum number of records to return (max 100). When both offset and limit are omitted, the full list is returned'
+          in: 'query'
+          name: 'limit'
+          required: false
+          schema:
+            description: 'Maximum number of records to return (max 100). When both offset and limit are omitted, the full list is returned'
+            example: 50
+            maximum: 100
+            minimum: 1
+            type: 'integer'
+        - description: 'Workspace the policy belongs to'
+          in: 'query'
+          name: 'workspace_id'
+          required: true
+          schema:
+            description: 'Workspace the policy belongs to'
+            example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+            format: 'uuid'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListBudgetGuardrailPoliciesResponse'
+          description: 'List of budget policies'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'List budget policies'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'listBudgetPolicies'
+      x-speakeasy-pagination:
+        inputs:
+          - in: 'parameters'
+            name: 'offset'
+            type: 'offset'
+          - in: 'parameters'
+            name: 'limit'
+            type: 'limit'
+        outputs:
+          results: '$.data'
+        type: 'offsetLimit'
+    post:
+      description: 'Create a budget policy in a workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'createBudgetPolicy'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBudgetGuardrailPolicyRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetGuardrailPolicyResponse'
+          description: 'budget policy created'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Create a budget policy'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'createBudgetPolicy'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /guardrails/policies/budget/{id}:
+    delete:
+      description: 'Delete a budget policy. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'deleteBudgetPolicy'
+      parameters:
+        - description: 'Policy ID'
+          in: 'path'
+          name: 'id'
+          required: true
+          schema:
+            description: 'Policy ID'
+            example: '550e8400-e29b-41d4-a716-446655440000'
+            format: 'uuid'
+            type: 'string'
+        - description: 'Workspace the policy belongs to'
+          in: 'query'
+          name: 'workspace_id'
+          required: true
+          schema:
+            description: 'Workspace the policy belongs to'
+            example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+            format: 'uuid'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteGuardrailPolicyResponse'
+          description: 'budget policy deleted'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Delete a budget policy'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'deleteBudgetPolicy'
+    get:
+      description: 'Get a budget policy with its member and API key assignments. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'getBudgetPolicy'
+      parameters:
+        - description: 'Policy ID'
+          in: 'path'
+          name: 'id'
+          required: true
+          schema:
+            description: 'Policy ID'
+            example: '550e8400-e29b-41d4-a716-446655440000'
+            format: 'uuid'
+            type: 'string'
+        - description: 'Workspace the policy belongs to'
+          in: 'query'
+          name: 'workspace_id'
+          required: true
+          schema:
+            description: 'Workspace the policy belongs to'
+            example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+            format: 'uuid'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetGuardrailPolicyDetailResponse'
+          description: 'budget policy details'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Get a budget policy'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'getBudgetPolicy'
+    put:
+      description: 'Replace a budget policy''s name and config, and optionally its assignments. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'updateBudgetPolicy'
+      parameters:
+        - description: 'Policy ID'
+          in: 'path'
+          name: 'id'
+          required: true
+          schema:
+            description: 'Policy ID'
+            example: '550e8400-e29b-41d4-a716-446655440000'
+            format: 'uuid'
+            type: 'string'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBudgetGuardrailPolicyRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetGuardrailPolicyResponse'
+          description: 'budget policy updated'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Update a budget policy'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'updateBudgetPolicy'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /guardrails/policies/model-availability:
+    get:
+      description: 'List the model availability policies in a workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'listModelAvailabilityPolicies'
+      parameters:
+        - description: 'Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned'
+          in: 'query'
+          name: 'offset'
+          required: false
+          schema:
+            description: 'Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned'
+            example: 0
+            minimum: 0
+            type: 'integer'
+        - description: 'Maximum number of records to return (max 100). When both offset and limit are omitted, the full list is returned'
+          in: 'query'
+          name: 'limit'
+          required: false
+          schema:
+            description: 'Maximum number of records to return (max 100). When both offset and limit are omitted, the full list is returned'
+            example: 50
+            maximum: 100
+            minimum: 1
+            type: 'integer'
+        - description: 'Workspace the policy belongs to'
+          in: 'query'
+          name: 'workspace_id'
+          required: true
+          schema:
+            description: 'Workspace the policy belongs to'
+            example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+            format: 'uuid'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListModelAvailabilityGuardrailPoliciesResponse'
+          description: 'List of model availability policies'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'List model availability policies'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'listModelAvailabilityPolicies'
+      x-speakeasy-pagination:
+        inputs:
+          - in: 'parameters'
+            name: 'offset'
+            type: 'offset'
+          - in: 'parameters'
+            name: 'limit'
+            type: 'limit'
+        outputs:
+          results: '$.data'
+        type: 'offsetLimit'
+    post:
+      description: 'Create a model availability policy in a workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'createModelAvailabilityPolicy'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateModelAvailabilityGuardrailPolicyRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelAvailabilityGuardrailPolicyResponse'
+          description: 'model availability policy created'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Create a model availability policy'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'createModelAvailabilityPolicy'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /guardrails/policies/model-availability/{id}:
+    delete:
+      description: 'Delete a model availability policy. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'deleteModelAvailabilityPolicy'
+      parameters:
+        - description: 'Policy ID'
+          in: 'path'
+          name: 'id'
+          required: true
+          schema:
+            description: 'Policy ID'
+            example: '550e8400-e29b-41d4-a716-446655440000'
+            format: 'uuid'
+            type: 'string'
+        - description: 'Workspace the policy belongs to'
+          in: 'query'
+          name: 'workspace_id'
+          required: true
+          schema:
+            description: 'Workspace the policy belongs to'
+            example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+            format: 'uuid'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteGuardrailPolicyResponse'
+          description: 'model availability policy deleted'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Delete a model availability policy'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'deleteModelAvailabilityPolicy'
+    get:
+      description: 'Get a model availability policy with its member and API key assignments. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'getModelAvailabilityPolicy'
+      parameters:
+        - description: 'Policy ID'
+          in: 'path'
+          name: 'id'
+          required: true
+          schema:
+            description: 'Policy ID'
+            example: '550e8400-e29b-41d4-a716-446655440000'
+            format: 'uuid'
+            type: 'string'
+        - description: 'Workspace the policy belongs to'
+          in: 'query'
+          name: 'workspace_id'
+          required: true
+          schema:
+            description: 'Workspace the policy belongs to'
+            example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+            format: 'uuid'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelAvailabilityGuardrailPolicyDetailResponse'
+          description: 'model availability policy details'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Get a model availability policy'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'getModelAvailabilityPolicy'
+    put:
+      description: 'Replace a model availability policy''s name and config, and optionally its assignments. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'updateModelAvailabilityPolicy'
+      parameters:
+        - description: 'Policy ID'
+          in: 'path'
+          name: 'id'
+          required: true
+          schema:
+            description: 'Policy ID'
+            example: '550e8400-e29b-41d4-a716-446655440000'
+            format: 'uuid'
+            type: 'string'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateModelAvailabilityGuardrailPolicyRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelAvailabilityGuardrailPolicyResponse'
+          description: 'model availability policy updated'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Update a model availability policy'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'updateModelAvailabilityPolicy'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /guardrails/policies/moderation:
+    get:
+      description: 'List the moderation policies in a workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'listModerationPolicies'
+      parameters:
+        - description: 'Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned'
+          in: 'query'
+          name: 'offset'
+          required: false
+          schema:
+            description: 'Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned'
+            example: 0
+            minimum: 0
+            type: 'integer'
+        - description: 'Maximum number of records to return (max 100). When both offset and limit are omitted, the full list is returned'
+          in: 'query'
+          name: 'limit'
+          required: false
+          schema:
+            description: 'Maximum number of records to return (max 100). When both offset and limit are omitted, the full list is returned'
+            example: 50
+            maximum: 100
+            minimum: 1
+            type: 'integer'
+        - description: 'Workspace the policy belongs to'
+          in: 'query'
+          name: 'workspace_id'
+          required: true
+          schema:
+            description: 'Workspace the policy belongs to'
+            example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+            format: 'uuid'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListModerationGuardrailPoliciesResponse'
+          description: 'List of moderation policies'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'List moderation policies'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'listModerationPolicies'
+      x-speakeasy-pagination:
+        inputs:
+          - in: 'parameters'
+            name: 'offset'
+            type: 'offset'
+          - in: 'parameters'
+            name: 'limit'
+            type: 'limit'
+        outputs:
+          results: '$.data'
+        type: 'offsetLimit'
+    post:
+      description: 'Create a moderation policy in a workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'createModerationPolicy'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateModerationGuardrailPolicyRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModerationGuardrailPolicyResponse'
+          description: 'moderation policy created'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Create a moderation policy'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'createModerationPolicy'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
+  /guardrails/policies/moderation/{id}:
+    delete:
+      description: 'Delete a moderation policy. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'deleteModerationPolicy'
+      parameters:
+        - description: 'Policy ID'
+          in: 'path'
+          name: 'id'
+          required: true
+          schema:
+            description: 'Policy ID'
+            example: '550e8400-e29b-41d4-a716-446655440000'
+            format: 'uuid'
+            type: 'string'
+        - description: 'Workspace the policy belongs to'
+          in: 'query'
+          name: 'workspace_id'
+          required: true
+          schema:
+            description: 'Workspace the policy belongs to'
+            example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+            format: 'uuid'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteGuardrailPolicyResponse'
+          description: 'moderation policy deleted'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Delete a moderation policy'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'deleteModerationPolicy'
+    get:
+      description: 'Get a moderation policy with its member and API key assignments. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'getModerationPolicy'
+      parameters:
+        - description: 'Policy ID'
+          in: 'path'
+          name: 'id'
+          required: true
+          schema:
+            description: 'Policy ID'
+            example: '550e8400-e29b-41d4-a716-446655440000'
+            format: 'uuid'
+            type: 'string'
+        - description: 'Workspace the policy belongs to'
+          in: 'query'
+          name: 'workspace_id'
+          required: true
+          schema:
+            description: 'Workspace the policy belongs to'
+            example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+            format: 'uuid'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModerationGuardrailPolicyDetailResponse'
+          description: 'moderation policy details'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Get a moderation policy'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'getModerationPolicy'
+    put:
+      description: 'Replace a moderation policy''s name and config, and optionally its assignments. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      operationId: 'updateModerationPolicy'
+      parameters:
+        - description: 'Policy ID'
+          in: 'path'
+          name: 'id'
+          required: true
+          schema:
+            description: 'Policy ID'
+            example: '550e8400-e29b-41d4-a716-446655440000'
+            format: 'uuid'
+            type: 'string'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateModerationGuardrailPolicyRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModerationGuardrailPolicyResponse'
+          description: 'moderation policy updated'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      summary: 'Update a moderation policy'
+      tags:
+        - 'Guardrail Policies'
+      x-speakeasy-name-override: 'updateModerationPolicy'
+    parameters:
+      - $ref: "#/components/parameters/AppIdentifier"
+      - $ref: "#/components/parameters/AppDisplayName"
+      - $ref: "#/components/parameters/AppCategories"
   /images:
     post:
       description: 'Generates an image from a text prompt via the image generation router'
@@ -45653,6 +50127,14 @@ paths:
       tags:
         - 'API Keys'
       x-speakeasy-name-override: 'list'
+      x-speakeasy-pagination:
+        inputs:
+          - in: 'parameters'
+            name: 'offset'
+            type: 'offset'
+        outputs:
+          results: '$.data'
+        type: 'offsetLimit'
     post:
       description: 'Create a new API key for the authenticated user. The plaintext `key` is returned only in this response. Treat it as a write-only, sensitive value; it cannot be retrieved later. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys). The optional `external` object associates the key with a partner-defined user and lookup key.'
       operationId: 'createKeys'
@@ -49131,7 +53613,7 @@ paths:
       - $ref: "#/components/parameters/AppCategories"
   /presets/{slug}/chat/completions:
     post:
-      description: 'Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored.'
+      description: 'Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored. Requires a read-write [management key](/docs/guides/overview/auth/management-api-keys); inference API keys are rejected.'
       operationId: 'createPresetsChatCompletions'
       parameters:
         - description: 'URL-safe slug identifying the preset. Created if it does not exist.'
@@ -49142,6 +53624,15 @@ paths:
             description: 'URL-safe slug identifying the preset. Created if it does not exist.'
             example: 'my-preset'
             minLength: 1
+            type: 'string'
+        - description: 'Workspace to create the preset in. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+          in: 'query'
+          name: 'workspace_id'
+          required: false
+          schema:
+            description: 'Workspace to create the preset in. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+            example: '750e8400-e29b-41d4-a716-446655440002'
+            format: 'uuid'
             type: 'string'
       requestBody:
         content:
@@ -49259,7 +53750,7 @@ paths:
       - $ref: "#/components/parameters/AppCategories"
   /presets/{slug}/messages:
     post:
-      description: 'Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored.'
+      description: 'Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored. Requires a read-write [management key](/docs/guides/overview/auth/management-api-keys); inference API keys are rejected.'
       operationId: 'createPresetsMessages'
       parameters:
         - description: 'URL-safe slug identifying the preset. Created if it does not exist.'
@@ -49270,6 +53761,15 @@ paths:
             description: 'URL-safe slug identifying the preset. Created if it does not exist.'
             example: 'my-preset'
             minLength: 1
+            type: 'string'
+        - description: 'Workspace to create the preset in. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+          in: 'query'
+          name: 'workspace_id'
+          required: false
+          schema:
+            description: 'Workspace to create the preset in. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+            example: '750e8400-e29b-41d4-a716-446655440002'
+            format: 'uuid'
             type: 'string'
       requestBody:
         content:
@@ -49386,7 +53886,7 @@ paths:
       - $ref: "#/components/parameters/AppCategories"
   /presets/{slug}/responses:
     post:
-      description: 'Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored.'
+      description: 'Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored. Requires a read-write [management key](/docs/guides/overview/auth/management-api-keys); inference API keys are rejected.'
       operationId: 'createPresetsResponses'
       parameters:
         - description: 'URL-safe slug identifying the preset. Created if it does not exist.'
@@ -49397,6 +53897,15 @@ paths:
             description: 'URL-safe slug identifying the preset. Created if it does not exist.'
             example: 'my-preset'
             minLength: 1
+            type: 'string'
+        - description: 'Workspace to create the preset in. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+          in: 'query'
+          name: 'workspace_id'
+          required: false
+          schema:
+            description: 'Workspace to create the preset in. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+            example: '750e8400-e29b-41d4-a716-446655440002'
+            format: 'uuid'
             type: 'string'
       requestBody:
         content:
@@ -50128,7 +54637,7 @@ paths:
         - 'Private Endpoints'
       x-speakeasy-name-override: 'get'
     patch:
-      description: 'Change any of the endpoint fields you own in one call; only the fields present change, and the response is the whole endpoint. `pricing` and `declared_parameters` replace their stored value, `settings` changes only the fields it names (`null` clears a limit or restores the provider default); routing picks these up for subsequent requests on drafts and active endpoints alike. `upstream_model_id`, `base_url`, `declared_zdr` and `declared_region` re-point a draft: an omitted `upstream_model_id` or `base_url` keeps the stored one, omitted data-policy declarations are kept while the upstream is unchanged and cleared when it changes, and any upstream change clears earlier validation. Naming an upstream field on an active endpoint returns 409 `already_active` and writes nothing; delete and re-create instead. Every group is checked before anything is written: 400 `parameters_invalid` when `tool_choice` is declared without `tools` tested or declared, 400 `settings_invalid` when `max_prompt_tokens` exceeds the context length, both completion APIs are off, or `excluded_parameters` names a tested parameter, 422 `pricing_invalid` for rates the provider strategy cannot represent. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Change any of the endpoint fields you own in one call; only the fields present change, and the response is the whole endpoint. `pricing` and `declared_parameters` replace their stored value, `settings` changes only the fields it names (`null` clears a limit or restores the provider default); routing picks these up for subsequent requests on drafts and active endpoints alike. `declared_zdr` and `declared_region` change on drafts and active endpoints alike; on an active endpoint the change keeps its validation and tested parameters, and routing applies it to subsequent requests. `upstream_model_id` and `base_url` re-point a draft: an omitted `upstream_model_id` or `base_url` keeps the stored one, omitted data-policy declarations are kept while the upstream is unchanged and cleared when it changes, and any change to the upstream or declarations of a draft clears earlier validation. Naming `upstream_model_id` or `base_url` on an active endpoint returns 409 `already_active` and writes nothing, even alongside other fields; delete and re-create instead. Every group is checked before anything is written: 400 `parameters_invalid` when `tool_choice` is declared without `tools` tested or declared, 400 `settings_invalid` when `max_prompt_tokens` exceeds the context length, both completion APIs are off, or `excluded_parameters` names a tested parameter, 422 `pricing_invalid` for rates the provider strategy cannot represent. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'updatePrivateEndpoint'
       parameters:
         - description: 'Stable identifier of the private endpoint.'
@@ -57007,6 +61516,8 @@ tags:
     name: 'Files'
   - description: 'Generation history endpoints'
     name: 'Generations'
+  - description: 'Guardrail Policies endpoints'
+    name: 'Guardrail Policies'
   - description: 'Guardrails endpoints'
     name: 'Guardrails'
   - description: 'Images endpoints'

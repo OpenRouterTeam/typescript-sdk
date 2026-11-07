@@ -55,7 +55,7 @@ export class Presets extends ClientSDK {
    * Create a preset from a chat-completions request body
    *
    * @remarks
-   * Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored.
+   * Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored. Requires a read-write [management key](/docs/guides/overview/auth/management-api-keys); inference API keys are rejected.
    */
   async createPresetsChatCompletions(
     request: operations.CreatePresetsChatCompletionsRequest,
@@ -72,7 +72,7 @@ export class Presets extends ClientSDK {
    * Create a preset from a messages request body
    *
    * @remarks
-   * Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored.
+   * Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored. Requires a read-write [management key](/docs/guides/overview/auth/management-api-keys); inference API keys are rejected.
    */
   async createPresetsMessages(
     request: operations.CreatePresetsMessagesRequest,
@@ -89,7 +89,7 @@ export class Presets extends ClientSDK {
    * Create a preset from a responses request body
    *
    * @remarks
-   * Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored.
+   * Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored. Requires a read-write [management key](/docs/guides/overview/auth/management-api-keys); inference API keys are rejected.
    */
   async createPresetsResponses(
     request: operations.CreatePresetsResponsesRequest,

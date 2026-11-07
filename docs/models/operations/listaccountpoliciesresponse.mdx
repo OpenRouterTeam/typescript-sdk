@@ -1,0 +1,41 @@
+---
+title: "ListAccountPoliciesResponse"
+---
+
+## Example Usage
+
+```typescript
+import { ListAccountPoliciesResponse } from "@openrouter/sdk/models/operations";
+
+let value: ListAccountPoliciesResponse = {
+  result: {
+    data: [
+      {
+        config: {},
+        createdAt: "2025-08-24T10:30:00Z",
+        id: "550e8400-e29b-41d4-a716-446655440000",
+        isDefault: true,
+        isSynced: false,
+        isWorkspaceDefaultSynced: false,
+        name: "Engineering monthly budget",
+        optedOutWorkspaceIds: [
+          "0df9e665-d932-5740-b2c7-b52af166bc11",
+        ],
+        policyType: "moderation",
+        updatedAt: "1735606899701",
+        workspaceCount: 146013,
+        workspaceIds: [
+          "0df9e665-d932-5740-b2c7-b52af166bc11",
+        ],
+      },
+    ],
+    totalCount: 1,
+  },
+};
+```
+
+## Fields
+
+| Field                                                                                               | Type                                                                                                | Required                                                                                            | Description                                                                                         |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `result`                                                                                            | [models.ListAccountGuardrailPoliciesResponse](../../models/listaccountguardrailpoliciesresponse.mdx) | ✔️                                                                                  | N/A                                                                                                 |

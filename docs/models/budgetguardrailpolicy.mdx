@@ -1,0 +1,25 @@
+---
+title: "BudgetGuardrailPolicy"
+---
+
+## Example Usage
+
+```typescript
+import { BudgetGuardrailPolicy } from "@openrouter/sdk/models";
+
+let value: BudgetGuardrailPolicy = {
+  config: {},
+  id: "550e8400-e29b-41d4-a716-446655440000",
+  name: "Engineering monthly budget",
+  policyType: "budget",
+};
+```
+
+## Fields
+
+| Field                                                                                  | Type                                                                                   | Required                                                                               | Description                                                                            | Example                                                                                |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `config`                                                                               | [models.GuardrailBudgetPolicyConfig](../models/guardrailbudgetpolicyconfig.mdx)         | ✔️                                                                     | N/A                                                                                    | \{<br/>"include_byok_in_budgets": false,<br/>"limit_usd": 200,<br/>"reset_interval": "monthly"<br/>} |
+| `id`                                                                                   | *string*                                                                               | ✔️                                                                     | Policy ID                                                                              | 550e8400-e29b-41d4-a716-446655440000                                                   |
+| `name`                                                                                 | *string*                                                                               | ✔️                                                                     | Policy name                                                                            | Engineering monthly budget                                                             |
+| `policyType`                                                                           | [models.BudgetGuardrailPolicyPolicyType](../models/budgetguardrailpolicypolicytype.mdx) | ✔️                                                                     | N/A                                                                                    |                                                                                        |

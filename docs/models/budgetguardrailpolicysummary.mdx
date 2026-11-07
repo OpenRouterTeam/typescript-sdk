@@ -1,0 +1,35 @@
+---
+title: "BudgetGuardrailPolicySummary"
+---
+
+## Example Usage
+
+```typescript
+import { BudgetGuardrailPolicySummary } from "@openrouter/sdk/models";
+
+let value: BudgetGuardrailPolicySummary = {
+  apiKeyCount: 195053,
+  config: {},
+  id: "550e8400-e29b-41d4-a716-446655440000",
+  memberCount: 471032,
+  name: "Engineering monthly budget",
+  policyType: "budget",
+  updatedAt: "1735630059366",
+};
+```
+
+## Fields
+
+| Field                                                                                                | Type                                                                                                 | Required                                                                                             | Description                                                                                          | Example                                                                                              |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `apiKeyCount`                                                                                        | *number*                                                                                             | ✔️                                                                                   | N/A                                                                                                  |                                                                                                      |
+| `config`                                                                                             | [models.GuardrailBudgetPolicyConfig](../models/guardrailbudgetpolicyconfig.mdx)                       | ✔️                                                                                   | N/A                                                                                                  | \{<br/>"include_byok_in_budgets": false,<br/>"limit_usd": 200,<br/>"reset_interval": "monthly"<br/>}  |
+| `id`                                                                                                 | *string*                                                                                             | ✔️                                                                                   | Policy ID                                                                                            | 550e8400-e29b-41d4-a716-446655440000                                                                 |
+| `isLegacyMapped`                                                                                     | *boolean*                                                                                            | ➖                                                                                   | Whether the policy is kept in sync with a v1 guardrail                                               |                                                                                                      |
+| `isWorkspaceDefault`                                                                                 | *boolean*                                                                                            | ➖                                                                                   | N/A                                                                                                  |                                                                                                      |
+| `legacyGuardrailIds`                                                                                 | *string*[]                                                                                           | ➖                                                                                   | IDs of the v1 guardrails this policy was migrated from                                               |                                                                                                      |
+| `memberCount`                                                                                        | *number*                                                                                             | ✔️                                                                                   | N/A                                                                                                  |                                                                                                      |
+| `name`                                                                                               | *string*                                                                                             | ✔️                                                                                   | Policy name                                                                                          | Engineering monthly budget                                                                           |
+| `policyType`                                                                                         | [models.BudgetGuardrailPolicySummaryPolicyType](../models/budgetguardrailpolicysummarypolicytype.mdx) | ✔️                                                                                   | N/A                                                                                                  |                                                                                                      |
+| `replacedLegacyGuardrailIds`                                                                         | *string*[]                                                                                           | ➖                                                                                   | IDs of the v1 guardrails this policy replaced                                                        |                                                                                                      |
+| `updatedAt`                                                                                          | *string*                                                                                             | ✔️                                                                                   | N/A                                                                                                  |                                                                                                      |
