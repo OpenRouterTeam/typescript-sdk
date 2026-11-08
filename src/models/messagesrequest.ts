@@ -556,7 +556,7 @@ export type MessagesRequest = {
   cacheControl?: AnthropicCacheControlDirective | undefined;
   contextManagement?: ContextManagement | null | undefined;
   /**
-   * Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation; keep the catalog unchanged.
+   * Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation. The portable profile needs the catalog unchanged across a continuation; the universal profile accepts a changed catalog and, with `announce_catalog_changes`, tells the model about it.
    */
   deferredTools?: DeferredToolsControl | undefined;
   /**

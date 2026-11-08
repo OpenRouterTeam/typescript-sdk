@@ -81,9 +81,13 @@ export const Validation = {
 export type Validation = ClosedEnum<typeof Validation>;
 
 /**
- * Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation; keep the catalog unchanged.
+ * Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation. The portable profile needs the catalog unchanged across a continuation; the universal profile accepts a changed catalog and, with `announce_catalog_changes`, tells the model about it.
  */
 export type DeferredToolsControl = {
+  /**
+   * Universal profile only. When true, a catalog whose deferred tools changed between two of the model's own turns (a client that connects MCP servers while the model works) is re-announced before the next model turn, with the sources added, changed and removed since the previous index, or that no deferred tools remain. Applies when the router lists the catalog itself; a client whose own tool search was adopted lists its deferred tools itself and is not re-announced. The announcement shares the result budget of the turn and is skipped when it does not fit. Absent or false: the catalog index is announced on a user turn only.
+   */
+  announceCatalogChanges?: boolean | undefined;
   /**
    * How a universal `tool_search` query reaches the client's own tool search. Absent or `keywords`: a `select:` query becomes the words of the selected names and the limit is always filled. `native`: a `select:` query passes through verbatim when the client search documents `select:`, and the limit field is sent only when the model gave one, unless the client search requires it, in which case its documented default is sent. Experimental.
    */
@@ -145,6 +149,7 @@ export const Validation$outboundSchema: z.ZodEnum<typeof Validation> = z.enum(
 
 /** @internal */
 export type DeferredToolsControl$Outbound = {
+  announce_catalog_changes?: boolean | undefined;
   cascade_mode?: string | undefined;
   hint?: string | undefined;
   interface?: string | undefined;
@@ -160,6 +165,7 @@ export const DeferredToolsControl$outboundSchema: z.ZodType<
   DeferredToolsControl$Outbound,
   DeferredToolsControl
 > = z.object({
+  announceCatalogChanges: z.boolean().optional(),
   cascadeMode: CascadeMode$outboundSchema.optional(),
   hint: z.string().optional(),
   interface: Interface$outboundSchema.optional(),
@@ -170,6 +176,7 @@ export const DeferredToolsControl$outboundSchema: z.ZodType<
   validation: Validation$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
+    announceCatalogChanges: "announce_catalog_changes",
     cascadeMode: "cascade_mode",
   });
 });
