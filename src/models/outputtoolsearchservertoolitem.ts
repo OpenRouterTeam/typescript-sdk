@@ -54,6 +54,10 @@ export type OutputToolSearchServerToolItem = {
    */
   callId?: string | undefined;
   /**
+   * What the announced index added and removed since the previous one, when the request opted into `announce_catalog_changes` and the catalog changed between model turns. Replaying the item shows the same lines.
+   */
+  catalogChanges?: string | undefined;
+  /**
    * The deferred-tool index the router showed the model with a pre-search, listing tool sources and names. Replaying the item shows the same index.
    */
   catalogIndex?: string | undefined;
@@ -152,6 +156,7 @@ export const OutputToolSearchServerToolItem$inboundSchema: z.ZodType<
 > = z.object({
   arguments: z.string().optional(),
   call_id: z.string().optional(),
+  catalog_changes: z.string().optional(),
   catalog_index: z.string().optional(),
   error: z.string().optional(),
   format: OutputToolSearchServerToolItemFormat$inboundSchema.optional(),
@@ -166,6 +171,7 @@ export const OutputToolSearchServerToolItem$inboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
+    "catalog_changes": "catalogChanges",
     "catalog_index": "catalogIndex",
     "turn_call_ids": "turnCallIds",
   });
@@ -174,6 +180,7 @@ export const OutputToolSearchServerToolItem$inboundSchema: z.ZodType<
 export type OutputToolSearchServerToolItem$Outbound = {
   arguments?: string | undefined;
   call_id?: string | undefined;
+  catalog_changes?: string | undefined;
   catalog_index?: string | undefined;
   error?: string | undefined;
   format?: string | undefined;
@@ -194,6 +201,7 @@ export const OutputToolSearchServerToolItem$outboundSchema: z.ZodType<
 > = z.object({
   arguments: z.string().optional(),
   callId: z.string().optional(),
+  catalogChanges: z.string().optional(),
   catalogIndex: z.string().optional(),
   error: z.string().optional(),
   format: OutputToolSearchServerToolItemFormat$outboundSchema.optional(),
@@ -208,6 +216,7 @@ export const OutputToolSearchServerToolItem$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",
+    catalogChanges: "catalog_changes",
     catalogIndex: "catalog_index",
     turnCallIds: "turn_call_ids",
   });
