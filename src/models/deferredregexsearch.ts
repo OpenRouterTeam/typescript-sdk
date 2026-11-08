@@ -12,6 +12,10 @@ import { remap as remap$ } from "../lib/primitives.js";
 export type DeferredRegexSearch = {
   maxResults?: number | undefined;
   /**
+   * Universal profile only, for searches the router answers through the `tool_search` wrapper. When true, a search that matches nothing also names the deferred sources this search covers (namespaces, MCP servers, and shared `<server>_` prefixes; up to 40 names or 2,000 characters, with a count of any omitted) and tells the model that a source the search does not cover is unreachable through it in this request, so it can make a client tool call the task already needs (or a read-only one) and search again on a later turn instead of concluding the integration is missing. Direct tools, including a client's built-in tools, are already in the tool list and are not named. Absent or false: a miss suggests other keywords and the closest names only.
+   */
+  missSources?: boolean | undefined;
+  /**
    * Universal profile only, for searches the router answers through the `tool_search` wrapper; code-mode `search()` and a client-owned tool search list the matched tools alone. When true, each result also names up to 16 other deferred tools of every source a match came from, so a model that found one tool of an MCP server learns its neighbours without another search. Absent or false: results list the matched tools alone.
    */
   siblings?: boolean | undefined;
@@ -21,6 +25,7 @@ export type DeferredRegexSearch = {
 /** @internal */
 export type DeferredRegexSearch$Outbound = {
   max_results?: number | undefined;
+  miss_sources?: boolean | undefined;
   siblings?: boolean | undefined;
   type: "regex";
 };
@@ -31,11 +36,13 @@ export const DeferredRegexSearch$outboundSchema: z.ZodType<
   DeferredRegexSearch
 > = z.object({
   maxResults: z.int().optional(),
+  missSources: z.boolean().optional(),
   siblings: z.boolean().optional(),
   type: z.literal("regex"),
 }).transform((v) => {
   return remap$(v, {
     maxResults: "max_results",
+    missSources: "miss_sources",
   });
 });
 
