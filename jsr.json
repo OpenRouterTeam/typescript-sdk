@@ -2,7 +2,7 @@
 
 {
   "name": "@openrouter/sdk",
-  "version": "1.5.66",
+  "version": "1.5.67",
   "exports": {
     ".": "./src/index.ts",    
     "./models/errors": "./src/models/errors/index.ts",    
