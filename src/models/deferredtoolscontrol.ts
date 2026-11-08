@@ -38,14 +38,14 @@ export const Interface = {
 export type Interface = OpenEnum<typeof Interface>;
 
 /**
- * Loading profile. `portable` serves the `defer_loading` tools with router-built search and call wrappers on any model and keeps the catalog fixed. `universal` defers every wrappable tool behind the same wrappers so the provider-facing tool list never changes, and rebuilds the catalog from each request so tools can be added or removed mid-conversation.
+ * Loading profile. `portable` serves the `defer_loading` tools with router-built search and call wrappers on any model and keeps the catalog fixed. `universal` defers every wrappable tool behind the same wrappers so the provider-facing tool list never changes (unless `min_deferred_tools` inlines a small catalog), and rebuilds the catalog from each request so tools can be added or removed mid-conversation.
  */
 export const Profile = {
   Portable: "portable",
   Universal: "universal",
 } as const;
 /**
- * Loading profile. `portable` serves the `defer_loading` tools with router-built search and call wrappers on any model and keeps the catalog fixed. `universal` defers every wrappable tool behind the same wrappers so the provider-facing tool list never changes, and rebuilds the catalog from each request so tools can be added or removed mid-conversation.
+ * Loading profile. `portable` serves the `defer_loading` tools with router-built search and call wrappers on any model and keeps the catalog fixed. `universal` defers every wrappable tool behind the same wrappers so the provider-facing tool list never changes (unless `min_deferred_tools` inlines a small catalog), and rebuilds the catalog from each request so tools can be added or removed mid-conversation.
  */
 export type Profile = OpenEnum<typeof Profile>;
 
@@ -101,7 +101,11 @@ export type DeferredToolsControl = {
    */
   interface?: Interface | undefined;
   /**
-   * Loading profile. `portable` serves the `defer_loading` tools with router-built search and call wrappers on any model and keeps the catalog fixed. `universal` defers every wrappable tool behind the same wrappers so the provider-facing tool list never changes, and rebuilds the catalog from each request so tools can be added or removed mid-conversation.
+   * Universal profile only. When fewer tools than this would be deferred, the universal profile defers none of them and sends the client tools unchanged, so a harness with a handful of non-core tools and no MCP servers pays no search turn for them. Counted after the interface exclusions; ignored with a custom search, whose client decides what it loads. Absent: every wrappable tool in scope is deferred.
+   */
+  minDeferredTools?: number | undefined;
+  /**
+   * Loading profile. `portable` serves the `defer_loading` tools with router-built search and call wrappers on any model and keeps the catalog fixed. `universal` defers every wrappable tool behind the same wrappers so the provider-facing tool list never changes (unless `min_deferred_tools` inlines a small catalog), and rebuilds the catalog from each request so tools can be added or removed mid-conversation.
    */
   profile: Profile;
   protocol: Protocol;
@@ -153,6 +157,7 @@ export type DeferredToolsControl$Outbound = {
   cascade_mode?: string | undefined;
   hint?: string | undefined;
   interface?: string | undefined;
+  min_deferred_tools?: number | undefined;
   profile: string;
   protocol: string;
   scope?: string | undefined;
@@ -169,6 +174,7 @@ export const DeferredToolsControl$outboundSchema: z.ZodType<
   cascadeMode: CascadeMode$outboundSchema.optional(),
   hint: z.string().optional(),
   interface: Interface$outboundSchema.optional(),
+  minDeferredTools: z.int().optional(),
   profile: Profile$outboundSchema,
   protocol: Protocol$outboundSchema,
   scope: DeferredToolsControlScope$outboundSchema.optional(),
@@ -178,6 +184,7 @@ export const DeferredToolsControl$outboundSchema: z.ZodType<
   return remap$(v, {
     announceCatalogChanges: "announce_catalog_changes",
     cascadeMode: "cascade_mode",
+    minDeferredTools: "min_deferred_tools",
   });
 });
 
