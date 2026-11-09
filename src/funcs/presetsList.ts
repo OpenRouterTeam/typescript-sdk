@@ -52,6 +52,7 @@ export function presetsList(
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
       | errors.ForbiddenResponseError
+      | errors.NotFoundResponseError
       | errors.InternalServerResponseError
       | errors.ServiceUnavailableResponseError
       | OpenRouterError
@@ -85,6 +86,7 @@ async function $do(
         | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
         | errors.ForbiddenResponseError
+        | errors.NotFoundResponseError
         | errors.InternalServerResponseError
         | errors.ServiceUnavailableResponseError
         | OpenRouterError
@@ -118,6 +120,7 @@ async function $do(
   const query = encodeFormQuery({
     "limit": payload?.limit,
     "offset": payload?.offset,
+    "workspace_id": payload?.workspace_id,
   });
 
   const headers = new Headers(compactMap({
@@ -205,6 +208,7 @@ async function $do(
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.ForbiddenResponseError
+    | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | errors.ServiceUnavailableResponseError
     | OpenRouterError
@@ -222,6 +226,7 @@ async function $do(
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
+    M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.jsonErr(503, errors.ServiceUnavailableResponseError$inboundSchema),
     M.fail("4XX"),
@@ -244,6 +249,7 @@ async function $do(
         | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
         | errors.ForbiddenResponseError
+        | errors.NotFoundResponseError
         | errors.InternalServerResponseError
         | errors.ServiceUnavailableResponseError
         | OpenRouterError
