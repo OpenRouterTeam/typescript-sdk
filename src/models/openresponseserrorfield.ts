@@ -37,6 +37,7 @@ export const CodeEnum = {
   CyberPolicy: "cyber_policy",
   MisalignmentPolicyViolation: "misalignment_policy_violation",
   DataResidencyMismatch: "data_residency_mismatch",
+  FlexUnavailable: "flex_unavailable",
   PermissionDenied: "permission_denied",
 } as const;
 export type CodeEnum = OpenEnum<typeof CodeEnum>;
