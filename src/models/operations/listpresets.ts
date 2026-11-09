@@ -60,6 +60,10 @@ export type ListPresetsRequest = {
    * Maximum number of records to return (max 100)
    */
   limit?: number | undefined;
+  /**
+   * Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace.
+   */
+  workspaceId?: string | undefined;
 };
 
 export type ListPresetsResponse = {
@@ -73,6 +77,7 @@ export type ListPresetsRequest$Outbound = {
   appCategories?: string | undefined;
   offset: number | null;
   limit: number;
+  workspace_id?: string | undefined;
 };
 
 /** @internal */
@@ -85,9 +90,11 @@ export const ListPresetsRequest$outboundSchema: z.ZodType<
   appCategories: z.string().optional(),
   offset: z.nullable(z.int().default(0)),
   limit: z.int().default(50),
+  workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    workspaceId: "workspace_id",
   });
 });
 
