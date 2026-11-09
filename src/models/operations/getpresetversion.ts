@@ -56,6 +56,10 @@ export type GetPresetVersionRequest = {
    * Version number of the preset.
    */
   version: string;
+  /**
+   * Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace.
+   */
+  workspaceId?: string | undefined;
 };
 
 /** @internal */
@@ -65,6 +69,7 @@ export type GetPresetVersionRequest$Outbound = {
   appCategories?: string | undefined;
   slug: string;
   version: string;
+  workspace_id?: string | undefined;
 };
 
 /** @internal */
@@ -77,9 +82,11 @@ export const GetPresetVersionRequest$outboundSchema: z.ZodType<
   appCategories: z.string().optional(),
   slug: z.string(),
   version: z.string(),
+  workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    workspaceId: "workspace_id",
   });
 });
 

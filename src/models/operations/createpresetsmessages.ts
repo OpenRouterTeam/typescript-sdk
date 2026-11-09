@@ -54,7 +54,7 @@ export type CreatePresetsMessagesRequest = {
    */
   slug: string;
   /**
-   * Workspace to create the preset in. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace.
+   * Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace.
    */
   workspaceId?: string | undefined;
   messagesRequest: models.MessagesRequest;
