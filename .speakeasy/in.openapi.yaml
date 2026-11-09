@@ -12008,7 +12008,7 @@ components:
         max_results:
           type: 'integer'
         miss_sources:
-          description: 'Universal profile only, for searches the router answers through the `tool_search` wrapper. When true, a search that matches nothing also names the deferred sources this search covers (namespaces, MCP servers, and shared `<server>_` prefixes; up to 40 names or 2,000 characters, with a count of any omitted) and tells the model that a source the search does not cover is unreachable through it in this request, so it can make a client tool call the task already needs (or a read-only one) and search again on a later turn instead of concluding the integration is missing. A hit gets the same guidance after its matches when, as a heuristic on the model''s own words, the query''s leading word has 3 to 64 characters, no query word names a searchable source, and the leading word is not among the words of the deferred tools'' names (the union of every deferred tool name''s tokens, whole and split as the search index splits names; a camel-case word counts when each of its parts is), with descriptions left out so a tool that merely mentions another product cannot mask it (`jira create issue` answered with another tracker''s issue tools). Direct tools, including a client''s built-in tools, are already in the tool list and are not named. Absent or false: a miss suggests other keywords and the closest names only.'
+          description: 'Universal profile only, for searches the router answers through the `tool_search` wrapper. Unless false, a search that matches nothing also names the deferred sources this search covers (namespaces, MCP servers, and shared `<server>_` prefixes; up to 40 names or 2,000 characters, with a count of any omitted) and tells the model that a source the search does not cover is unreachable through it in this request, so it can make a client tool call the task already needs (or a read-only one) and search again on a later turn instead of concluding the integration is missing. A hit gets the same guidance after its matches when, as a heuristic on the model''s own words, the query''s leading word has 3 to 64 characters, no query word names a searchable source, and the leading word is not among the words of the deferred tools'' names (the union of every deferred tool name''s tokens, whole and split as the search index splits names; a camel-case word counts when each of its parts is), with descriptions left out so a tool that merely mentions another product cannot mask it (`jira create issue` answered with another tracker''s issue tools). Direct tools, including a client''s built-in tools, are already in the tool list and are not named. False: a miss suggests other keywords and the closest names only.'
           type: 'boolean'
         siblings:
           description: 'Universal profile only, for searches the router answers through the `tool_search` wrapper; code-mode `search()` and a client-owned tool search list the matched tools alone. When true, each result also names up to 16 other deferred tools of every source a match came from, so a model that found one tool of an MCP server learns its neighbours without another search. Absent or false: results list the matched tools alone.'
@@ -12057,7 +12057,7 @@ components:
         max_results:
           type: 'integer'
         miss_sources:
-          description: 'Universal profile only, for searches the router answers through the `tool_search` wrapper. When true, a search that matches nothing also names the deferred sources this search covers (namespaces, MCP servers, and shared `<server>_` prefixes; up to 40 names or 2,000 characters, with a count of any omitted) and tells the model that a source the search does not cover is unreachable through it in this request, so it can make a client tool call the task already needs (or a read-only one) and search again on a later turn instead of concluding the integration is missing. A hit gets the same guidance after its matches when, as a heuristic on the model''s own words, the query''s leading word has 3 to 64 characters, no query word names a searchable source, and the leading word is not among the words of the deferred tools'' names (the union of every deferred tool name''s tokens, whole and split as the search index splits names; a camel-case word counts when each of its parts is), with descriptions left out so a tool that merely mentions another product cannot mask it (`jira create issue` answered with another tracker''s issue tools). Direct tools, including a client''s built-in tools, are already in the tool list and are not named. Absent or false: a miss suggests other keywords and the closest names only.'
+          description: 'Universal profile only, for searches the router answers through the `tool_search` wrapper. Unless false, a search that matches nothing also names the deferred sources this search covers (namespaces, MCP servers, and shared `<server>_` prefixes; up to 40 names or 2,000 characters, with a count of any omitted) and tells the model that a source the search does not cover is unreachable through it in this request, so it can make a client tool call the task already needs (or a read-only one) and search again on a later turn instead of concluding the integration is missing. A hit gets the same guidance after its matches when, as a heuristic on the model''s own words, the query''s leading word has 3 to 64 characters, no query word names a searchable source, and the leading word is not among the words of the deferred tools'' names (the union of every deferred tool name''s tokens, whole and split as the search index splits names; a camel-case word counts when each of its parts is), with descriptions left out so a tool that merely mentions another product cannot mask it (`jira create issue` answered with another tracker''s issue tools). Direct tools, including a client''s built-in tools, are already in the tool list and are not named. False: a miss suggests other keywords and the closest names only.'
           type: 'boolean'
         siblings:
           description: 'Universal profile only, for searches the router answers through the `tool_search` wrapper; code-mode `search()` and a client-owned tool search list the matched tools alone. When true, each result also names up to 16 other deferred tools of every source a match came from, so a model that found one tool of an MCP server learns its neighbours without another search. Absent or false: results list the matched tools alone.'
@@ -52815,6 +52815,15 @@ paths:
             maximum: 100
             minimum: 1
             type: 'integer'
+        - description: 'Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+          in: 'query'
+          name: 'workspace_id'
+          required: false
+          schema:
+            description: 'Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+            example: '750e8400-e29b-41d4-a716-446655440002'
+            format: 'uuid'
+            type: 'string'
       responses:
         '200':
           content:
@@ -52866,6 +52875,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/ForbiddenResponse'
           description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
         '500':
           content:
             application/json:
@@ -52904,6 +52923,101 @@ paths:
           results: '$.data'
         type: 'offsetLimit'
   /presets/{slug}:
+    delete:
+      description: 'Archives a preset: it no longer resolves for inference and is hidden from get and list. The preset and its versions are kept, so the slug stays taken; restore it with `POST /presets/{slug}/restore`. Deleting an already-archived preset succeeds again. A disabled preset returns 409. Requires a read-write [management key](/docs/guides/overview/auth/management-api-keys); inference API keys are rejected. `workspace_id` may be sent as a query parameter or a JSON body field.'
+      operationId: 'deletePreset'
+      parameters:
+        - description: 'URL-safe slug identifying the preset.'
+          in: 'path'
+          name: 'slug'
+          required: true
+          schema:
+            description: 'URL-safe slug identifying the preset.'
+            example: 'my-preset'
+            minLength: 1
+            type: 'string'
+        - description: 'Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+          in: 'query'
+          name: 'workspace_id'
+          required: false
+          schema:
+            description: 'Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+            example: '750e8400-e29b-41d4-a716-446655440002'
+            format: 'uuid'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPresetResponse'
+          description: 'The archived preset with its designated version.'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      security:
+        - apiKey: []
+      summary: 'Delete a preset'
+      tags:
+        - 'Presets'
+      x-speakeasy-name-override: 'delete'
     get:
       description: 'Retrieves a preset by its slug with its currently designated version inline.'
       operationId: 'getPreset'
@@ -52916,6 +53030,15 @@ paths:
             description: 'URL-safe slug identifying the preset.'
             example: 'my-preset'
             minLength: 1
+            type: 'string'
+        - description: 'Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+          in: 'query'
+          name: 'workspace_id'
+          required: false
+          schema:
+            description: 'Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+            example: '750e8400-e29b-41d4-a716-446655440002'
+            format: 'uuid'
             type: 'string'
       responses:
         '200':
@@ -53028,12 +53151,12 @@ paths:
             example: 'my-preset'
             minLength: 1
             type: 'string'
-        - description: 'Workspace to create the preset in. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+        - description: 'Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
           in: 'query'
           name: 'workspace_id'
           required: false
           schema:
-            description: 'Workspace to create the preset in. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+            description: 'Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
             example: '750e8400-e29b-41d4-a716-446655440002'
             format: 'uuid'
             type: 'string'
@@ -53161,12 +53284,12 @@ paths:
             example: 'my-preset'
             minLength: 1
             type: 'string'
-        - description: 'Workspace to create the preset in. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+        - description: 'Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
           in: 'query'
           name: 'workspace_id'
           required: false
           schema:
-            description: 'Workspace to create the preset in. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+            description: 'Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
             example: '750e8400-e29b-41d4-a716-446655440002'
             format: 'uuid'
             type: 'string'
@@ -53293,12 +53416,12 @@ paths:
             example: 'my-preset'
             minLength: 1
             type: 'string'
-        - description: 'Workspace to create the preset in. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+        - description: 'Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
           in: 'query'
           name: 'workspace_id'
           required: false
           schema:
-            description: 'Workspace to create the preset in. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+            description: 'Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
             example: '750e8400-e29b-41d4-a716-446655440002'
             format: 'uuid'
             type: 'string'
@@ -53407,6 +53530,102 @@ paths:
       summary: 'Create a preset from a responses request body'
       tags:
         - 'Presets'
+  /presets/{slug}/restore:
+    post:
+      description: 'Re-activates an archived preset so it resolves for inference again. No version is created and the designated version is unchanged. Restoring an active preset returns it unchanged. A disabled preset returns 409. Requires a read-write [management key](/docs/guides/overview/auth/management-api-keys); inference API keys are rejected. `workspace_id` may be sent as a query parameter or a JSON body field.'
+      operationId: 'restorePreset'
+      parameters:
+        - description: 'URL-safe slug identifying the preset.'
+          in: 'path'
+          name: 'slug'
+          required: true
+          schema:
+            description: 'URL-safe slug identifying the preset.'
+            example: 'my-preset'
+            minLength: 1
+            type: 'string'
+        - description: 'Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+          in: 'query'
+          name: 'workspace_id'
+          required: false
+          schema:
+            description: 'Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+            example: '750e8400-e29b-41d4-a716-446655440002'
+            format: 'uuid'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPresetResponse'
+          description: 'The restored preset with its designated version.'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+      security:
+        - apiKey: []
+      summary: 'Restore a preset'
+      tags:
+        - 'Presets'
+      x-speakeasy-name-override: 'restore'
   /presets/{slug}/versions:
     get:
       description: 'Lists all versions of a preset, ordered by version number ascending (oldest first).'
@@ -53444,6 +53663,15 @@ paths:
             maximum: 100
             minimum: 1
             type: 'integer'
+        - description: 'Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+          in: 'query'
+          name: 'workspace_id'
+          required: false
+          schema:
+            description: 'Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+            example: '750e8400-e29b-41d4-a716-446655440002'
+            format: 'uuid'
+            type: 'string'
       responses:
         '200':
           content:
@@ -53563,6 +53791,15 @@ paths:
             description: 'Version number of the preset.'
             example: '1'
             minLength: 1
+            type: 'string'
+        - description: 'Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+          in: 'query'
+          name: 'workspace_id'
+          required: false
+          schema:
+            description: 'Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key''s workspace for a key limited to one workspace, otherwise to the account''s default workspace.'
+            example: '750e8400-e29b-41d4-a716-446655440002'
+            format: 'uuid'
             type: 'string'
       responses:
         '200':
