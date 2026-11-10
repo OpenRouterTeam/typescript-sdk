@@ -11339,6 +11339,31 @@ components:
         - 'failure_reason'
         - 'created_at'
       type: 'object'
+    CreditPurchasePaymentRequired:
+      properties:
+        challengeId:
+          type: 'string'
+        detail:
+          type: 'string'
+        setup:
+          description: 'The agent setup guide, `GET /api/v1/credits/purchases/setup`.'
+          example: 'https://openrouter.ai/api/v1/credits/purchases/setup'
+          type: 'string'
+        status:
+          enum:
+            - 402
+          type: 'number'
+        title:
+          type: 'string'
+        type:
+          example: 'https://paymentauth.org/problems/payment-required'
+          type: 'string'
+      required:
+        - 'type'
+        - 'title'
+        - 'status'
+        - 'setup'
+      type: 'object'
     CreditPurchaseResponse:
       properties:
         data:
@@ -42743,10 +42768,24 @@ paths:
           description: 'Unauthorized - Authentication required or invalid credentials'
         '402':
           content:
-            application/json:
+            application/problem+json:
               schema:
-                $ref: '#/components/schemas/CreditPurchaseResponse'
-          description: 'Payment required. An unpaid request carries the MPP challenge in `WWW-Authenticate`.'
+                $ref: '#/components/schemas/CreditPurchasePaymentRequired'
+          description: 'Payment required. An unpaid request carries the MPP challenge in `WWW-Authenticate`, and a `Link: rel="help"` header plus a `setup` field pointing at the agent setup guide, `GET /api/v1/credits/purchases/setup`.'
+          headers:
+            Link:
+              description: 'The agent setup guide.'
+              required: true
+              schema:
+                description: 'The agent setup guide.'
+                example: '<https://openrouter.ai/api/v1/credits/purchases/setup>; rel="help"'
+                type: 'string'
+            WWW-Authenticate:
+              description: 'The MPP challenge: `Payment id="...", method="tempo", intent="charge", ...`.'
+              required: true
+              schema:
+                description: 'The MPP challenge: `Payment id="...", method="tempo", intent="charge", ...`.'
+                type: 'string'
         '403':
           content:
             application/json:
@@ -42906,6 +42945,40 @@ paths:
       security:
         - bearerAuth: []
       summary: 'Get a credit purchase'
+      tags:
+        - 'Credits'
+      x-fern-ignore: true
+      x-hidden: true
+      x-speakeasy-ignore: true
+  /credits/purchases/setup:
+    get:
+      operationId: 'listCreditsPurchasesSetup'
+      responses:
+        '200':
+          content:
+            text/markdown:
+              schema:
+                type: 'string'
+          description: 'Markdown document, readable without a key.'
+      security: []
+      summary: 'Agent setup guide for buying credits with a machine payment'
+      tags:
+        - 'Credits'
+      x-fern-ignore: true
+      x-hidden: true
+      x-speakeasy-ignore: true
+  /credits/purchases/SKILL.md:
+    get:
+      operationId: 'listCreditsPurchasesSKILL.md'
+      responses:
+        '200':
+          content:
+            text/markdown:
+              schema:
+                type: 'string'
+          description: 'Markdown document, readable without a key.'
+      security: []
+      summary: 'Agent skill for buying OpenRouter credits'
       tags:
         - 'Credits'
       x-fern-ignore: true
