@@ -30,7 +30,7 @@ export type BYOKKeyDeclaredRegion = OpenEnum<typeof BYOKKeyDeclaredRegion>;
 
 export type BYOKKey = {
   /**
-   * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` means no restriction.
+   * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` means no restriction. A workspace-scoped management key can only name API keys in its own workspace.
    */
   allowedApiKeyHashes: Array<string> | null;
   /**

@@ -197,7 +197,7 @@ export type ListBYOKKeysRequest = {
    */
   limit?: number | undefined;
   /**
-   * Optional workspace ID to filter by. When omitted, resolves to the account’s default workspace; if that default has been deleted, the request returns a 400 and you must pass `workspace_id` explicitly.
+   * Optional workspace ID to filter by. When omitted, a workspace-scoped management key uses its own workspace. An organization management key uses the account’s default workspace; if that default has been deleted, the request returns a 400 and you must pass `workspace_id` explicitly.
    */
   workspaceId?: string | undefined;
   /**
