@@ -29,7 +29,7 @@ export type CreateBYOKKeyRequestDeclaredRegion = OpenEnum<
 
 export type CreateBYOKKeyRequest = {
   /**
-   * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` means no restriction. Must contain at least one hash if provided. Hashes that do not belong to your account return a 400.
+   * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` means no restriction. Must contain at least one hash if provided. Hashes that do not belong to your account return a 400; for a workspace-scoped management key, so do hashes of API keys outside its own workspace.
    */
   allowedApiKeyHashes?: Array<string> | null | undefined;
   /**
@@ -77,7 +77,7 @@ export type CreateBYOKKeyRequest = {
    */
   provider: BYOKProviderSlug;
   /**
-   * Optional workspace ID to scope the credential to. When omitted, the credential is created in the account's default workspace; if that default has been deleted, the request returns a 400 and you must pass `workspace_id` explicitly.
+   * Optional workspace ID to scope the credential to. When omitted, a workspace-scoped management key creates it in its own workspace. An organization management key creates it in the account's default workspace; if that default has been deleted, the request returns a 400 and you must pass `workspace_id` explicitly.
    */
   workspaceId?: string | undefined;
 };
