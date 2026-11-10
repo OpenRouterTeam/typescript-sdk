@@ -10409,6 +10409,15 @@ components:
       required:
         - 'data'
       type: 'object'
+    CreateCreditPurchaseRequest:
+      properties:
+        credit_amount_usd:
+          description: 'Credits to buy, in USD with at most two decimals. The platform fee is added on top and shown in the challenge and the receipt.'
+          example: '25.00'
+          type: 'string'
+      required:
+        - 'credit_amount_usd'
+      type: 'object'
     CreatedEvent:
       description: 'Event emitted when a response is created'
       example:
@@ -11288,6 +11297,52 @@ components:
           allOf:
             - $ref: '#/components/schemas/Workspace'
             - description: 'The created workspace'
+      required:
+        - 'data'
+      type: 'object'
+    CreditPurchase:
+      properties:
+        created_at:
+          type: 'string'
+        credit_amount_usd:
+          type: 'string'
+        failure_reason:
+          type:
+            - 'string'
+            - 'null'
+        id:
+          description: 'Purchase id, the Stripe PaymentIntent that owns the deposit address.'
+          type: 'string'
+        network:
+          type: 'string'
+        platform_fee_usd:
+          type: 'string'
+        protocol:
+          type: 'string'
+        status:
+          enum:
+            - 'awaiting_payment'
+            - 'processing'
+            - 'credited'
+            - 'failed'
+          type: 'string'
+        total_charged_usd:
+          type: 'string'
+      required:
+        - 'id'
+        - 'status'
+        - 'credit_amount_usd'
+        - 'platform_fee_usd'
+        - 'total_charged_usd'
+        - 'protocol'
+        - 'network'
+        - 'failure_reason'
+        - 'created_at'
+      type: 'object'
+    CreditPurchaseResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/CreditPurchase'
       required:
         - 'data'
       type: 'object'
@@ -42627,6 +42682,232 @@ paths:
       x-fern-ignore: true
       x-speakeasy-ignore: true
       x-speakeasy-name-override: 'createCoinbaseCharge'
+  /credits/purchases:
+    post:
+      description: 'Starts an agent credit purchase paid with a Machine Payments Protocol (MPP) credential on Tempo. The first call answers `402` with a `WWW-Authenticate: Payment ...` challenge; retry the same request, same `Idempotency-Key`, with the signed credential in `Payment-Authorization: Payment ...` (or in `Authorization: Payment ...` when the management key is sent as `X-Api-Key`). A paid request answers `202`: the transfer was broadcast and Stripe is still screening the payment, so credits arrive asynchronously. Poll the URL in the `Location` header, `GET /api/v1/credits/purchases/{id}`, until `status` is `credited` or `failed`.'
+      operationId: 'createCreditsPurchases'
+      parameters:
+        - description: 'Identifies the purchase. Send the same value on the unpaid request and on the paid retry; use a new value for a new purchase.'
+          in: 'header'
+          name: 'idempotency-key'
+          required: true
+          schema:
+            description: 'Identifies the purchase. Send the same value on the unpaid request and on the paid retry; use a new value for a new purchase.'
+            example: '6f1f7f0e-2b1a-4f57-9a43-3c1f6f3e8b0d'
+            maxLength: 255
+            minLength: 1
+            type: 'string'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCreditPurchaseRequest'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditPurchaseResponse'
+          description: 'Payment accepted; credits are minted when the PaymentIntent succeeds.'
+          headers:
+            Location:
+              description: 'The purchase to poll: `GET /api/v1/credits/purchases/{id}`.'
+              required: true
+              schema:
+                description: 'The purchase to poll: `GET /api/v1/credits/purchases/{id}`.'
+                example: '/api/v1/credits/purchases/pi_3PqXyZ2eZvKYlo2C0abc1234'
+                type: 'string'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditPurchaseResponse'
+          description: 'Payment required. An unpaid request carries the MPP challenge in `WWW-Authenticate`.'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: 'Resource conflict. Please try again later.'
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: 'Conflict - Resource conflict or concurrent modification'
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: 'Rate limit exceeded'
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: 'Too Many Requests - Rate limit exceeded'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
+      security:
+        - bearerAuth: []
+      summary: 'Buy credits with a machine payment'
+      tags:
+        - 'Credits'
+      x-fern-ignore: true
+      x-hidden: true
+      x-speakeasy-ignore: true
+  /credits/purchases/{id}:
+    get:
+      description: 'Returns one agent credit purchase of the calling account, read from its Stripe PaymentIntent. Poll this after a `202` until `status` is `credited` or `failed`.'
+      operationId: 'listCreditsPurchases'
+      parameters:
+        - in: 'path'
+          name: 'id'
+          required: true
+          schema:
+            pattern: '^pi_[A-Za-z0-9]{1,64}$'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditPurchaseResponse'
+          description: 'The purchase.'
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: 'Invalid request parameters'
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: 'Rate limit exceeded'
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: 'Too Many Requests - Rate limit exceeded'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
+      security:
+        - bearerAuth: []
+      summary: 'Get a credit purchase'
+      tags:
+        - 'Credits'
+      x-fern-ignore: true
+      x-hidden: true
+      x-speakeasy-ignore: true
   /datasets/app-rankings:
     get:
       description: "Returns the top public apps on OpenRouter ranked by token usage inside the requested\ndate window, matching the public apps marketplace on openrouter.ai/apps. Token totals\nare `prompt_tokens + completion_tokens`; hidden and private apps are excluded and\ntraffic from related app aliases is merged into the canonical visible app.\n\n`sort=popular` (default) ranks by total token volume inside the window.\n`sort=trending` ranks by absolute excess token growth: window volume minus the average\nvolume of the three equal-length periods immediately preceding the window. Apps with\nno excess growth are omitted, so `trending` may return fewer than `limit` rows.\n\nFilter with `category` (marketplace category group, e.g. `coding`) or `subcategory`\n(e.g. `cli-agent`). Ranks are re-numbered 1..N after filtering. Page with `offset` —\n`rank` stays absolute, so the first row of `offset=50` is `rank: 51`.\n\nAuthenticate with any valid OpenRouter API key (same key used for inference).\nRate-limited to 30 requests/minute per key and 500 requests/day per account.\n\nWhen republishing or quoting this dataset, OpenRouter must be cited as:\n\"Source: OpenRouter (openrouter.ai/apps), as of {as_of}.\"\n\nToken counts come from each upstream provider's own tokenizer, so a token attributed\nto one app is not directly comparable to a token attributed to another app whose\ntraffic flows through a different provider.\n\nLicensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/): reuse and republish with attribution to OpenRouter."
