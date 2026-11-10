@@ -33,7 +33,7 @@ export class Analytics extends ClientSDK {
    * Get available analytics metrics and dimensions
    *
    * @remarks
-   * Returns the available metrics, dimensions, filter operators, and granularities for the analytics query endpoint. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Returns the available metrics, dimensions, filter operators, and granularities for the analytics query endpoint. Workspace-scoped management keys are accepted. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async getAnalyticsMeta(
     request?: operations.GetAnalyticsMetaRequest | undefined,
@@ -50,7 +50,7 @@ export class Analytics extends ClientSDK {
    * Query analytics data
    *
    * @remarks
-   * Execute an analytics query with specified metrics, dimensions, filters, and time range. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Execute an analytics query with specified metrics, dimensions, filters, and time range. A workspace-scoped management key needs `activity:view_all` on its own workspace and reads only that workspace: it is refused a `workspace` filter naming another workspace, it excludes legacy rows with no workspace (including for the default workspace), and possible-cache metrics such as `possible_cached_tokens` return 400. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async queryAnalytics(
     request: operations.QueryAnalyticsRequest,
