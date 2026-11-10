@@ -29,10 +29,12 @@ import {
 export const ImageGenerationRequestAspectRatio = {
   Eleven: "1:1",
   Twelve: "1:2",
+  Thirteen: "1:3",
   Fourteen: "1:4",
   Eighteen: "1:8",
   TwentyOne: "2:1",
   TwentyThree: "2:3",
+  ThirtyOne: "3:1",
   TwoDot351: "2.35:1",
   ThirtyTwo: "3:2",
   ThirtyFour: "3:4",
