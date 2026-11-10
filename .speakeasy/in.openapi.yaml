@@ -40471,6 +40471,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerResponse'
           description: 'Internal Server Error - Unexpected server error'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
       summary: 'Create authorization code'
       tags:
         - 'OAuth'
