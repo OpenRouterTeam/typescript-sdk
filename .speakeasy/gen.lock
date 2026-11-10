@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 6a490dbc9fc288eecfdeaa7c4a1a533a
+  docChecksum: 0567f7c70acc55ba440196596ce71750
   docVersion: 1.0.0
   speakeasyVersion: 1.803.2
   generationVersion: 2.950.13
-  releaseVersion: 1.5.73
-  configChecksum: 319013f0ab14d346dc64c3c856db7aaa
+  releaseVersion: 1.5.74
+  configChecksum: c04cb0afe0074309ce8c25a4e49ecddf
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: f0e5c09d-8fcc-4a21-9420-25aa00528242
-  pristine_commit_hash: 578f8b62e2eb5508696ab90b86fbf41396043cec
-  pristine_tree_hash: f85be24f840c3edf6499d3ded87ca5cec8ab8954
+  generation_id: e3c5e6c8-1918-467b-98cf-e3f2844b1fa0
+  pristine_commit_hash: 49912e74ebcb29a73a1026002b81aaec17f707cc
+  pristine_tree_hash: ffe3dfdf9af855659c1278c628611529eba857c1
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -16643,8 +16643,8 @@ trackedFiles:
     pristine_git_object: 925aacc00d2ab8f5dce37d0da72d7b7ecb689f10
   docs/sdks/oauth/README.mdx:
     id: 42b5079343d2
-    last_write_checksum: sha1:ce4ab2812cf7097f0596fd72f6200e682e43df78
-    pristine_git_object: 72a16a1780415f23cc0efd52048191944b3dde7b
+    last_write_checksum: sha1:2572b077902164b2a954e13f825954fa62bfe9eb
+    pristine_git_object: 559a99fcb125086dc589a3c0cde08ad9db16509e
   docs/sdks/observability/README.md:
     id: bab967736831
     last_write_checksum: sha1:87ed829b99af8cfbca810691d8cab7aac25e0897
@@ -16775,12 +16775,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:2831ab0d27cd102009685a1420e83fdeb982decc
-    pristine_git_object: 5f31783860b98a531b6dab174a66611f34910ecc
+    last_write_checksum: sha1:01ef031c6602502fb962ff4b896f440acbfccb61
+    pristine_git_object: 4032e60d6986c4bacc73b69f199debe01f2deb25
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:3fa33f721b21be607c5ed390518262fcdaecc92e
-    pristine_git_object: faa26630c124597881312fb10989c7bb0d55e3b0
+    last_write_checksum: sha1:6da394d1a9ef397f64767252b9ac7b1daa3dd65c
+    pristine_git_object: 685f2d4b15c40afd672304eb3998b06bbe421bfc
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -17151,8 +17151,8 @@ trackedFiles:
     pristine_git_object: 74d0a4e2ec85c972f4b09b6ee73b2db12eac2840
   src/funcs/oAuthCreateAuthCode.ts:
     id: 8a79f27722c0
-    last_write_checksum: sha1:6c0a0fb185e40ee20a6178c74281bdeef3291350
-    pristine_git_object: 32e7c43f4856d603fd906ccdf0f40eab748b3a76
+    last_write_checksum: sha1:a366167b7bcccbd70688515cf63df853b51ff8b2
+    pristine_git_object: 385117b041a7e6d1fff655ef368789aa67f85273
   src/funcs/oAuthCreateOauthToken.ts:
     id: e5f6a20bb612
     last_write_checksum: sha1:435b4b14a4fc418c330f16cb965285a941138d0e
@@ -17479,8 +17479,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:8dc5e7c46d3f307410e1b34d2d241b262bae1a8e
-    pristine_git_object: 62a52b4525f37b83f5a1411f176d159fb35e8cee
+    last_write_checksum: sha1:70bb799cdb6dfc0ea481a693eb54fd8c4b046c6e
+    pristine_git_object: 7361852f34a9bec92d387a5e3fc7e23c97a928ed
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -23073,6 +23073,8 @@ examples:
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
         "403":
           application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "503":
+          application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
   listOrganizationMembers:
     speakeasy-default-list-organization-members:
       parameters:
@@ -27475,4 +27477,6 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.presets.delete()`: **Added**\n* `openrouter.presets.restore()`: **Added**\n* `openrouter.presets.list()`: \n  *  `request.workspaceId` **Added**\n  *  `error.status[404]` **Added**\n* `openrouter.presets.get()`: \n  *  `request.workspaceId` **Added**\n* `openrouter.presets.listVersions()`: \n  *  `request.workspaceId` **Added**\n* `openrouter.presets.getVersion()`: \n  *  `request.workspaceId` **Added**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.oAuth.createAuthCode()`:  `error.status[503]` **Added**
