@@ -13171,13 +13171,16 @@ components:
             - 'document'
           type: 'string'
         spans:
+          description: 'One span per item of `value`, in the same order; null for an item that has no offsets in the state text (read from an image or a document).'
           items:
             description: 'Unicode code point offsets [start, end) into the state text: index code points (not UTF-16 code units or UTF-8 bytes), so an emoji or accented letter counts once.'
             items:
               type: 'integer'
             maxItems: 2
             minItems: 2
-            type: 'array'
+            type:
+              - 'array'
+              - 'null'
           type: 'array'
         spell_confidence:
           description: 'Confidence in the spelling of text read from an image.'
