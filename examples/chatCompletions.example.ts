@@ -38,7 +38,7 @@ async function nonStreamingExample() {
   });
 
   if ("choices" in result) {
-    console.log(result.choices[0].message.content);
+    console.log(result.choices[0]?.message.content);
   }
 }
 

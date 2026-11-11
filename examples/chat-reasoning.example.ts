@@ -16,7 +16,7 @@ dotenv.config();
  * bun run chat-reasoning.example.ts
  */
 
-import type { Message } from "../src/models/index.js";
+import type { ChatMessages } from "../src/models/index.js";
 import { OpenRouter } from "../src/index.js";
 
 if (!process.env["OPENROUTER_API_KEY"]) {
@@ -31,7 +31,7 @@ async function multiTurnConversation() {
   const model = "google/gemini-3-pro-preview";
 
   // Initialize message history with the first user message
-  const messages: Message[] = [
+  const messages: ChatMessages[] = [
     {
       role: "user",
       content: "What are the three most important principles of good software architecture?",
@@ -39,7 +39,7 @@ async function multiTurnConversation() {
   ];
 
   console.log("=== Turn 1 ===");
-  console.log("User:", messages[0].content);
+  console.log("User:", messages[0]?.content);
   console.log();
 
   // First turn
@@ -55,19 +55,22 @@ async function multiTurnConversation() {
     throw new Error("Unexpected response format");
   }
 
-  const assistant1 = result1.choices[0].message;
+  const assistant1 = result1.choices[0]?.message;
+  if (!assistant1) {
+    throw new Error("No choices returned");
+  }
   console.log("Assistant:", assistant1.content);
   console.log();
 
   // Add assistant response and next user message to history
-  messages.push(assistant1);
+  messages.push({ ...assistant1, role: "assistant" });
   messages.push({
     role: "user",
     content: "Can you elaborate on the second principle? Give me a concrete example.",
   });
 
   console.log("=== Turn 2 ===");
-  console.log("User:", messages[messages.length - 1].content);
+  console.log("User:", messages[messages.length - 1]?.content);
   console.log();
 
   // Second turn
@@ -83,19 +86,22 @@ async function multiTurnConversation() {
     throw new Error("Unexpected response format");
   }
 
-  const assistant2 = result2.choices[0].message;
+  const assistant2 = result2.choices[0]?.message;
+  if (!assistant2) {
+    throw new Error("No choices returned");
+  }
   console.log("Assistant:", assistant2.content);
   console.log();
 
   // Add assistant response and next user message to history
-  messages.push(assistant2);
+  messages.push({ ...assistant2, role: "assistant" });
   messages.push({
     role: "user",
     content: "How would you apply this in a TypeScript project specifically?",
   });
 
   console.log("=== Turn 3 ===");
-  console.log("User:", messages[messages.length - 1].content);
+  console.log("User:", messages[messages.length - 1]?.content);
   console.log();
 
   // Third turn
@@ -111,12 +117,15 @@ async function multiTurnConversation() {
     throw new Error("Unexpected response format");
   }
 
-  const assistant3 = result3.choices[0].message;
+  const assistant3 = result3.choices[0]?.message;
+  if (!assistant3) {
+    throw new Error("No choices returned");
+  }
   console.log("Assistant:", assistant3.content);
   console.log();
 
   // Final message history
-  messages.push(assistant3);
+  messages.push({ ...assistant3, role: "assistant" });
 
   console.log("=== Conversation Complete ===");
   console.log(`Total messages in history: ${messages.length}`);
