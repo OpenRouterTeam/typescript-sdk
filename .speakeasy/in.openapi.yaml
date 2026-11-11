@@ -7449,6 +7449,7 @@ components:
         - 'seed'
         - 'siliconflow'
         - 'sourceful'
+        - 'speechify'
         - 'stepfun'
         - 'streamlake'
         - 'switchpoint'
@@ -20844,6 +20845,7 @@ components:
                 - 'Seed'
                 - 'SiliconFlow'
                 - 'Sourceful'
+                - 'Speechify'
                 - 'StepFun'
                 - 'Stealth'
                 - 'StreamLake'
@@ -30250,6 +30252,7 @@ components:
         - 'Seed'
         - 'SiliconFlow'
         - 'Sourceful'
+        - 'Speechify'
         - 'StepFun'
         - 'Stealth'
         - 'StreamLake'
@@ -30677,6 +30680,9 @@ components:
         sourceful:
           additionalProperties: {}
           type: 'object'
+        speechify:
+          additionalProperties: {}
+          type: 'object'
         stealth:
           additionalProperties: {}
           type: 'object'
@@ -31066,6 +31072,7 @@ components:
             - 'Seed'
             - 'SiliconFlow'
             - 'Sourceful'
+            - 'Speechify'
             - 'StepFun'
             - 'Stealth'
             - 'StreamLake'
@@ -41392,6 +41399,7 @@ paths:
               - 'seed'
               - 'siliconflow'
               - 'sourceful'
+              - 'speechify'
               - 'stepfun'
               - 'streamlake'
               - 'switchpoint'
