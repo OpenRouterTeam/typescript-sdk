@@ -1,0 +1,26 @@
+---
+title: "ExtractionsUsage"
+---
+
+## Example Usage
+
+```typescript
+import { ExtractionsUsage } from "@openrouter/sdk/models";
+
+let value: ExtractionsUsage = {
+  inputTokens: 603173,
+  outputTokens: 185544,
+};
+```
+
+## Fields
+
+| Field                                                         | Type                                                          | Required                                                      | Description                                                   |
+| ------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- |
+| `cost`                                                        | *number*                                                      | ➖                                            | N/A                                                           |
+| `imageTokens`                                                 | *number*                                                      | ➖                                            | N/A                                                           |
+| `inputTokens`                                                 | *number*                                                      | ✔️                                            | N/A                                                           |
+| `outputTokens`                                                | *number*                                                      | ✔️                                            | N/A                                                           |
+| `passes`                                                      | *number*                                                      | ➖                                            | Number of upstream passes when the fields did not fit in one. |
+| `schemaTokens`                                                | *number*                                                      | ➖                                            | N/A                                                           |
+| `stateTokens`                                                 | *number*                                                      | ➖                                            | N/A                                                           |

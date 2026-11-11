@@ -1,0 +1,37 @@
+---
+title: "Github"
+---
+
+## Example Usage
+
+```typescript
+import { Github } from "@openrouter/sdk/models";
+
+let value: Github = {
+  apps: [
+    {
+      appId: "<id>",
+      appSlug: "<value>",
+      installations: [],
+      memberLinks: [],
+      scope: "workspace",
+    },
+  ],
+  tokens: [
+    {
+      holdsToken: false,
+      login: "Concepcion.Brekke95",
+      owner: "<value>",
+      repositoryCount: 274676,
+      scope: "intern",
+    },
+  ],
+};
+```
+
+## Fields
+
+| Field                                | Type                                 | Required                             | Description                          |
+| ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
+| `apps`                               | [models.App](../models/app.mdx)[]     | ✔️                   | N/A                                  |
+| `tokens`                             | [models.Token](../models/token.mdx)[] | ✔️                   | N/A                                  |

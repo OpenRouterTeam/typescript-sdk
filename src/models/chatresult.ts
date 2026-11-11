@@ -8,6 +8,11 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import { Alignment, Alignment$inboundSchema } from "./alignment.js";
+import {
+  ArmorSafeguardResult,
+  ArmorSafeguardResult$inboundSchema,
+} from "./armorsafeguardresult.js";
 import { ChatChoice, ChatChoice$inboundSchema } from "./chatchoice.js";
 import { ChatUsage, ChatUsage$inboundSchema } from "./chatusage.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
@@ -26,6 +31,10 @@ export type ChatResultObject = ClosedEnum<typeof ChatResultObject>;
  */
 export type ChatResult = {
   /**
+   * Beta. The result of the alignment plugin for this request; the shape may change.
+   */
+  alignment?: Alignment | undefined;
+  /**
    * List of completion choices
    */
   choices: Array<ChatChoice>;
@@ -43,6 +52,10 @@ export type ChatResult = {
   model: string;
   object: ChatResultObject;
   openrouterMetadata?: OpenRouterMetadata | undefined;
+  /**
+   * OpenRouter Armor's verdict for each client tool call of this response, present whenever Armor evaluated the response (even when nothing was flagged). Independent of the `openrouter_metadata` opt-in.
+   */
+  safeguardResults?: Array<ArmorSafeguardResult> | undefined;
   /**
    * The service tier used by the upstream provider for this request
    */
@@ -65,18 +78,21 @@ export const ChatResultObject$inboundSchema: z.ZodEnum<
 /** @internal */
 export const ChatResult$inboundSchema: z.ZodType<ChatResult, unknown> = z
   .object({
+    alignment: Alignment$inboundSchema.optional(),
     choices: z.array(ChatChoice$inboundSchema),
     created: z.int(),
     id: z.string(),
     model: z.string(),
     object: ChatResultObject$inboundSchema,
     openrouter_metadata: OpenRouterMetadata$inboundSchema.optional(),
+    safeguard_results: z.array(ArmorSafeguardResult$inboundSchema).optional(),
     service_tier: z.nullable(z.string()).optional(),
     system_fingerprint: z.nullable(z.string()),
     usage: ChatUsage$inboundSchema.optional(),
   }).transform((v) => {
     return remap$(v, {
       "openrouter_metadata": "openrouterMetadata",
+      "safeguard_results": "safeguardResults",
       "service_tier": "serviceTier",
       "system_fingerprint": "systemFingerprint",
     });

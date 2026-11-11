@@ -40,6 +40,10 @@ export type RequestT = {
  * Batch submit request body.
  */
 export type BatchSubmitBody = {
+  /**
+   * HTTPS URL that receives a `batch.completed`, `batch.failed`, `batch.cancelled` or `batch.expired` webhook event when the batch reaches a terminal status. Must appear before `requests` in the request body.
+   */
+  callbackUrl?: string | undefined;
   completionWindow?: BatchSubmitBodyCompletionWindow | undefined;
   endpoint: Endpoint;
   model: string;
@@ -82,6 +86,7 @@ export function requestToJSON(requestT: RequestT): string {
 
 /** @internal */
 export type BatchSubmitBody$Outbound = {
+  callback_url?: string | undefined;
   completion_window: string;
   endpoint: string;
   model: string;
@@ -94,6 +99,7 @@ export const BatchSubmitBody$outboundSchema: z.ZodType<
   BatchSubmitBody$Outbound,
   BatchSubmitBody
 > = z.object({
+  callbackUrl: z.string().optional(),
   completionWindow: BatchSubmitBodyCompletionWindow$outboundSchema.default(
     "24h",
   ),
@@ -103,6 +109,7 @@ export const BatchSubmitBody$outboundSchema: z.ZodType<
   requests: z.array(z.lazy(() => RequestT$outboundSchema)),
 }).transform((v) => {
   return remap$(v, {
+    callbackUrl: "callback_url",
     completionWindow: "completion_window",
   });
 });

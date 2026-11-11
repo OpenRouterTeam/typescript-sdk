@@ -38,7 +38,7 @@ export const TypeCodeInterpreter = {
 export type TypeCodeInterpreter = ClosedEnum<typeof TypeCodeInterpreter>;
 
 /**
- * Code interpreter tool configuration
+ * Code interpreter tool configuration. An existing container id or `container.file_ids` requires BYOK (your own OpenAI key); requests on OpenRouter credits must use `auto` with no `file_ids`.
  */
 export type CodeInterpreterServerTool = {
   container: ContainerAuto | string;

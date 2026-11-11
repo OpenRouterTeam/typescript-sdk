@@ -1,0 +1,21 @@
+---
+title: "ShadowedBy"
+---
+
+What egress uses instead of this installation for a request to its account: an earlier installation on the same account, or a token pinned to the account. Null when this installation answers.
+
+## Example Usage
+
+```typescript
+import { ShadowedBy } from "@openrouter/sdk/models";
+
+let value: ShadowedBy = "installation";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"installation" | "token" | Unrecognized<string>
+```

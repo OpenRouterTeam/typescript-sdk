@@ -1,0 +1,23 @@
+---
+title: "McpOriginStatus"
+---
+
+The vault's decision for a request to this server; null for members' own accounts, decided per acting member.
+
+## Example Usage
+
+```typescript
+import { McpOriginStatus } from "@openrouter/sdk/models";
+
+let value: McpOriginStatus = {
+  failure: "<value>",
+  state: "no_credential",
+};
+```
+
+## Fields
+
+| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `failure`                                                              | *string*                                                               | ✔️                                                     | The credential failure code when `state` is `failing`; null otherwise. |
+| `state`                                                                | [models.McpOriginState](../models/mcporiginstate.mdx)                   | ✔️                                                     | N/A                                                                    |

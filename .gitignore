@@ -36,3 +36,6 @@
 /examples/nextjs-example/package.lock.json
 /temp
 .codanna/**
+
+# Claude Code local settings can store secrets from approved commands
+**/.claude/settings.local.json

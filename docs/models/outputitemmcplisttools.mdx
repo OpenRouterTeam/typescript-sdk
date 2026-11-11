@@ -1,0 +1,34 @@
+---
+title: "OutputItemMcpListTools"
+---
+
+## Example Usage
+
+```typescript
+import { OutputItemMcpListTools } from "@openrouter/sdk/models";
+
+let value: OutputItemMcpListTools = {
+  id: "<id>",
+  serverLabel: "<value>",
+  tools: [
+    {
+      inputSchema: {
+        "key": "<value>",
+        "key1": "<value>",
+      },
+      name: "<value>",
+    },
+  ],
+  type: "mcp_list_tools",
+};
+```
+
+## Fields
+
+| Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `error`                                                                        | *string*                                                                       | ➖                                                             | N/A                                                                            |
+| `id`                                                                           | *string*                                                                       | ✔️                                                             | N/A                                                                            |
+| `serverLabel`                                                                  | *string*                                                                       | ✔️                                                             | N/A                                                                            |
+| `tools`                                                                        | [models.OutputItemMcpListToolsTool](../models/outputitemmcplisttoolstool.mdx)[] | ✔️                                                             | N/A                                                                            |
+| `type`                                                                         | *"mcp_list_tools"*                                                             | ✔️                                                             | N/A                                                                            |

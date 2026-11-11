@@ -1,0 +1,28 @@
+---
+title: "ToolSearchCallItem"
+---
+
+A tool search call the client executed
+
+## Example Usage
+
+```typescript
+import { ToolSearchCallItem } from "@openrouter/sdk/models";
+
+let value: ToolSearchCallItem = {
+  callId: "call_search_1",
+  execution: "client",
+  type: "tool_search_call",
+};
+```
+
+## Fields
+
+| Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `arguments`                                                                    | *any*                                                                          | ➖                                                             | N/A                                                                            |
+| `callId`                                                                       | *string*                                                                       | ✔️                                                             | N/A                                                                            |
+| `execution`                                                                    | [models.ToolSearchCallItemExecution](../models/toolsearchcallitemexecution.mdx) | ✔️                                                             | N/A                                                                            |
+| `id`                                                                           | *string*                                                                       | ➖                                                             | N/A                                                                            |
+| `status`                                                                       | [models.ToolSearchCallItemStatus](../models/toolsearchcallitemstatus.mdx)       | ➖                                                             | N/A                                                                            |
+| `type`                                                                         | [models.ToolSearchCallItemType](../models/toolsearchcallitemtype.mdx)           | ✔️                                                             | N/A                                                                            |

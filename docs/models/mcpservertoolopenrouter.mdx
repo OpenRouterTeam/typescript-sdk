@@ -1,0 +1,25 @@
+---
+title: "McpServerToolOpenRouter"
+---
+
+OpenRouter built-in server tool: connects the model to a remote MCP server and runs its tools during the response
+
+## Example Usage
+
+```typescript
+import { McpServerToolOpenRouter } from "@openrouter/sdk/models";
+
+let value: McpServerToolOpenRouter = {
+  parameters: {
+    serverLabel: "huggingface",
+  },
+  type: "openrouter:mcp",
+};
+```
+
+## Fields
+
+| Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    | Example                                                                        |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `parameters`                                                                   | [models.McpServerToolParameters](../models/mcpservertoolparameters.mdx)         | ✔️                                                             | Configuration for a remote MCP server tool.                                    | \{<br/>"server_label": "huggingface",<br/>"server_url": "https://huggingface.co/mcp"<br/>} |
+| `type`                                                                         | [models.McpServerToolOpenRouterType](../models/mcpservertoolopenroutertype.mdx) | ✔️                                                             | N/A                                                                            |                                                                                |

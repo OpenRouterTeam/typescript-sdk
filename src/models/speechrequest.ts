@@ -7,11 +7,17 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
+import { ProviderName, ProviderName$outboundSchema } from "./providername.js";
 import {
   ProviderOptions,
   ProviderOptions$Outbound,
   ProviderOptions$outboundSchema,
 } from "./provideroptions.js";
+import {
+  SpeechInput,
+  SpeechInput$Outbound,
+  SpeechInput$outboundSchema,
+} from "./speechinput.js";
 import {
   SpeechInputReference,
   SpeechInputReference$Outbound,
@@ -47,10 +53,24 @@ export type SpeechRequestDataCollection = OpenEnum<
   typeof SpeechRequestDataCollection
 >;
 
+export type SpeechRequestIgnore = ProviderName | string;
+
+export type SpeechRequestOnly = ProviderName | string;
+
+export type SpeechRequestOrder = ProviderName | string;
+
 /**
- * Provider configuration: data policy routing preferences (`zdr`, `data_collection`) and provider-specific passthrough options
+ * Provider configuration: provider routing preferences (`order`, `only`, `ignore`, `allow_fallbacks`), data policy routing preferences (`zdr`, `data_collection`) and provider-specific passthrough options
  */
 export type SpeechRequestProvider = {
+  /**
+   * Whether to allow backup providers to serve requests
+   *
+   * @remarks
+   * - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use the next best provider.
+   * - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
+   */
+  allowFallbacks?: boolean | null | undefined;
   /**
    * Data collection setting. If no available model provider meets the requirement, your request will return an error.
    *
@@ -61,9 +81,21 @@ export type SpeechRequestProvider = {
    */
   dataCollection?: SpeechRequestDataCollection | null | undefined;
   /**
-   * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
+   * List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
+   */
+  ignore?: Array<ProviderName | string> | null | undefined;
+  /**
+   * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
+   */
+  only?: Array<ProviderName | string> | null | undefined;
+  /**
+   * Provider-specific options keyed by provider slug. The provider segment is case-insensitive; an endpoint tag after `/` must match the endpoint slug exactly. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
    */
   options?: ProviderOptions | undefined;
+  /**
+   * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
+   */
+  order?: Array<ProviderName | string> | null | undefined;
   /**
    * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
    */
@@ -89,19 +121,23 @@ export type SpeechRequestResponseFormat = OpenEnum<
  */
 export type SpeechRequest = {
   /**
-   * Text to synthesize
+   * Text to synthesize, or a list of turns for multi-speaker input. Each turn has its own text, voice, and instructions. Multi-speaker input is supported by Gemini TTS models and by Fish Audio models other than S1.
    */
-  input: string;
+  input: SpeechInput;
   /**
-   * Reference content for stateless voice cloning or voice design. Audio mode: one to three `input_audio` parts, each optionally paired with a `text` part carrying its transcript (a single clip accepts its transcript before or after it; with multiple clips each transcript immediately follows its clip); only routed to endpoints that support voice cloning (and multiple references when more than one part is sent). Image mode: exactly one `image_url` part; only routed to endpoints that support image references. The two modes cannot be mixed. An empty array is treated as no reference.
+   * Reference content for stateless voice cloning or voice design. Audio mode: one to three `input_audio` parts, each optionally paired with a `text` part carrying its transcript (a single clip accepts its transcript before or after it; with multiple clips each transcript immediately follows its clip), plus at most one `image_url` part as a scene image on providers that condition the cloned voice on its setting; only routed to endpoints that support voice cloning (and multiple references or image references when those parts are sent). Image mode: exactly one `image_url` part; only routed to endpoints that support image references. An empty array is treated as no reference.
    */
   inputReferences?: Array<SpeechInputReference> | undefined;
+  /**
+   * Delivery instructions for the whole request, such as tone, pacing, or emotion. Supported by OpenAI gpt-4o-mini-tts, Gemini TTS, and Fish Audio models. Ignored by other providers.
+   */
+  instructions?: string | undefined;
   /**
    * TTS model identifier
    */
   model: string;
   /**
-   * Provider configuration: data policy routing preferences (`zdr`, `data_collection`) and provider-specific passthrough options
+   * Provider configuration: provider routing preferences (`order`, `only`, `ignore`, `allow_fallbacks`), data policy routing preferences (`zdr`, `data_collection`) and provider-specific passthrough options
    */
   provider?: SpeechRequestProvider | undefined;
   /**
@@ -137,9 +173,64 @@ export const SpeechRequestDataCollection$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(SpeechRequestDataCollection);
 
 /** @internal */
+export type SpeechRequestIgnore$Outbound = string | string;
+
+/** @internal */
+export const SpeechRequestIgnore$outboundSchema: z.ZodType<
+  SpeechRequestIgnore$Outbound,
+  SpeechRequestIgnore
+> = z.union([ProviderName$outboundSchema, z.string()]);
+
+export function speechRequestIgnoreToJSON(
+  speechRequestIgnore: SpeechRequestIgnore,
+): string {
+  return JSON.stringify(
+    SpeechRequestIgnore$outboundSchema.parse(speechRequestIgnore),
+  );
+}
+
+/** @internal */
+export type SpeechRequestOnly$Outbound = string | string;
+
+/** @internal */
+export const SpeechRequestOnly$outboundSchema: z.ZodType<
+  SpeechRequestOnly$Outbound,
+  SpeechRequestOnly
+> = z.union([ProviderName$outboundSchema, z.string()]);
+
+export function speechRequestOnlyToJSON(
+  speechRequestOnly: SpeechRequestOnly,
+): string {
+  return JSON.stringify(
+    SpeechRequestOnly$outboundSchema.parse(speechRequestOnly),
+  );
+}
+
+/** @internal */
+export type SpeechRequestOrder$Outbound = string | string;
+
+/** @internal */
+export const SpeechRequestOrder$outboundSchema: z.ZodType<
+  SpeechRequestOrder$Outbound,
+  SpeechRequestOrder
+> = z.union([ProviderName$outboundSchema, z.string()]);
+
+export function speechRequestOrderToJSON(
+  speechRequestOrder: SpeechRequestOrder,
+): string {
+  return JSON.stringify(
+    SpeechRequestOrder$outboundSchema.parse(speechRequestOrder),
+  );
+}
+
+/** @internal */
 export type SpeechRequestProvider$Outbound = {
+  allow_fallbacks?: boolean | null | undefined;
   data_collection?: string | null | undefined;
+  ignore?: Array<string | string> | null | undefined;
+  only?: Array<string | string> | null | undefined;
   options?: ProviderOptions$Outbound | undefined;
+  order?: Array<string | string> | null | undefined;
   zdr?: boolean | null | undefined;
 };
 
@@ -148,12 +239,21 @@ export const SpeechRequestProvider$outboundSchema: z.ZodType<
   SpeechRequestProvider$Outbound,
   SpeechRequestProvider
 > = z.object({
+  allowFallbacks: z.nullable(z.boolean()).optional(),
   dataCollection: z.nullable(SpeechRequestDataCollection$outboundSchema)
     .optional(),
+  ignore: z.nullable(
+    z.array(z.union([ProviderName$outboundSchema, z.string()])),
+  ).optional(),
+  only: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
+    .optional(),
   options: ProviderOptions$outboundSchema.optional(),
+  order: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
+    .optional(),
   zdr: z.nullable(z.boolean()).optional(),
 }).transform((v) => {
   return remap$(v, {
+    allowFallbacks: "allow_fallbacks",
     dataCollection: "data_collection",
   });
 });
@@ -174,8 +274,9 @@ export const SpeechRequestResponseFormat$outboundSchema: z.ZodType<
 
 /** @internal */
 export type SpeechRequest$Outbound = {
-  input: string;
+  input: SpeechInput$Outbound;
   input_references?: Array<SpeechInputReference$Outbound> | undefined;
+  instructions?: string | undefined;
   model: string;
   provider?: SpeechRequestProvider$Outbound | undefined;
   response_format: string;
@@ -191,8 +292,9 @@ export const SpeechRequest$outboundSchema: z.ZodType<
   SpeechRequest$Outbound,
   SpeechRequest
 > = z.object({
-  input: z.string(),
+  input: SpeechInput$outboundSchema,
   inputReferences: z.array(SpeechInputReference$outboundSchema).optional(),
+  instructions: z.string().optional(),
   model: z.string(),
   provider: z.lazy(() => SpeechRequestProvider$outboundSchema).optional(),
   responseFormat: SpeechRequestResponseFormat$outboundSchema.default("pcm"),

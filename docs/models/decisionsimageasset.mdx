@@ -1,0 +1,24 @@
+---
+title: "DecisionsImageAsset"
+---
+
+An image sent once and referenced by its key in the `assets` map. `data_base64` is the PNG or JPEG file in standard base64 with no `data:` prefix. The multipart `part` field of TypeSafe's API is not accepted.
+
+## Example Usage
+
+```typescript
+import { DecisionsImageAsset } from "@openrouter/sdk/models";
+
+let value: DecisionsImageAsset = {
+  dataBase64: "<value>",
+  format: "png",
+};
+```
+
+## Fields
+
+| Field                                                                      | Type                                                                       | Required                                                                   | Description                                                                |
+| -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `dataBase64`                                                               | *string*                                                                   | ✔️                                                         | N/A                                                                        |
+| `format`                                                                   | [models.DecisionsImageAssetFormat](../models/decisionsimageassetformat.mdx) | ✔️                                                         | N/A                                                                        |
+| `type`                                                                     | [models.DecisionsImageAssetType](../models/decisionsimageassettype.mdx)     | ➖                                                         | N/A                                                                        |

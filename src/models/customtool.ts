@@ -4,6 +4,7 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
 import { discriminatedUnion } from "../types/discriminatedUnion.js";
@@ -46,6 +47,7 @@ export type CustomTool = {
    * Lets the model keep working after calling this tool instead of waiting for its output. The tool is still executed by the client; return the result in a later request as a `function_call_output` with the original `call_id`. Only honored by providers whose Responses API supports async tools; ignored elsewhere.
    */
   async?: boolean | undefined;
+  deferLoading?: boolean | undefined;
   description?: string | undefined;
   format?:
     | FormatText
@@ -173,6 +175,7 @@ export const CustomToolTypeCustom$outboundSchema: z.ZodEnum<
 export const CustomTool$inboundSchema: z.ZodType<CustomTool, unknown> = z
   .object({
     async: z.boolean().optional(),
+    defer_loading: z.boolean().optional(),
     description: z.string().optional(),
     format: discriminatedUnion("type", {
       text: z.lazy(() => FormatText$inboundSchema),
@@ -180,10 +183,15 @@ export const CustomTool$inboundSchema: z.ZodType<CustomTool, unknown> = z
     }).optional(),
     name: z.string(),
     type: CustomToolTypeCustom$inboundSchema,
+  }).transform((v) => {
+    return remap$(v, {
+      "defer_loading": "deferLoading",
+    });
   });
 /** @internal */
 export type CustomTool$Outbound = {
   async?: boolean | undefined;
+  defer_loading?: boolean | undefined;
   description?: string | undefined;
   format?: FormatText$Outbound | FormatGrammar$Outbound | undefined;
   name: string;
@@ -196,6 +204,7 @@ export const CustomTool$outboundSchema: z.ZodType<
   CustomTool
 > = z.object({
   async: z.boolean().optional(),
+  deferLoading: z.boolean().optional(),
   description: z.string().optional(),
   format: z.union([
     z.lazy(() => FormatText$outboundSchema),
@@ -203,6 +212,10 @@ export const CustomTool$outboundSchema: z.ZodType<
   ]).optional(),
   name: z.string(),
   type: CustomToolTypeCustom$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    deferLoading: "defer_loading",
+  });
 });
 
 export function customToolToJSON(customTool: CustomTool): string {

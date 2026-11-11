@@ -1,0 +1,32 @@
+---
+title: "ChangeGuardrailPolicyAssignmentRequest"
+---
+
+## Example Usage
+
+```typescript
+import { ChangeGuardrailPolicyAssignmentRequest } from "@openrouter/sdk/models";
+
+let value: ChangeGuardrailPolicyAssignmentRequest = {
+  assigned: true,
+  expectedAssignment: {
+    optedOut: false,
+    policyIds: [],
+    workspaceDefaultPolicyIds: [
+      "2c6f1a4e-0b7d-4e59-9a61-3f8d2e7c1b90",
+    ],
+  },
+  policyId: "550e8400-e29b-41d4-a716-446655440000",
+  policyType: "budget",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                          | Type                                                                                                                                                           | Required                                                                                                                                                       | Description                                                                                                                                                    | Example                                                                                                                                                        |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `assigned`                                                                                                                                                     | *boolean*                                                                                                                                                      | ✔️                                                                                                                                             | `true` assigns the policy to the subject, `false` removes it                                                                                                   | true                                                                                                                                                           |
+| `expectedAssignment`                                                                                                                                           | [models.GuardrailPolicyAssignmentState](../models/guardrailpolicyassignmentstate.mdx)                                                                           | ✔️                                                                                                                                             | N/A                                                                                                                                                            |                                                                                                                                                                |
+| `policyId`                                                                                                                                                     | *string*                                                                                                                                                       | ✔️                                                                                                                                             | Policy ID                                                                                                                                                      | 550e8400-e29b-41d4-a716-446655440000                                                                                                                           |
+| `policyType`                                                                                                                                                   | [models.ChangeGuardrailPolicyAssignmentRequestPolicyType](../models/changeguardrailpolicyassignmentrequestpolicytype.mdx)                                       | ✔️                                                                                                                                             | Policy type the assignment is read or changed for                                                                                                              | budget                                                                                                                                                         |
+| `workspaceId`                                                                                                                                                  | *string*                                                                                                                                                       | ➖                                                                                                                                             | Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other. | 0df9e665-d932-5740-b2c7-b52af166bc11                                                                                                                           |

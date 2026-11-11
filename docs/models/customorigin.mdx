@@ -1,0 +1,26 @@
+---
+title: "CustomOrigin"
+---
+
+## Example Usage
+
+```typescript
+import { CustomOrigin } from "@openrouter/sdk/models";
+
+let value: CustomOrigin = {
+  host: "unhappy-doing.org",
+  pathPrefix: "<value>",
+  status: {
+    failure: "<value>",
+    state: "no_credential",
+  },
+};
+```
+
+## Fields
+
+| Field                                                            | Type                                                             | Required                                                         | Description                                                      |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `host`                                                           | *string*                                                         | ✔️                                               | N/A                                                              |
+| `pathPrefix`                                                     | *string*                                                         | ✔️                                               | N/A                                                              |
+| `status`                                                         | [models.CustomOriginStatus](../models/customoriginstatus.mdx)     | ✔️                                               | The vault injection decision for this destination, at `read_at`. |

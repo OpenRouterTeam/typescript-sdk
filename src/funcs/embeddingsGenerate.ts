@@ -48,6 +48,7 @@ export function embeddingsGenerate(
     | errors.RequestTimeoutResponseError
     | errors.PayloadTooLargeResponseError
     | errors.TooManyRequestsResponseError
+    | errors.ClientClosedRequestResponseError
     | errors.InternalServerResponseError
     | errors.BadGatewayResponseError
     | errors.ServiceUnavailableResponseError
@@ -87,6 +88,7 @@ async function $do(
       | errors.RequestTimeoutResponseError
       | errors.PayloadTooLargeResponseError
       | errors.TooManyRequestsResponseError
+      | errors.ClientClosedRequestResponseError
       | errors.InternalServerResponseError
       | errors.BadGatewayResponseError
       | errors.ServiceUnavailableResponseError
@@ -208,6 +210,7 @@ async function $do(
     | errors.RequestTimeoutResponseError
     | errors.PayloadTooLargeResponseError
     | errors.TooManyRequestsResponseError
+    | errors.ClientClosedRequestResponseError
     | errors.InternalServerResponseError
     | errors.BadGatewayResponseError
     | errors.ServiceUnavailableResponseError
@@ -235,6 +238,7 @@ async function $do(
     M.jsonErr(408, errors.RequestTimeoutResponseError$inboundSchema),
     M.jsonErr(413, errors.PayloadTooLargeResponseError$inboundSchema),
     M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
+    M.jsonErr(499, errors.ClientClosedRequestResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.jsonErr(502, errors.BadGatewayResponseError$inboundSchema),
     M.jsonErr(503, errors.ServiceUnavailableResponseError$inboundSchema),

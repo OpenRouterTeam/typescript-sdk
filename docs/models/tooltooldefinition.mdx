@@ -1,0 +1,26 @@
+---
+title: "ToolToolDefinition"
+---
+
+## Example Usage
+
+```typescript
+import { ToolToolDefinition } from "@openrouter/sdk/models";
+
+let value: ToolToolDefinition = {
+  definition: {
+    inputSchema: {
+      type: "object",
+    },
+    name: "get_weather",
+  },
+  type: "tool_definition",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                                                         | Type                                                                                                                                                                                          | Required                                                                                                                                                                                      | Description                                                                                                                                                                                   | Example                                                                                                                                                                                       |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `definition`                                                                                                                                                                                  | *models.AnthropicToolUnion*                                                                                                                                                                   | ✔️                                                                                                                                                                            | An Anthropic tool definition: a client-defined tool with a JSON Schema `input_schema`, or a server tool (bash, text editor, web search).                                                      | \{<br/>"description": "Get the current weather for a city.",<br/>"input_schema": \{<br/>"properties": \{<br/>"city": \{<br/>"type": "string"<br/>}<br/>},<br/>"required": [<br/>"city"<br/>],<br/>"type": "object"<br/>},<br/>"name": "get_weather"<br/>} |
+| `type`                                                                                                                                                                                        | *"tool_definition"*                                                                                                                                                                           | ✔️                                                                                                                                                                            | N/A                                                                                                                                                                                           |                                                                                                                                                                                               |

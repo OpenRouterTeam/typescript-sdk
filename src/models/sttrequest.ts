@@ -7,6 +7,7 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
+import { ProviderName, ProviderName$outboundSchema } from "./providername.js";
 import {
   ProviderOptions,
   ProviderOptions$Outbound,
@@ -51,10 +52,24 @@ export type STTRequestDataCollection = OpenEnum<
   typeof STTRequestDataCollection
 >;
 
+export type STTRequestIgnore = ProviderName | string;
+
+export type STTRequestOnly = ProviderName | string;
+
+export type STTRequestOrder = ProviderName | string;
+
 /**
- * Provider configuration: data policy routing preferences (`zdr`, `data_collection`) and provider-specific passthrough options
+ * Provider configuration: provider routing preferences (`order`, `only`, `ignore`, `allow_fallbacks`), data policy routing preferences (`zdr`, `data_collection`) and provider-specific passthrough options
  */
 export type STTRequestProvider = {
+  /**
+   * Whether to allow backup providers to serve requests
+   *
+   * @remarks
+   * - true: (default) when the primary provider (or your custom providers in "order") is unavailable, use the next best provider.
+   * - false: use only the primary/custom provider, and return the upstream error if it's unavailable.
+   */
+  allowFallbacks?: boolean | null | undefined;
   /**
    * Data collection setting. If no available model provider meets the requirement, your request will return an error.
    *
@@ -65,9 +80,21 @@ export type STTRequestProvider = {
    */
   dataCollection?: STTRequestDataCollection | null | undefined;
   /**
-   * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
+   * List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
+   */
+  ignore?: Array<ProviderName | string> | null | undefined;
+  /**
+   * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
+   */
+  only?: Array<ProviderName | string> | null | undefined;
+  /**
+   * Provider-specific options keyed by provider slug. The provider segment is case-insensitive; an endpoint tag after `/` must match the endpoint slug exactly. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
    */
   options?: ProviderOptions | undefined;
+  /**
+   * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
+   */
+  order?: Array<ProviderName | string> | null | undefined;
   /**
    * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
    */
@@ -113,7 +140,7 @@ export type STTRequest = {
    */
   model: string;
   /**
-   * Provider configuration: data policy routing preferences (`zdr`, `data_collection`) and provider-specific passthrough options
+   * Provider configuration: provider routing preferences (`order`, `only`, `ignore`, `allow_fallbacks`), data policy routing preferences (`zdr`, `data_collection`) and provider-specific passthrough options
    */
   provider?: STTRequestProvider | undefined;
   /**
@@ -149,9 +176,58 @@ export const STTRequestDataCollection$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(STTRequestDataCollection);
 
 /** @internal */
+export type STTRequestIgnore$Outbound = string | string;
+
+/** @internal */
+export const STTRequestIgnore$outboundSchema: z.ZodType<
+  STTRequestIgnore$Outbound,
+  STTRequestIgnore
+> = z.union([ProviderName$outboundSchema, z.string()]);
+
+export function sttRequestIgnoreToJSON(
+  sttRequestIgnore: STTRequestIgnore,
+): string {
+  return JSON.stringify(
+    STTRequestIgnore$outboundSchema.parse(sttRequestIgnore),
+  );
+}
+
+/** @internal */
+export type STTRequestOnly$Outbound = string | string;
+
+/** @internal */
+export const STTRequestOnly$outboundSchema: z.ZodType<
+  STTRequestOnly$Outbound,
+  STTRequestOnly
+> = z.union([ProviderName$outboundSchema, z.string()]);
+
+export function sttRequestOnlyToJSON(sttRequestOnly: STTRequestOnly): string {
+  return JSON.stringify(STTRequestOnly$outboundSchema.parse(sttRequestOnly));
+}
+
+/** @internal */
+export type STTRequestOrder$Outbound = string | string;
+
+/** @internal */
+export const STTRequestOrder$outboundSchema: z.ZodType<
+  STTRequestOrder$Outbound,
+  STTRequestOrder
+> = z.union([ProviderName$outboundSchema, z.string()]);
+
+export function sttRequestOrderToJSON(
+  sttRequestOrder: STTRequestOrder,
+): string {
+  return JSON.stringify(STTRequestOrder$outboundSchema.parse(sttRequestOrder));
+}
+
+/** @internal */
 export type STTRequestProvider$Outbound = {
+  allow_fallbacks?: boolean | null | undefined;
   data_collection?: string | null | undefined;
+  ignore?: Array<string | string> | null | undefined;
+  only?: Array<string | string> | null | undefined;
   options?: ProviderOptions$Outbound | undefined;
+  order?: Array<string | string> | null | undefined;
   zdr?: boolean | null | undefined;
 };
 
@@ -160,12 +236,21 @@ export const STTRequestProvider$outboundSchema: z.ZodType<
   STTRequestProvider$Outbound,
   STTRequestProvider
 > = z.object({
+  allowFallbacks: z.nullable(z.boolean()).optional(),
   dataCollection: z.nullable(STTRequestDataCollection$outboundSchema)
     .optional(),
+  ignore: z.nullable(
+    z.array(z.union([ProviderName$outboundSchema, z.string()])),
+  ).optional(),
+  only: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
+    .optional(),
   options: ProviderOptions$outboundSchema.optional(),
+  order: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
+    .optional(),
   zdr: z.nullable(z.boolean()).optional(),
 }).transform((v) => {
   return remap$(v, {
+    allowFallbacks: "allow_fallbacks",
     dataCollection: "data_collection",
   });
 });

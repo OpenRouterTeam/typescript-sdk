@@ -1,0 +1,33 @@
+overlay: 1.0.0
+x-speakeasy-jsonpath: rfc9535
+info:
+  title: Keep endUsers as a deprecated SDK alias of externalUsers
+  version: 0.0.0
+actions:
+  # The API renamed /end-users to /external-users (the old path still works).
+  # Expose each external-users operation under BOTH the `externalUsers` and the
+  # legacy `endUsers` namespaces so existing `client.endUsers.*()` callers keep
+  # compiling through the deprecation window. Tags drive the namespaces, so the
+  # single-valued x-speakeasy-group is dropped. Removing this overlay is the
+  # scheduled breaking change.
+  - target: $.paths['/external-users']['get','post']['x-speakeasy-group']
+    description: Let tags drive the SDK namespaces for external-users
+    remove: true
+  - target: $.paths['/external-users/{user}']['get','patch','delete']['x-speakeasy-group']
+    description: Let tags drive the SDK namespaces for external-users/{user}
+    remove: true
+  - target: $.paths['/external-users']['get','post']
+    description: Add End Users as a second (deprecated) SDK namespace
+    update:
+      tags:
+        - End Users
+  - target: $.paths['/external-users/{user}']['get','patch','delete']
+    description: Add End Users as a second (deprecated) SDK namespace
+    update:
+      tags:
+        - End Users
+  - target: $.tags
+    description: Define the deprecated End Users tag
+    update:
+      - name: End Users
+        description: 'Deprecated alias of externalUsers. Use externalUsers instead; scheduled for removal (sunset date TBD).'

@@ -12,6 +12,7 @@ export const WebSearchStatus = {
   Searching: "searching",
   InProgress: "in_progress",
   Failed: "failed",
+  Incomplete: "incomplete",
 } as const;
 export type WebSearchStatus = OpenEnum<typeof WebSearchStatus>;
 

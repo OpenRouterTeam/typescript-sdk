@@ -1,0 +1,30 @@
+---
+title: "Google"
+---
+
+## Example Usage
+
+```typescript
+import { Google } from "@openrouter/sdk/models";
+
+let value: Google = {
+  accounts: [
+    {
+      delegatedCapabilities: [
+        "<value 1>",
+        "<value 2>",
+      ],
+      email: "Travis_Dickens92@gmail.com",
+      holdsGrant: false,
+      isDelegatedToIntern: false,
+      scope: "workspace",
+    },
+  ],
+};
+```
+
+## Fields
+
+| Field                                    | Type                                     | Required                                 | Description                              |
+| ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
+| `accounts`                               | [models.Account](../models/account.mdx)[] | ✔️                       | N/A                                      |

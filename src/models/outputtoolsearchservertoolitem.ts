@@ -4,15 +4,35 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  ToolCallStatus,
-  ToolCallStatus$inboundSchema,
-  ToolCallStatus$outboundSchema,
-} from "./toolcallstatus.js";
+  FailableToolCallStatus,
+  FailableToolCallStatus$inboundSchema,
+  FailableToolCallStatus$outboundSchema,
+} from "./failabletoolcallstatus.js";
+
+/**
+ * How the model saw the matches. `compact` means each tool by name, description, and input shape, plus a call example. Replaying the item renders the same result.
+ */
+export const OutputToolSearchServerToolItemFormat = {
+  Compact: "compact",
+} as const;
+/**
+ * How the model saw the matches. `compact` means each tool by name, description, and input shape, plus a call example. Replaying the item renders the same result.
+ */
+export type OutputToolSearchServerToolItemFormat = ClosedEnum<
+  typeof OutputToolSearchServerToolItemFormat
+>;
+
+export type Match = {
+  definition: { [k: string]: any };
+  schemaDigest: string;
+  toolId: string;
+};
 
 export const OutputToolSearchServerToolItemType = {
   OpenrouterToolSearch: "openrouter:tool_search",
@@ -25,11 +45,100 @@ export type OutputToolSearchServerToolItemType = ClosedEnum<
  * An openrouter:tool_search server tool output item
  */
 export type OutputToolSearchServerToolItem = {
+  /**
+   * The JSON arguments of the model call, verbatim. Replaying the item reuses them.
+   */
+  arguments?: string | undefined;
+  /**
+   * The ID of the model call that ran the search. Replaying the item reuses it.
+   */
+  callId?: string | undefined;
+  /**
+   * What the announced index added and removed since the previous one, when the request opted into `announce_catalog_changes` and the catalog changed between model turns. Replaying the item shows the same lines.
+   */
+  catalogChanges?: string | undefined;
+  /**
+   * The deferred-tool index the router showed the model with a pre-search, listing tool sources and names. Replaying the item shows the same index.
+   */
+  catalogIndex?: string | undefined;
+  /**
+   * The error message when the tool call failed before producing a result. Set together with `status: 'failed'`; absent on a successful call.
+   */
+  error?: string | undefined;
+  /**
+   * How the model saw the matches. `compact` means each tool by name, description, and input shape, plus a call example. Replaying the item renders the same result.
+   */
+  format?: OutputToolSearchServerToolItemFormat | undefined;
+  /**
+   * The guidance the model got when the search matched no tools.
+   */
+  hint?: string | undefined;
   id?: string | undefined;
+  matches?: Array<Match> | undefined;
   query?: string | undefined;
-  status: ToolCallStatus;
+  /**
+   * The other deferred tools of each source a match came from, by name, when the search listed siblings. Replaying the item shows the same names.
+   */
+  sources?: { [k: string]: Array<string> } | undefined;
+  status: FailableToolCallStatus;
+  /**
+   * The IDs of every tool call in the model response that ran the search, in order. Replaying the item keeps those calls in one turn.
+   */
+  turnCallIds?: Array<string> | undefined;
   type: OutputToolSearchServerToolItemType;
 };
+
+/** @internal */
+export const OutputToolSearchServerToolItemFormat$inboundSchema: z.ZodEnum<
+  typeof OutputToolSearchServerToolItemFormat
+> = z.enum(OutputToolSearchServerToolItemFormat);
+/** @internal */
+export const OutputToolSearchServerToolItemFormat$outboundSchema: z.ZodEnum<
+  typeof OutputToolSearchServerToolItemFormat
+> = OutputToolSearchServerToolItemFormat$inboundSchema;
+
+/** @internal */
+export const Match$inboundSchema: z.ZodType<Match, unknown> = z.object({
+  definition: z.record(z.string(), z.any()),
+  schema_digest: z.string(),
+  tool_id: z.string(),
+}).transform((v) => {
+  return remap$(v, {
+    "schema_digest": "schemaDigest",
+    "tool_id": "toolId",
+  });
+});
+/** @internal */
+export type Match$Outbound = {
+  definition: { [k: string]: any };
+  schema_digest: string;
+  tool_id: string;
+};
+
+/** @internal */
+export const Match$outboundSchema: z.ZodType<Match$Outbound, Match> = z.object({
+  definition: z.record(z.string(), z.any()),
+  schemaDigest: z.string(),
+  toolId: z.string(),
+}).transform((v) => {
+  return remap$(v, {
+    schemaDigest: "schema_digest",
+    toolId: "tool_id",
+  });
+});
+
+export function matchToJSON(match: Match): string {
+  return JSON.stringify(Match$outboundSchema.parse(match));
+}
+export function matchFromJSON(
+  jsonString: string,
+): SafeParseResult<Match, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Match$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Match' from JSON`,
+  );
+}
 
 /** @internal */
 export const OutputToolSearchServerToolItemType$inboundSchema: z.ZodEnum<
@@ -45,16 +154,43 @@ export const OutputToolSearchServerToolItem$inboundSchema: z.ZodType<
   OutputToolSearchServerToolItem,
   unknown
 > = z.object({
+  arguments: z.string().optional(),
+  call_id: z.string().optional(),
+  catalog_changes: z.string().optional(),
+  catalog_index: z.string().optional(),
+  error: z.string().optional(),
+  format: OutputToolSearchServerToolItemFormat$inboundSchema.optional(),
+  hint: z.string().optional(),
   id: z.string().optional(),
+  matches: z.array(z.lazy(() => Match$inboundSchema)).optional(),
   query: z.string().optional(),
-  status: ToolCallStatus$inboundSchema,
+  sources: z.record(z.string(), z.array(z.string())).optional(),
+  status: FailableToolCallStatus$inboundSchema,
+  turn_call_ids: z.array(z.string()).optional(),
   type: OutputToolSearchServerToolItemType$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "call_id": "callId",
+    "catalog_changes": "catalogChanges",
+    "catalog_index": "catalogIndex",
+    "turn_call_ids": "turnCallIds",
+  });
 });
 /** @internal */
 export type OutputToolSearchServerToolItem$Outbound = {
+  arguments?: string | undefined;
+  call_id?: string | undefined;
+  catalog_changes?: string | undefined;
+  catalog_index?: string | undefined;
+  error?: string | undefined;
+  format?: string | undefined;
+  hint?: string | undefined;
   id?: string | undefined;
+  matches?: Array<Match$Outbound> | undefined;
   query?: string | undefined;
+  sources?: { [k: string]: Array<string> } | undefined;
   status: string;
+  turn_call_ids?: Array<string> | undefined;
   type: string;
 };
 
@@ -63,10 +199,27 @@ export const OutputToolSearchServerToolItem$outboundSchema: z.ZodType<
   OutputToolSearchServerToolItem$Outbound,
   OutputToolSearchServerToolItem
 > = z.object({
+  arguments: z.string().optional(),
+  callId: z.string().optional(),
+  catalogChanges: z.string().optional(),
+  catalogIndex: z.string().optional(),
+  error: z.string().optional(),
+  format: OutputToolSearchServerToolItemFormat$outboundSchema.optional(),
+  hint: z.string().optional(),
   id: z.string().optional(),
+  matches: z.array(z.lazy(() => Match$outboundSchema)).optional(),
   query: z.string().optional(),
-  status: ToolCallStatus$outboundSchema,
+  sources: z.record(z.string(), z.array(z.string())).optional(),
+  status: FailableToolCallStatus$outboundSchema,
+  turnCallIds: z.array(z.string()).optional(),
   type: OutputToolSearchServerToolItemType$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    callId: "call_id",
+    catalogChanges: "catalog_changes",
+    catalogIndex: "catalog_index",
+    turnCallIds: "turn_call_ids",
+  });
 });
 
 export function outputToolSearchServerToolItemToJSON(

@@ -11,7 +11,6 @@ import { privateEndpointsEnable } from "../funcs/privateEndpointsEnable.js";
 import { privateEndpointsGet } from "../funcs/privateEndpointsGet.js";
 import { privateEndpointsList } from "../funcs/privateEndpointsList.js";
 import { privateEndpointsUpdate } from "../funcs/privateEndpointsUpdate.js";
-import { privateEndpointsUpdatePricing } from "../funcs/privateEndpointsUpdatePricing.js";
 import { privateEndpointsValidate } from "../funcs/privateEndpointsValidate.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
@@ -40,7 +39,7 @@ export class PrivateEndpoints extends ClientSDK {
    * Create a private endpoint
    *
    * @remarks
-   * Create a private endpoint as a draft. Drafts are not routable: validate one with `POST /private-endpoints/{id}/validate`, then activate it with `POST /private-endpoints/{id}/activate`. Pass `activate` to do all three in one call; if validation fails the draft is kept and returned with the failed checks. Send an `Idempotency-Key` header to make retries safe: a repeated key with the same request returns the endpoint the first request created; reusing it with different fields returns 422 `idempotency_key_reused`. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Create a private endpoint as a draft. Drafts are not routable: validate one with `POST /private-endpoints/{id}/validate`, then activate it with `POST /private-endpoints/{id}/activate`. Pass `activate` to do all three in one call; if validation fails the draft is kept and returned with the failed checks. Send an `Idempotency-Key` header to make retries safe: a repeated key with the same request returns the endpoint the first request created; reusing it with different fields returns 422 `idempotency_key_reused`. Returns 400 `parameters_invalid` when `tool_choice` is declared without `tools`. The response does not echo `declared_parameters` or `tested_parameters`; read them with `GET /private-endpoints/{id}`. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async create(
     request: operations.CreatePrivateEndpointRequest,
@@ -88,10 +87,10 @@ export class PrivateEndpoints extends ClientSDK {
   }
 
   /**
-   * Update a draft private endpoint
+   * Update a private endpoint
    *
    * @remarks
-   * Replace a draft endpoint's upstream configuration: send `upstream_model_id`, and `base_url` to change it (an omitted `base_url` keeps the stored one). Omitted data-policy declarations are kept while the upstream is unchanged and cleared when it changes. Any change clears earlier validation. Active endpoints return 409; delete and re-create them instead. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Change any of the endpoint fields you own in one call; only the fields present change, and the response is the whole endpoint. `pricing` and `declared_parameters` replace their stored value, `settings` changes only the fields it names (`null` clears a limit or restores the provider default); routing picks these up for subsequent requests on drafts and active endpoints alike. `declared_zdr` and `declared_region` change on drafts and active endpoints alike; on an active endpoint the change keeps its validation and tested parameters, and routing applies it to subsequent requests. `upstream_model_id` and `base_url` re-point a draft: an omitted `upstream_model_id` or `base_url` keeps the stored one, omitted data-policy declarations are kept while the upstream is unchanged and cleared when it changes, and any change to the upstream or declarations of a draft clears earlier validation. Naming `upstream_model_id` or `base_url` on an active endpoint returns 409 `already_active` and writes nothing, even alongside other fields; delete and re-create instead. Every group is checked before anything is written: 400 `parameters_invalid` when `tool_choice` is declared without `tools` tested or declared, 400 `settings_invalid` when `max_prompt_tokens` exceeds the context length, both completion APIs are off, or `excluded_parameters` names a tested parameter, 422 `pricing_invalid` for rates the provider strategy cannot represent. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async update(
     request: operations.UpdatePrivateEndpointRequest,
@@ -149,23 +148,6 @@ export class PrivateEndpoints extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.ManagedPrivateEndpointResponse> {
     return unwrapAsync(privateEndpointsEnable(
-      this,
-      request,
-      options,
-    ));
-  }
-
-  /**
-   * Set private endpoint pricing
-   *
-   * @remarks
-   * Set the negotiated per-token rates reported for requests routed to this endpoint. Applies to drafts and active endpoints; new rates take effect for subsequent requests. [Management key](/docs/guides/overview/auth/management-api-keys) required.
-   */
-  async updatePricing(
-    request: operations.UpdatePrivateEndpointPricingRequest,
-    options?: RequestOptions,
-  ): Promise<models.PrivateEndpointResponse> {
-    return unwrapAsync(privateEndpointsUpdatePricing(
       this,
       request,
       options,

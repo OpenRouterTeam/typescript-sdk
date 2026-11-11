@@ -61,7 +61,7 @@ export type ListGuardrailsRequest = {
    */
   limit?: number | undefined;
   /**
-   * Filter guardrails by workspace ID. By default, guardrails in the default workspace are returned.
+   * Filter guardrails by workspace ID. When omitted, an organization management key gets guardrails in the default workspace and a workspace-scoped key gets guardrails in its own workspace. A workspace-scoped key gets 403 for any other workspace.
    */
   workspaceId?: string | undefined;
 };

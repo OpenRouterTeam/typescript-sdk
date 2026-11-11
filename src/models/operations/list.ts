@@ -56,11 +56,15 @@ export type ListRequest = {
    */
   includeDisabled?: boolean | undefined;
   /**
+   * Whether to include expired API keys in the response. Expired keys are excluded by default and returned only when this is true.
+   */
+  includeExpired?: boolean | undefined;
+  /**
    * Number of API keys to skip for pagination
    */
   offset?: number | null | undefined;
   /**
-   * Filter API keys by workspace ID. By default, keys in the default workspace are returned.
+   * Filter API keys by workspace ID. By default an organization-scoped management key gets the default workspace; a workspace-scoped management key always gets its own workspace and cannot list another.
    */
   workspaceId?: string | undefined;
 };
@@ -163,11 +167,15 @@ export type ListData = {
 /**
  * List of API keys
  */
-export type ListResponse = {
+export type ListResponseBody = {
   /**
    * List of API keys
    */
   data: Array<ListData>;
+};
+
+export type ListResponse = {
+  result: ListResponseBody;
 };
 
 /** @internal */
@@ -176,6 +184,7 @@ export type ListRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   include_disabled?: boolean | undefined;
+  include_expired?: boolean | undefined;
   offset?: number | null | undefined;
   workspace_id?: string | undefined;
 };
@@ -189,12 +198,14 @@ export const ListRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   includeDisabled: z.boolean().optional(),
+  includeExpired: z.boolean().optional(),
   offset: z.nullable(z.int()).optional(),
   workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
     includeDisabled: "include_disabled",
+    includeExpired: "include_expired",
     workspaceId: "workspace_id",
   });
 });
@@ -265,9 +276,31 @@ export function listDataFromJSON(
 }
 
 /** @internal */
+export const ListResponseBody$inboundSchema: z.ZodType<
+  ListResponseBody,
+  unknown
+> = z.object({
+  data: z.array(z.lazy(() => ListData$inboundSchema)),
+});
+
+export function listResponseBodyFromJSON(
+  jsonString: string,
+): SafeParseResult<ListResponseBody, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ListResponseBody$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ListResponseBody' from JSON`,
+  );
+}
+
+/** @internal */
 export const ListResponse$inboundSchema: z.ZodType<ListResponse, unknown> = z
   .object({
-    data: z.array(z.lazy(() => ListData$inboundSchema)),
+    Result: z.lazy(() => ListResponseBody$inboundSchema),
+  }).transform((v) => {
+    return remap$(v, {
+      "Result": "result",
+    });
   });
 
 export function listResponseFromJSON(

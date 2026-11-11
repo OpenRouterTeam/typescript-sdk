@@ -10,21 +10,9 @@ List of available MCP tools from a server
 import { McpListToolsItem } from "@openrouter/sdk/models";
 
 let value: McpListToolsItem = {
-  id: "mcp-list-abc123",
-  serverLabel: "database-server",
-  tools: [
-    {
-      inputSchema: {
-        "properties": {
-          "query": {
-            "type": "string",
-          },
-        },
-        "type": "object",
-      },
-      name: "query_database",
-    },
-  ],
+  id: "msg-abc123",
+  serverLabel: "<value>",
+  tools: [],
   type: "mcp_list_tools",
 };
 ```
@@ -34,7 +22,7 @@ let value: McpListToolsItem = {
 | Field                                                              | Type                                                               | Required                                                           | Description                                                        |
 | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
 | `error`                                                            | *string*                                                           | ➖                                                 | N/A                                                                |
-| `id`                                                               | *string*                                                           | ✅                                                 | N/A                                                                |
-| `serverLabel`                                                      | *string*                                                           | ✅                                                 | N/A                                                                |
-| `tools`                                                            | [models.McpListToolsItemTool](../models/mcplisttoolsitemtool.mdx)[] | ✅                                                 | N/A                                                                |
-| `type`                                                             | [models.McpListToolsItemType](../models/mcplisttoolsitemtype.mdx)   | ✅                                                 | N/A                                                                |
+| `id`                                                               | *string*                                                           | ✔️                                                 | N/A                                                                |
+| `serverLabel`                                                      | *string*                                                           | ✔️                                                 | N/A                                                                |
+| `tools`                                                            | [models.McpListToolsItemTool](../models/mcplisttoolsitemtool.mdx)[] | ✔️                                                 | N/A                                                                |
+| `type`                                                             | [models.McpListToolsItemType](../models/mcplisttoolsitemtype.mdx)   | ✔️                                                 | N/A                                                                |

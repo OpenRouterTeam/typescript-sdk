@@ -1,0 +1,26 @@
+---
+title: "ExtractionForecastStep"
+---
+
+## Example Usage
+
+```typescript
+import { ExtractionForecastStep } from "@openrouter/sdk/models";
+
+let value: ExtractionForecastStep = {
+  value: null,
+};
+```
+
+## Fields
+
+| Field                                                             | Type                                                              | Required                                                          | Description                                                       |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `mean`                                                            | *models.ExtractionForecastStepMean*                               | ➖                                                | N/A                                                               |
+| `median`                                                          | *models.ExtractionForecastStepMedian*                             | ➖                                                | N/A                                                               |
+| `pAbove`                                                          | *number*                                                          | ➖                                                | Probability mass above `max`.                                     |
+| `pBelow`                                                          | *number*                                                          | ➖                                                | Probability mass below `min`.                                     |
+| `p10`                                                             | *models.ExtractionForecastStepP10*                                | ➖                                                | N/A                                                               |
+| `p90`                                                             | *models.ExtractionForecastStepP90*                                | ➖                                                | N/A                                                               |
+| `quantiles`                                                       | *models.ExtractionForecastStepQuantile*[]                         | ➖                                                | 99 percentiles, present when the provider is asked for quantiles. |
+| `value`                                                           | *models.ExtractionForecastStepValue*                              | ✔️                                                | N/A                                                               |

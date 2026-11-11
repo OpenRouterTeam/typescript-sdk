@@ -1,0 +1,58 @@
+---
+title: "DecisionsResponseAnswers"
+---
+
+A Decisions answer using a boolean, choice, score, or image bounding-box evaluation, or a refusal of that question.
+
+
+## Supported Types
+
+### `models.DecisionsBoxAnswer`
+
+```typescript
+const value: models.DecisionsBoxAnswer = {
+  box: {
+    bottom: 9340.36,
+    left: 4735.52,
+    right: 3044.6,
+    top: 1951.55,
+  },
+  type: "box",
+};
+```
+
+### `models.DecisionsChoiceAnswer`
+
+```typescript
+const value: models.DecisionsChoiceAnswer = {
+  choice: "<value>",
+  type: "choice",
+};
+```
+
+### `models.DecisionsNoulAnswer`
+
+```typescript
+const value: models.DecisionsNoulAnswer = {
+  noul: 4078.5,
+  type: "noul",
+};
+```
+
+### `models.DecisionsRefusalAnswer`
+
+```typescript
+const value: models.DecisionsRefusalAnswer = {
+  type: "refusal",
+};
+```
+
+### `models.DecisionsScoreAnswer`
+
+```typescript
+const value: models.DecisionsScoreAnswer = {
+  score: 8873.17,
+  type: "score",
+};
+```
+

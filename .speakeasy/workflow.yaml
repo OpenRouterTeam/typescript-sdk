@@ -1,5 +1,5 @@
 workflowVersion: 1.0.0
-speakeasyVersion: 1.787.0
+speakeasyVersion: 1.803.2
 sources:
     OpenRouter API:
         inputs:
@@ -12,6 +12,7 @@ sources:
             - location: .speakeasy/overlays/boolean-query-params.overlay.yaml
             - location: .speakeasy/overlays/nullable-model-fields.overlay.yaml
             - location: .speakeasy/overlays/deprecated-beta-responses-alias.overlay.yaml
+            - location: .speakeasy/overlays/deprecated-end-users-alias.overlay.yaml
         output: .speakeasy/out.openapi.yaml
         registry:
             location: registry.speakeasyapi.dev/openrouter/sdk/open-router-chat-completions-api
@@ -21,6 +22,8 @@ targets:
         source: OpenRouter API
         publish:
             npm:
+                # Keep this line: Speakeasy publishes only when npm.token is non-empty, and it does not expand $npm_token.
+                # Publishing authenticates with npm trusted publishing (OIDC); no NPM_TOKEN secret is passed.
                 token: $npm_token
         codeSamples:
             registry:

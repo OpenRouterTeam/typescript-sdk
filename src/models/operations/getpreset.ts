@@ -52,6 +52,10 @@ export type GetPresetRequest = {
    * URL-safe slug identifying the preset.
    */
   slug: string;
+  /**
+   * Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace.
+   */
+  workspaceId?: string | undefined;
 };
 
 /** @internal */
@@ -60,6 +64,7 @@ export type GetPresetRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   slug: string;
+  workspace_id?: string | undefined;
 };
 
 /** @internal */
@@ -71,9 +76,11 @@ export const GetPresetRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   slug: z.string(),
+  workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    workspaceId: "workspace_id",
   });
 });
 

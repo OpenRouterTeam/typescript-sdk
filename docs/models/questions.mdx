@@ -2,10 +2,22 @@
 title: "Questions"
 ---
 
-A Decisions question using a boolean, choice, or ordered score evaluation.
+A Decisions question using a boolean, choice, ordered score, or image bounding-box evaluation.
 
 
 ## Supported Types
+
+### `models.DecisionsBoxQuestion`
+
+```typescript
+const value: models.DecisionsBoxQuestion = {
+  instructions: {
+    "key": "<value>",
+    "key1": "<value>",
+  },
+  type: "box",
+};
+```
 
 ### `models.DecisionsChoiceQuestion`
 
@@ -16,9 +28,6 @@ const value: models.DecisionsChoiceQuestion = {
       "key": "<value>",
     },
   },
-  instructions: {
-    "0": "<value 1>",
-  },
   type: "choice",
 };
 ```
@@ -27,7 +36,6 @@ const value: models.DecisionsChoiceQuestion = {
 
 ```typescript
 const value: models.DecisionsNoulQuestion = {
-  instructions: "<value>",
   type: "noul",
 };
 ```
@@ -37,11 +45,6 @@ const value: models.DecisionsNoulQuestion = {
 ```typescript
 const value: models.DecisionsScoreQuestion = {
   criteria: [],
-  instructions: {
-    "0": "<value 1>",
-    "1": "<value 2>",
-    "2": "<value 3>",
-  },
   type: "score",
 };
 ```

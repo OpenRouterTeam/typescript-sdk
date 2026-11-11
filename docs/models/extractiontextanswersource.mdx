@@ -1,0 +1,21 @@
+---
+title: "ExtractionTextAnswerSource"
+---
+
+Set to `image` or `document` when the answer was read from an image or a PDF rather than the state text.
+
+## Example Usage
+
+```typescript
+import { ExtractionTextAnswerSource } from "@openrouter/sdk/models";
+
+let value: ExtractionTextAnswerSource = "state";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"state" | "image" | "document" | Unrecognized<string>
+```

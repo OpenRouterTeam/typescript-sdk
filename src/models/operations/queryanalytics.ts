@@ -10,6 +10,7 @@ import * as openEnums from "../../types/enums.js";
 import { OpenEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
+import * as models from "../index.js";
 
 export type QueryAnalyticsGlobals = {
   /**
@@ -48,28 +49,6 @@ export type ClassifierDimensions = {
   includeNulls?: boolean | undefined;
 };
 
-export type ValueClassifierFilters = string | number;
-
-/**
- * Filter value. Use a scalar (string or number) for eq/neq, or an array for in/not_in.
- */
-export type ClassifierFiltersValue = string | number | Array<string | number>;
-
-export type ClassifierFiltersFilter = {
-  /**
-   * Classifier dimension name to filter on (snake_case identifier, e.g. "department", "work_type").
-   */
-  field: string;
-  /**
-   * Filter operator. Only equality/set operators are supported (eq, neq, in, not_in) — ordered comparisons are not available because classification values are strings.
-   */
-  operator: string;
-  /**
-   * Filter value. Use a scalar (string or number) for eq/neq, or an array for in/not_in.
-   */
-  value: string | number | Array<string | number>;
-};
-
 /**
  * Filter results to generations with specific classifier tag values. Can be combined with classifier_dimensions (must use the same classifier_id) or used independently with standard dimensions.
  */
@@ -78,33 +57,7 @@ export type ClassifierFilters = {
    * UUID of the classifier whose tags to filter by. Must match classifier_dimensions.classifier_id when both are specified.
    */
   classifierId: string;
-  filters: Array<ClassifierFiltersFilter>;
-};
-
-export type Value2 = string | number;
-
-/**
- * Filter value (scalar or array depending on operator). Several dimensions are enriched in responses (returned as human-readable labels), but filters must use the underlying ID: `api_key_id` — numeric ID (from generation metadata) or key hash (64-char hex from GET /api/v1/keys, resolved server-side); `user` — Clerk user ID (e.g. "user_abc123"), not the display name; `workspace` — workspace UUID, not the workspace name (filtering or grouping by the account default workspace also covers activity recorded before workspace resolution existed, which is attributed to that default workspace); `app` — numeric app ID, not the app title; `model` — permaslug (e.g. "openai/gpt-4o"), not the display name. Other dimensions (provider, origin, country, etc.) are not enriched and accept the value as returned.
- */
-export type Value1 = string | number | Array<string | number>;
-
-export type Filter = {
-  /**
-   * Dimension to filter on. Use the /meta endpoint for available dimensions.
-   */
-  field: string;
-  /**
-   * Include rows where the dimension has no value. Applies only to the `in` and `not_in` operators and dimensions that have an unset bucket.
-   */
-  includeUnset?: boolean | undefined;
-  /**
-   * Filter operator
-   */
-  operator: string;
-  /**
-   * Filter value (scalar or array depending on operator). Several dimensions are enriched in responses (returned as human-readable labels), but filters must use the underlying ID: `api_key_id` — numeric ID (from generation metadata) or key hash (64-char hex from GET /api/v1/keys, resolved server-side); `user` — Clerk user ID (e.g. "user_abc123"), not the display name; `workspace` — workspace UUID, not the workspace name (filtering or grouping by the account default workspace also covers activity recorded before workspace resolution existed, which is attributed to that default workspace); `app` — numeric app ID, not the app title; `model` — permaslug (e.g. "openai/gpt-4o"), not the display name. Other dimensions (provider, origin, country, etc.) are not enriched and accept the value as returned.
-   */
-  value: string | number | Array<string | number>;
+  filters: Array<models.ClassifierFiltersFilter>;
 };
 
 export const Direction = {
@@ -142,7 +95,7 @@ export type QueryAnalyticsRequestBody = {
    */
   classifierFilters?: ClassifierFilters | undefined;
   dimensions?: Array<string> | undefined;
-  filters?: Array<Filter> | undefined;
+  filters?: Array<models.Filter> | undefined;
   /**
    * Time granularity
    */
@@ -243,79 +196,9 @@ export function classifierDimensionsToJSON(
 }
 
 /** @internal */
-export type ValueClassifierFilters$Outbound = string | number;
-
-/** @internal */
-export const ValueClassifierFilters$outboundSchema: z.ZodType<
-  ValueClassifierFilters$Outbound,
-  ValueClassifierFilters
-> = z.union([z.string(), z.number()]);
-
-export function valueClassifierFiltersToJSON(
-  valueClassifierFilters: ValueClassifierFilters,
-): string {
-  return JSON.stringify(
-    ValueClassifierFilters$outboundSchema.parse(valueClassifierFilters),
-  );
-}
-
-/** @internal */
-export type ClassifierFiltersValue$Outbound =
-  | string
-  | number
-  | Array<string | number>;
-
-/** @internal */
-export const ClassifierFiltersValue$outboundSchema: z.ZodType<
-  ClassifierFiltersValue$Outbound,
-  ClassifierFiltersValue
-> = z.union([
-  z.string(),
-  z.number(),
-  z.array(z.union([z.string(), z.number()])),
-]);
-
-export function classifierFiltersValueToJSON(
-  classifierFiltersValue: ClassifierFiltersValue,
-): string {
-  return JSON.stringify(
-    ClassifierFiltersValue$outboundSchema.parse(classifierFiltersValue),
-  );
-}
-
-/** @internal */
-export type ClassifierFiltersFilter$Outbound = {
-  field: string;
-  operator: string;
-  value: string | number | Array<string | number>;
-};
-
-/** @internal */
-export const ClassifierFiltersFilter$outboundSchema: z.ZodType<
-  ClassifierFiltersFilter$Outbound,
-  ClassifierFiltersFilter
-> = z.object({
-  field: z.string(),
-  operator: z.string(),
-  value: z.union([
-    z.string(),
-    z.number(),
-    z.array(z.union([z.string(), z.number()])),
-  ]),
-});
-
-export function classifierFiltersFilterToJSON(
-  classifierFiltersFilter: ClassifierFiltersFilter,
-): string {
-  return JSON.stringify(
-    ClassifierFiltersFilter$outboundSchema.parse(classifierFiltersFilter),
-  );
-}
-
-/** @internal */
 export type ClassifierFilters$Outbound = {
   classifier_id: string;
-  filters: Array<ClassifierFiltersFilter$Outbound>;
+  filters: Array<models.ClassifierFiltersFilter$Outbound>;
 };
 
 /** @internal */
@@ -324,7 +207,7 @@ export const ClassifierFilters$outboundSchema: z.ZodType<
   ClassifierFilters
 > = z.object({
   classifierId: z.string(),
-  filters: z.array(z.lazy(() => ClassifierFiltersFilter$outboundSchema)),
+  filters: z.array(models.ClassifierFiltersFilter$outboundSchema),
 }).transform((v) => {
   return remap$(v, {
     classifierId: "classifier_id",
@@ -337,57 +220,6 @@ export function classifierFiltersToJSON(
   return JSON.stringify(
     ClassifierFilters$outboundSchema.parse(classifierFilters),
   );
-}
-
-/** @internal */
-export type Value2$Outbound = string | number;
-
-/** @internal */
-export const Value2$outboundSchema: z.ZodType<Value2$Outbound, Value2> = z
-  .union([z.string(), z.number()]);
-
-export function value2ToJSON(value2: Value2): string {
-  return JSON.stringify(Value2$outboundSchema.parse(value2));
-}
-
-/** @internal */
-export type Value1$Outbound = string | number | Array<string | number>;
-
-/** @internal */
-export const Value1$outboundSchema: z.ZodType<Value1$Outbound, Value1> = z
-  .union([z.string(), z.number(), z.array(z.union([z.string(), z.number()]))]);
-
-export function value1ToJSON(value1: Value1): string {
-  return JSON.stringify(Value1$outboundSchema.parse(value1));
-}
-
-/** @internal */
-export type Filter$Outbound = {
-  field: string;
-  include_unset?: boolean | undefined;
-  operator: string;
-  value: string | number | Array<string | number>;
-};
-
-/** @internal */
-export const Filter$outboundSchema: z.ZodType<Filter$Outbound, Filter> = z
-  .object({
-    field: z.string(),
-    includeUnset: z.boolean().optional(),
-    operator: z.string(),
-    value: z.union([
-      z.string(),
-      z.number(),
-      z.array(z.union([z.string(), z.number()])),
-    ]),
-  }).transform((v) => {
-    return remap$(v, {
-      includeUnset: "include_unset",
-    });
-  });
-
-export function filterToJSON(filter: Filter): string {
-  return JSON.stringify(Filter$outboundSchema.parse(filter));
 }
 
 /** @internal */
@@ -435,7 +267,7 @@ export type QueryAnalyticsRequestBody$Outbound = {
   classifier_dimensions?: ClassifierDimensions$Outbound | undefined;
   classifier_filters?: ClassifierFilters$Outbound | undefined;
   dimensions?: Array<string> | undefined;
-  filters?: Array<Filter$Outbound> | undefined;
+  filters?: Array<models.Filter$Outbound> | undefined;
   granularity?: string | undefined;
   group_limit?: number | undefined;
   limit?: number | undefined;
@@ -453,7 +285,7 @@ export const QueryAnalyticsRequestBody$outboundSchema: z.ZodType<
     .optional(),
   classifierFilters: z.lazy(() => ClassifierFilters$outboundSchema).optional(),
   dimensions: z.array(z.string()).optional(),
-  filters: z.array(z.lazy(() => Filter$outboundSchema)).optional(),
+  filters: z.array(models.Filter$outboundSchema).optional(),
   granularity: z.string().optional(),
   groupLimit: z.int().optional(),
   limit: z.int().optional(),

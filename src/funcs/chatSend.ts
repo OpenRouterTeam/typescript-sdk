@@ -5,6 +5,7 @@
 
 import { OpenRouterCore } from "../core.js";
 import { encodeJSON, encodeSimple } from "../lib/encodings.js";
+import { EventStream } from "../lib/event-streams.js";
 import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
@@ -23,6 +24,7 @@ import * as errors from "../models/errors/index.js";
 import { OpenRouterError } from "../models/errors/openroutererror.js";
 import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
@@ -41,7 +43,7 @@ export function chatSend(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    operations.SendChatCompletionRequestResponse,
+    models.ChatResult,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
@@ -74,7 +76,7 @@ export function chatSend(
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    operations.SendChatCompletionRequestResponse,
+    EventStream<models.ChatStreamChunk>,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError

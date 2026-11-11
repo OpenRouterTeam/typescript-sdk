@@ -1,0 +1,26 @@
+---
+title: "ClassifierSetFilter"
+---
+
+## Example Usage
+
+```typescript
+import { ClassifierSetFilter } from "@openrouter/sdk/models";
+
+let value: ClassifierSetFilter = {
+  field: "department",
+  operator: "in",
+  value: [
+    "Engineering",
+    "Support",
+  ],
+};
+```
+
+## Fields
+
+| Field                                                                                           | Type                                                                                            | Required                                                                                        | Description                                                                                     | Example                                                                                         |
+| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `field`                                                                                         | *string*                                                                                        | ✔️                                                                              | Classifier dimension name to filter on (snake_case identifier, e.g. "department", "work_type"). | department                                                                                      |
+| `operator`                                                                                      | [models.ClassifierSetFilterOperator](../models/classifiersetfilteroperator.mdx)                  | ✔️                                                                              | Set-membership operator taking an array filter value.                                           | in                                                                                              |
+| `value`                                                                                         | *models.ClassifierSetFilterValue*[]                                                             | ✔️                                                                              | Array of scalar filter values.                                                                  | [<br/>"Engineering",<br/>"Support"<br/>]                                                        |

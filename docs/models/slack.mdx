@@ -1,0 +1,19 @@
+---
+title: "Slack"
+---
+
+## Example Usage
+
+```typescript
+import { Slack } from "@openrouter/sdk/models";
+
+let value: Slack = {
+  memberLinks: [],
+};
+```
+
+## Fields
+
+| Field                                                                                                                                           | Type                                                                                                                                            | Required                                                                                                                                        | Description                                                                                                                                     |
+| ----------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `memberLinks`                                                                                                                                   | [models.SlackMemberLink](../models/slackmemberlink.mdx)[]                                                                                        | ✔️                                                                                                                              | Members whose own Slack account the vault can act as; whether the intern's own Slack app runs is a runtime fact the `connections` tool reports. |

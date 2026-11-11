@@ -11,14 +11,14 @@ import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const Environment = {
+export const EnvironmentEnum = {
   Windows: "windows",
   Mac: "mac",
   Linux: "linux",
   Ubuntu: "ubuntu",
   Browser: "browser",
 } as const;
-export type Environment = OpenEnum<typeof Environment>;
+export type EnvironmentEnum = OpenEnum<typeof EnvironmentEnum>;
 
 export const ComputerUseServerToolType = {
   ComputerUsePreview: "computer_use_preview",
@@ -33,16 +33,20 @@ export type ComputerUseServerToolType = ClosedEnum<
 export type ComputerUseServerTool = {
   displayHeight: number;
   displayWidth: number;
-  environment: Environment;
+  environment: EnvironmentEnum;
   type: ComputerUseServerToolType;
 };
 
 /** @internal */
-export const Environment$inboundSchema: z.ZodType<Environment, unknown> =
-  openEnums.inboundSchema(Environment);
+export const EnvironmentEnum$inboundSchema: z.ZodType<
+  EnvironmentEnum,
+  unknown
+> = openEnums.inboundSchema(EnvironmentEnum);
 /** @internal */
-export const Environment$outboundSchema: z.ZodType<string, Environment> =
-  openEnums.outboundSchema(Environment);
+export const EnvironmentEnum$outboundSchema: z.ZodType<
+  string,
+  EnvironmentEnum
+> = openEnums.outboundSchema(EnvironmentEnum);
 
 /** @internal */
 export const ComputerUseServerToolType$inboundSchema: z.ZodEnum<
@@ -60,7 +64,7 @@ export const ComputerUseServerTool$inboundSchema: z.ZodType<
 > = z.object({
   display_height: z.int(),
   display_width: z.int(),
-  environment: Environment$inboundSchema,
+  environment: EnvironmentEnum$inboundSchema,
   type: ComputerUseServerToolType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
@@ -83,7 +87,7 @@ export const ComputerUseServerTool$outboundSchema: z.ZodType<
 > = z.object({
   displayHeight: z.int(),
   displayWidth: z.int(),
-  environment: Environment$outboundSchema,
+  environment: EnvironmentEnum$outboundSchema,
   type: ComputerUseServerToolType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {

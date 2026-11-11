@@ -1,0 +1,25 @@
+---
+title: "Coverage"
+---
+
+What GitHub says the installation covers; null until read.
+
+## Example Usage
+
+```typescript
+import { Coverage } from "@openrouter/sdk/models";
+
+let value: Coverage = {
+  checkedAt: new Date("2025-09-29T08:31:35.555Z"),
+  repositoryCount: 719072,
+  selection: "all",
+};
+```
+
+## Fields
+
+| Field                                                                                         | Type                                                                                          | Required                                                                                      | Description                                                                                   |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `checkedAt`                                                                                   | [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) | ✔️                                                                            | When GitHub answered, through the installation token the vault holds.                         |
+| `repositoryCount`                                                                             | *number*                                                                                      | ✔️                                                                            | Repositories the installation covers; null when GitHub did not count them.                    |
+| `selection`                                                                                   | [models.Selection](../models/selection.mdx)                                                    | ✔️                                                                            | N/A                                                                                           |

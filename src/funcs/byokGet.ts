@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Get a BYOK provider credential
  *
  * @remarks
- * Get a single bring-your-own-key (BYOK) provider credential by its `id`. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Get a single bring-your-own-key (BYOK) provider credential by its `id`. A workspace-scoped management key only reaches credentials in its own workspace; any other `id` returns 404. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function byokGet(
   client: OpenRouterCore,
@@ -42,6 +42,7 @@ export function byokGet(
   Result<
     models.GetBYOKKeyResponse,
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -70,6 +71,7 @@ async function $do(
     Result<
       models.GetBYOKKeyResponse,
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
@@ -185,6 +187,7 @@ async function $do(
   const [result] = await M.match<
     models.GetBYOKKeyResponse,
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -198,6 +201,7 @@ async function $do(
   >(
     M.json(200, models.GetBYOKKeyResponse$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),

@@ -1,0 +1,56 @@
+---
+title: "PrivateEndpointSettings"
+---
+
+Capabilities and limits routing uses for this endpoint. A new endpoint copies them from the public endpoint for the same model and provider, or from the model, and the owner can change them. Rate limits are not part of this object: a private endpoint is billed to its own upstream key, so request limits stay with the provider.
+
+## Example Usage
+
+```typescript
+import { PrivateEndpointSettings } from "@openrouter/sdk/models";
+
+let value: PrivateEndpointSettings = {
+  completions: {
+    chat: true,
+    text: false,
+  },
+  contextLength: 128000,
+  excludedParameters: [
+    "logit_bias",
+  ],
+  inputs: {
+    audio: false,
+    base64Files: null,
+    base64Images: true,
+    fileUrls: null,
+    imageUrls: true,
+  },
+  maxCompletionTokens: 16384,
+  maxPromptTokens: null,
+  quantization: "bf16",
+  reasoning: {
+    returnMechanism: "reasoning",
+    supported: true,
+  },
+  toolChoice: {
+    auto: true,
+    function: false,
+    none: true,
+    required: true,
+  },
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                                   | Type                                                                                                                                                                    | Required                                                                                                                                                                | Description                                                                                                                                                             | Example                                                                                                                                                                 |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `completions`                                                                                                                                                           | [models.PrivateEndpointSettingsCompletions](../models/privateendpointsettingscompletions.mdx)                                                                            | ✔️                                                                                                                                                      | N/A                                                                                                                                                                     |                                                                                                                                                                         |
+| `contextLength`                                                                                                                                                         | *number*                                                                                                                                                                | ✔️                                                                                                                                                      | Longest prompt plus completion, in tokens, or `null` to keep the model default.                                                                                         | 128000                                                                                                                                                                  |
+| `excludedParameters`                                                                                                                                                    | [models.PrivateEndpointSettingsExcludedParameter](../models/privateendpointsettingsexcludedparameter.mdx)[]                                                              | ✔️                                                                                                                                                      | Request parameters the upstream rejects even though the model supports them; requests using one do not route here. Cannot name a tested parameter.                      | [<br/>"logit_bias"<br/>]                                                                                                                                                |
+| `inputs`                                                                                                                                                                | [models.PrivateEndpointSettingsInputs](../models/privateendpointsettingsinputs.mdx)                                                                                      | ✔️                                                                                                                                                      | N/A                                                                                                                                                                     |                                                                                                                                                                         |
+| `maxCompletionTokens`                                                                                                                                                   | *number*                                                                                                                                                                | ✔️                                                                                                                                                      | Longest completion the upstream returns, in tokens, or `null` to keep the model default.                                                                                | 16384                                                                                                                                                                   |
+| `maxPromptTokens`                                                                                                                                                       | *number*                                                                                                                                                                | ✔️                                                                                                                                                      | Longest prompt, in tokens, or `null` for no cap below the context length. Cannot exceed `context_length`, or the model context length while `context_length` is `null`. | null                                                                                                                                                                    |
+| `quantization`                                                                                                                                                          | [models.PrivateEndpointQuantization](../models/privateendpointquantization.mdx)                                                                                          | ✔️                                                                                                                                                      | Weight precision the deployment runs at; `unknown` when not stated.                                                                                                     | bf16                                                                                                                                                                    |
+| `reasoning`                                                                                                                                                             | [models.PrivateEndpointSettingsReasoning](../models/privateendpointsettingsreasoning.mdx)                                                                                | ✔️                                                                                                                                                      | N/A                                                                                                                                                                     |                                                                                                                                                                         |
+| `toolChoice`                                                                                                                                                            | [models.PrivateEndpointSettingsToolChoice](../models/privateendpointsettingstoolchoice.mdx)                                                                              | ✔️                                                                                                                                                      | N/A                                                                                                                                                                     |                                                                                                                                                                         |

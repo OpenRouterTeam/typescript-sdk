@@ -1,0 +1,29 @@
+---
+title: "ClassifierFiltersFilter"
+---
+
+## Supported Types
+
+### `models.ClassifierScalarFilter`
+
+```typescript
+const value: models.ClassifierScalarFilter = {
+  field: "department",
+  operator: "eq",
+  value: "Engineering",
+};
+```
+
+### `models.ClassifierSetFilter`
+
+```typescript
+const value: models.ClassifierSetFilter = {
+  field: "department",
+  operator: "in",
+  value: [
+    "Engineering",
+    "Support",
+  ],
+};
+```
+

@@ -56,7 +56,7 @@ const result = await openRouter.chat.send({
 });
 
 for await (const chunk of result) {
-  console.log(chunk.choices[0].delta.content);
+  console.log(chunk.choices[0]?.delta.content);
 }
 ```
 

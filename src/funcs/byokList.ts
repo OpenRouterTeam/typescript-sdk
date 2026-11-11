@@ -37,7 +37,7 @@ import {
  * List BYOK provider credentials
  *
  * @remarks
- * List the bring-your-own-key (BYOK) provider credentials for the authenticated entity's default workspace. Use the `workspace_id` query parameter to scope the result to a different workspace, or the `provider` query parameter to filter by upstream provider. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * List the bring-your-own-key (BYOK) provider credentials for the authenticated entity's default workspace, or a workspace-scoped management key's own workspace. Use the `workspace_id` query parameter to scope the result to a different workspace, or the `provider` query parameter to filter by upstream provider. A workspace-scoped management key can only list its own workspace; any other `workspace_id` returns 403. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function byokList(
   client: OpenRouterCore,
@@ -49,6 +49,7 @@ export function byokList(
       operations.ListBYOKKeysResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
       | ResponseValidationError
@@ -80,6 +81,7 @@ async function $do(
         operations.ListBYOKKeysResponse,
         | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
         | ResponseValidationError
@@ -200,6 +202,7 @@ async function $do(
     operations.ListBYOKKeysResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
@@ -215,6 +218,7 @@ async function $do(
     }),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
@@ -235,6 +239,7 @@ async function $do(
         operations.ListBYOKKeysResponse,
         | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
         | ResponseValidationError

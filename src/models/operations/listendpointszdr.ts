@@ -58,7 +58,7 @@ export type ListEndpointsZdrRequest = {
  * Returns a list of endpoints
  */
 export type ListEndpointsZdrResponse = {
-  data: Array<models.PublicEndpoint>;
+  data: Array<models.PublicZdrEndpoint>;
 };
 
 /** @internal */
@@ -95,7 +95,7 @@ export const ListEndpointsZdrResponse$inboundSchema: z.ZodType<
   ListEndpointsZdrResponse,
   unknown
 > = z.object({
-  data: z.array(models.PublicEndpoint$inboundSchema),
+  data: z.array(models.PublicZdrEndpoint$inboundSchema),
 });
 
 export function listEndpointsZdrResponseFromJSON(

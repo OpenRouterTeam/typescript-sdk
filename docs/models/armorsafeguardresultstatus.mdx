@@ -1,0 +1,26 @@
+---
+title: "ArmorSafeguardResultStatus"
+---
+
+## Example Usage
+
+```typescript
+import { ArmorSafeguardResultStatus } from "@openrouter/sdk/models";
+
+let value: ArmorSafeguardResultStatus = {
+  toolUses: {
+    "key": {
+      outcome: "flagged",
+      type: "evaluated",
+    },
+  },
+  type: "available",
+};
+```
+
+## Fields
+
+| Field                                                      | Type                                                       | Required                                                   | Description                                                |
+| ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| `toolUses`                                                 | Record\<string, *models.ToolUses*>                          | ✔️                                         | N/A                                                        |
+| `type`                                                     | [models.TypeAvailableEnum](../models/typeavailableenum.mdx) | ✔️                                         | N/A                                                        |

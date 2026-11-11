@@ -9,11 +9,6 @@ import { DecisionsScoreQuestion } from "@openrouter/sdk/models";
 
 let value: DecisionsScoreQuestion = {
   criteria: [],
-  instructions: {
-    "0": "<value 1>",
-    "1": "<value 2>",
-    "2": "<value 3>",
-  },
   type: "score",
 };
 ```
@@ -22,6 +17,6 @@ let value: DecisionsScoreQuestion = {
 
 | Field                                                             | Type                                                              | Required                                                          | Description                                                       |
 | ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- |
-| `criteria`                                                        | *models.Criterion*[]                                              | ✅                                                | N/A                                                               |
-| `instructions`                                                    | *models.DecisionsScoreQuestionInstructions*                       | ✅                                                | A plain string, or a JSON object or array of structured guidance. |
-| `type`                                                            | *"score"*                                                         | ✅                                                | N/A                                                               |
+| `criteria`                                                        | *models.Criterion*[]                                              | ✔️                                                | N/A                                                               |
+| `instructions`                                                    | *models.DecisionsScoreQuestionInstructions*                       | ➖                                                | A plain string, or a JSON object or array of structured guidance. |
+| `type`                                                            | *"score"*                                                         | ✔️                                                | N/A                                                               |

@@ -1,0 +1,32 @@
+---
+title: "ToolUses"
+---
+
+## Supported Types
+
+### `models.ToolUsesEvaluated`
+
+```typescript
+const value: models.ToolUsesEvaluated = {
+  outcome: "flagged",
+  type: "evaluated",
+};
+```
+
+### `models.ToolUsesSkipped`
+
+```typescript
+const value: models.ToolUsesSkipped = {
+  type: "skipped",
+};
+```
+
+### `models.ToolUsesUnavailable`
+
+```typescript
+const value: models.ToolUsesUnavailable = {
+  reason: "<value>",
+  type: "unavailable",
+};
+```
+

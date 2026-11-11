@@ -19,15 +19,17 @@ import {
   ObservabilityFilterRulesConfig$inboundSchema,
 } from "./observabilityfilterrulesconfig.js";
 
-export const Method = {
+export const ObservabilityWebhookDestinationMethod = {
   Post: "POST",
   Put: "PUT",
 } as const;
-export type Method = OpenEnum<typeof Method>;
+export type ObservabilityWebhookDestinationMethod = OpenEnum<
+  typeof ObservabilityWebhookDestinationMethod
+>;
 
 export type ObservabilityWebhookDestinationConfig = {
   headers?: { [k: string]: string } | undefined;
-  method: Method;
+  method: ObservabilityWebhookDestinationMethod;
   url: string;
 };
 
@@ -40,6 +42,10 @@ export type ObservabilityWebhookDestination = {
    * When true, include cost and billing generation metadata.
    */
   broadcastGenerationCost: boolean;
+  /**
+   * Beta. When true, include openrouter_cost_allocation: per-token-kind usage and cost, sent only when they reconcile with the billed cost.
+   */
+  broadcastGenerationCostAllocation: boolean;
   /**
    * When true, include identity generation metadata.
    */
@@ -93,8 +99,10 @@ export type ObservabilityWebhookDestination = {
 };
 
 /** @internal */
-export const Method$inboundSchema: z.ZodType<Method, unknown> = openEnums
-  .inboundSchema(Method);
+export const ObservabilityWebhookDestinationMethod$inboundSchema: z.ZodType<
+  ObservabilityWebhookDestinationMethod,
+  unknown
+> = openEnums.inboundSchema(ObservabilityWebhookDestinationMethod);
 
 /** @internal */
 export const ObservabilityWebhookDestinationConfig$inboundSchema: z.ZodType<
@@ -102,7 +110,7 @@ export const ObservabilityWebhookDestinationConfig$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   headers: z.record(z.string(), z.string()).optional(),
-  method: Method$inboundSchema.default("POST"),
+  method: ObservabilityWebhookDestinationMethod$inboundSchema.default("POST"),
   url: z.string(),
 });
 
@@ -124,6 +132,7 @@ export const ObservabilityWebhookDestination$inboundSchema: z.ZodType<
 > = z.object({
   api_key_hashes: z.nullable(z.array(z.string())),
   broadcast_generation_cost: z.boolean(),
+  broadcast_generation_cost_allocation: z.boolean(),
   broadcast_generation_identity: z.boolean(),
   broadcast_generation_request_context: z.boolean(),
   config: z.lazy(() => ObservabilityWebhookDestinationConfig$inboundSchema),
@@ -142,6 +151,7 @@ export const ObservabilityWebhookDestination$inboundSchema: z.ZodType<
   return remap$(v, {
     "api_key_hashes": "apiKeyHashes",
     "broadcast_generation_cost": "broadcastGenerationCost",
+    "broadcast_generation_cost_allocation": "broadcastGenerationCostAllocation",
     "broadcast_generation_identity": "broadcastGenerationIdentity",
     "broadcast_generation_request_context": "broadcastGenerationRequestContext",
     "created_at": "createdAt",

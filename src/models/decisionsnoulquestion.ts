@@ -19,11 +19,11 @@ export type DecisionsNoulQuestionCriteria = {
   /**
    * A plain string, or a JSON object or array of structured guidance.
    */
-  false: string | { [k: string]: any } | Array<any>;
+  false?: string | { [k: string]: any } | Array<any> | null | undefined;
   /**
    * A plain string, or a JSON object or array of structured guidance.
    */
-  true: string | { [k: string]: any } | Array<any>;
+  true?: string | { [k: string]: any } | Array<any> | null | undefined;
 };
 
 /**
@@ -39,7 +39,7 @@ export type DecisionsNoulQuestion = {
   /**
    * A plain string, or a JSON object or array of structured guidance.
    */
-  instructions: string | { [k: string]: any } | Array<any>;
+  instructions?: string | { [k: string]: any } | Array<any> | null | undefined;
   type: "noul";
 };
 
@@ -73,8 +73,8 @@ export function trueToJSON(value: True): string {
 
 /** @internal */
 export type DecisionsNoulQuestionCriteria$Outbound = {
-  false: string | { [k: string]: any } | Array<any>;
-  true: string | { [k: string]: any } | Array<any>;
+  false?: string | { [k: string]: any } | Array<any> | null | undefined;
+  true?: string | { [k: string]: any } | Array<any> | null | undefined;
 };
 
 /** @internal */
@@ -82,8 +82,12 @@ export const DecisionsNoulQuestionCriteria$outboundSchema: z.ZodType<
   DecisionsNoulQuestionCriteria$Outbound,
   DecisionsNoulQuestionCriteria
 > = z.object({
-  false: z.union([z.string(), z.record(z.string(), z.any()), z.array(z.any())]),
-  true: z.union([z.string(), z.record(z.string(), z.any()), z.array(z.any())]),
+  false: z.nullable(
+    z.union([z.string(), z.record(z.string(), z.any()), z.array(z.any())]),
+  ).optional(),
+  true: z.nullable(
+    z.union([z.string(), z.record(z.string(), z.any()), z.array(z.any())]),
+  ).optional(),
 });
 
 export function decisionsNoulQuestionCriteriaToJSON(
@@ -120,7 +124,7 @@ export function decisionsNoulQuestionInstructionsToJSON(
 /** @internal */
 export type DecisionsNoulQuestion$Outbound = {
   criteria?: DecisionsNoulQuestionCriteria$Outbound | undefined;
-  instructions: string | { [k: string]: any } | Array<any>;
+  instructions?: string | { [k: string]: any } | Array<any> | null | undefined;
   type: "noul";
 };
 
@@ -131,11 +135,9 @@ export const DecisionsNoulQuestion$outboundSchema: z.ZodType<
 > = z.object({
   criteria: z.lazy(() => DecisionsNoulQuestionCriteria$outboundSchema)
     .optional(),
-  instructions: z.union([
-    z.string(),
-    z.record(z.string(), z.any()),
-    z.array(z.any()),
-  ]),
+  instructions: z.nullable(
+    z.union([z.string(), z.record(z.string(), z.any()), z.array(z.any())]),
+  ).optional(),
   type: z.literal("noul"),
 });
 

@@ -30,6 +30,10 @@ export type VideoGenerationResponseStatus = OpenEnum<
 export type VideoGenerationResponse = {
   error?: string | undefined;
   /**
+   * Unix timestamp in seconds when OpenRouter's stored copy of the outputs stops being available. Present only when that copy exists.
+   */
+  expiresAt?: number | undefined;
+  /**
    * The generation ID associated with this video generation job. Available once the job has been processed.
    */
   generationId?: string | undefined;
@@ -39,7 +43,14 @@ export type VideoGenerationResponse = {
   id: string;
   pollingUrl: string;
   status: VideoGenerationResponseStatus;
+  /**
+   * OpenRouter content URLs for each output. They need your API key in the `Authorization` header and keep working for as long as the output is available.
+   */
   unsignedUrls?: Array<string> | undefined;
+  /**
+   * Signed download URLs for OpenRouter's stored copy of each output, usable without an API key until `expires_at`. Anyone holding a URL can download that output until it expires, so treat it like a secret. Present only when the stored copy exists.
+   */
+  urls?: Array<string> | undefined;
   /**
    * Usage and cost information for the video generation. Available once the job has completed.
    */
@@ -58,14 +69,17 @@ export const VideoGenerationResponse$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   error: z.string().optional(),
+  expires_at: z.int().optional(),
   generation_id: z.string().optional(),
   id: z.string(),
   polling_url: z.string(),
   status: VideoGenerationResponseStatus$inboundSchema,
   unsigned_urls: z.array(z.string()).optional(),
+  urls: z.array(z.string()).optional(),
   usage: VideoGenerationUsage$inboundSchema.optional(),
 }).transform((v) => {
   return remap$(v, {
+    "expires_at": "expiresAt",
     "generation_id": "generationId",
     "polling_url": "pollingUrl",
     "unsigned_urls": "unsignedUrls",

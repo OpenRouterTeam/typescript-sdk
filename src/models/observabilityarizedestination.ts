@@ -41,6 +41,10 @@ export type ObservabilityArizeDestination = {
    */
   broadcastGenerationCost: boolean;
   /**
+   * Beta. When true, include openrouter_cost_allocation: per-token-kind usage and cost, sent only when they reconcile with the billed cost.
+   */
+  broadcastGenerationCostAllocation: boolean;
+  /**
    * When true, include identity generation metadata.
    */
   broadcastGenerationIdentity: boolean;
@@ -122,6 +126,7 @@ export const ObservabilityArizeDestination$inboundSchema: z.ZodType<
 > = z.object({
   api_key_hashes: z.nullable(z.array(z.string())),
   broadcast_generation_cost: z.boolean(),
+  broadcast_generation_cost_allocation: z.boolean(),
   broadcast_generation_identity: z.boolean(),
   broadcast_generation_request_context: z.boolean(),
   config: z.lazy(() => ObservabilityArizeDestinationConfig$inboundSchema),
@@ -140,6 +145,7 @@ export const ObservabilityArizeDestination$inboundSchema: z.ZodType<
   return remap$(v, {
     "api_key_hashes": "apiKeyHashes",
     "broadcast_generation_cost": "broadcastGenerationCost",
+    "broadcast_generation_cost_allocation": "broadcastGenerationCostAllocation",
     "broadcast_generation_identity": "broadcastGenerationIdentity",
     "broadcast_generation_request_context": "broadcastGenerationRequestContext",
     "created_at": "createdAt",

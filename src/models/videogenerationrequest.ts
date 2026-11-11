@@ -17,6 +17,7 @@ import {
   InputReference$Outbound,
   InputReference$outboundSchema,
 } from "./inputreference.js";
+import { ProviderName, ProviderName$outboundSchema } from "./providername.js";
 import {
   TraceConfig,
   TraceConfig$Outbound,
@@ -44,8 +45,12 @@ export type VideoGenerationRequestAspectRatio = OpenEnum<
   typeof VideoGenerationRequestAspectRatio
 >;
 
+export type VideoGenerationRequestIgnore = ProviderName | string;
+
+export type VideoGenerationRequestOnly = ProviderName | string;
+
 /**
- * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
+ * Provider-specific options keyed by provider slug. The provider segment is case-insensitive; an endpoint tag after `/` must match the endpoint slug exactly. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
  */
 export type VideoGenerationRequestOptions = {
   oneai?: { [k: string]: any } | undefined;
@@ -57,6 +62,7 @@ export type VideoGenerationRequestOptions = {
   amazonBedrockClaudeOnAws?: { [k: string]: any } | undefined;
   amazonNova?: { [k: string]: any } | undefined;
   ambient?: { [k: string]: any } | undefined;
+  antdigital?: { [k: string]: any } | undefined;
   anthropic?: { [k: string]: any } | undefined;
   anthropic2?: { [k: string]: any } | undefined;
   anyscale?: { [k: string]: any } | undefined;
@@ -118,6 +124,7 @@ export type VideoGenerationRequestOptions = {
   ionstream?: { [k: string]: any } | undefined;
   klusterai?: { [k: string]: any } | undefined;
   krea?: { [k: string]: any } | undefined;
+  kt?: { [k: string]: any } | undefined;
   lambda?: { [k: string]: any } | undefined;
   lepton?: { [k: string]: any } | undefined;
   liquid?: { [k: string]: any } | undefined;
@@ -147,20 +154,27 @@ export type VideoGenerationRequestOptions = {
   ollama?: { [k: string]: any } | undefined;
   openInference?: { [k: string]: any } | undefined;
   openai?: { [k: string]: any } | undefined;
+  parallel?: { [k: string]: any } | undefined;
   parasail?: { [k: string]: any } | undefined;
+  paretoAlpha?: { [k: string]: any } | undefined;
+  particleAi?: { [k: string]: any } | undefined;
+  pearlResearch?: { [k: string]: any } | undefined;
   perceptron?: { [k: string]: any } | undefined;
   perplexity?: { [k: string]: any } | undefined;
   phala?: { [k: string]: any } | undefined;
   poolside?: { [k: string]: any } | undefined;
+  primalabs?: { [k: string]: any } | undefined;
   primeintellect?: { [k: string]: any } | undefined;
   quiver?: { [k: string]: any } | undefined;
   recraft?: { [k: string]: any } | undefined;
   recursal?: { [k: string]: any } | undefined;
+  recursive?: { [k: string]: any } | undefined;
   reflection?: { [k: string]: any } | undefined;
   reka?: { [k: string]: any } | undefined;
   relace?: { [k: string]: any } | undefined;
   replicate?: { [k: string]: any } | undefined;
   respan?: { [k: string]: any } | undefined;
+  river?: { [k: string]: any } | undefined;
   runway?: { [k: string]: any } | undefined;
   sailResearch?: { [k: string]: any } | undefined;
   sakana?: { [k: string]: any } | undefined;
@@ -196,11 +210,25 @@ export type VideoGenerationRequestOptions = {
   zAi?: { [k: string]: any } | undefined;
 };
 
+export type VideoGenerationRequestOrder = ProviderName | string;
+
 /**
- * Provider-specific passthrough configuration
+ * Provider routing preferences (order, only, ignore) and provider-specific passthrough configuration
  */
 export type VideoGenerationRequestProvider = {
+  /**
+   * List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
+   */
+  ignore?: Array<ProviderName | string> | null | undefined;
+  /**
+   * List of provider slugs to allow. If provided, this list is merged with your account-wide allowed provider settings for this request.
+   */
+  only?: Array<ProviderName | string> | null | undefined;
   options?: VideoGenerationRequestOptions | undefined;
+  /**
+   * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
+   */
+  order?: Array<ProviderName | string> | null | undefined;
 };
 
 /**
@@ -262,7 +290,7 @@ export type VideoGenerationRequest = {
    */
   prompt?: string | undefined;
   /**
-   * Provider-specific passthrough configuration
+   * Provider routing preferences (order, only, ignore) and provider-specific passthrough configuration
    */
   provider?: VideoGenerationRequestProvider | undefined;
   /**
@@ -302,6 +330,42 @@ export const VideoGenerationRequestAspectRatio$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(VideoGenerationRequestAspectRatio);
 
 /** @internal */
+export type VideoGenerationRequestIgnore$Outbound = string | string;
+
+/** @internal */
+export const VideoGenerationRequestIgnore$outboundSchema: z.ZodType<
+  VideoGenerationRequestIgnore$Outbound,
+  VideoGenerationRequestIgnore
+> = z.union([ProviderName$outboundSchema, z.string()]);
+
+export function videoGenerationRequestIgnoreToJSON(
+  videoGenerationRequestIgnore: VideoGenerationRequestIgnore,
+): string {
+  return JSON.stringify(
+    VideoGenerationRequestIgnore$outboundSchema.parse(
+      videoGenerationRequestIgnore,
+    ),
+  );
+}
+
+/** @internal */
+export type VideoGenerationRequestOnly$Outbound = string | string;
+
+/** @internal */
+export const VideoGenerationRequestOnly$outboundSchema: z.ZodType<
+  VideoGenerationRequestOnly$Outbound,
+  VideoGenerationRequestOnly
+> = z.union([ProviderName$outboundSchema, z.string()]);
+
+export function videoGenerationRequestOnlyToJSON(
+  videoGenerationRequestOnly: VideoGenerationRequestOnly,
+): string {
+  return JSON.stringify(
+    VideoGenerationRequestOnly$outboundSchema.parse(videoGenerationRequestOnly),
+  );
+}
+
+/** @internal */
 export type VideoGenerationRequestOptions$Outbound = {
   "01ai"?: { [k: string]: any } | undefined;
   ai21?: { [k: string]: any } | undefined;
@@ -312,6 +376,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   "amazon-bedrock/claude-on-aws"?: { [k: string]: any } | undefined;
   "amazon-nova"?: { [k: string]: any } | undefined;
   ambient?: { [k: string]: any } | undefined;
+  antdigital?: { [k: string]: any } | undefined;
   anthropic?: { [k: string]: any } | undefined;
   "anthropic/2"?: { [k: string]: any } | undefined;
   anyscale?: { [k: string]: any } | undefined;
@@ -373,6 +438,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   ionstream?: { [k: string]: any } | undefined;
   klusterai?: { [k: string]: any } | undefined;
   krea?: { [k: string]: any } | undefined;
+  kt?: { [k: string]: any } | undefined;
   lambda?: { [k: string]: any } | undefined;
   lepton?: { [k: string]: any } | undefined;
   liquid?: { [k: string]: any } | undefined;
@@ -402,20 +468,27 @@ export type VideoGenerationRequestOptions$Outbound = {
   ollama?: { [k: string]: any } | undefined;
   "open-inference"?: { [k: string]: any } | undefined;
   openai?: { [k: string]: any } | undefined;
+  parallel?: { [k: string]: any } | undefined;
   parasail?: { [k: string]: any } | undefined;
+  "pareto-alpha"?: { [k: string]: any } | undefined;
+  "particle-ai"?: { [k: string]: any } | undefined;
+  "pearl-research"?: { [k: string]: any } | undefined;
   perceptron?: { [k: string]: any } | undefined;
   perplexity?: { [k: string]: any } | undefined;
   phala?: { [k: string]: any } | undefined;
   poolside?: { [k: string]: any } | undefined;
+  primalabs?: { [k: string]: any } | undefined;
   primeintellect?: { [k: string]: any } | undefined;
   quiver?: { [k: string]: any } | undefined;
   recraft?: { [k: string]: any } | undefined;
   recursal?: { [k: string]: any } | undefined;
+  recursive?: { [k: string]: any } | undefined;
   reflection?: { [k: string]: any } | undefined;
   reka?: { [k: string]: any } | undefined;
   relace?: { [k: string]: any } | undefined;
   replicate?: { [k: string]: any } | undefined;
   respan?: { [k: string]: any } | undefined;
+  river?: { [k: string]: any } | undefined;
   runway?: { [k: string]: any } | undefined;
   "sail-research"?: { [k: string]: any } | undefined;
   sakana?: { [k: string]: any } | undefined;
@@ -465,6 +538,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   amazonBedrockClaudeOnAws: z.record(z.string(), z.any()).optional(),
   amazonNova: z.record(z.string(), z.any()).optional(),
   ambient: z.record(z.string(), z.any()).optional(),
+  antdigital: z.record(z.string(), z.any()).optional(),
   anthropic: z.record(z.string(), z.any()).optional(),
   anthropic2: z.record(z.string(), z.any()).optional(),
   anyscale: z.record(z.string(), z.any()).optional(),
@@ -526,6 +600,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   ionstream: z.record(z.string(), z.any()).optional(),
   klusterai: z.record(z.string(), z.any()).optional(),
   krea: z.record(z.string(), z.any()).optional(),
+  kt: z.record(z.string(), z.any()).optional(),
   lambda: z.record(z.string(), z.any()).optional(),
   lepton: z.record(z.string(), z.any()).optional(),
   liquid: z.record(z.string(), z.any()).optional(),
@@ -555,20 +630,27 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   ollama: z.record(z.string(), z.any()).optional(),
   openInference: z.record(z.string(), z.any()).optional(),
   openai: z.record(z.string(), z.any()).optional(),
+  parallel: z.record(z.string(), z.any()).optional(),
   parasail: z.record(z.string(), z.any()).optional(),
+  paretoAlpha: z.record(z.string(), z.any()).optional(),
+  particleAi: z.record(z.string(), z.any()).optional(),
+  pearlResearch: z.record(z.string(), z.any()).optional(),
   perceptron: z.record(z.string(), z.any()).optional(),
   perplexity: z.record(z.string(), z.any()).optional(),
   phala: z.record(z.string(), z.any()).optional(),
   poolside: z.record(z.string(), z.any()).optional(),
+  primalabs: z.record(z.string(), z.any()).optional(),
   primeintellect: z.record(z.string(), z.any()).optional(),
   quiver: z.record(z.string(), z.any()).optional(),
   recraft: z.record(z.string(), z.any()).optional(),
   recursal: z.record(z.string(), z.any()).optional(),
+  recursive: z.record(z.string(), z.any()).optional(),
   reflection: z.record(z.string(), z.any()).optional(),
   reka: z.record(z.string(), z.any()).optional(),
   relace: z.record(z.string(), z.any()).optional(),
   replicate: z.record(z.string(), z.any()).optional(),
   respan: z.record(z.string(), z.any()).optional(),
+  river: z.record(z.string(), z.any()).optional(),
   runway: z.record(z.string(), z.any()).optional(),
   sailResearch: z.record(z.string(), z.any()).optional(),
   sakana: z.record(z.string(), z.any()).optional(),
@@ -627,6 +709,9 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
     nearAi: "near-ai",
     nexAgi: "nex-agi",
     openInference: "open-inference",
+    paretoAlpha: "pareto-alpha",
+    particleAi: "particle-ai",
+    pearlResearch: "pearl-research",
     sailResearch: "sail-research",
     sakanaAi: "sakana-ai",
     sambanovaCloaked: "sambanova-cloaked",
@@ -648,8 +733,30 @@ export function videoGenerationRequestOptionsToJSON(
 }
 
 /** @internal */
+export type VideoGenerationRequestOrder$Outbound = string | string;
+
+/** @internal */
+export const VideoGenerationRequestOrder$outboundSchema: z.ZodType<
+  VideoGenerationRequestOrder$Outbound,
+  VideoGenerationRequestOrder
+> = z.union([ProviderName$outboundSchema, z.string()]);
+
+export function videoGenerationRequestOrderToJSON(
+  videoGenerationRequestOrder: VideoGenerationRequestOrder,
+): string {
+  return JSON.stringify(
+    VideoGenerationRequestOrder$outboundSchema.parse(
+      videoGenerationRequestOrder,
+    ),
+  );
+}
+
+/** @internal */
 export type VideoGenerationRequestProvider$Outbound = {
+  ignore?: Array<string | string> | null | undefined;
+  only?: Array<string | string> | null | undefined;
   options?: VideoGenerationRequestOptions$Outbound | undefined;
+  order?: Array<string | string> | null | undefined;
 };
 
 /** @internal */
@@ -657,7 +764,14 @@ export const VideoGenerationRequestProvider$outboundSchema: z.ZodType<
   VideoGenerationRequestProvider$Outbound,
   VideoGenerationRequestProvider
 > = z.object({
+  ignore: z.nullable(
+    z.array(z.union([ProviderName$outboundSchema, z.string()])),
+  ).optional(),
+  only: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
+    .optional(),
   options: z.lazy(() => VideoGenerationRequestOptions$outboundSchema)
+    .optional(),
+  order: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
     .optional(),
 });
 

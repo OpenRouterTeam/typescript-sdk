@@ -1,0 +1,27 @@
+---
+title: "Token"
+---
+
+## Example Usage
+
+```typescript
+import { Token } from "@openrouter/sdk/models";
+
+let value: Token = {
+  holdsToken: true,
+  login: "Shaniya_Macejkovic27",
+  owner: "<value>",
+  repositoryCount: 926864,
+  scope: "intern",
+};
+```
+
+## Fields
+
+| Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `holdsToken`                                                                         | *boolean*                                                                            | ✔️                                                                   | N/A                                                                                  |
+| `login`                                                                              | *string*                                                                             | ✔️                                                                   | N/A                                                                                  |
+| `owner`                                                                              | *string*                                                                             | ✔️                                                                   | N/A                                                                                  |
+| `repositoryCount`                                                                    | *number*                                                                             | ✔️                                                                   | N/A                                                                                  |
+| `scope`                                                                              | [models.TokenScope](../models/tokenscope.mdx)                                         | ✔️                                                                   | `workspace` applies to every intern of the workspace; `intern` to this intern alone. |

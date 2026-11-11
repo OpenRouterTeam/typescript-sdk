@@ -1,0 +1,35 @@
+---
+title: "ArmorSafeguardResult"
+---
+
+The outcome of OpenRouter Armor for each client tool call of the response, keyed by tool-call id, in the same shape Anthropic reports its server-side safeguards.
+
+## Example Usage
+
+```typescript
+import { ArmorSafeguardResult } from "@openrouter/sdk/models";
+
+let value: ArmorSafeguardResult = {
+  status: {
+    toolUses: {
+      "call_abc": {
+        outcome: "flagged",
+        type: "evaluated",
+      },
+      "call_def": {
+        outcome: "not_flagged",
+        type: "evaluated",
+      },
+    },
+    type: "available",
+  },
+  type: "dangerous_tool_use",
+};
+```
+
+## Fields
+
+| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `status`                                                                     | [models.ArmorSafeguardResultStatus](../models/armorsafeguardresultstatus.mdx) | ✔️                                                           | N/A                                                                          |
+| `type`                                                                       | [models.TypeDangerousToolUse](../models/typedangeroustooluse.mdx)             | ✔️                                                           | N/A                                                                          |

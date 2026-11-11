@@ -18,6 +18,10 @@ import {
   OutputItemCodeInterpreterCall$inboundSchema,
 } from "./outputitemcodeinterpretercall.js";
 import {
+  OutputItemCompaction,
+  OutputItemCompaction$inboundSchema,
+} from "./outputitemcompaction.js";
+import {
   OutputItemCustomToolCall,
   OutputItemCustomToolCall$inboundSchema,
 } from "./outputitemcustomtoolcall.js";
@@ -34,6 +38,18 @@ import {
   OutputItemImageGenerationCall$inboundSchema,
 } from "./outputitemimagegenerationcall.js";
 import {
+  OutputItemMcpApprovalRequest,
+  OutputItemMcpApprovalRequest$inboundSchema,
+} from "./outputitemmcpapprovalrequest.js";
+import {
+  OutputItemMcpCall,
+  OutputItemMcpCall$inboundSchema,
+} from "./outputitemmcpcall.js";
+import {
+  OutputItemMcpListTools,
+  OutputItemMcpListTools$inboundSchema,
+} from "./outputitemmcplisttools.js";
+import {
   OutputItemReasoning,
   OutputItemReasoning$inboundSchema,
 } from "./outputitemreasoning.js";
@@ -46,10 +62,14 @@ import { OutputMessage, OutputMessage$inboundSchema } from "./outputmessage.js";
 export type AlignmentResponsesRejected =
   | OutputItemApplyPatchCall
   | OutputItemCodeInterpreterCall
+  | OutputItemCompaction
   | OutputItemCustomToolCall
   | OutputItemFileSearchCall
   | OutputItemFunctionCall
   | OutputItemImageGenerationCall
+  | OutputItemMcpApprovalRequest
+  | OutputItemMcpCall
+  | OutputItemMcpListTools
   | OutputMessage
   | OutputItemReasoning
   | OutputItemWebSearchCall
@@ -62,10 +82,14 @@ export const AlignmentResponsesRejected$inboundSchema: z.ZodType<
 > = discriminatedUnion("type", {
   apply_patch_call: OutputItemApplyPatchCall$inboundSchema,
   code_interpreter_call: OutputItemCodeInterpreterCall$inboundSchema,
+  compaction: OutputItemCompaction$inboundSchema,
   custom_tool_call: OutputItemCustomToolCall$inboundSchema,
   file_search_call: OutputItemFileSearchCall$inboundSchema,
   function_call: OutputItemFunctionCall$inboundSchema,
   image_generation_call: OutputItemImageGenerationCall$inboundSchema,
+  mcp_approval_request: OutputItemMcpApprovalRequest$inboundSchema,
+  mcp_call: OutputItemMcpCall$inboundSchema,
+  mcp_list_tools: OutputItemMcpListTools$inboundSchema,
   message: OutputMessage$inboundSchema,
   reasoning: OutputItemReasoning$inboundSchema,
   web_search_call: OutputItemWebSearchCall$inboundSchema,

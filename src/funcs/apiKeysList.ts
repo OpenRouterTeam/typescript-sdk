@@ -26,6 +26,12 @@ import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import * as operations from "../models/operations/index.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
+import {
+  createPageIterator,
+  haltIterator,
+  PageIterator,
+  Paginator,
+} from "../types/operations.js";
 
 /**
  * List API keys
@@ -38,20 +44,25 @@ export function apiKeysList(
   request?: operations.ListRequest | undefined,
   options?: RequestOptions,
 ): APIPromise<
-  Result<
-    operations.ListResponse,
-    | errors.BadRequestResponseError
-    | errors.UnauthorizedResponseError
-    | errors.TooManyRequestsResponseError
-    | errors.InternalServerResponseError
-    | OpenRouterError
-    | ResponseValidationError
-    | ConnectionError
-    | RequestAbortedError
-    | RequestTimeoutError
-    | InvalidRequestError
-    | UnexpectedClientError
-    | SDKValidationError
+  PageIterator<
+    Result<
+      operations.ListResponse,
+      | errors.BadRequestResponseError
+      | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
+      | errors.NotFoundResponseError
+      | errors.TooManyRequestsResponseError
+      | errors.InternalServerResponseError
+      | OpenRouterError
+      | ResponseValidationError
+      | ConnectionError
+      | RequestAbortedError
+      | RequestTimeoutError
+      | InvalidRequestError
+      | UnexpectedClientError
+      | SDKValidationError
+    >,
+    { offset: number }
   >
 > {
   return new APIPromise($do(
@@ -67,20 +78,25 @@ async function $do(
   options?: RequestOptions,
 ): Promise<
   [
-    Result<
-      operations.ListResponse,
-      | errors.BadRequestResponseError
-      | errors.UnauthorizedResponseError
-      | errors.TooManyRequestsResponseError
-      | errors.InternalServerResponseError
-      | OpenRouterError
-      | ResponseValidationError
-      | ConnectionError
-      | RequestAbortedError
-      | RequestTimeoutError
-      | InvalidRequestError
-      | UnexpectedClientError
-      | SDKValidationError
+    PageIterator<
+      Result<
+        operations.ListResponse,
+        | errors.BadRequestResponseError
+        | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
+        | errors.NotFoundResponseError
+        | errors.TooManyRequestsResponseError
+        | errors.InternalServerResponseError
+        | OpenRouterError
+        | ResponseValidationError
+        | ConnectionError
+        | RequestAbortedError
+        | RequestTimeoutError
+        | InvalidRequestError
+        | UnexpectedClientError
+        | SDKValidationError
+      >,
+      { offset: number }
     >,
     APICall,
   ]
@@ -91,7 +107,7 @@ async function $do(
     "Input validation failed",
   );
   if (!parsed.ok) {
-    return [parsed, { status: "invalid" }];
+    return [haltIterator(parsed), { status: "invalid" }];
   }
   const payload = parsed.value;
   const body = null;
@@ -100,6 +116,7 @@ async function $do(
 
   const query = encodeFormQuery({
     "include_disabled": payload?.include_disabled,
+    "include_expired": payload?.include_expired,
     "offset": payload?.offset,
     "workspace_id": payload?.workspace_id,
   });
@@ -164,7 +181,7 @@ async function $do(
     timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
   }, options);
   if (!requestRes.ok) {
-    return [requestRes, { status: "invalid" }];
+    return [haltIterator(requestRes), { status: "invalid" }];
   }
   const req = requestRes.value;
 
@@ -176,7 +193,7 @@ async function $do(
     retryCodes: context.retryCodes,
   });
   if (!doResult.ok) {
-    return [doResult, { status: "request-error", request: req }];
+    return [haltIterator(doResult), { status: "request-error", request: req }];
   }
   const response = doResult.value;
 
@@ -184,10 +201,12 @@ async function $do(
     HttpMeta: { Response: response, Request: req },
   };
 
-  const [result] = await M.match<
+  const [result, raw] = await M.match<
     operations.ListResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
+    | errors.NotFoundResponseError
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -199,17 +218,76 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, operations.ListResponse$inboundSchema),
+    M.json(200, operations.ListResponse$inboundSchema, { key: "Result" }),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
+    M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });
   if (!result.ok) {
-    return [result, { status: "complete", request: req, response }];
+    return [haltIterator(result), {
+      status: "complete",
+      request: req,
+      response,
+    }];
   }
 
-  return [result, { status: "complete", request: req, response }];
+  const nextFunc = (
+    responseData: unknown,
+  ): {
+    next: Paginator<
+      Result<
+        operations.ListResponse,
+        | errors.BadRequestResponseError
+        | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
+        | errors.NotFoundResponseError
+        | errors.TooManyRequestsResponseError
+        | errors.InternalServerResponseError
+        | OpenRouterError
+        | ResponseValidationError
+        | ConnectionError
+        | RequestAbortedError
+        | RequestTimeoutError
+        | InvalidRequestError
+        | UnexpectedClientError
+        | SDKValidationError
+      >
+    >;
+    "~next"?: { offset: number };
+  } => {
+    const offset = request?.offset ?? 0;
+
+    if (!responseData) {
+      return { next: () => null };
+    }
+    const results = (responseData as { data: unknown }).data;
+    if (!Array.isArray(results) || !results.length) {
+      return { next: () => null };
+    }
+    const nextOffset = offset + results.length;
+
+    const nextVal = () =>
+      apiKeysList(
+        client,
+        {
+          ...request!,
+          offset: nextOffset,
+        },
+        options,
+      );
+
+    return { next: nextVal, "~next": { offset: nextOffset } };
+  };
+
+  const page = { ...result, ...nextFunc(raw) };
+  return [{ ...page, ...createPageIterator(page, (v) => !v.ok) }, {
+    status: "complete",
+    request: req,
+    response,
+  }];
 }

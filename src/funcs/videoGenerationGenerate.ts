@@ -48,7 +48,9 @@ export function videoGenerationGenerate(
     | errors.NotFoundResponseError
     | errors.PayloadTooLargeResponseError
     | errors.TooManyRequestsResponseError
+    | errors.ClientClosedRequestResponseError
     | errors.InternalServerResponseError
+    | errors.ServiceUnavailableResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -81,7 +83,9 @@ async function $do(
       | errors.NotFoundResponseError
       | errors.PayloadTooLargeResponseError
       | errors.TooManyRequestsResponseError
+      | errors.ClientClosedRequestResponseError
       | errors.InternalServerResponseError
+      | errors.ServiceUnavailableResponseError
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -198,7 +202,9 @@ async function $do(
     | errors.NotFoundResponseError
     | errors.PayloadTooLargeResponseError
     | errors.TooManyRequestsResponseError
+    | errors.ClientClosedRequestResponseError
     | errors.InternalServerResponseError
+    | errors.ServiceUnavailableResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -216,7 +222,9 @@ async function $do(
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(413, errors.PayloadTooLargeResponseError$inboundSchema),
     M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
+    M.jsonErr(499, errors.ClientClosedRequestResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
+    M.jsonErr(503, errors.ServiceUnavailableResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });

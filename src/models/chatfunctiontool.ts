@@ -76,6 +76,7 @@ import {
  * Function definition for tool calling
  */
 export type ChatFunctionToolFunctionFunction = {
+  deferLoading?: boolean | undefined;
   /**
    * Function description for the model
    */
@@ -104,6 +105,7 @@ export type ChatFunctionToolFunction = {
    * Anthropic-style cache breakpoint for the content part. Interchangeable with the OpenAI-style `prompt_cache_breakpoint` marker: OpenRouter converts between the two based on the provider serving the request.
    */
   cacheControl?: ChatContentCacheControl | undefined;
+  deferLoading?: boolean | undefined;
   /**
    * Function definition for tool calling
    */
@@ -131,6 +133,7 @@ export type ChatFunctionTool =
 
 /** @internal */
 export type ChatFunctionToolFunctionFunction$Outbound = {
+  defer_loading?: boolean | undefined;
   description?: string | undefined;
   name: string;
   parameters?: { [k: string]: any } | undefined;
@@ -142,10 +145,15 @@ export const ChatFunctionToolFunctionFunction$outboundSchema: z.ZodType<
   ChatFunctionToolFunctionFunction$Outbound,
   ChatFunctionToolFunctionFunction
 > = z.object({
+  deferLoading: z.boolean().optional(),
   description: z.string().optional(),
   name: z.string(),
   parameters: z.record(z.string(), z.any()).optional(),
   strict: z.nullable(z.boolean()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    deferLoading: "defer_loading",
+  });
 });
 
 export function chatFunctionToolFunctionFunctionToJSON(
@@ -166,6 +174,7 @@ export const ChatFunctionToolType$outboundSchema: z.ZodEnum<
 /** @internal */
 export type ChatFunctionToolFunction$Outbound = {
   cache_control?: ChatContentCacheControl$Outbound | undefined;
+  defer_loading?: boolean | undefined;
   function: ChatFunctionToolFunctionFunction$Outbound;
   type: string;
 };
@@ -176,11 +185,13 @@ export const ChatFunctionToolFunction$outboundSchema: z.ZodType<
   ChatFunctionToolFunction
 > = z.object({
   cacheControl: ChatContentCacheControl$outboundSchema.optional(),
+  deferLoading: z.boolean().optional(),
   function: z.lazy(() => ChatFunctionToolFunctionFunction$outboundSchema),
   type: ChatFunctionToolType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
+    deferLoading: "defer_loading",
   });
 });
 

@@ -4,7 +4,7 @@
  */
 
 import { OpenRouterCore } from "../core.js";
-import { encodeSimple } from "../lib/encodings.js";
+import { encodeFormQuery, encodeSimple } from "../lib/encodings.js";
 import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
@@ -45,8 +45,10 @@ export function presetsGetVersion(
     models.GetPresetVersionResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
+    | errors.ServiceUnavailableResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -74,8 +76,10 @@ async function $do(
       models.GetPresetVersionResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
       | errors.InternalServerResponseError
+      | errors.ServiceUnavailableResponseError
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -110,6 +114,10 @@ async function $do(
     }),
   };
   const path = pathToFunc("/presets/{slug}/versions/{version}")(pathParams);
+
+  const query = encodeFormQuery({
+    "workspace_id": payload.workspace_id,
+  });
 
   const headers = new Headers(compactMap({
     Accept: "application/json",
@@ -165,6 +173,7 @@ async function $do(
     baseURL: options?.serverURL,
     path: path,
     headers: headers,
+    query: query,
     body: body,
     userAgent: client._options.userAgent,
     timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
@@ -194,8 +203,10 @@ async function $do(
     models.GetPresetVersionResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
+    | errors.ServiceUnavailableResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -208,8 +219,10 @@ async function $do(
     M.json(200, models.GetPresetVersionResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
+    M.jsonErr(503, errors.ServiceUnavailableResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });

@@ -1,0 +1,40 @@
+---
+title: "AccountGuardrailPolicyRequest"
+---
+
+## Supported Types
+
+### `models.BudgetAccountGuardrailPolicyRequest`
+
+```typescript
+const value: models.BudgetAccountGuardrailPolicyRequest = {
+  config: {
+    includeByokInBudgets: false,
+    limitUsd: 200,
+    resetInterval: "monthly",
+  },
+  name: "Engineering monthly budget",
+  policyType: "budget",
+};
+```
+
+### `models.ModelAvailabilityAccountGuardrailPolicyRequest`
+
+```typescript
+const value: models.ModelAvailabilityAccountGuardrailPolicyRequest = {
+  config: {},
+  name: "Approved models",
+  policyType: "model_availability",
+};
+```
+
+### `models.ModerationAccountGuardrailPolicyRequest`
+
+```typescript
+const value: models.ModerationAccountGuardrailPolicyRequest = {
+  config: {},
+  name: "Block secrets",
+  policyType: "moderation",
+};
+```
+

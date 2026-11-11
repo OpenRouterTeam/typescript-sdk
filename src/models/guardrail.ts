@@ -27,6 +27,14 @@ import {
 
 export type Guardrail = {
   /**
+   * Whether ZDR-only requests to google/* models may also use Safety Retention endpoints, which may retain prompts and responses from any request, only to prevent abuse, and do not use them for training. false allows only ZDR endpoints. A guardrail can only be more restrictive than the account setting. Inherits the account setting when not provided.
+   */
+  allowSafetyRetentionGoogle?: boolean | null | undefined;
+  /**
+   * Whether ZDR-only requests to models outside the named providers (for example open-weight models on Vertex) may also use Safety Retention endpoints, which may retain prompts and responses from any request, only to prevent abuse, and do not use them for training. false allows only ZDR endpoints. A guardrail can only be more restrictive than the account setting. Inherits the account setting when not provided.
+   */
+  allowSafetyRetentionOther?: boolean | null | undefined;
+  /**
    * Data regions through which requests governed by this guardrail must arrive. `global` is https://openrouter.ai, `europe` is https://eu.openrouter.ai, and `us` is https://us.openrouter.ai. Requests arriving through any other region are rejected. `null` leaves the ingress region unrestricted. When several guardrails apply (workspace default, member, API key), the effective regions are the intersection of every non-null value.
    */
   allowedDataRegions?: Array<GuardrailDataRegion> | null | undefined;
@@ -66,6 +74,10 @@ export type Guardrail = {
    * Whether this guardrail allows paid endpoints that train on request data.
    */
   enablePaidModelTraining?: boolean | null | undefined;
+  /**
+   * Whether coding harnesses list only their vendor's own models: Codex lists OpenAI models and Claude Code and Claude Desktop list Anthropic models. Affects only the model list those harnesses request from GET /models; a model the client names directly is still routed. Any true across the workspace default, member, and API key guardrails applies.
+   */
+  enforceFirstPartyHarnessModels?: boolean | null | undefined;
   /**
    * Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, enforce_zdr_xai, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
    *
@@ -132,6 +144,8 @@ export type Guardrail = {
 
 /** @internal */
 export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
+  allow_safety_retention_google: z.nullable(z.boolean()).optional(),
+  allow_safety_retention_other: z.nullable(z.boolean()).optional(),
   allowed_data_regions: z.nullable(z.array(GuardrailDataRegion$inboundSchema))
     .optional(),
   allowed_models: z.nullable(z.array(z.string())).optional(),
@@ -146,6 +160,7 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
   enable_free_model_publication: z.nullable(z.boolean()).optional(),
   enable_free_model_training: z.nullable(z.boolean()).optional(),
   enable_paid_model_training: z.nullable(z.boolean()).optional(),
+  enforce_first_party_harness_models: z.nullable(z.boolean()).optional(),
   enforce_zdr: z.nullable(z.boolean()).optional(),
   enforce_zdr_anthropic: z.nullable(z.boolean()).optional(),
   enforce_zdr_google: z.nullable(z.boolean()).optional(),
@@ -163,6 +178,8 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
   workspace_id: z.nullable(z.string()),
 }).transform((v) => {
   return remap$(v, {
+    "allow_safety_retention_google": "allowSafetyRetentionGoogle",
+    "allow_safety_retention_other": "allowSafetyRetentionOther",
     "allowed_data_regions": "allowedDataRegions",
     "allowed_models": "allowedModels",
     "allowed_providers": "allowedProviders",
@@ -172,6 +189,7 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
     "enable_free_model_publication": "enableFreeModelPublication",
     "enable_free_model_training": "enableFreeModelTraining",
     "enable_paid_model_training": "enablePaidModelTraining",
+    "enforce_first_party_harness_models": "enforceFirstPartyHarnessModels",
     "enforce_zdr": "enforceZdr",
     "enforce_zdr_anthropic": "enforceZdrAnthropic",
     "enforce_zdr_google": "enforceZdrGoogle",

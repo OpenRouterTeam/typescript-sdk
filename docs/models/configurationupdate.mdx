@@ -1,0 +1,23 @@
+---
+title: "ConfigurationUpdate"
+---
+
+Mid-conversation configuration update. Changes reasoning effort from this point onward without invalidating the prompt cache for the preceding turns.
+
+## Example Usage
+
+```typescript
+import { ConfigurationUpdate } from "@openrouter/sdk/models";
+
+let value: ConfigurationUpdate = {
+  reasoning: {
+    effort: "low",
+  },
+};
+```
+
+## Fields
+
+| Field                                                                            | Type                                                                             | Required                                                                         | Description                                                                      | Example                                                                          |
+| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `reasoning`                                                                      | [models.ConfigurationUpdateReasoning](../models/configurationupdatereasoning.mdx) | ✔️                                                               | Reasoning settings applied from this point in the conversation onward            | \{<br/>"effort": "low"<br/>}                                                      |

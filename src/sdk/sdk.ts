@@ -19,17 +19,19 @@ import { Datasets } from "./datasets.js";
 import { Embeddings } from "./embeddings.js";
 import { Endpoints } from "./endpoints.js";
 import { EndUsers } from "./endusers.js";
+import { ExternalUsers } from "./externalusers.js";
 import { Files } from "./files.js";
 import { Generations } from "./generations.js";
+import { GuardrailPolicies } from "./guardrailpolicies.js";
 import { Guardrails } from "./guardrails.js";
 import { Images } from "./images.js";
-import { Interns } from "./interns.js";
 import { Models } from "./models.js";
 import { OAuth } from "./oauth.js";
 import { Observability } from "./observability.js";
 import { Organization } from "./organization.js";
 import { Presets } from "./presets.js";
 import { PrivateEndpoints } from "./privateendpoints.js";
+import { PrivateProviders } from "./privateproviders.js";
 import { Providers } from "./providers.js";
 import { Rerank } from "./rerank.js";
 import { Responses } from "./responses.js";
@@ -42,16 +44,6 @@ import { Vault } from "./vault.js";
 import { VideoGeneration } from "./videogeneration.js";
 import { Workspaces } from "./workspaces.js";
 // #region imports
-import type { $ZodObject, $ZodShape, infer as zodInfer } from "zod/v4/core";
-import {
-  callModel as callModelFunc,
-  type CallModelInput,
-} from "../funcs/call-model.js";
-import type { ModelResult } from "../lib/model-result.js";
-import type { RequestOptions } from "../lib/sdks.js";
-import { type Tool, ToolType } from "../lib/tool-types.js";
-
-export { ToolType };
 // #endregion imports
 
 export class OpenRouter extends ClientSDK {
@@ -125,14 +117,19 @@ export class OpenRouter extends ClientSDK {
     return (this._embeddings ??= new Embeddings(this._options));
   }
 
-  private _endUsers?: EndUsers;
-  get endUsers(): EndUsers {
-    return (this._endUsers ??= new EndUsers(this._options));
-  }
-
   private _endpoints?: Endpoints;
   get endpoints(): Endpoints {
     return (this._endpoints ??= new Endpoints(this._options));
+  }
+
+  private _externalUsers?: ExternalUsers;
+  get externalUsers(): ExternalUsers {
+    return (this._externalUsers ??= new ExternalUsers(this._options));
+  }
+
+  private _endUsers?: EndUsers;
+  get endUsers(): EndUsers {
+    return (this._endUsers ??= new EndUsers(this._options));
   }
 
   private _files?: Files;
@@ -150,14 +147,14 @@ export class OpenRouter extends ClientSDK {
     return (this._guardrails ??= new Guardrails(this._options));
   }
 
+  private _guardrailPolicies?: GuardrailPolicies;
+  get guardrailPolicies(): GuardrailPolicies {
+    return (this._guardrailPolicies ??= new GuardrailPolicies(this._options));
+  }
+
   private _images?: Images;
   get images(): Images {
     return (this._images ??= new Images(this._options));
-  }
-
-  private _interns?: Interns;
-  get interns(): Interns {
-    return (this._interns ??= new Interns(this._options));
   }
 
   private _apiKeys?: APIKeys;
@@ -188,6 +185,11 @@ export class OpenRouter extends ClientSDK {
   private _privateEndpoints?: PrivateEndpoints;
   get privateEndpoints(): PrivateEndpoints {
     return (this._privateEndpoints ??= new PrivateEndpoints(this._options));
+  }
+
+  private _privateProviders?: PrivateProviders;
+  get privateProviders(): PrivateProviders {
+    return (this._privateProviders ??= new PrivateProviders(this._options));
   }
 
   private _providers?: Providers;
@@ -241,18 +243,5 @@ export class OpenRouter extends ClientSDK {
   }
 
   // #region sdk-class-body
-  callModel<
-    TTools extends readonly Tool[],
-    TSharedSchema extends $ZodObject<$ZodShape> | undefined = undefined,
-    TShared extends Record<string, unknown> = TSharedSchema extends
-      $ZodObject<$ZodShape> ? zodInfer<TSharedSchema> : Record<string, never>,
-  >(
-    request: CallModelInput<TTools, TShared> & {
-      sharedContextSchema?: TSharedSchema;
-    },
-    options?: RequestOptions,
-  ): ModelResult<TTools, TShared> {
-    return callModelFunc(this, request, options);
-  }
   // #endregion sdk-class-body
 }

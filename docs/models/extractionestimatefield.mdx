@@ -1,0 +1,28 @@
+---
+title: "ExtractionEstimateField"
+---
+
+## Example Usage
+
+```typescript
+import { ExtractionEstimateField } from "@openrouter/sdk/models";
+
+let value: ExtractionEstimateField = {
+  max: 7670.28,
+  min: 9139.4,
+  type: "estimate",
+};
+```
+
+## Fields
+
+| Field                                                                                                           | Type                                                                                                            | Required                                                                                                        | Description                                                                                                     |
+| --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `instructions`                                                                                                  | *string*                                                                                                        | ➖                                                                                              | What the field should contain.                                                                                  |
+| `max`                                                                                                           | *models.ExtractionEstimateFieldMax*                                                                             | ✔️                                                                                              | N/A                                                                                                             |
+| `min`                                                                                                           | *models.ExtractionEstimateFieldMin*                                                                             | ✔️                                                                                              | N/A                                                                                                             |
+| `nullThreshold`                                                                                                 | *number*                                                                                                        | ➖                                                                                              | Not read on this field type: no model takes a null threshold here, and a request that sets it fails with a 400. |
+| `scale`                                                                                                         | [models.ExtractionEstimateFieldScale](../models/extractionestimatefieldscale.mdx)                                | ➖                                                                                              | N/A                                                                                                             |
+| `step`                                                                                                          | *models.ExtractionEstimateFieldStepUnion*                                                                       | ➖                                                                                              | N/A                                                                                                             |
+| `type`                                                                                                          | *"estimate"*                                                                                                    | ✔️                                                                                              | N/A                                                                                                             |
+| `unit`                                                                                                          | *string*                                                                                                        | ➖                                                                                              | Unit label for the value.                                                                                       |

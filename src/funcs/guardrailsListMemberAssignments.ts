@@ -37,7 +37,7 @@ import {
  * List all member assignments
  *
  * @remarks
- * List all organization member guardrail assignments for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * List all organization member guardrail assignments for the authenticated user. A workspace-scoped management key lists only its own workspace, which `workspace_id` defaults to; naming another workspace returns 403. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function guardrailsListMemberAssignments(
   client: OpenRouterCore,
@@ -47,7 +47,10 @@ export function guardrailsListMemberAssignments(
   PageIterator<
     Result<
       operations.ListMemberAssignmentsResponse,
+      | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
+      | errors.NotFoundResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
       | ResponseValidationError
@@ -77,7 +80,10 @@ async function $do(
     PageIterator<
       Result<
         operations.ListMemberAssignmentsResponse,
+        | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
+        | errors.NotFoundResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
         | ResponseValidationError
@@ -112,6 +118,7 @@ async function $do(
   const query = encodeFormQuery({
     "limit": payload?.limit,
     "offset": payload?.offset,
+    "workspace_id": payload?.workspace_id,
   });
 
   const headers = new Headers(compactMap({
@@ -196,7 +203,10 @@ async function $do(
 
   const [result, raw] = await M.match<
     operations.ListMemberAssignmentsResponse,
+    | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
+    | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
@@ -210,7 +220,10 @@ async function $do(
     M.json(200, operations.ListMemberAssignmentsResponse$inboundSchema, {
       key: "Result",
     }),
+    M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
+    M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
@@ -229,7 +242,10 @@ async function $do(
     next: Paginator<
       Result<
         operations.ListMemberAssignmentsResponse,
+        | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
+        | errors.NotFoundResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
         | ResponseValidationError

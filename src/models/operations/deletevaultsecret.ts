@@ -49,7 +49,7 @@ export type DeleteVaultSecretRequest = {
    */
   appCategories?: string | undefined;
   /**
-   * Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters.
+   * Existing secret name. Accepts legacy names stored before the 255-character write bound; new writes still require the documented name format.
    */
   name: string;
 };

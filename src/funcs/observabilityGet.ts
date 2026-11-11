@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Get an observability destination
  *
  * @remarks
- * Fetch a single observability destination by its UUID. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Fetch a single observability destination by its UUID. A workspace-scoped management key only reaches destinations in its own workspace; any other `id` returns 404. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function observabilityGet(
   client: OpenRouterCore,
@@ -42,6 +42,7 @@ export function observabilityGet(
   Result<
     models.GetObservabilityDestinationResponse,
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -70,6 +71,7 @@ async function $do(
     Result<
       models.GetObservabilityDestinationResponse,
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
@@ -186,6 +188,7 @@ async function $do(
   const [result] = await M.match<
     models.GetObservabilityDestinationResponse,
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -199,6 +202,7 @@ async function $do(
   >(
     M.json(200, models.GetObservabilityDestinationResponse$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),

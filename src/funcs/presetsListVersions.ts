@@ -51,8 +51,10 @@ export function presetsListVersions(
       operations.ListPresetVersionsResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
       | errors.InternalServerResponseError
+      | errors.ServiceUnavailableResponseError
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -83,8 +85,10 @@ async function $do(
         operations.ListPresetVersionsResponse,
         | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
         | errors.NotFoundResponseError
         | errors.InternalServerResponseError
+        | errors.ServiceUnavailableResponseError
         | OpenRouterError
         | ResponseValidationError
         | ConnectionError
@@ -121,6 +125,7 @@ async function $do(
   const query = encodeFormQuery({
     "limit": payload.limit,
     "offset": payload.offset,
+    "workspace_id": payload.workspace_id,
   });
 
   const headers = new Headers(compactMap({
@@ -207,8 +212,10 @@ async function $do(
     operations.ListPresetVersionsResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
+    | errors.ServiceUnavailableResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -223,8 +230,10 @@ async function $do(
     }),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
+    M.jsonErr(503, errors.ServiceUnavailableResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });
@@ -244,8 +253,10 @@ async function $do(
         operations.ListPresetVersionsResponse,
         | errors.BadRequestResponseError
         | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
         | errors.NotFoundResponseError
         | errors.InternalServerResponseError
+        | errors.ServiceUnavailableResponseError
         | OpenRouterError
         | ResponseValidationError
         | ConnectionError

@@ -11,20 +11,10 @@ import {
   ChatContentText$outboundSchema,
 } from "./chatcontenttext.js";
 import {
-  ConfigurationUpdateReasoning,
-  ConfigurationUpdateReasoning$Outbound,
-  ConfigurationUpdateReasoning$outboundSchema,
-} from "./configurationupdatereasoning.js";
-
-/**
- * OpenRouter extension. Changes reasoning effort from this point in the conversation onward without invalidating the prompt cache for the preceding turns. Place it on a content-less system message (`content: ""`) directly before the user message it should apply to, and keep it at that position in later requests. Equivalent to the OpenAI Responses `configuration_update` input item and the Anthropic Messages per-message `output_config.effort`.
- */
-export type ChatSystemMessageConfigurationUpdate = {
-  /**
-   * Reasoning settings applied from this point in the conversation onward
-   */
-  reasoning: ConfigurationUpdateReasoning;
-};
+  ConfigurationUpdate,
+  ConfigurationUpdate$Outbound,
+  ConfigurationUpdate$outboundSchema,
+} from "./configurationupdate.js";
 
 /**
  * System message content
@@ -38,7 +28,7 @@ export type ChatSystemMessage = {
   /**
    * OpenRouter extension. Changes reasoning effort from this point in the conversation onward without invalidating the prompt cache for the preceding turns. Place it on a content-less system message (`content: ""`) directly before the user message it should apply to, and keep it at that position in later requests. Equivalent to the OpenAI Responses `configuration_update` input item and the Anthropic Messages per-message `output_config.effort`.
    */
-  configurationUpdate?: ChatSystemMessageConfigurationUpdate | null | undefined;
+  configurationUpdate?: ConfigurationUpdate | null | undefined;
   /**
    * System message content
    */
@@ -49,29 +39,6 @@ export type ChatSystemMessage = {
   name?: string | undefined;
   role: "system";
 };
-
-/** @internal */
-export type ChatSystemMessageConfigurationUpdate$Outbound = {
-  reasoning: ConfigurationUpdateReasoning$Outbound;
-};
-
-/** @internal */
-export const ChatSystemMessageConfigurationUpdate$outboundSchema: z.ZodType<
-  ChatSystemMessageConfigurationUpdate$Outbound,
-  ChatSystemMessageConfigurationUpdate
-> = z.object({
-  reasoning: ConfigurationUpdateReasoning$outboundSchema,
-});
-
-export function chatSystemMessageConfigurationUpdateToJSON(
-  chatSystemMessageConfigurationUpdate: ChatSystemMessageConfigurationUpdate,
-): string {
-  return JSON.stringify(
-    ChatSystemMessageConfigurationUpdate$outboundSchema.parse(
-      chatSystemMessageConfigurationUpdate,
-    ),
-  );
-}
 
 /** @internal */
 export type ChatSystemMessageContent$Outbound =
@@ -94,10 +61,7 @@ export function chatSystemMessageContentToJSON(
 
 /** @internal */
 export type ChatSystemMessage$Outbound = {
-  configuration_update?:
-    | ChatSystemMessageConfigurationUpdate$Outbound
-    | null
-    | undefined;
+  configuration_update?: ConfigurationUpdate$Outbound | null | undefined;
   content: string | Array<ChatContentText$Outbound>;
   name?: string | undefined;
   role: "system";
@@ -108,9 +72,8 @@ export const ChatSystemMessage$outboundSchema: z.ZodType<
   ChatSystemMessage$Outbound,
   ChatSystemMessage
 > = z.object({
-  configurationUpdate: z.nullable(
-    z.lazy(() => ChatSystemMessageConfigurationUpdate$outboundSchema),
-  ).optional(),
+  configurationUpdate: z.nullable(ConfigurationUpdate$outboundSchema)
+    .optional(),
   content: z.union([z.string(), z.array(ChatContentText$outboundSchema)]),
   name: z.string().optional(),
   role: z.literal("system"),

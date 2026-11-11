@@ -4387,3 +4387,853 @@ Based on:
 - [typescript v1.4.25] .
 ### Releases
 - [NPM v1.4.25] https://www.npmjs.com/package/@openrouter/sdk/v/1.4.25 - .
+
+## 2026-10-21 21:47:34
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.802.0 (2.948.4) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.1] .
+### Releases
+- [NPM v1.5.1] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.1 - .
+
+## 2026-10-21 23:54:23
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.802.0 (2.948.4) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.2] .
+### Releases
+- [NPM v1.5.2] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.2 - .
+
+## 2026-10-22 01:09:16
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.802.0 (2.948.4) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.3] .
+### Releases
+- [NPM v1.5.3] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.3 - .
+
+## 2026-10-22 18:04:04
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.802.0 (2.948.4) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.4] .
+### Releases
+- [NPM v1.5.4] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.4 - .
+
+## 2026-10-22 23:32:56
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.802.0 (2.948.4) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.5] .
+### Releases
+- [NPM v1.5.5] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.5 - .
+
+## 2026-10-23 02:25:20
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.802.0 (2.948.4) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.6] .
+### Releases
+- [NPM v1.5.6] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.6 - .
+
+## 2026-10-23 17:57:35
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.802.0 (2.948.4) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.7] .
+### Releases
+- [NPM v1.5.7] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.7 - .
+
+## 2026-10-26 19:41:01
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.802.0 (2.948.4) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.8] .
+### Releases
+- [NPM v1.5.8] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.8 - .
+
+## 2026-10-26 21:02:48
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.802.0 (2.948.4) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.9] .
+### Releases
+- [NPM v1.5.9] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.9 - .
+
+## 2026-10-27 00:13:19
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.802.0 (2.948.4) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.10] .
+### Releases
+- [NPM v1.5.10] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.10 - .
+
+## 2026-10-27 01:09:38
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.802.0 (2.948.4) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.11] .
+### Releases
+- [NPM v1.5.11] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.11 - .
+
+## 2026-10-27 13:51:20
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.802.0 (2.948.4) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.12] .
+### Releases
+- [NPM v1.5.12] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.12 - .
+
+## 2026-10-27 17:39:44
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.802.0 (2.948.4) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.13] .
+### Releases
+- [NPM v1.5.13] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.13 - .
+
+## 2026-10-27 19:50:58
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.802.0 (2.948.4) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.14] .
+### Releases
+- [NPM v1.5.14] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.14 - .
+
+## 2026-10-28 00:19:46
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.802.0 (2.948.4) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.15] .
+### Releases
+- [NPM v1.5.15] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.15 - .
+
+## 2026-10-28 08:47:56
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.802.0 (2.948.4) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.16] .
+### Releases
+- [NPM v1.5.16] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.16 - .
+
+## 2026-10-28 13:43:50
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.802.0 (2.948.4) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.17] .
+### Releases
+- [NPM v1.5.17] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.17 - .
+
+## 2026-10-28 15:52:41
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.802.0 (2.948.4) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.18] .
+### Releases
+- [NPM v1.5.18] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.18 - .
+
+## 2026-10-28 20:19:15
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.802.0 (2.948.4) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.19] .
+### Releases
+- [NPM v1.5.19] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.19 - .
+
+## 2026-10-29 02:21:25
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.20] .
+### Releases
+- [NPM v1.5.20] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.20 - .
+
+## 2026-10-29 07:06:11
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.21] .
+### Releases
+- [NPM v1.5.21] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.21 - .
+
+## 2026-10-29 19:15:55
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.22] .
+### Releases
+- [NPM v1.5.22] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.22 - .
+
+## 2026-10-29 22:13:43
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.23] .
+### Releases
+- [NPM v1.5.23] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.23 - .
+
+## 2026-10-30 00:00:56
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.24] .
+### Releases
+- [NPM v1.5.24] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.24 - .
+
+## 2026-10-30 01:43:47
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.25] .
+### Releases
+- [NPM v1.5.25] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.25 - .
+
+## 2026-10-30 02:52:26
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.26] .
+### Releases
+- [NPM v1.5.26] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.26 - .
+
+## 2026-10-30 03:49:14
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.27] .
+### Releases
+- [NPM v1.5.27] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.27 - .
+
+## 2026-10-30 13:17:35
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.28] .
+### Releases
+- [NPM v1.5.28] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.28 - .
+
+## 2026-10-30 16:22:04
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.29] .
+### Releases
+- [NPM v1.5.29] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.29 - .
+
+## 2026-10-30 17:07:59
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.30] .
+### Releases
+- [NPM v1.5.30] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.30 - .
+
+## 2026-10-30 20:32:27
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.31] .
+### Releases
+- [NPM v1.5.31] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.31 - .
+
+## 2026-10-30 22:06:29
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.32] .
+### Releases
+- [NPM v1.5.32] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.32 - .
+
+## 2026-10-31 04:44:31
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.33] .
+### Releases
+- [NPM v1.5.33] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.33 - .
+
+## 2026-11-02 21:29:17
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.34] .
+### Releases
+- [NPM v1.5.34] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.34 - .
+
+## 2026-11-03 17:24:06
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.35] .
+### Releases
+- [NPM v1.5.35] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.35 - .
+
+## 2026-11-03 18:34:44
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.36] .
+### Releases
+- [NPM v1.5.36] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.36 - .
+
+## 2026-11-03 20:08:19
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.37] .
+### Releases
+- [NPM v1.5.37] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.37 - .
+
+## 2026-11-03 20:49:13
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.38] .
+### Releases
+- [NPM v1.5.38] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.38 - .
+
+## 2026-11-03 22:14:44
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.39] .
+### Releases
+- [NPM v1.5.39] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.39 - .
+
+## 2026-11-03 23:29:12
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.40] .
+### Releases
+- [NPM v1.5.40] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.40 - .
+
+## 2026-11-04 04:05:47
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.41] .
+### Releases
+- [NPM v1.5.41] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.41 - .
+
+## 2026-11-04 05:19:12
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.42] .
+### Releases
+- [NPM v1.5.42] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.42 - .
+
+## 2026-11-04 11:48:13
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.43] .
+### Releases
+- [NPM v1.5.43] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.43 - .
+
+## 2026-11-04 16:38:36
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.44] .
+### Releases
+- [NPM v1.5.44] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.44 - .
+
+## 2026-11-04 19:11:35
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.45] .
+### Releases
+- [NPM v1.5.45] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.45 - .
+
+## 2026-11-04 20:32:45
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.46] .
+### Releases
+- [NPM v1.5.46] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.46 - .
+
+## 2026-11-04 21:04:44
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.47] .
+### Releases
+- [NPM v1.5.47] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.47 - .
+
+## 2026-11-04 21:57:46
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.48] .
+### Releases
+- [NPM v1.5.48] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.48 - .
+
+## 2026-11-04 22:26:35
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.49] .
+### Releases
+- [NPM v1.5.49] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.49 - .
+
+## 2026-11-04 23:04:02
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.50] .
+### Releases
+- [NPM v1.5.50] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.50 - .
+
+## 2026-11-05 01:49:51
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.51] .
+### Releases
+- [NPM v1.5.51] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.51 - .
+
+## 2026-11-05 05:06:30
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.52] .
+### Releases
+- [NPM v1.5.52] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.52 - .
+
+## 2026-11-05 05:48:06
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.53] .
+### Releases
+- [NPM v1.5.53] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.53 - .
+
+## 2026-11-05 06:55:07
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.54] .
+### Releases
+- [NPM v1.5.54] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.54 - .
+
+## 2026-11-05 11:42:14
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.55] .
+### Releases
+- [NPM v1.5.55] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.55 - .
+
+## 2026-11-05 13:33:38
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.56] .
+### Releases
+- [NPM v1.5.56] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.56 - .
+
+## 2026-11-05 18:57:31
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.57] .
+### Releases
+- [NPM v1.5.57] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.57 - .
+
+## 2026-11-05 20:38:00
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.58] .
+### Releases
+- [NPM v1.5.58] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.58 - .
+
+## 2026-11-05 21:37:52
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.59] .
+### Releases
+- [NPM v1.5.59] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.59 - .
+
+## 2026-11-06 00:48:21
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.60] .
+### Releases
+- [NPM v1.5.60] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.60 - .
+
+## 2026-11-06 15:29:06
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.61] .
+### Releases
+- [NPM v1.5.61] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.61 - .
+
+## 2026-11-06 18:33:17
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.62] .
+### Releases
+- [NPM v1.5.62] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.62 - .
+
+## 2026-11-06 21:43:15
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.63] .
+### Releases
+- [NPM v1.5.63] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.63 - .
+
+## 2026-11-07 03:06:05
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.64] .
+### Releases
+- [NPM v1.5.64] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.64 - .
+
+## 2026-11-07 18:08:27
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.65] .
+### Releases
+- [NPM v1.5.65] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.65 - .
+
+## 2026-11-07 21:03:37
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.66] .
+### Releases
+- [NPM v1.5.66] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.66 - .
+
+## 2026-11-08 02:22:24
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.67] .
+### Releases
+- [NPM v1.5.67] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.67 - .
+
+## 2026-11-08 14:20:04
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.68] .
+### Releases
+- [NPM v1.5.68] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.68 - .
+
+## 2026-11-08 21:58:11
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.69] .
+### Releases
+- [NPM v1.5.69] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.69 - .
+
+## 2026-11-09 00:32:17
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.70] .
+### Releases
+- [NPM v1.5.70] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.70 - .
+
+## 2026-11-09 09:19:31
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.71] .
+### Releases
+- [NPM v1.5.71] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.71 - .
+
+## 2026-11-09 19:40:35
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.72] .
+### Releases
+- [NPM v1.5.72] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.72 - .
+
+## 2026-11-09 22:58:02
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.73] .
+### Releases
+- [NPM v1.5.73] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.73 - .
+
+## 2026-11-10 05:00:12
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.74] .
+### Releases
+- [NPM v1.5.74] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.74 - .
+
+## 2026-11-10 07:03:47
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.75] .
+### Releases
+- [NPM v1.5.75] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.75 - .
+
+## 2026-11-10 15:26:22
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.76] .
+### Releases
+- [NPM v1.5.76] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.76 - .
+
+## 2026-11-10 17:34:34
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.77] .
+### Releases
+- [NPM v1.5.77] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.77 - .
+
+## 2026-11-10 19:55:05
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.78] .
+### Releases
+- [NPM v1.5.78] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.78 - .
+
+## 2026-11-10 20:59:35
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.79] .
+### Releases
+- [NPM v1.5.79] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.79 - .
+
+## 2026-11-10 22:21:27
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.80] .
+### Releases
+- [NPM v1.5.80] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.80 - .
+
+## 2026-11-10 22:39:57
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.81] .
+### Releases
+- [NPM v1.5.81] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.81 - .
+
+## 2026-11-11 00:04:50
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.82] .
+### Releases
+- [NPM v1.5.82] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.82 - .
+
+## 2026-11-11 01:02:48
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.83] .
+### Releases
+- [NPM v1.5.83] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.83 - .
+
+## 2026-11-11 02:40:22
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.84] .
+### Releases
+- [NPM v1.5.84] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.84 - .
+
+## 2026-11-11 07:49:05
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.803.2 (2.950.13) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [typescript v1.5.85] .
+### Releases
+- [NPM v1.5.85] https://www.npmjs.com/package/@openrouter/sdk/v/1.5.85 - .

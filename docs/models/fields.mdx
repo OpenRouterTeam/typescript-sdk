@@ -1,0 +1,88 @@
+---
+title: "Fields"
+---
+
+A typed field to extract, compute, estimate or forecast from the state. Which types a model answers is model-specific; unsupported types are rejected with 400.
+
+
+## Supported Types
+
+### `models.ExtractionDateField`
+
+```typescript
+const value: models.ExtractionDateField = {
+  type: "date",
+};
+```
+
+### `models.ExtractionDatetimeField`
+
+```typescript
+const value: models.ExtractionDatetimeField = {
+  type: "datetime",
+};
+```
+
+### `models.ExtractionDurationField`
+
+```typescript
+const value: models.ExtractionDurationField = {
+  type: "duration",
+};
+```
+
+### `models.ExtractionEstimateField`
+
+```typescript
+const value: models.ExtractionEstimateField = {
+  max: 7670.28,
+  min: 9139.4,
+  type: "estimate",
+};
+```
+
+### `models.ExtractionForecastField`
+
+```typescript
+const value: models.ExtractionForecastField = {
+  horizon: 607770,
+  interval: "day",
+  max: "<value>",
+  min: 8431.08,
+  type: "forecast",
+};
+```
+
+### `models.ExtractionListField`
+
+```typescript
+const value: models.ExtractionListField = {
+  items: "date",
+  type: "list",
+};
+```
+
+### `models.ExtractionNumberField`
+
+```typescript
+const value: models.ExtractionNumberField = {
+  type: "number",
+};
+```
+
+### `models.ExtractionTextField`
+
+```typescript
+const value: models.ExtractionTextField = {
+  type: "text",
+};
+```
+
+### `models.ExtractionTimeField`
+
+```typescript
+const value: models.ExtractionTimeField = {
+  type: "time",
+};
+```
+

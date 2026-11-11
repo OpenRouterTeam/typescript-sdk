@@ -1,0 +1,19 @@
+---
+title: "ResponsesRequestAccessPrograms"
+---
+
+OpenAI access programs for this request. `cyber` selects the Cyber access program: `standard`, `daybreak_blue`, or `daybreak_red`. A program other than `standard` is supported only on BYOK requests that run on your own OpenAI key enrolled in that program; any other endpoint, including OpenRouter's own OpenAI credentials, rejects it with a 400 error. Requests on OpenRouter's OpenAI credentials always run `standard`. Omit the field unless your key is enrolled in a Daybreak program.
+
+## Example Usage
+
+```typescript
+import { ResponsesRequestAccessPrograms } from "@openrouter/sdk/models";
+
+let value: ResponsesRequestAccessPrograms = {};
+```
+
+## Fields
+
+| Field                                                              | Type                                                               | Required                                                           | Description                                                        |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| `cyber`                                                            | [models.ResponsesRequestCyber](../models/responsesrequestcyber.mdx) | ➖                                                 | N/A                                                                |

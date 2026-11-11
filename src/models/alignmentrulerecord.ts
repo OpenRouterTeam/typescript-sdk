@@ -10,13 +10,17 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type AlignmentRuleRecord = {
   /**
-   * Whether probability is at or above the threshold.
+   * Whether the message has a field the rule watches. Only an applicable rule is evaluated.
+   */
+  applicable: boolean;
+  /**
+   * Whether probability is at or above the threshold. False when the rule is not applicable.
    */
   broken: boolean;
   /**
-   * The evaluator's probability that the turn breaks the rule.
+   * The evaluator's probability that the turn breaks the rule; null when the rule is not applicable.
    */
-  probability: number;
+  probability: number | null;
 };
 
 /** @internal */
@@ -24,8 +28,9 @@ export const AlignmentRuleRecord$inboundSchema: z.ZodType<
   AlignmentRuleRecord,
   unknown
 > = z.object({
+  applicable: z.boolean(),
   broken: z.boolean(),
-  probability: z.number(),
+  probability: z.nullable(z.number()),
 });
 
 export function alignmentRuleRecordFromJSON(

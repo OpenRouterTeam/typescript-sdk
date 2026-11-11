@@ -42,7 +42,7 @@ export type External = {
    */
   apiKey?: string | undefined;
   /**
-   * Partner's end-user identifier for attribution.
+   * Partner's external user identifier for attribution: 1 to 512 characters after surrounding whitespace is trimmed, well-formed Unicode, no NUL. For organization keys outside HIPAA workspaces, the value is registered as an external user if it does not exist yet, and the key is linked to it.
    */
   user: string;
 };
@@ -62,7 +62,7 @@ export type CreateKeysLimitReset = OpenEnum<typeof CreateKeysLimitReset>;
 
 export type CreateKeysRequestBody = {
   /**
-   * Optional user ID of the key creator. Only meaningful for organization-owned keys where a specific member is creating the key.
+   * Optional user ID of the key creator. Only meaningful for organization-owned keys where a specific member is creating the key. A workspace-scoped management key may only name a member of its own workspace.
    */
   creatorUserId?: string | null | undefined;
   /**
@@ -90,7 +90,7 @@ export type CreateKeysRequestBody = {
    */
   name: string;
   /**
-   * The workspace to create the API key in. Defaults to the default workspace if not provided.
+   * The workspace to create the API key in. Defaults to the default workspace for an organization-scoped management key, or to the management key's own workspace for a workspace-scoped one, which cannot create keys elsewhere.
    */
   workspaceId?: string | undefined;
 };

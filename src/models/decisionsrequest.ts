@@ -6,10 +6,20 @@
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 import {
+  DecisionsBoxQuestion,
+  DecisionsBoxQuestion$Outbound,
+  DecisionsBoxQuestion$outboundSchema,
+} from "./decisionsboxquestion.js";
+import {
   DecisionsChoiceQuestion,
   DecisionsChoiceQuestion$Outbound,
   DecisionsChoiceQuestion$outboundSchema,
 } from "./decisionschoicequestion.js";
+import {
+  DecisionsImageAsset,
+  DecisionsImageAsset$Outbound,
+  DecisionsImageAsset$outboundSchema,
+} from "./decisionsimageasset.js";
 import {
   DecisionsNoulQuestion,
   DecisionsNoulQuestion$Outbound,
@@ -32,9 +42,10 @@ import {
 } from "./traceconfig.js";
 
 /**
- * A Decisions question using a boolean, choice, or ordered score evaluation.
+ * A Decisions question using a boolean, choice, ordered score, or image bounding-box evaluation.
  */
 export type Questions =
+  | DecisionsBoxQuestion
   | DecisionsChoiceQuestion
   | DecisionsNoulQuestion
   | DecisionsScoreQuestion;
@@ -45,10 +56,15 @@ export type Questions =
 export type State = string | { [k: string]: any } | Array<any>;
 
 export type DecisionsRequest = {
+  /**
+   * Images keyed by reference string, as in TypeSafe's API. Write a reference wherever the image belongs in `state`, `instructions`, or `criteria`; every asset must be referenced at least once, or the request fails with `400` naming the unused key. TypeSafe Jev endpoints receive `assets` as written and read a reference as a whole string value or inside longer text. Every other provider has each whole-string reference resolved to an `image_url` part before the request is sent, so it is accepted only where that provider reads `image_url` parts (top-level `state` items), and a reference inside longer text fails with `400`. `image_url` parts and `assets` can be mixed in one request.
+   */
+  assets?: { [k: string]: DecisionsImageAsset } | undefined;
   model: string;
   provider?: ProviderPreferences | null | undefined;
   questions: {
     [k: string]:
+      | DecisionsBoxQuestion
       | DecisionsChoiceQuestion
       | DecisionsNoulQuestion
       | DecisionsScoreQuestion;
@@ -70,6 +86,7 @@ export type DecisionsRequest = {
 
 /** @internal */
 export type Questions$Outbound =
+  | DecisionsBoxQuestion$Outbound
   | DecisionsChoiceQuestion$Outbound
   | DecisionsNoulQuestion$Outbound
   | DecisionsScoreQuestion$Outbound;
@@ -79,6 +96,7 @@ export const Questions$outboundSchema: z.ZodType<
   Questions$Outbound,
   Questions
 > = z.union([
+  DecisionsBoxQuestion$outboundSchema,
   DecisionsChoiceQuestion$outboundSchema,
   DecisionsNoulQuestion$outboundSchema,
   DecisionsScoreQuestion$outboundSchema,
@@ -104,10 +122,12 @@ export function stateToJSON(state: State): string {
 
 /** @internal */
 export type DecisionsRequest$Outbound = {
+  assets?: { [k: string]: DecisionsImageAsset$Outbound } | undefined;
   model: string;
   provider?: ProviderPreferences$Outbound | null | undefined;
   questions: {
     [k: string]:
+      | DecisionsBoxQuestion$Outbound
       | DecisionsChoiceQuestion$Outbound
       | DecisionsNoulQuestion$Outbound
       | DecisionsScoreQuestion$Outbound;
@@ -123,11 +143,13 @@ export const DecisionsRequest$outboundSchema: z.ZodType<
   DecisionsRequest$Outbound,
   DecisionsRequest
 > = z.object({
+  assets: z.record(z.string(), DecisionsImageAsset$outboundSchema).optional(),
   model: z.string(),
   provider: z.nullable(ProviderPreferences$outboundSchema).optional(),
   questions: z.record(
     z.string(),
     z.union([
+      DecisionsBoxQuestion$outboundSchema,
       DecisionsChoiceQuestion$outboundSchema,
       DecisionsNoulQuestion$outboundSchema,
       DecisionsScoreQuestion$outboundSchema,

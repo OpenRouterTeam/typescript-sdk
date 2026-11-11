@@ -13,7 +13,7 @@ import {
 } from "./byokproviderslug.js";
 
 /**
- * Your declaration of the data region in which the upstream provider account behind this credential processes requests, used for routing eligibility on OpenRouter's regional hosts. `null` means undeclared and `global` is behaviorally identical: the credential follows the region OpenRouter records for the endpoint. `europe` or `us` lets requests to `eu.openrouter.ai` or `us.openrouter.ai` use this credential for that provider (private endpoints, endpoints pinned to another cloud region, cross-region inference profiles and video models are excluded). Self-declared and not verified by OpenRouter. For OpenAI and Fireworks the region comes from the key material (a `{"api_key": ..., "region": ...}` key), so the value must match the key's region. Among other providers, only Azure accepts `europe` or `us`. Defaults to the key's region for OpenAI and Fireworks, otherwise `null`.
+ * Your declaration of the data region in which the upstream provider account behind this credential processes requests, used for routing eligibility on OpenRouter's regional hosts. `null` means undeclared and `global` is behaviorally identical: the credential follows the region OpenRouter records for the endpoint. `europe` or `us` lets requests to `eu.openrouter.ai` or `us.openrouter.ai` use this credential for that provider (private endpoints, endpoints pinned to another cloud region, cross-region inference profiles and video models are excluded). Self-declared and not verified by OpenRouter. For OpenAI and Fireworks the region comes from the key material (a `{"api_key": ..., "region": ...}` key), so the value must match the key's region. Among other providers, Azure accepts `europe` or `us` and Anthropic accepts `us` only. Defaults to the key's region for OpenAI and Fireworks, otherwise `null`.
  */
 export const CreateBYOKKeyRequestDeclaredRegion = {
   Global: "global",
@@ -21,7 +21,7 @@ export const CreateBYOKKeyRequestDeclaredRegion = {
   Us: "us",
 } as const;
 /**
- * Your declaration of the data region in which the upstream provider account behind this credential processes requests, used for routing eligibility on OpenRouter's regional hosts. `null` means undeclared and `global` is behaviorally identical: the credential follows the region OpenRouter records for the endpoint. `europe` or `us` lets requests to `eu.openrouter.ai` or `us.openrouter.ai` use this credential for that provider (private endpoints, endpoints pinned to another cloud region, cross-region inference profiles and video models are excluded). Self-declared and not verified by OpenRouter. For OpenAI and Fireworks the region comes from the key material (a `{"api_key": ..., "region": ...}` key), so the value must match the key's region. Among other providers, only Azure accepts `europe` or `us`. Defaults to the key's region for OpenAI and Fireworks, otherwise `null`.
+ * Your declaration of the data region in which the upstream provider account behind this credential processes requests, used for routing eligibility on OpenRouter's regional hosts. `null` means undeclared and `global` is behaviorally identical: the credential follows the region OpenRouter records for the endpoint. `europe` or `us` lets requests to `eu.openrouter.ai` or `us.openrouter.ai` use this credential for that provider (private endpoints, endpoints pinned to another cloud region, cross-region inference profiles and video models are excluded). Self-declared and not verified by OpenRouter. For OpenAI and Fireworks the region comes from the key material (a `{"api_key": ..., "region": ...}` key), so the value must match the key's region. Among other providers, Azure accepts `europe` or `us` and Anthropic accepts `us` only. Defaults to the key's region for OpenAI and Fireworks, otherwise `null`.
  */
 export type CreateBYOKKeyRequestDeclaredRegion = OpenEnum<
   typeof CreateBYOKKeyRequestDeclaredRegion
@@ -29,7 +29,7 @@ export type CreateBYOKKeyRequestDeclaredRegion = OpenEnum<
 
 export type CreateBYOKKeyRequest = {
   /**
-   * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` means no restriction. Must contain at least one hash if provided. Hashes that do not belong to your account return a 400.
+   * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` means no restriction. Must contain at least one hash if provided. Hashes that do not belong to your account return a 400; for a workspace-scoped management key, so do hashes of API keys outside its own workspace.
    */
   allowedApiKeyHashes?: Array<string> | null | undefined;
   /**
@@ -41,7 +41,7 @@ export type CreateBYOKKeyRequest = {
    */
   allowedUserIds?: Array<string> | null | undefined;
   /**
-   * Your declaration of the data region in which the upstream provider account behind this credential processes requests, used for routing eligibility on OpenRouter's regional hosts. `null` means undeclared and `global` is behaviorally identical: the credential follows the region OpenRouter records for the endpoint. `europe` or `us` lets requests to `eu.openrouter.ai` or `us.openrouter.ai` use this credential for that provider (private endpoints, endpoints pinned to another cloud region, cross-region inference profiles and video models are excluded). Self-declared and not verified by OpenRouter. For OpenAI and Fireworks the region comes from the key material (a `{"api_key": ..., "region": ...}` key), so the value must match the key's region. Among other providers, only Azure accepts `europe` or `us`. Defaults to the key's region for OpenAI and Fireworks, otherwise `null`.
+   * Your declaration of the data region in which the upstream provider account behind this credential processes requests, used for routing eligibility on OpenRouter's regional hosts. `null` means undeclared and `global` is behaviorally identical: the credential follows the region OpenRouter records for the endpoint. `europe` or `us` lets requests to `eu.openrouter.ai` or `us.openrouter.ai` use this credential for that provider (private endpoints, endpoints pinned to another cloud region, cross-region inference profiles and video models are excluded). Self-declared and not verified by OpenRouter. For OpenAI and Fireworks the region comes from the key material (a `{"api_key": ..., "region": ...}` key), so the value must match the key's region. Among other providers, Azure accepts `europe` or `us` and Anthropic accepts `us` only. Defaults to the key's region for OpenAI and Fireworks, otherwise `null`.
    */
   declaredRegion?: CreateBYOKKeyRequestDeclaredRegion | null | undefined;
   /**
@@ -77,7 +77,7 @@ export type CreateBYOKKeyRequest = {
    */
   provider: BYOKProviderSlug;
   /**
-   * Optional workspace ID to scope the credential to. When omitted, the credential is created in the account's default workspace; if that default has been deleted, the request returns a 400 and you must pass `workspace_id` explicitly.
+   * Optional workspace ID to scope the credential to. When omitted, a workspace-scoped management key creates it in its own workspace. An organization management key creates it in the account's default workspace; if that default has been deleted, the request returns a 400 and you must pass `workspace_id` explicitly.
    */
   workspaceId?: string | undefined;
 };

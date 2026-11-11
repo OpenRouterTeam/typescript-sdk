@@ -21,37 +21,41 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4.2.0
+        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: '22'
+          node-version: '24'
           cache: 'pnpm'
 
+      # Installs the GitHub release that .speakeasy/workflow.yaml pins as
+      # speakeasyVersion and verifies its checksum, instead of piping an
+      # unpinned install script from the upstream main branch into sh.
       - name: Install Speakeasy CLI
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          curl -fsSL https://raw.githubusercontent.com/speakeasy-api/speakeasy/main/install.sh | sh
-          # Verify speakeasy command is available
-          if ! command -v speakeasy &> /dev/null; then
-            echo "Error: speakeasy command not found after installation"
-            exit 1
-          fi
-          speakeasy --version
+          set -euo pipefail
+          VERSION="$(sed -n "s/^speakeasyVersion: *//p" .speakeasy/workflow.yaml)"
+          test -n "$VERSION"
+          cd "$RUNNER_TEMP"
+          gh release download "v$VERSION" --repo speakeasy-api/speakeasy --pattern speakeasy_linux_amd64.zip --pattern checksums.txt
+          grep " speakeasy_linux_amd64.zip$" checksums.txt | sha256sum -c -
+          unzip -q speakeasy_linux_amd64.zip speakeasy -d bin
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/bin/speakeasy" --version
 
       - name: Run Speakeasy
         run: speakeasy run
         env:
           SPEAKEASY_API_KEY: ${{ secrets.SPEAKEASY_API_KEY }}
-
-      - name: Sanitize generated docs emoji
-        run: scripts/sanitize-docs-emoji.sh
 
       - name: Regenerate docs navigation
         run: scripts/gen-docs-nav.sh
@@ -62,7 +66,7 @@ jobs:
           openrouter-api-key: ${{ secrets.OPENROUTER_API_KEY }}
 
       - name: Auto-commit generated SDK and API docs
-        uses: int128/update-generated-files-action@v2
+        uses: int128/update-generated-files-action@1486b210d2f982ac40d27ef55660863b006722b0 # v2.115.0
         with:
           # Set a custom message to the new commit (optional)
           commit-message: 'Chore: auto-generate SDK and API documentation'

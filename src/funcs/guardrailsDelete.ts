@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Delete a guardrail
  *
  * @remarks
- * Delete an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Delete an existing guardrail. A workspace-scoped management key reaches only guardrails in its own workspace; any other guardrail returns 404. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function guardrailsDelete(
   client: OpenRouterCore,
@@ -42,6 +42,7 @@ export function guardrailsDelete(
   Result<
     models.DeleteGuardrailResponse,
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -70,6 +71,7 @@ async function $do(
     Result<
       models.DeleteGuardrailResponse,
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
@@ -185,6 +187,7 @@ async function $do(
   const [result] = await M.match<
     models.DeleteGuardrailResponse,
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -198,6 +201,7 @@ async function $do(
   >(
     M.json(200, models.DeleteGuardrailResponse$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),

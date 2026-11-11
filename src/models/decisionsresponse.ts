@@ -9,6 +9,11 @@ import { safeParse } from "../lib/schemas.js";
 import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
 import { discriminatedUnion } from "../types/discriminatedUnion.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import { CostDetails, CostDetails$inboundSchema } from "./costdetails.js";
+import {
+  DecisionsBoxAnswer,
+  DecisionsBoxAnswer$inboundSchema,
+} from "./decisionsboxanswer.js";
 import {
   DecisionsChoiceAnswer,
   DecisionsChoiceAnswer$inboundSchema,
@@ -18,31 +23,66 @@ import {
   DecisionsNoulAnswer$inboundSchema,
 } from "./decisionsnoulanswer.js";
 import {
+  DecisionsRefusalAnswer,
+  DecisionsRefusalAnswer$inboundSchema,
+} from "./decisionsrefusalanswer.js";
+import {
   DecisionsScoreAnswer,
   DecisionsScoreAnswer$inboundSchema,
 } from "./decisionsscoreanswer.js";
+import {
+  DecisionsUrlCitationAnnotation,
+  DecisionsUrlCitationAnnotation$inboundSchema,
+} from "./decisionsurlcitationannotation.js";
+import {
+  DecisionsUsageInputTokensDetails,
+  DecisionsUsageInputTokensDetails$inboundSchema,
+} from "./decisionsusageinputtokensdetails.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
- * A Decisions answer using a boolean, choice, or score evaluation.
+ * A Decisions answer using a boolean, choice, score, or image bounding-box evaluation, or a refusal of that question.
  */
-export type Answers =
+export type DecisionsResponseAnswers =
+  | DecisionsBoxAnswer
   | DecisionsChoiceAnswer
   | DecisionsNoulAnswer
+  | DecisionsRefusalAnswer
   | DecisionsScoreAnswer
   | discriminatedUnionTypes.Unknown<"type">;
 
 export type DecisionsResponseUsage = {
+  /**
+   * What OpenRouter charges for the request, in credits. On a BYOK request this is the OpenRouter fee only.
+   */
   cost?: number | undefined;
+  /**
+   * Breakdown of upstream inference costs
+   */
+  costDetails?: CostDetails | null | undefined;
   inputTokens: number;
+  /**
+   * Of `input_tokens`, those the provider served from its prompt cache.
+   */
+  inputTokensDetails?: DecisionsUsageInputTokensDetails | undefined;
+  /**
+   * Whether a request was made using a Bring Your Own Key configuration
+   */
+  isByok?: boolean | undefined;
   outputTokens: number;
 };
 
 export type DecisionsResponse = {
+  /**
+   * Sources for the request as a whole, when the provider returns them. Not attributed to individual answers.
+   */
+  annotations?: Array<DecisionsUrlCitationAnnotation> | undefined;
   answers: {
     [k: string]:
+      | DecisionsBoxAnswer
       | DecisionsChoiceAnswer
       | DecisionsNoulAnswer
+      | DecisionsRefusalAnswer
       | DecisionsScoreAnswer
       | discriminatedUnionTypes.Unknown<"type">;
   };
@@ -53,20 +93,24 @@ export type DecisionsResponse = {
 };
 
 /** @internal */
-export const Answers$inboundSchema: z.ZodType<Answers, unknown> =
-  discriminatedUnion("type", {
-    choice: DecisionsChoiceAnswer$inboundSchema,
-    noul: DecisionsNoulAnswer$inboundSchema,
-    score: DecisionsScoreAnswer$inboundSchema,
-  });
+export const DecisionsResponseAnswers$inboundSchema: z.ZodType<
+  DecisionsResponseAnswers,
+  unknown
+> = discriminatedUnion("type", {
+  box: DecisionsBoxAnswer$inboundSchema,
+  choice: DecisionsChoiceAnswer$inboundSchema,
+  noul: DecisionsNoulAnswer$inboundSchema,
+  refusal: DecisionsRefusalAnswer$inboundSchema,
+  score: DecisionsScoreAnswer$inboundSchema,
+});
 
-export function answersFromJSON(
+export function decisionsResponseAnswersFromJSON(
   jsonString: string,
-): SafeParseResult<Answers, SDKValidationError> {
+): SafeParseResult<DecisionsResponseAnswers, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => Answers$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Answers' from JSON`,
+    (x) => DecisionsResponseAnswers$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'DecisionsResponseAnswers' from JSON`,
   );
 }
 
@@ -76,11 +120,18 @@ export const DecisionsResponseUsage$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   cost: z.number().optional(),
+  cost_details: z.nullable(CostDetails$inboundSchema).optional(),
   input_tokens: z.int(),
+  input_tokens_details: DecisionsUsageInputTokensDetails$inboundSchema
+    .optional(),
+  is_byok: z.boolean().optional(),
   output_tokens: z.int(),
 }).transform((v) => {
   return remap$(v, {
+    "cost_details": "costDetails",
     "input_tokens": "inputTokens",
+    "input_tokens_details": "inputTokensDetails",
+    "is_byok": "isByok",
     "output_tokens": "outputTokens",
   });
 });
@@ -100,11 +151,14 @@ export const DecisionsResponse$inboundSchema: z.ZodType<
   DecisionsResponse,
   unknown
 > = z.object({
+  annotations: z.array(DecisionsUrlCitationAnnotation$inboundSchema).optional(),
   answers: z.record(
     z.string(),
     discriminatedUnion("type", {
+      box: DecisionsBoxAnswer$inboundSchema,
       choice: DecisionsChoiceAnswer$inboundSchema,
       noul: DecisionsNoulAnswer$inboundSchema,
+      refusal: DecisionsRefusalAnswer$inboundSchema,
       score: DecisionsScoreAnswer$inboundSchema,
     }),
   ),

@@ -46,6 +46,7 @@ export const Provider = {
   AmazonBedrockClaudeOnAws: "amazon-bedrock/claude-on-aws",
   AmazonNova: "amazon-nova",
   Ambient: "ambient",
+  Antdigital: "antdigital",
   Anthropic: "anthropic",
   Anthropic2: "anthropic/2",
   ArceeAi: "arcee-ai",
@@ -94,6 +95,7 @@ export const Provider = {
   IoNet: "io-net",
   Ionstream: "ionstream",
   Krea: "krea",
+  Kt: "kt",
   Liquid: "liquid",
   Makora: "makora",
   Mancer: "mancer",
@@ -115,17 +117,24 @@ export const Provider = {
   Ollama: "ollama",
   OpenInference: "open-inference",
   Openai: "openai",
+  Parallel: "parallel",
   Parasail: "parasail",
+  ParetoAlpha: "pareto-alpha",
+  ParticleAi: "particle-ai",
+  PearlResearch: "pearl-research",
   Perceptron: "perceptron",
   Perplexity: "perplexity",
   Phala: "phala",
   Poolside: "poolside",
+  Primalabs: "primalabs",
   Primeintellect: "primeintellect",
   Quiver: "quiver",
   Recraft: "recraft",
+  Recursive: "recursive",
   Reka: "reka",
   Relace: "relace",
   Respan: "respan",
+  River: "river",
   Runway: "runway",
   SailResearch: "sail-research",
   Sakana: "sakana",
@@ -188,7 +197,7 @@ export type ListBYOKKeysRequest = {
    */
   limit?: number | undefined;
   /**
-   * Optional workspace ID to filter by. When omitted, resolves to the account’s default workspace; if that default has been deleted, the request returns a 400 and you must pass `workspace_id` explicitly.
+   * Optional workspace ID to filter by. When omitted, a workspace-scoped management key uses its own workspace. An organization management key uses the account’s default workspace; if that default has been deleted, the request returns a 400 and you must pass `workspace_id` explicitly.
    */
   workspaceId?: string | undefined;
   /**

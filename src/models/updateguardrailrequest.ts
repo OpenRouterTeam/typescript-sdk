@@ -26,6 +26,14 @@ import {
 
 export type UpdateGuardrailRequest = {
   /**
+   * Whether ZDR-only requests to google/* models may also use Safety Retention endpoints, which may retain prompts and responses from any request, only to prevent abuse, and do not use them for training. false allows only ZDR endpoints. A guardrail can only be more restrictive than the account setting. Inherits the account setting when not provided.
+   */
+  allowSafetyRetentionGoogle?: boolean | null | undefined;
+  /**
+   * Whether ZDR-only requests to models outside the named providers (for example open-weight models on Vertex) may also use Safety Retention endpoints, which may retain prompts and responses from any request, only to prevent abuse, and do not use them for training. false allows only ZDR endpoints. A guardrail can only be more restrictive than the account setting. Inherits the account setting when not provided.
+   */
+  allowSafetyRetentionOther?: boolean | null | undefined;
+  /**
    * Data regions through which requests governed by this guardrail must arrive. `global` is https://openrouter.ai, `europe` is https://eu.openrouter.ai, and `us` is https://us.openrouter.ai. Requests arriving through any other region are rejected. `null` leaves the ingress region unrestricted. When several guardrails apply (workspace default, member, API key), the effective regions are the intersection of every non-null value. An empty array is rejected.
    */
   allowedDataRegions?: Array<GuardrailDataRegion> | null | undefined;
@@ -64,6 +72,10 @@ export type UpdateGuardrailRequest = {
    * Whether this guardrail allows paid endpoints that train on request data.
    */
   enablePaidModelTraining?: boolean | null | undefined;
+  /**
+   * Whether coding harnesses list only their vendor's own models: Codex lists OpenAI models and Claude Code and Claude Desktop list Anthropic models. Affects only the model list those harnesses request from GET /models; a model the client names directly is still routed. Any true across the workspace default, member, and API key guardrails applies.
+   */
+  enforceFirstPartyHarnessModels?: boolean | null | undefined;
   /**
    * Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai, enforce_zdr_google, enforce_zdr_xai, and enforce_zdr_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.
    *
@@ -118,6 +130,8 @@ export type UpdateGuardrailRequest = {
 
 /** @internal */
 export type UpdateGuardrailRequest$Outbound = {
+  allow_safety_retention_google?: boolean | null | undefined;
+  allow_safety_retention_other?: boolean | null | undefined;
   allowed_data_regions?: Array<string> | null | undefined;
   allowed_models?: Array<string> | null | undefined;
   allowed_providers?: Array<string> | null | undefined;
@@ -130,6 +144,7 @@ export type UpdateGuardrailRequest$Outbound = {
   enable_free_model_publication?: boolean | null | undefined;
   enable_free_model_training?: boolean | null | undefined;
   enable_paid_model_training?: boolean | null | undefined;
+  enforce_first_party_harness_models?: boolean | null | undefined;
   enforce_zdr?: boolean | null | undefined;
   enforce_zdr_anthropic?: boolean | null | undefined;
   enforce_zdr_google?: boolean | null | undefined;
@@ -149,6 +164,8 @@ export const UpdateGuardrailRequest$outboundSchema: z.ZodType<
   UpdateGuardrailRequest$Outbound,
   UpdateGuardrailRequest
 > = z.object({
+  allowSafetyRetentionGoogle: z.nullable(z.boolean()).optional(),
+  allowSafetyRetentionOther: z.nullable(z.boolean()).optional(),
   allowedDataRegions: z.nullable(z.array(GuardrailDataRegion$outboundSchema))
     .optional(),
   allowedModels: z.nullable(z.array(z.string())).optional(),
@@ -162,6 +179,7 @@ export const UpdateGuardrailRequest$outboundSchema: z.ZodType<
   enableFreeModelPublication: z.nullable(z.boolean()).optional(),
   enableFreeModelTraining: z.nullable(z.boolean()).optional(),
   enablePaidModelTraining: z.nullable(z.boolean()).optional(),
+  enforceFirstPartyHarnessModels: z.nullable(z.boolean()).optional(),
   enforceZdr: z.nullable(z.boolean()).optional(),
   enforceZdrAnthropic: z.nullable(z.boolean()).optional(),
   enforceZdrGoogle: z.nullable(z.boolean()).optional(),
@@ -176,6 +194,8 @@ export const UpdateGuardrailRequest$outboundSchema: z.ZodType<
   resetInterval: z.nullable(GuardrailInterval$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
+    allowSafetyRetentionGoogle: "allow_safety_retention_google",
+    allowSafetyRetentionOther: "allow_safety_retention_other",
     allowedDataRegions: "allowed_data_regions",
     allowedModels: "allowed_models",
     allowedProviders: "allowed_providers",
@@ -184,6 +204,7 @@ export const UpdateGuardrailRequest$outboundSchema: z.ZodType<
     enableFreeModelPublication: "enable_free_model_publication",
     enableFreeModelTraining: "enable_free_model_training",
     enablePaidModelTraining: "enable_paid_model_training",
+    enforceFirstPartyHarnessModels: "enforce_first_party_harness_models",
     enforceZdr: "enforce_zdr",
     enforceZdrAnthropic: "enforce_zdr_anthropic",
     enforceZdrGoogle: "enforce_zdr_google",

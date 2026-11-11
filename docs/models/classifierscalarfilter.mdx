@@ -1,0 +1,23 @@
+---
+title: "ClassifierScalarFilter"
+---
+
+## Example Usage
+
+```typescript
+import { ClassifierScalarFilter } from "@openrouter/sdk/models";
+
+let value: ClassifierScalarFilter = {
+  field: "department",
+  operator: "eq",
+  value: "Engineering",
+};
+```
+
+## Fields
+
+| Field                                                                                                                            | Type                                                                                                                             | Required                                                                                                                         | Description                                                                                                                      | Example                                                                                                                          |
+| -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `field`                                                                                                                          | *string*                                                                                                                         | ✔️                                                                                                               | Classifier dimension name to filter on (snake_case identifier, e.g. "department", "work_type").                                  | department                                                                                                                       |
+| `operator`                                                                                                                       | [models.ClassifierScalarFilterOperator](../models/classifierscalarfilteroperator.mdx)                                             | ✔️                                                                                                               | Equality operator taking a scalar filter value. Ordered comparisons are not available because classification values are strings. | eq                                                                                                                               |
+| `value`                                                                                                                          | *models.ClassifierScalarFilterValue*                                                                                             | ✔️                                                                                                               | Scalar (string or number) filter value.                                                                                          | Engineering                                                                                                                      |

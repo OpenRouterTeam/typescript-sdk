@@ -16,10 +16,18 @@ export type BatchPaymentRequiredResponseErrorData = {
   createdAt: number;
   endpoint: string;
   error: models.BatchPaymentRequiredResponseError;
+  /**
+   * Unix timestamp after which the assigned provider no longer completes unfinished requests. Derived from the provider's documented batch window, so it can exceed `created_at` plus `completion_window` (Google Vertex can take up to 96 hours). `null` when the provider documents no hard expiry.
+   */
+  expiresAt: number | null;
   finalizedAt: number | null;
   id: string;
   model: string;
   object: models.BatchPaymentRequiredResponseObject;
+  /**
+   * Provider OpenRouter assigned to run the batch, using the same name as the `provider` field of sync responses.
+   */
+  provider: string | null;
   requestCounts: models.BatchPaymentRequiredResponseRequestCounts;
   /**
    * Always null: results are withheld until the batch charge is covered.
@@ -37,10 +45,18 @@ export class BatchPaymentRequiredResponseError extends OpenRouterError {
   createdAt: number;
   endpoint: string;
   error: models.BatchPaymentRequiredResponseError;
+  /**
+   * Unix timestamp after which the assigned provider no longer completes unfinished requests. Derived from the provider's documented batch window, so it can exceed `created_at` plus `completion_window` (Google Vertex can take up to 96 hours). `null` when the provider documents no hard expiry.
+   */
+  expiresAt: number | null;
   finalizedAt: number | null;
   id: string;
   model: string;
   object: models.BatchPaymentRequiredResponseObject;
+  /**
+   * Provider OpenRouter assigned to run the batch, using the same name as the `provider` field of sync responses.
+   */
+  provider: string | null;
   requestCounts: models.BatchPaymentRequiredResponseRequestCounts;
   /**
    * Always null: results are withheld until the batch charge is covered.
@@ -64,10 +80,12 @@ export class BatchPaymentRequiredResponseError extends OpenRouterError {
     this.createdAt = err.createdAt;
     this.endpoint = err.endpoint;
     this.error = err.error;
+    this.expiresAt = err.expiresAt;
     this.finalizedAt = err.finalizedAt;
     this.id = err.id;
     this.model = err.model;
     this.object = err.object;
+    this.provider = err.provider;
     this.requestCounts = err.requestCounts;
     this.results = err.results;
     this.status = err.status;
@@ -87,10 +105,12 @@ export const BatchPaymentRequiredResponseError$inboundSchema: z.ZodType<
   created_at: z.int(),
   endpoint: z.string(),
   error: z.lazy(() => models.BatchPaymentRequiredResponseError$inboundSchema),
+  expires_at: z.nullable(z.int()),
   finalized_at: z.nullable(z.int()),
   id: z.string(),
   model: z.string(),
   object: models.BatchPaymentRequiredResponseObject$inboundSchema,
+  provider: z.nullable(z.string()),
   request_counts: z.lazy(() =>
     models.BatchPaymentRequiredResponseRequestCounts$inboundSchema
   ),
@@ -107,6 +127,7 @@ export const BatchPaymentRequiredResponseError$inboundSchema: z.ZodType<
     const remapped = remap$(v, {
       "completion_window": "completionWindow",
       "created_at": "createdAt",
+      "expires_at": "expiresAt",
       "finalized_at": "finalizedAt",
       "request_counts": "requestCounts",
     });

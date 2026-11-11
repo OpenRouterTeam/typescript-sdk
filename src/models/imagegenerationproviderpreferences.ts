@@ -18,7 +18,7 @@ export type ImageGenerationProviderPreferencesIgnore = ProviderName | string;
 export type ImageGenerationProviderPreferencesOnly = ProviderName | string;
 
 /**
- * Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
+ * Provider-specific options keyed by provider slug. The provider segment is case-insensitive; an endpoint tag after `/` must match the endpoint slug exactly. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
  */
 export type ImageGenerationProviderPreferencesOptions = {
   oneai?: { [k: string]: any } | undefined;
@@ -30,6 +30,7 @@ export type ImageGenerationProviderPreferencesOptions = {
   amazonBedrockClaudeOnAws?: { [k: string]: any } | undefined;
   amazonNova?: { [k: string]: any } | undefined;
   ambient?: { [k: string]: any } | undefined;
+  antdigital?: { [k: string]: any } | undefined;
   anthropic?: { [k: string]: any } | undefined;
   anthropic2?: { [k: string]: any } | undefined;
   anyscale?: { [k: string]: any } | undefined;
@@ -91,6 +92,7 @@ export type ImageGenerationProviderPreferencesOptions = {
   ionstream?: { [k: string]: any } | undefined;
   klusterai?: { [k: string]: any } | undefined;
   krea?: { [k: string]: any } | undefined;
+  kt?: { [k: string]: any } | undefined;
   lambda?: { [k: string]: any } | undefined;
   lepton?: { [k: string]: any } | undefined;
   liquid?: { [k: string]: any } | undefined;
@@ -120,20 +122,27 @@ export type ImageGenerationProviderPreferencesOptions = {
   ollama?: { [k: string]: any } | undefined;
   openInference?: { [k: string]: any } | undefined;
   openai?: { [k: string]: any } | undefined;
+  parallel?: { [k: string]: any } | undefined;
   parasail?: { [k: string]: any } | undefined;
+  paretoAlpha?: { [k: string]: any } | undefined;
+  particleAi?: { [k: string]: any } | undefined;
+  pearlResearch?: { [k: string]: any } | undefined;
   perceptron?: { [k: string]: any } | undefined;
   perplexity?: { [k: string]: any } | undefined;
   phala?: { [k: string]: any } | undefined;
   poolside?: { [k: string]: any } | undefined;
+  primalabs?: { [k: string]: any } | undefined;
   primeintellect?: { [k: string]: any } | undefined;
   quiver?: { [k: string]: any } | undefined;
   recraft?: { [k: string]: any } | undefined;
   recursal?: { [k: string]: any } | undefined;
+  recursive?: { [k: string]: any } | undefined;
   reflection?: { [k: string]: any } | undefined;
   reka?: { [k: string]: any } | undefined;
   relace?: { [k: string]: any } | undefined;
   replicate?: { [k: string]: any } | undefined;
   respan?: { [k: string]: any } | undefined;
+  river?: { [k: string]: any } | undefined;
   runway?: { [k: string]: any } | undefined;
   sailResearch?: { [k: string]: any } | undefined;
   sakana?: { [k: string]: any } | undefined;
@@ -260,6 +269,7 @@ export type ImageGenerationProviderPreferencesOptions$Outbound = {
   "amazon-bedrock/claude-on-aws"?: { [k: string]: any } | undefined;
   "amazon-nova"?: { [k: string]: any } | undefined;
   ambient?: { [k: string]: any } | undefined;
+  antdigital?: { [k: string]: any } | undefined;
   anthropic?: { [k: string]: any } | undefined;
   "anthropic/2"?: { [k: string]: any } | undefined;
   anyscale?: { [k: string]: any } | undefined;
@@ -321,6 +331,7 @@ export type ImageGenerationProviderPreferencesOptions$Outbound = {
   ionstream?: { [k: string]: any } | undefined;
   klusterai?: { [k: string]: any } | undefined;
   krea?: { [k: string]: any } | undefined;
+  kt?: { [k: string]: any } | undefined;
   lambda?: { [k: string]: any } | undefined;
   lepton?: { [k: string]: any } | undefined;
   liquid?: { [k: string]: any } | undefined;
@@ -350,20 +361,27 @@ export type ImageGenerationProviderPreferencesOptions$Outbound = {
   ollama?: { [k: string]: any } | undefined;
   "open-inference"?: { [k: string]: any } | undefined;
   openai?: { [k: string]: any } | undefined;
+  parallel?: { [k: string]: any } | undefined;
   parasail?: { [k: string]: any } | undefined;
+  "pareto-alpha"?: { [k: string]: any } | undefined;
+  "particle-ai"?: { [k: string]: any } | undefined;
+  "pearl-research"?: { [k: string]: any } | undefined;
   perceptron?: { [k: string]: any } | undefined;
   perplexity?: { [k: string]: any } | undefined;
   phala?: { [k: string]: any } | undefined;
   poolside?: { [k: string]: any } | undefined;
+  primalabs?: { [k: string]: any } | undefined;
   primeintellect?: { [k: string]: any } | undefined;
   quiver?: { [k: string]: any } | undefined;
   recraft?: { [k: string]: any } | undefined;
   recursal?: { [k: string]: any } | undefined;
+  recursive?: { [k: string]: any } | undefined;
   reflection?: { [k: string]: any } | undefined;
   reka?: { [k: string]: any } | undefined;
   relace?: { [k: string]: any } | undefined;
   replicate?: { [k: string]: any } | undefined;
   respan?: { [k: string]: any } | undefined;
+  river?: { [k: string]: any } | undefined;
   runway?: { [k: string]: any } | undefined;
   "sail-research"?: { [k: string]: any } | undefined;
   sakana?: { [k: string]: any } | undefined;
@@ -414,6 +432,7 @@ export const ImageGenerationProviderPreferencesOptions$outboundSchema:
     amazonBedrockClaudeOnAws: z.record(z.string(), z.any()).optional(),
     amazonNova: z.record(z.string(), z.any()).optional(),
     ambient: z.record(z.string(), z.any()).optional(),
+    antdigital: z.record(z.string(), z.any()).optional(),
     anthropic: z.record(z.string(), z.any()).optional(),
     anthropic2: z.record(z.string(), z.any()).optional(),
     anyscale: z.record(z.string(), z.any()).optional(),
@@ -475,6 +494,7 @@ export const ImageGenerationProviderPreferencesOptions$outboundSchema:
     ionstream: z.record(z.string(), z.any()).optional(),
     klusterai: z.record(z.string(), z.any()).optional(),
     krea: z.record(z.string(), z.any()).optional(),
+    kt: z.record(z.string(), z.any()).optional(),
     lambda: z.record(z.string(), z.any()).optional(),
     lepton: z.record(z.string(), z.any()).optional(),
     liquid: z.record(z.string(), z.any()).optional(),
@@ -504,20 +524,27 @@ export const ImageGenerationProviderPreferencesOptions$outboundSchema:
     ollama: z.record(z.string(), z.any()).optional(),
     openInference: z.record(z.string(), z.any()).optional(),
     openai: z.record(z.string(), z.any()).optional(),
+    parallel: z.record(z.string(), z.any()).optional(),
     parasail: z.record(z.string(), z.any()).optional(),
+    paretoAlpha: z.record(z.string(), z.any()).optional(),
+    particleAi: z.record(z.string(), z.any()).optional(),
+    pearlResearch: z.record(z.string(), z.any()).optional(),
     perceptron: z.record(z.string(), z.any()).optional(),
     perplexity: z.record(z.string(), z.any()).optional(),
     phala: z.record(z.string(), z.any()).optional(),
     poolside: z.record(z.string(), z.any()).optional(),
+    primalabs: z.record(z.string(), z.any()).optional(),
     primeintellect: z.record(z.string(), z.any()).optional(),
     quiver: z.record(z.string(), z.any()).optional(),
     recraft: z.record(z.string(), z.any()).optional(),
     recursal: z.record(z.string(), z.any()).optional(),
+    recursive: z.record(z.string(), z.any()).optional(),
     reflection: z.record(z.string(), z.any()).optional(),
     reka: z.record(z.string(), z.any()).optional(),
     relace: z.record(z.string(), z.any()).optional(),
     replicate: z.record(z.string(), z.any()).optional(),
     respan: z.record(z.string(), z.any()).optional(),
+    river: z.record(z.string(), z.any()).optional(),
     runway: z.record(z.string(), z.any()).optional(),
     sailResearch: z.record(z.string(), z.any()).optional(),
     sakana: z.record(z.string(), z.any()).optional(),
@@ -576,6 +603,9 @@ export const ImageGenerationProviderPreferencesOptions$outboundSchema:
       nearAi: "near-ai",
       nexAgi: "nex-agi",
       openInference: "open-inference",
+      paretoAlpha: "pareto-alpha",
+      particleAi: "particle-ai",
+      pearlResearch: "pearl-research",
       sailResearch: "sail-research",
       sakanaAi: "sakana-ai",
       sambanovaCloaked: "sambanova-cloaked",

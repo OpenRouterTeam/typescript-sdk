@@ -18,6 +18,11 @@ import {
   AnthropicCacheControlDirective$outboundSchema,
 } from "./anthropiccachecontroldirective.js";
 import {
+  ArmorPlugin,
+  ArmorPlugin$Outbound,
+  ArmorPlugin$outboundSchema,
+} from "./armorplugin.js";
+import {
   AutoBetaRouterPlugin,
   AutoBetaRouterPlugin$Outbound,
   AutoBetaRouterPlugin$outboundSchema,
@@ -86,6 +91,11 @@ import {
   ContextCompressionPlugin$Outbound,
   ContextCompressionPlugin$outboundSchema,
 } from "./contextcompressionplugin.js";
+import {
+  DeferredToolsControl,
+  DeferredToolsControl$Outbound,
+  DeferredToolsControl$outboundSchema,
+} from "./deferredtoolscontrol.js";
 import {
   FileParserPlugin,
   FileParserPlugin$Outbound,
@@ -171,6 +181,7 @@ export type Modality = OpenEnum<typeof Modality>;
 
 export type ChatRequestPlugin =
   | AlignmentPlugin
+  | ArmorPlugin
   | AutoBetaRouterPlugin
   | AutoRouterPlugin
   | ContextCompressionPlugin
@@ -209,6 +220,10 @@ export type ChatRequestReasoning = {
    * Constrains effort on reasoning for reasoning models
    */
   effort?: ChatRequestEffort | null | undefined;
+  /**
+   * Maximum number of tokens the model may spend on reasoning, for models that take a reasoning token budget instead of an effort level. Cannot be combined with `reasoning.effort` or the top-level `reasoning_effort`: a request that sets both is rejected with "Only one of "reasoning.effort" and "reasoning.max_tokens" can be specified".
+   */
+  maxTokens?: number | null | undefined;
   summary?: ChatReasoningSummaryVerbosityEnum | null | undefined;
 };
 
@@ -261,7 +276,7 @@ export type ChatRequestServiceTier = OpenEnum<typeof ChatRequestServiceTier>;
 /**
  * Stop sequences (up to 4)
  */
-export type Stop = string | Array<string>;
+export type ChatRequestStop = string | Array<string>;
 
 /**
  * Chat completion request parameters
@@ -275,6 +290,10 @@ export type ChatRequest = {
    * Debug options for inspecting request transformations (streaming only)
    */
   debug?: ChatDebugOptions | undefined;
+  /**
+   * Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation. The portable profile needs the catalog unchanged across a continuation; the universal profile accepts a changed catalog and, with `announce_catalog_changes`, tells the model about it.
+   */
+  deferredTools?: DeferredToolsControl | undefined;
   /**
    * Frequency penalty (-2.0 to 2.0)
    */
@@ -333,6 +352,7 @@ export type ChatRequest = {
   plugins?:
     | Array<
       | AlignmentPlugin
+      | ArmorPlugin
       | AutoBetaRouterPlugin
       | AutoRouterPlugin
       | ContextCompressionPlugin
@@ -357,7 +377,7 @@ export type ChatRequest = {
   presencePenalty?: number | null | undefined;
   promptCacheKey?: string | null | undefined;
   /**
-   * Request-level prompt-cache controls. `mode: "explicit"` disables OpenAI-managed breakpoints so only blocks marked with `prompt_cache_breakpoint` are cached. Only supported by OpenAI GPT-5.6 and newer.
+   * Request-level prompt-cache controls. `mode: "explicit"` disables OpenAI-managed breakpoints so only blocks marked with `prompt_cache_breakpoint` are cached. `ttl` sets the minimum cache lifetime for every breakpoint the request writes: "30m" (default) or "12h" (billed at the higher 12h cache-write rate). Only supported by OpenAI GPT-5.6 and newer.
    */
   promptCacheOptions?: PromptCacheOptions | null | undefined;
   /**
@@ -459,6 +479,7 @@ export const Modality$outboundSchema: z.ZodType<string, Modality> = openEnums
 /** @internal */
 export type ChatRequestPlugin$Outbound =
   | AlignmentPlugin$Outbound
+  | ArmorPlugin$Outbound
   | AutoBetaRouterPlugin$Outbound
   | AutoRouterPlugin$Outbound
   | ContextCompressionPlugin$Outbound
@@ -478,6 +499,7 @@ export const ChatRequestPlugin$outboundSchema: z.ZodType<
   ChatRequestPlugin
 > = z.union([
   AlignmentPlugin$outboundSchema,
+  ArmorPlugin$outboundSchema,
   AutoBetaRouterPlugin$outboundSchema,
   AutoRouterPlugin$outboundSchema,
   ContextCompressionPlugin$outboundSchema,
@@ -509,6 +531,7 @@ export const ChatRequestEffort$outboundSchema: z.ZodType<
 /** @internal */
 export type ChatRequestReasoning$Outbound = {
   effort?: string | null | undefined;
+  max_tokens?: number | null | undefined;
   summary?: string | null | undefined;
 };
 
@@ -518,8 +541,13 @@ export const ChatRequestReasoning$outboundSchema: z.ZodType<
   ChatRequestReasoning
 > = z.object({
   effort: z.nullable(ChatRequestEffort$outboundSchema).optional(),
+  maxTokens: z.nullable(z.int()).optional(),
   summary: z.nullable(ChatReasoningSummaryVerbosityEnum$outboundSchema)
     .optional(),
+}).transform((v) => {
+  return remap$(v, {
+    maxTokens: "max_tokens",
+  });
 });
 
 export function chatRequestReasoningToJSON(
@@ -567,22 +595,25 @@ export const ChatRequestServiceTier$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(ChatRequestServiceTier);
 
 /** @internal */
-export type Stop$Outbound = string | Array<string>;
+export type ChatRequestStop$Outbound = string | Array<string>;
 
 /** @internal */
-export const Stop$outboundSchema: z.ZodType<Stop$Outbound, Stop> = z.union([
-  z.string(),
-  z.array(z.string()),
-]);
+export const ChatRequestStop$outboundSchema: z.ZodType<
+  ChatRequestStop$Outbound,
+  ChatRequestStop
+> = z.union([z.string(), z.array(z.string())]);
 
-export function stopToJSON(stop: Stop): string {
-  return JSON.stringify(Stop$outboundSchema.parse(stop));
+export function chatRequestStopToJSON(
+  chatRequestStop: ChatRequestStop,
+): string {
+  return JSON.stringify(ChatRequestStop$outboundSchema.parse(chatRequestStop));
 }
 
 /** @internal */
 export type ChatRequest$Outbound = {
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
   debug?: ChatDebugOptions$Outbound | undefined;
+  deferred_tools?: DeferredToolsControl$Outbound | undefined;
   frequency_penalty?: number | null | undefined;
   image_config?: { [k: string]: ImageConfig$Outbound } | undefined;
   logit_bias?: { [k: string]: number } | null | undefined;
@@ -599,6 +630,7 @@ export type ChatRequest$Outbound = {
   plugins?:
     | Array<
       | AlignmentPlugin$Outbound
+      | ArmorPlugin$Outbound
       | AutoBetaRouterPlugin$Outbound
       | AutoRouterPlugin$Outbound
       | ContextCompressionPlugin$Outbound
@@ -655,6 +687,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
 > = z.object({
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
   debug: ChatDebugOptions$outboundSchema.optional(),
+  deferredTools: DeferredToolsControl$outboundSchema.optional(),
   frequencyPenalty: z.nullable(z.number()).optional(),
   imageConfig: z.record(z.string(), ImageConfig$outboundSchema).optional(),
   logitBias: z.nullable(z.record(z.string(), z.number())).optional(),
@@ -671,6 +704,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
   plugins: z.array(
     z.union([
       AlignmentPlugin$outboundSchema,
+      ArmorPlugin$outboundSchema,
       AutoBetaRouterPlugin$outboundSchema,
       AutoRouterPlugin$outboundSchema,
       ContextCompressionPlugin$outboundSchema,
@@ -721,6 +755,7 @@ export const ChatRequest$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     cacheControl: "cache_control",
+    deferredTools: "deferred_tools",
     frequencyPenalty: "frequency_penalty",
     imageConfig: "image_config",
     logitBias: "logit_bias",

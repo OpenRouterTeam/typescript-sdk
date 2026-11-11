@@ -5,7 +5,8 @@
 
 import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
-import { ClosedEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 
 /**
  * Must be `urn:ietf:params:oauth:grant-type:token-exchange`.
@@ -32,15 +33,16 @@ export const RequestedTokenType = {
 export type RequestedTokenType = ClosedEnum<typeof RequestedTokenType>;
 
 /**
- * Optional; only `inference` is available.
+ * Optional; when present must match the policy's key: `management` for a management key, `inference` otherwise.
  */
 export const TokenExchangeRequestScope = {
   Inference: "inference",
+  Management: "management",
 } as const;
 /**
- * Optional; only `inference` is available.
+ * Optional; when present must match the policy's key: `management` for a management key, `inference` otherwise.
  */
-export type TokenExchangeRequestScope = ClosedEnum<
+export type TokenExchangeRequestScope = OpenEnum<
   typeof TokenExchangeRequestScope
 >;
 
@@ -72,7 +74,7 @@ export type TokenExchangeRequest = {
    */
   requestedTokenType?: RequestedTokenType | undefined;
   /**
-   * Optional; only `inference` is available.
+   * Optional; when present must match the policy's key: `management` for a management key, `inference` otherwise.
    */
   scope?: TokenExchangeRequestScope | undefined;
   /**
@@ -96,9 +98,10 @@ export const RequestedTokenType$outboundSchema: z.ZodEnum<
 > = z.enum(RequestedTokenType);
 
 /** @internal */
-export const TokenExchangeRequestScope$outboundSchema: z.ZodEnum<
-  typeof TokenExchangeRequestScope
-> = z.enum(TokenExchangeRequestScope);
+export const TokenExchangeRequestScope$outboundSchema: z.ZodType<
+  string,
+  TokenExchangeRequestScope
+> = openEnums.outboundSchema(TokenExchangeRequestScope);
 
 /** @internal */
 export const SubjectTokenType$outboundSchema: z.ZodEnum<

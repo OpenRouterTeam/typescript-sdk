@@ -8,7 +8,8 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import * as discriminatedUnionTypes from "../types/discriminatedUnion.js";
 import { discriminatedUnion } from "../types/discriminatedUnion.js";
-import { ClosedEnum } from "../types/enums.js";
+import * as openEnums from "../types/enums.js";
+import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { Alignment, Alignment$inboundSchema } from "./alignment.js";
 import { ApiErrorType, ApiErrorType$inboundSchema } from "./apierrortype.js";
@@ -16,6 +17,10 @@ import {
   ApplyPatchServerTool,
   ApplyPatchServerTool$inboundSchema,
 } from "./applypatchservertool.js";
+import {
+  ArmorSafeguardResult,
+  ArmorSafeguardResult$inboundSchema,
+} from "./armorsafeguardresult.js";
 import {
   BaseInputsUnion,
   BaseInputsUnion$inboundSchema,
@@ -37,6 +42,10 @@ import {
   ComputerUseServerTool$inboundSchema,
 } from "./computeruseservertool.js";
 import { CustomTool, CustomTool$inboundSchema } from "./customtool.js";
+import {
+  DeferredToolsDetails,
+  DeferredToolsDetails$inboundSchema,
+} from "./deferredtoolsdetails.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   FileSearchServerTool,
@@ -114,6 +123,14 @@ export type OpenResponsesResultObject = ClosedEnum<
   typeof OpenResponsesResultObject
 >;
 
+export const OpenResponsesResultAllowedCaller = {
+  Direct: "direct",
+  Programmatic: "programmatic",
+} as const;
+export type OpenResponsesResultAllowedCaller = OpenEnum<
+  typeof OpenResponsesResultAllowedCaller
+>;
+
 /**
  * Function tool definition
  */
@@ -123,14 +140,16 @@ export type OpenResponsesResultToolFunction = {
   parameters: { [k: string]: any } | null;
   strict?: boolean | null | undefined;
   type: "function";
+  allowedCallers?: Array<OpenResponsesResultAllowedCaller> | null | undefined;
   /**
    * Lets the model keep working after calling this tool instead of waiting for its output. The tool is still executed by the client; return the result in a later request as a `function_call_output` with the original `call_id`. Only honored by providers whose Responses API supports async tools; ignored elsewhere.
    */
   async?: boolean | undefined;
   /**
-   * Withhold this tool from the model until `openrouter:tool_search` finds it. Requires the tool search server tool; at least one tool must remain non-deferred.
+   * Withhold this tool from the model until `openrouter:tool_search` finds it. Where the request declares no search tool, OpenRouter may add `openrouter:tool_search` to serve the flag, and otherwise sends the tool in full. A request that declares the search tool itself must keep at least one tool non-deferred.
    */
   deferLoading?: boolean | undefined;
+  outputSchema?: { [k: string]: any } | null | undefined;
 };
 
 export type OpenResponsesResultToolUnion =
@@ -184,6 +203,10 @@ export type Usage = {
   cost?: number | null | undefined;
   costDetails?: UsageCostDetails | undefined;
   /**
+   * Totals across every upstream model call of a deferred-tools run. The native usage fields report only the final call; cost covers every call.
+   */
+  deferredToolsDetails?: DeferredToolsDetails | undefined;
+  /**
    * Whether a request was made using a Bring Your Own Key configuration
    */
   isByok?: boolean | undefined;
@@ -191,6 +214,22 @@ export type Usage = {
    * Usage for server-side tool execution (e.g., web search)
    */
   serverToolUseDetails?: ServerToolUseDetails | null | undefined;
+};
+
+export const OpenResponsesResultCyber = {
+  Standard: "standard",
+  DaybreakBlue: "daybreak_blue",
+  DaybreakRed: "daybreak_red",
+} as const;
+export type OpenResponsesResultCyber = OpenEnum<
+  typeof OpenResponsesResultCyber
+>;
+
+/**
+ * Access program the upstream provider reported for this response (OpenAI `access_programs`). `null` when the provider reported none, including OpenAI's implicit Standard program.
+ */
+export type OpenResponsesResultAccessPrograms = {
+  cyber: OpenResponsesResultCyber;
 };
 
 /**
@@ -224,7 +263,7 @@ export type OpenResponsesResult = {
   prompt?: StoredPromptTemplate | null | undefined;
   promptCacheKey?: string | null | undefined;
   /**
-   * Request-level prompt-cache controls. `mode: "explicit"` disables OpenAI-managed breakpoints so only blocks marked with `prompt_cache_breakpoint` are cached. Only supported by OpenAI GPT-5.6 and newer.
+   * Request-level prompt-cache controls. `mode: "explicit"` disables OpenAI-managed breakpoints so only blocks marked with `prompt_cache_breakpoint` are cached. `ttl` sets the minimum cache lifetime for every breakpoint the request writes: "30m" (default) or "12h" (billed at the higher 12h cache-write rate). Only supported by OpenAI GPT-5.6 and newer.
    */
   promptCacheOptions?: PromptCacheOptions | null | undefined;
   reasoning?: BaseReasoningConfig | null | undefined;
@@ -267,6 +306,10 @@ export type OpenResponsesResult = {
   usage?: Usage | null | undefined;
   user?: string | null | undefined;
   /**
+   * Access program the upstream provider reported for this response (OpenAI `access_programs`). `null` when the provider reported none, including OpenAI's implicit Standard program.
+   */
+  accessPrograms?: OpenResponsesResultAccessPrograms | null | undefined;
+  /**
    * Beta. The result of the alignment plugin for this request; the shape may change.
    */
   alignment?: Alignment | undefined;
@@ -275,12 +318,22 @@ export type OpenResponsesResult = {
    */
   errorType?: ApiErrorType | undefined;
   openrouterMetadata?: OpenRouterMetadata | undefined;
+  /**
+   * OpenRouter Armor's verdict for each client tool call of this response, present whenever Armor evaluated the response (even when nothing was flagged). Independent of the `openrouter_metadata` opt-in.
+   */
+  safeguardResults?: Array<ArmorSafeguardResult> | undefined;
 };
 
 /** @internal */
 export const OpenResponsesResultObject$inboundSchema: z.ZodEnum<
   typeof OpenResponsesResultObject
 > = z.enum(OpenResponsesResultObject);
+
+/** @internal */
+export const OpenResponsesResultAllowedCaller$inboundSchema: z.ZodType<
+  OpenResponsesResultAllowedCaller,
+  unknown
+> = openEnums.inboundSchema(OpenResponsesResultAllowedCaller);
 
 /** @internal */
 export const OpenResponsesResultToolFunction$inboundSchema: z.ZodType<
@@ -292,11 +345,17 @@ export const OpenResponsesResultToolFunction$inboundSchema: z.ZodType<
   parameters: z.nullable(z.record(z.string(), z.any())),
   strict: z.nullable(z.boolean()).optional(),
   type: z.literal("function"),
+  allowed_callers: z.nullable(
+    z.array(OpenResponsesResultAllowedCaller$inboundSchema),
+  ).optional(),
   async: z.boolean().optional(),
   defer_loading: z.boolean().optional(),
+  output_schema: z.nullable(z.record(z.string(), z.any())).optional(),
 }).transform((v) => {
   return remap$(v, {
+    "allowed_callers": "allowedCallers",
     "defer_loading": "deferLoading",
+    "output_schema": "outputSchema",
   });
 });
 
@@ -450,6 +509,7 @@ export const Usage$inboundSchema: z.ZodType<Usage, unknown> = z.object({
   total_tokens: z.int(),
   cost: z.nullable(z.number()).optional(),
   cost_details: z.lazy(() => UsageCostDetails$inboundSchema).optional(),
+  deferred_tools_details: DeferredToolsDetails$inboundSchema.optional(),
   is_byok: z.boolean().optional(),
   server_tool_use_details: z.nullable(ServerToolUseDetails$inboundSchema)
     .optional(),
@@ -461,6 +521,7 @@ export const Usage$inboundSchema: z.ZodType<Usage, unknown> = z.object({
     "output_tokens_details": "outputTokensDetails",
     "total_tokens": "totalTokens",
     "cost_details": "costDetails",
+    "deferred_tools_details": "deferredToolsDetails",
     "is_byok": "isByok",
     "server_tool_use_details": "serverToolUseDetails",
   });
@@ -473,6 +534,30 @@ export function usageFromJSON(
     jsonString,
     (x) => Usage$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'Usage' from JSON`,
+  );
+}
+
+/** @internal */
+export const OpenResponsesResultCyber$inboundSchema: z.ZodType<
+  OpenResponsesResultCyber,
+  unknown
+> = openEnums.inboundSchema(OpenResponsesResultCyber);
+
+/** @internal */
+export const OpenResponsesResultAccessPrograms$inboundSchema: z.ZodType<
+  OpenResponsesResultAccessPrograms,
+  unknown
+> = z.object({
+  cyber: OpenResponsesResultCyber$inboundSchema,
+});
+
+export function openResponsesResultAccessProgramsFromJSON(
+  jsonString: string,
+): SafeParseResult<OpenResponsesResultAccessPrograms, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => OpenResponsesResultAccessPrograms$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'OpenResponsesResultAccessPrograms' from JSON`,
   );
 }
 
@@ -559,9 +644,13 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   truncation: z.nullable(Truncation$inboundSchema).optional(),
   usage: z.nullable(z.lazy(() => Usage$inboundSchema)).optional(),
   user: z.nullable(z.string()).optional(),
+  access_programs: z.nullable(
+    z.lazy(() => OpenResponsesResultAccessPrograms$inboundSchema),
+  ).optional(),
   alignment: Alignment$inboundSchema.optional(),
   error_type: ApiErrorType$inboundSchema.optional(),
   openrouter_metadata: OpenRouterMetadata$inboundSchema.optional(),
+  safeguard_results: z.array(ArmorSafeguardResult$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "completed_at": "completedAt",
@@ -581,8 +670,10 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
     "tool_choice": "toolChoice",
     "top_logprobs": "topLogprobs",
     "top_p": "topP",
+    "access_programs": "accessPrograms",
     "error_type": "errorType",
     "openrouter_metadata": "openrouterMetadata",
+    "safeguard_results": "safeguardResults",
   });
 });
 

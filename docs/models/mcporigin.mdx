@@ -1,0 +1,30 @@
+---
+title: "McpOrigin"
+---
+
+## Example Usage
+
+```typescript
+import { McpOrigin } from "@openrouter/sdk/models";
+
+let value: McpOrigin = {
+  accountKey: "<value>",
+  host: "mature-turret.name",
+  isPersonal: false,
+  routes: [],
+  status: {
+    failure: "<value>",
+    state: "failing",
+  },
+};
+```
+
+## Fields
+
+| Field                                                                                                         | Type                                                                                                          | Required                                                                                                      | Description                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `accountKey`                                                                                                  | *string*                                                                                                      | ✔️                                                                                            | N/A                                                                                                           |
+| `host`                                                                                                        | *string*                                                                                                      | ✔️                                                                                            | N/A                                                                                                           |
+| `isPersonal`                                                                                                  | *boolean*                                                                                                     | ✔️                                                                                            | Members' own accounts, matched to the acting member per turn.                                                 |
+| `routes`                                                                                                      | [models.Route](../models/route.mdx)[]                                                                          | ✔️                                                                                            | N/A                                                                                                           |
+| `status`                                                                                                      | [models.McpOriginStatus](../models/mcporiginstatus.mdx)                                                        | ✔️                                                                                            | The vault's decision for a request to this server; null for members' own accounts, decided per acting member. |

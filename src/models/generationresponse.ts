@@ -23,10 +23,12 @@ export const ApiType = {
   Embeddings: "embeddings",
   Rerank: "rerank",
   Decisions: "decisions",
+  Extractions: "extractions",
   Video: "video",
   TTS: "tts",
   STT: "stt",
   Image: "image",
+  ToolsInvoke: "tools_invoke",
 } as const;
 /**
  * Type of API used for the generation

@@ -1,0 +1,27 @@
+---
+title: "McpCallCompletedEvent"
+---
+
+Emitted when an MCP tool call completes successfully.
+
+## Example Usage
+
+```typescript
+import { McpCallCompletedEvent } from "@openrouter/sdk/models";
+
+let value: McpCallCompletedEvent = {
+  itemId: "<id>",
+  outputIndex: 341707,
+  sequenceNumber: 0,
+  type: "response.mcp_call.completed",
+};
+```
+
+## Fields
+
+| Field                           | Type                            | Required                        | Description                     |
+| ------------------------------- | ------------------------------- | ------------------------------- | ------------------------------- |
+| `itemId`                        | *string*                        | ✔️              | N/A                             |
+| `outputIndex`                   | *number*                        | ✔️              | N/A                             |
+| `sequenceNumber`                | *number*                        | ✔️              | N/A                             |
+| `type`                          | *"response.mcp_call.completed"* | ✔️              | N/A                             |

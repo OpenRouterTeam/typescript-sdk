@@ -37,9 +37,11 @@ export function endpointsList(
 ): APIPromise<
   Result<
     operations.ListEndpointsResponse,
+    | errors.UnauthorizedResponseError
     | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
+    | errors.ServiceUnavailableResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -65,9 +67,11 @@ async function $do(
   [
     Result<
       operations.ListEndpointsResponse,
+      | errors.UnauthorizedResponseError
       | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
       | errors.InternalServerResponseError
+      | errors.ServiceUnavailableResponseError
       | OpenRouterError
       | ResponseValidationError
       | ConnectionError
@@ -184,9 +188,11 @@ async function $do(
 
   const [result] = await M.match<
     operations.ListEndpointsResponse,
+    | errors.UnauthorizedResponseError
     | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
+    | errors.ServiceUnavailableResponseError
     | OpenRouterError
     | ResponseValidationError
     | ConnectionError
@@ -197,9 +203,11 @@ async function $do(
     | SDKValidationError
   >(
     M.json(200, operations.ListEndpointsResponse$inboundSchema),
+    M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
+    M.jsonErr(503, errors.ServiceUnavailableResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });

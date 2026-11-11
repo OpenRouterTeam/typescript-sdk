@@ -1,0 +1,92 @@
+---
+title: "ExtractionsResponseAnswers"
+---
+
+One answer per requested field. `value` is null when the state does not determine it.
+
+
+## Supported Types
+
+### `models.ExtractionDateAnswer`
+
+```typescript
+const value: models.ExtractionDateAnswer = {
+  type: "date",
+  value: "<value>",
+};
+```
+
+### `models.ExtractionDatetimeAnswer`
+
+```typescript
+const value: models.ExtractionDatetimeAnswer = {
+  type: "datetime",
+  value: "<value>",
+};
+```
+
+### `models.ExtractionDurationAnswer`
+
+```typescript
+const value: models.ExtractionDurationAnswer = {
+  type: "duration",
+  value: 1203.6,
+};
+```
+
+### `models.ExtractionEstimateAnswer`
+
+```typescript
+const value: models.ExtractionEstimateAnswer = {
+  type: "estimate",
+  value: "<value>",
+};
+```
+
+### `models.ExtractionForecastAnswer`
+
+```typescript
+const value: models.ExtractionForecastAnswer = {
+  type: "forecast",
+  value: [],
+};
+```
+
+### `models.ExtractionListAnswer`
+
+```typescript
+const value: models.ExtractionListAnswer = {
+  type: "list",
+  value: [
+    "<value>",
+  ],
+};
+```
+
+### `models.ExtractionNumberAnswer`
+
+```typescript
+const value: models.ExtractionNumberAnswer = {
+  type: "number",
+  value: 2185.97,
+};
+```
+
+### `models.ExtractionTextAnswer`
+
+```typescript
+const value: models.ExtractionTextAnswer = {
+  type: "text",
+  value: "<value>",
+};
+```
+
+### `models.ExtractionTimeAnswer`
+
+```typescript
+const value: models.ExtractionTimeAnswer = {
+  type: "time",
+  value: "<value>",
+};
+```
+

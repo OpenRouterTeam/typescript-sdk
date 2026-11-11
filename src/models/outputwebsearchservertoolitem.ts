@@ -9,10 +9,10 @@ import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
-  ToolCallStatus,
-  ToolCallStatus$inboundSchema,
-  ToolCallStatus$outboundSchema,
-} from "./toolcallstatus.js";
+  FailableToolCallStatus,
+  FailableToolCallStatus$inboundSchema,
+  FailableToolCallStatus$outboundSchema,
+} from "./failabletoolcallstatus.js";
 
 export const OutputWebSearchServerToolItemTypeURL = {
   Url: "url",
@@ -57,8 +57,12 @@ export type OutputWebSearchServerToolItem = {
    * The search action performed, matching OpenAI web_search_call.action shape. Includes the query the model issued and optional source URLs returned by the search provider.
    */
   action?: OutputWebSearchServerToolItemAction | undefined;
+  /**
+   * The error message when the tool call failed before producing a result. Set together with `status: 'failed'`; absent on a successful call.
+   */
+  error?: string | undefined;
   id?: string | undefined;
-  status: ToolCallStatus;
+  status: FailableToolCallStatus;
   type: OutputWebSearchServerToolItemTypeOpenrouterWebSearch;
 };
 
@@ -189,13 +193,15 @@ export const OutputWebSearchServerToolItem$inboundSchema: z.ZodType<
 > = z.object({
   action: z.lazy(() => OutputWebSearchServerToolItemAction$inboundSchema)
     .optional(),
+  error: z.string().optional(),
   id: z.string().optional(),
-  status: ToolCallStatus$inboundSchema,
+  status: FailableToolCallStatus$inboundSchema,
   type: OutputWebSearchServerToolItemTypeOpenrouterWebSearch$inboundSchema,
 });
 /** @internal */
 export type OutputWebSearchServerToolItem$Outbound = {
   action?: OutputWebSearchServerToolItemAction$Outbound | undefined;
+  error?: string | undefined;
   id?: string | undefined;
   status: string;
   type: string;
@@ -208,8 +214,9 @@ export const OutputWebSearchServerToolItem$outboundSchema: z.ZodType<
 > = z.object({
   action: z.lazy(() => OutputWebSearchServerToolItemAction$outboundSchema)
     .optional(),
+  error: z.string().optional(),
   id: z.string().optional(),
-  status: ToolCallStatus$outboundSchema,
+  status: FailableToolCallStatus$outboundSchema,
   type: OutputWebSearchServerToolItemTypeOpenrouterWebSearch$outboundSchema,
 });
 

@@ -48,6 +48,7 @@ export function workspacesList(
     Result<
       operations.ListWorkspacesResponse,
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
       | ResponseValidationError
@@ -78,6 +79,7 @@ async function $do(
       Result<
         operations.ListWorkspacesResponse,
         | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
         | ResponseValidationError
@@ -195,6 +197,7 @@ async function $do(
   const [result, raw] = await M.match<
     operations.ListWorkspacesResponse,
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
     | ResponseValidationError
@@ -209,6 +212,7 @@ async function $do(
       key: "Result",
     }),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
@@ -228,6 +232,7 @@ async function $do(
       Result<
         operations.ListWorkspacesResponse,
         | errors.UnauthorizedResponseError
+        | errors.ForbiddenResponseError
         | errors.InternalServerResponseError
         | OpenRouterError
         | ResponseValidationError

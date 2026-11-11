@@ -1,0 +1,22 @@
+---
+title: "ContentFilter"
+---
+
+## Example Usage
+
+```typescript
+import { ContentFilter } from "@openrouter/sdk/models";
+
+let value: ContentFilter = {
+  action: "redact",
+  pattern: "<value>",
+};
+```
+
+## Fields
+
+| Field                                                                                                                        | Type                                                                                                                         | Required                                                                                                                     | Description                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `action`                                                                                                                     | [models.GuardrailModerationPolicyConfigContentFilterAction](../models/guardrailmoderationpolicyconfigcontentfilteraction.mdx) | ✔️                                                                                                           | N/A                                                                                                                          |
+| `label`                                                                                                                      | *string*                                                                                                                     | ➖                                                                                                           | N/A                                                                                                                          |
+| `pattern`                                                                                                                    | *string*                                                                                                                     | ✔️                                                                                                           | N/A                                                                                                                          |

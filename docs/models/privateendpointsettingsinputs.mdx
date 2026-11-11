@@ -1,0 +1,27 @@
+---
+title: "PrivateEndpointSettingsInputs"
+---
+
+## Example Usage
+
+```typescript
+import { PrivateEndpointSettingsInputs } from "@openrouter/sdk/models";
+
+let value: PrivateEndpointSettingsInputs = {
+  audio: true,
+  base64Files: false,
+  base64Images: true,
+  fileUrls: true,
+  imageUrls: true,
+};
+```
+
+## Fields
+
+| Field                                                         | Type                                                          | Required                                                      | Description                                                   |
+| ------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- |
+| `audio`                                                       | *boolean*                                                     | ✔️                                            | Accepts audio input. `null` keeps the provider default.       |
+| `base64Files`                                                 | *boolean*                                                     | ✔️                                            | Accepts base64 file data. `null` keeps the provider default.  |
+| `base64Images`                                                | *boolean*                                                     | ✔️                                            | Accepts base64 image data. `null` keeps the provider default. |
+| `fileUrls`                                                    | *boolean*                                                     | ✔️                                            | Accepts file URLs. `null` keeps the provider default.         |
+| `imageUrls`                                                   | *boolean*                                                     | ✔️                                            | Accepts image URLs. `null` keeps the provider default.        |

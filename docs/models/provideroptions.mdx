@@ -2,7 +2,7 @@
 title: "ProviderOptions"
 ---
 
-Provider-specific options keyed by provider slug. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
+Provider-specific options keyed by provider slug. The provider segment is case-insensitive; an endpoint tag after `/` must match the endpoint slug exactly. Only options for the matched provider are forwarded; the rest are ignored. Unrecognized keys are silently dropped.
 
 ## Example Usage
 
@@ -25,6 +25,7 @@ let value: ProviderOptions = {};
 | `amazonBedrockClaudeOnAws` | Record\<string, *any*>      | ➖         | N/A                        |
 | `amazonNova`               | Record\<string, *any*>      | ➖         | N/A                        |
 | `ambient`                  | Record\<string, *any*>      | ➖         | N/A                        |
+| `antdigital`               | Record\<string, *any*>      | ➖         | N/A                        |
 | `anthropic`                | Record\<string, *any*>      | ➖         | N/A                        |
 | `anthropic2`               | Record\<string, *any*>      | ➖         | N/A                        |
 | `anyscale`                 | Record\<string, *any*>      | ➖         | N/A                        |
@@ -86,6 +87,7 @@ let value: ProviderOptions = {};
 | `ionstream`                | Record\<string, *any*>      | ➖         | N/A                        |
 | `klusterai`                | Record\<string, *any*>      | ➖         | N/A                        |
 | `krea`                     | Record\<string, *any*>      | ➖         | N/A                        |
+| `kt`                       | Record\<string, *any*>      | ➖         | N/A                        |
 | `lambda`                   | Record\<string, *any*>      | ➖         | N/A                        |
 | `lepton`                   | Record\<string, *any*>      | ➖         | N/A                        |
 | `liquid`                   | Record\<string, *any*>      | ➖         | N/A                        |
@@ -115,20 +117,27 @@ let value: ProviderOptions = {};
 | `ollama`                   | Record\<string, *any*>      | ➖         | N/A                        |
 | `openInference`            | Record\<string, *any*>      | ➖         | N/A                        |
 | `openai`                   | Record\<string, *any*>      | ➖         | N/A                        |
+| `parallel`                 | Record\<string, *any*>      | ➖         | N/A                        |
 | `parasail`                 | Record\<string, *any*>      | ➖         | N/A                        |
+| `paretoAlpha`              | Record\<string, *any*>      | ➖         | N/A                        |
+| `particleAi`               | Record\<string, *any*>      | ➖         | N/A                        |
+| `pearlResearch`            | Record\<string, *any*>      | ➖         | N/A                        |
 | `perceptron`               | Record\<string, *any*>      | ➖         | N/A                        |
 | `perplexity`               | Record\<string, *any*>      | ➖         | N/A                        |
 | `phala`                    | Record\<string, *any*>      | ➖         | N/A                        |
 | `poolside`                 | Record\<string, *any*>      | ➖         | N/A                        |
+| `primalabs`                | Record\<string, *any*>      | ➖         | N/A                        |
 | `primeintellect`           | Record\<string, *any*>      | ➖         | N/A                        |
 | `quiver`                   | Record\<string, *any*>      | ➖         | N/A                        |
 | `recraft`                  | Record\<string, *any*>      | ➖         | N/A                        |
 | `recursal`                 | Record\<string, *any*>      | ➖         | N/A                        |
+| `recursive`                | Record\<string, *any*>      | ➖         | N/A                        |
 | `reflection`               | Record\<string, *any*>      | ➖         | N/A                        |
 | `reka`                     | Record\<string, *any*>      | ➖         | N/A                        |
 | `relace`                   | Record\<string, *any*>      | ➖         | N/A                        |
 | `replicate`                | Record\<string, *any*>      | ➖         | N/A                        |
 | `respan`                   | Record\<string, *any*>      | ➖         | N/A                        |
+| `river`                    | Record\<string, *any*>      | ➖         | N/A                        |
 | `runway`                   | Record\<string, *any*>      | ➖         | N/A                        |
 | `sailResearch`             | Record\<string, *any*>      | ➖         | N/A                        |
 | `sakana`                   | Record\<string, *any*>      | ➖         | N/A                        |

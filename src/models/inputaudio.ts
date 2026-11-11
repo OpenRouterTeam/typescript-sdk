@@ -11,15 +11,15 @@ import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export const FormatEnum = {
+export const InputAudioFormat = {
   Mp3: "mp3",
   Wav: "wav",
 } as const;
-export type FormatEnum = OpenEnum<typeof FormatEnum>;
+export type InputAudioFormat = OpenEnum<typeof InputAudioFormat>;
 
 export type InputAudioInputAudio = {
   data: string;
-  format: FormatEnum;
+  format: InputAudioFormat;
 };
 
 /**
@@ -31,11 +31,15 @@ export type InputAudio = {
 };
 
 /** @internal */
-export const FormatEnum$inboundSchema: z.ZodType<FormatEnum, unknown> =
-  openEnums.inboundSchema(FormatEnum);
+export const InputAudioFormat$inboundSchema: z.ZodType<
+  InputAudioFormat,
+  unknown
+> = openEnums.inboundSchema(InputAudioFormat);
 /** @internal */
-export const FormatEnum$outboundSchema: z.ZodType<string, FormatEnum> =
-  openEnums.outboundSchema(FormatEnum);
+export const InputAudioFormat$outboundSchema: z.ZodType<
+  string,
+  InputAudioFormat
+> = openEnums.outboundSchema(InputAudioFormat);
 
 /** @internal */
 export const InputAudioInputAudio$inboundSchema: z.ZodType<
@@ -43,7 +47,7 @@ export const InputAudioInputAudio$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   data: z.string(),
-  format: FormatEnum$inboundSchema,
+  format: InputAudioFormat$inboundSchema,
 });
 /** @internal */
 export type InputAudioInputAudio$Outbound = {
@@ -57,7 +61,7 @@ export const InputAudioInputAudio$outboundSchema: z.ZodType<
   InputAudioInputAudio
 > = z.object({
   data: z.string(),
-  format: FormatEnum$outboundSchema,
+  format: InputAudioFormat$outboundSchema,
 });
 
 export function inputAudioInputAudioToJSON(

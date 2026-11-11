@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Bulk assign members to a guardrail
  *
  * @remarks
- * Assign multiple organization members to a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Assign multiple organization members to a specific guardrail. Requires an organization-scoped management key; workspace-scoped management keys return 403. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function guardrailsBulkAssignMembers(
   client: OpenRouterCore,
@@ -43,6 +43,7 @@ export function guardrailsBulkAssignMembers(
     models.BulkAssignMembersResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -72,6 +73,7 @@ async function $do(
       models.BulkAssignMembersResponse,
       | errors.BadRequestResponseError
       | errors.UnauthorizedResponseError
+      | errors.ForbiddenResponseError
       | errors.NotFoundResponseError
       | errors.InternalServerResponseError
       | OpenRouterError
@@ -194,6 +196,7 @@ async function $do(
     models.BulkAssignMembersResponse,
     | errors.BadRequestResponseError
     | errors.UnauthorizedResponseError
+    | errors.ForbiddenResponseError
     | errors.NotFoundResponseError
     | errors.InternalServerResponseError
     | OpenRouterError
@@ -208,6 +211,7 @@ async function $do(
     M.json(200, models.BulkAssignMembersResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
+    M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),
     M.jsonErr(404, errors.NotFoundResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.fail("4XX"),
