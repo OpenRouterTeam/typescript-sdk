@@ -46,9 +46,9 @@ export type CreateModelAvailabilityGuardrailPolicyRequest = {
   optedOutMemberIds?: Array<string> | undefined;
   policyType: CreateModelAvailabilityGuardrailPolicyRequestPolicyType;
   /**
-   * Workspace the policy belongs to
+   * Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.
    */
-  workspaceId: string;
+  workspaceId?: string | undefined;
 };
 
 /** @internal */
@@ -66,7 +66,7 @@ export type CreateModelAvailabilityGuardrailPolicyRequest$Outbound = {
   opted_out_api_key_hashes?: Array<string> | undefined;
   opted_out_member_ids?: Array<string> | undefined;
   policy_type: string;
-  workspace_id: string;
+  workspace_id?: string | undefined;
 };
 
 /** @internal */
@@ -84,7 +84,7 @@ export const CreateModelAvailabilityGuardrailPolicyRequest$outboundSchema:
     optedOutMemberIds: z.array(z.string()).optional(),
     policyType:
       CreateModelAvailabilityGuardrailPolicyRequestPolicyType$outboundSchema,
-    workspaceId: z.string(),
+    workspaceId: z.string().optional(),
   }).transform((v) => {
     return remap$(v, {
       apiKeyHashes: "api_key_hashes",

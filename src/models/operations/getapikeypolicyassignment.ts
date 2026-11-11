@@ -71,9 +71,9 @@ export type GetApiKeyPolicyAssignmentRequest = {
    */
   hash: string;
   /**
-   * Workspace the policy belongs to
+   * Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.
    */
-  workspaceId: string;
+  workspaceId?: string | undefined;
   /**
    * Policy type the assignment is read or changed for
    */
@@ -92,7 +92,7 @@ export type GetApiKeyPolicyAssignmentRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   hash: string;
-  workspace_id: string;
+  workspace_id?: string | undefined;
   policy_type: string;
 };
 
@@ -105,7 +105,7 @@ export const GetApiKeyPolicyAssignmentRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   hash: z.string(),
-  workspaceId: z.string(),
+  workspaceId: z.string().optional(),
   policyType: GetApiKeyPolicyAssignmentPolicyType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {

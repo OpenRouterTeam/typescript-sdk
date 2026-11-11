@@ -178,7 +178,7 @@ export class GuardrailPolicies extends ClientSDK {
    * List the budget policies in a workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async listBudgetPolicies(
-    request: operations.ListBudgetPoliciesRequest,
+    request?: operations.ListBudgetPoliciesRequest | undefined,
     options?: RequestOptions,
   ): Promise<
     PageIterator<operations.ListBudgetPoliciesResponse, { offset: number }>
@@ -265,7 +265,7 @@ export class GuardrailPolicies extends ClientSDK {
    * List the model availability policies in a workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async listModelAvailabilityPolicies(
-    request: operations.ListModelAvailabilityPoliciesRequest,
+    request?: operations.ListModelAvailabilityPoliciesRequest | undefined,
     options?: RequestOptions,
   ): Promise<
     PageIterator<
@@ -355,7 +355,7 @@ export class GuardrailPolicies extends ClientSDK {
    * List the moderation policies in a workspace. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async listModerationPolicies(
-    request: operations.ListModerationPoliciesRequest,
+    request?: operations.ListModerationPoliciesRequest | undefined,
     options?: RequestOptions,
   ): Promise<
     PageIterator<operations.ListModerationPoliciesResponse, { offset: number }>

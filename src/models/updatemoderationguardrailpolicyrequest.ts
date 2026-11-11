@@ -38,9 +38,9 @@ export type UpdateModerationGuardrailPolicyRequest = {
    */
   optedOutMemberIds?: Array<string> | undefined;
   /**
-   * Workspace the policy belongs to
+   * Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.
    */
-  workspaceId: string;
+  workspaceId?: string | undefined;
 };
 
 /** @internal */
@@ -52,7 +52,7 @@ export type UpdateModerationGuardrailPolicyRequest$Outbound = {
   name: string;
   opted_out_api_key_hashes?: Array<string> | undefined;
   opted_out_member_ids?: Array<string> | undefined;
-  workspace_id: string;
+  workspace_id?: string | undefined;
 };
 
 /** @internal */
@@ -67,7 +67,7 @@ export const UpdateModerationGuardrailPolicyRequest$outboundSchema: z.ZodType<
   name: z.string(),
   optedOutApiKeyHashes: z.array(z.string()).optional(),
   optedOutMemberIds: z.array(z.string()).optional(),
-  workspaceId: z.string(),
+  workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     apiKeyHashes: "api_key_hashes",
