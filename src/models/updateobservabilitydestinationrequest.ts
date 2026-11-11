@@ -17,7 +17,7 @@ import {
 
 export type UpdateObservabilityDestinationRequest = {
   /**
-   * Optional allowlist of OpenRouter API key hashes. `null` clears the filter (all keys). Omitting leaves the current value. Must contain at least one hash if provided.
+   * Optional allowlist of OpenRouter API key hashes. `null` clears the filter (all keys). Omitting leaves the current value, including any API key from another workspace that an organization-scoped key attached. Must contain at least one hash if provided. A workspace-scoped management key can only name API keys in its own workspace; any other hash returns 400.
    */
   apiKeyHashes?: Array<string> | null | undefined;
   /**

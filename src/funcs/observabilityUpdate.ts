@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Update an observability destination
  *
  * @remarks
- * Update an existing observability destination. Only the fields provided in the request body are updated. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Update an existing observability destination. Only the fields provided in the request body are updated. A workspace-scoped management key only reaches destinations in its own workspace; any other `id` returns 404. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function observabilityUpdate(
   client: OpenRouterCore,
