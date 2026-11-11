@@ -7231,7 +7231,7 @@ components:
         workspace_id: '550e8400-e29b-41d4-a716-446655440000'
       properties:
         allowed_api_key_hashes:
-          description: 'Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` means no restriction. A workspace-scoped management key can only name API keys in its own workspace.'
+          description: 'Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` means no restriction. Keys newly added to a credential pinned to a workspace must be in that workspace; a listed key that has since moved to another workspace stays listed.'
           example:
             - 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
           items:
@@ -10308,7 +10308,7 @@ components:
         provider: 'openai'
       properties:
         allowed_api_key_hashes:
-          description: 'Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` means no restriction. Must contain at least one hash if provided. Hashes that do not belong to your account return a 400; for a workspace-scoped management key, so do hashes of API keys outside its own workspace.'
+          description: 'Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` means no restriction. Must contain at least one hash if provided. Hashes that do not belong to your account return a 400; for a credential pinned to a workspace, so do hashes of API keys outside that workspace.'
           example:
             - 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
           items:
@@ -10865,7 +10865,7 @@ components:
         type: 'langfuse'
       properties:
         api_key_hashes:
-          description: 'Optional allowlist of OpenRouter API key hashes whose traffic is forwarded. `null` or omitted means all keys. Must contain at least one hash if provided. A workspace-scoped management key can only name API keys in its own workspace; any other hash returns 400.'
+          description: 'Optional allowlist of OpenRouter API key hashes whose traffic is forwarded. `null` or omitted means all keys. Must contain at least one hash if provided. Every hash must belong to an API key in the destination''s workspace; any other hash returns 400.'
           example: null
           items:
             type: 'string'
@@ -36159,7 +36159,7 @@ components:
         name: 'Updated OpenAI Key'
       properties:
         allowed_api_key_hashes:
-          description: 'Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` clears the restriction. Must contain at least one hash if provided. Hashes that do not belong to your account return a 400; for a workspace-scoped management key, so do hashes of API keys outside its own workspace.'
+          description: 'Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` clears the restriction. Must contain at least one hash if provided. Hashes that do not belong to your account return a 400; for a credential pinned to a workspace, so do hashes of API keys outside that workspace, unless the credential already lists them (a listed key that has since moved to another workspace stays listed and can be written back).'
           example:
             - 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
           items:
@@ -36611,7 +36611,7 @@ components:
         name: 'Updated Langfuse'
       properties:
         api_key_hashes:
-          description: 'Optional allowlist of OpenRouter API key hashes. `null` clears the filter (all keys). Omitting leaves the current value, including any API key from another workspace that an organization-scoped key attached. Must contain at least one hash if provided. A workspace-scoped management key can only name API keys in its own workspace; any other hash returns 400.'
+          description: 'Optional allowlist of OpenRouter API key hashes. `null` clears the filter (all keys). Omitting leaves the current value. Must contain at least one hash if provided. Every hash must belong to an API key in the destination''s workspace; any other hash returns 400. A hash the destination already lists is kept even if that key has since moved to another workspace, so an already-listed hash can always be written back.'
           example: null
           items:
             type: 'string'
@@ -37792,7 +37792,7 @@ components:
         resolution: '720p'
       properties:
         aspect_ratio:
-          description: 'Aspect ratio of the generated video'
+          description: 'Aspect ratio of the generated video. Omit it to use the model default, which on models with adaptive aspect ratio (e.g. BytePlus Seedance) follows the input image or video.'
           enum:
             - '16:9'
             - '9:16'
@@ -37815,9 +37815,9 @@ components:
           example: 1
           type: 'integer'
         duration:
-          description: 'Duration of the generated video in seconds'
+          description: 'Duration of the generated video in seconds, or -1 to let the provider choose the length (e.g. following an input video). -1 is only accepted by models that list it in supported_durations.'
           example: 8
-          minimum: 1
+          minimum: -1
           type: 'integer'
         frame_images:
           description: 'Images to use as the first and/or last frame of the generated video. Each image must specify a frame_type of first_frame or last_frame.'
@@ -38092,7 +38092,7 @@ components:
             - 'array'
             - 'null'
         supported_durations:
-          description: 'Supported video durations in seconds'
+          description: 'Supported video durations in seconds. -1 means the model accepts duration -1 and chooses the length itself.'
           items:
             type: 'integer'
           type:
