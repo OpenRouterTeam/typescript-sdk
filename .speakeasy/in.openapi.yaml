@@ -7512,12 +7512,11 @@ components:
           example: 'budget'
           type: 'string'
         workspace_id:
-          description: 'Workspace the policy belongs to'
+          description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
           example: '0df9e665-d932-5740-b2c7-b52af166bc11'
           format: 'uuid'
           type: 'string'
       required:
-        - 'workspace_id'
         - 'policy_type'
         - 'policy_id'
         - 'assigned'
@@ -10280,7 +10279,7 @@ components:
             - 'budget'
           type: 'string'
         workspace_id:
-          description: 'Workspace the policy belongs to'
+          description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
           example: '0df9e665-d932-5740-b2c7-b52af166bc11'
           format: 'uuid'
           type: 'string'
@@ -10288,7 +10287,6 @@ components:
         - 'name'
         - 'policy_type'
         - 'config'
-        - 'workspace_id'
       type: 'object'
     CreateBYOKKeyRequest:
       example:
@@ -10772,7 +10770,7 @@ components:
             - 'model_availability'
           type: 'string'
         workspace_id:
-          description: 'Workspace the policy belongs to'
+          description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
           example: '0df9e665-d932-5740-b2c7-b52af166bc11'
           format: 'uuid'
           type: 'string'
@@ -10780,7 +10778,6 @@ components:
         - 'name'
         - 'policy_type'
         - 'config'
-        - 'workspace_id'
       type: 'object'
     CreateModerationGuardrailPolicyRequest:
       properties:
@@ -10836,7 +10833,7 @@ components:
             - 'moderation'
           type: 'string'
         workspace_id:
-          description: 'Workspace the policy belongs to'
+          description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
           example: '0df9e665-d932-5740-b2c7-b52af166bc11'
           format: 'uuid'
           type: 'string'
@@ -10844,7 +10841,6 @@ components:
         - 'name'
         - 'policy_type'
         - 'config'
-        - 'workspace_id'
       type: 'object'
     CreateObservabilityDestinationRequest:
       example:
@@ -36130,14 +36126,13 @@ components:
             type: 'string'
           type: 'array'
         workspace_id:
-          description: 'Workspace the policy belongs to'
+          description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
           example: '0df9e665-d932-5740-b2c7-b52af166bc11'
           format: 'uuid'
           type: 'string'
       required:
         - 'name'
         - 'config'
-        - 'workspace_id'
       type: 'object'
     UpdateBYOKKeyRequest:
       example:
@@ -36525,14 +36520,13 @@ components:
             type: 'string'
           type: 'array'
         workspace_id:
-          description: 'Workspace the policy belongs to'
+          description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
           example: '0df9e665-d932-5740-b2c7-b52af166bc11'
           format: 'uuid'
           type: 'string'
       required:
         - 'name'
         - 'config'
-        - 'workspace_id'
       type: 'object'
     UpdateModerationGuardrailPolicyRequest:
       properties:
@@ -36584,14 +36578,13 @@ components:
             type: 'string'
           type: 'array'
         workspace_id:
-          description: 'Workspace the policy belongs to'
+          description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
           example: '0df9e665-d932-5740-b2c7-b52af166bc11'
           format: 'uuid'
           type: 'string'
       required:
         - 'name'
         - 'config'
-        - 'workspace_id'
       type: 'object'
     UpdateObservabilityDestinationRequest:
       example:
@@ -42739,7 +42732,7 @@ paths:
       x-speakeasy-name-override: 'createCoinbaseCharge'
   /credits/purchases:
     post:
-      description: 'Starts an agent credit purchase paid with a Machine Payments Protocol (MPP) credential on Tempo. The first call answers `402` with a `WWW-Authenticate: Payment ...` challenge; retry the same request, same `Idempotency-Key`, with the signed credential in `Payment-Authorization: Payment ...` (or in `Authorization: Payment ...` when the management key is sent as `X-Api-Key`). A paid request answers `202`: the transfer was broadcast and Stripe is still screening the payment, so credits arrive asynchronously. Poll the URL in the `Location` header, `GET /api/v1/credits/purchases/{id}`, until `status` is `credited` or `failed`.'
+      description: 'Starts an agent credit purchase paid with a Machine Payments Protocol (MPP) credential: USDC on Tempo, or a card when one is offered. The first call answers `402` with one `WWW-Authenticate: Payment ...` challenge per payment option; pay one of them and retry the same request, same `Idempotency-Key`, with the signed credential in `Payment-Authorization: Payment ...` (or in `Authorization: Payment ...` when the management key is sent as `X-Api-Key`). A paid request answers `202`: the transfer was broadcast or the card was charged, and the payment is still being confirmed, so credits arrive asynchronously. Poll the URL in the `Location` header, `GET /api/v1/credits/purchases/{id}`, until `status` is `credited` or `failed`.'
       operationId: 'createCreditsPurchases'
       parameters:
         - description: 'Identifies the purchase. Send the same value on the unpaid request and on the paid retry; use a new value for a new purchase.'
@@ -42772,6 +42765,13 @@ paths:
               schema:
                 description: 'The purchase to poll: `GET /api/v1/credits/purchases/{id}`.'
                 example: '/api/v1/credits/purchases/pi_3PqXyZ2eZvKYlo2C0abc1234'
+                type: 'string'
+            Payment-Receipt:
+              description: 'The payment reference, on the request that paid: the Tempo transaction hash for USDC, or the PaymentIntent ID for a card. Absent when an earlier request already paid this purchase.'
+              required: false
+              schema:
+                description: 'The payment reference, on the request that paid: the Tempo transaction hash for USDC, or the PaymentIntent ID for a card. Absent when an earlier request already paid this purchase.'
+                example: '0x8f3c2b1a9e7d6c5b4a39281706f5e4d3c2b1a09f8e7d6c5b4a39281706f5e4d3'
                 type: 'string'
         '400':
           content:
@@ -42808,10 +42808,10 @@ paths:
                 example: '<https://openrouter.ai/api/v1/credits/purchases/setup>; rel="help"'
                 type: 'string'
             WWW-Authenticate:
-              description: 'The MPP challenge: `Payment id="...", method="tempo", intent="charge", ...`.'
+              description: 'The MPP challenges, one per way to pay: `Payment id="...", method="tempo", intent="charge", ...` for USDC on Tempo and, when cards are offered, `Payment id="...", method="stripe", intent="charge", ...` for a card. Pay one of them.'
               required: true
               schema:
-                description: 'The MPP challenge: `Payment id="...", method="tempo", intent="charge", ...`.'
+                description: 'The MPP challenges, one per way to pay: `Payment id="...", method="tempo", intent="charge", ...` for USDC on Tempo and, when cards are offered, `Payment id="...", method="stripe", intent="charge", ...` for a card. Pay one of them.'
                 type: 'string'
         '403':
           content:
@@ -44085,6 +44085,16 @@ paths:
                   - 'data'
                 type: 'object'
           description: 'Returns a list of endpoints'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
         '403':
           content:
             application/json:
@@ -46708,6 +46718,15 @@ paths:
             maximum: 100
             minimum: 1
             type: 'integer'
+        - description: 'Only list assignments of guardrails in this workspace. When omitted, an organization management key lists every workspace and a workspace-scoped key lists its own workspace. A workspace-scoped key gets 403 for any other workspace.'
+          in: 'query'
+          name: 'workspace_id'
+          required: false
+          schema:
+            description: 'Only list assignments of guardrails in this workspace. When omitted, an organization management key lists every workspace and a workspace-scoped key lists its own workspace. A workspace-scoped key gets 403 for any other workspace.'
+            example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+            format: 'uuid'
+            type: 'string'
       responses:
         '200':
           content:
@@ -46818,6 +46837,15 @@ paths:
             maximum: 100
             minimum: 1
             type: 'integer'
+        - description: 'Only list assignments of guardrails in this workspace. When omitted, an organization management key lists every workspace and a workspace-scoped key lists its own workspace. A workspace-scoped key gets 403 for any other workspace.'
+          in: 'query'
+          name: 'workspace_id'
+          required: false
+          schema:
+            description: 'Only list assignments of guardrails in this workspace. When omitted, an organization management key lists every workspace and a workspace-scoped key lists its own workspace. A workspace-scoped key gets 403 for any other workspace.'
+            example: '0df9e665-d932-5740-b2c7-b52af166bc11'
+            format: 'uuid'
+            type: 'string'
       responses:
         '200':
           content:
@@ -47264,12 +47292,12 @@ paths:
             example: 'c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93'
             minLength: 1
             type: 'string'
-        - description: 'Workspace the policy belongs to'
+        - description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
           in: 'query'
           name: 'workspace_id'
-          required: true
+          required: false
           schema:
-            description: 'Workspace the policy belongs to'
+            description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
             example: '0df9e665-d932-5740-b2c7-b52af166bc11'
             format: 'uuid'
             type: 'string'
@@ -47451,12 +47479,12 @@ paths:
             example: 'user_2abcDEFghiJKLmnoPQRstu'
             minLength: 1
             type: 'string'
-        - description: 'Workspace the policy belongs to'
+        - description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
           in: 'query'
           name: 'workspace_id'
-          required: true
+          required: false
           schema:
-            description: 'Workspace the policy belongs to'
+            description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
             example: '0df9e665-d932-5740-b2c7-b52af166bc11'
             format: 'uuid'
             type: 'string'
@@ -47648,12 +47676,12 @@ paths:
             maximum: 100
             minimum: 1
             type: 'integer'
-        - description: 'Workspace the policy belongs to'
+        - description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
           in: 'query'
           name: 'workspace_id'
-          required: true
+          required: false
           schema:
-            description: 'Workspace the policy belongs to'
+            description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
             example: '0df9e665-d932-5740-b2c7-b52af166bc11'
             format: 'uuid'
             type: 'string'
@@ -47823,12 +47851,12 @@ paths:
             example: '550e8400-e29b-41d4-a716-446655440000'
             format: 'uuid'
             type: 'string'
-        - description: 'Workspace the policy belongs to'
+        - description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
           in: 'query'
           name: 'workspace_id'
-          required: true
+          required: false
           schema:
-            description: 'Workspace the policy belongs to'
+            description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
             example: '0df9e665-d932-5740-b2c7-b52af166bc11'
             format: 'uuid'
             type: 'string'
@@ -47916,12 +47944,12 @@ paths:
             example: '550e8400-e29b-41d4-a716-446655440000'
             format: 'uuid'
             type: 'string'
-        - description: 'Workspace the policy belongs to'
+        - description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
           in: 'query'
           name: 'workspace_id'
-          required: true
+          required: false
           schema:
-            description: 'Workspace the policy belongs to'
+            description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
             example: '0df9e665-d932-5740-b2c7-b52af166bc11'
             format: 'uuid'
             type: 'string'
@@ -48100,12 +48128,12 @@ paths:
             maximum: 100
             minimum: 1
             type: 'integer'
-        - description: 'Workspace the policy belongs to'
+        - description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
           in: 'query'
           name: 'workspace_id'
-          required: true
+          required: false
           schema:
-            description: 'Workspace the policy belongs to'
+            description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
             example: '0df9e665-d932-5740-b2c7-b52af166bc11'
             format: 'uuid'
             type: 'string'
@@ -48275,12 +48303,12 @@ paths:
             example: '550e8400-e29b-41d4-a716-446655440000'
             format: 'uuid'
             type: 'string'
-        - description: 'Workspace the policy belongs to'
+        - description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
           in: 'query'
           name: 'workspace_id'
-          required: true
+          required: false
           schema:
-            description: 'Workspace the policy belongs to'
+            description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
             example: '0df9e665-d932-5740-b2c7-b52af166bc11'
             format: 'uuid'
             type: 'string'
@@ -48368,12 +48396,12 @@ paths:
             example: '550e8400-e29b-41d4-a716-446655440000'
             format: 'uuid'
             type: 'string'
-        - description: 'Workspace the policy belongs to'
+        - description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
           in: 'query'
           name: 'workspace_id'
-          required: true
+          required: false
           schema:
-            description: 'Workspace the policy belongs to'
+            description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
             example: '0df9e665-d932-5740-b2c7-b52af166bc11'
             format: 'uuid'
             type: 'string'
@@ -48552,12 +48580,12 @@ paths:
             maximum: 100
             minimum: 1
             type: 'integer'
-        - description: 'Workspace the policy belongs to'
+        - description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
           in: 'query'
           name: 'workspace_id'
-          required: true
+          required: false
           schema:
-            description: 'Workspace the policy belongs to'
+            description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
             example: '0df9e665-d932-5740-b2c7-b52af166bc11'
             format: 'uuid'
             type: 'string'
@@ -48727,12 +48755,12 @@ paths:
             example: '550e8400-e29b-41d4-a716-446655440000'
             format: 'uuid'
             type: 'string'
-        - description: 'Workspace the policy belongs to'
+        - description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
           in: 'query'
           name: 'workspace_id'
-          required: true
+          required: false
           schema:
-            description: 'Workspace the policy belongs to'
+            description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
             example: '0df9e665-d932-5740-b2c7-b52af166bc11'
             format: 'uuid'
             type: 'string'
@@ -48820,12 +48848,12 @@ paths:
             example: '550e8400-e29b-41d4-a716-446655440000'
             format: 'uuid'
             type: 'string'
-        - description: 'Workspace the policy belongs to'
+        - description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
           in: 'query'
           name: 'workspace_id'
-          required: true
+          required: false
           schema:
-            description: 'Workspace the policy belongs to'
+            description: 'Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.'
             example: '0df9e665-d932-5740-b2c7-b52af166bc11'
             format: 'uuid'
             type: 'string'
@@ -50812,7 +50840,7 @@ paths:
                   minLength: 1
                   type: 'string'
                 workspace_id:
-                  description: 'Move the API key to this workspace. The key keeps its value; guardrail selections move with it, while other workspace-scoped settings (presets, BYOK keys, broadcast destinations, routing rules) do not. Sending the key''s current workspace is a no-op.'
+                  description: 'Move the API key to this workspace. The key keeps its value; guardrail selections move with it, except direct guardrail assignments owned by the key''s current workspace, which are removed along with the selections derived from them, while other workspace-scoped settings (presets, BYOK keys, broadcast destinations, routing rules) do not. Sending the key''s current workspace is a no-op.'
                   example: '0df9e665-d932-5740-b2c7-b52af166bc11'
                   format: 'uuid'
                   type: 'string'
@@ -52019,6 +52047,16 @@ paths:
                   - 'data'
                 type: 'object'
           description: 'Returns a list of endpoints'
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: 'Missing Authentication header'
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: 'Unauthorized - Authentication required or invalid credentials'
         '403':
           content:
             application/json:
