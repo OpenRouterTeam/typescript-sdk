@@ -23,7 +23,7 @@ export type DecisionsScoreQuestion = {
   /**
    * A plain string, or a JSON object or array of structured guidance.
    */
-  instructions: string | { [k: string]: any } | Array<any>;
+  instructions?: string | { [k: string]: any } | Array<any> | null | undefined;
   type: "score";
 };
 
@@ -64,7 +64,7 @@ export function decisionsScoreQuestionInstructionsToJSON(
 /** @internal */
 export type DecisionsScoreQuestion$Outbound = {
   criteria: Array<string | { [k: string]: any } | Array<any>>;
-  instructions: string | { [k: string]: any } | Array<any>;
+  instructions?: string | { [k: string]: any } | Array<any> | null | undefined;
   type: "score";
 };
 
@@ -76,11 +76,9 @@ export const DecisionsScoreQuestion$outboundSchema: z.ZodType<
   criteria: z.array(
     z.union([z.string(), z.record(z.string(), z.any()), z.array(z.any())]),
   ),
-  instructions: z.union([
-    z.string(),
-    z.record(z.string(), z.any()),
-    z.array(z.any()),
-  ]),
+  instructions: z.nullable(
+    z.union([z.string(), z.record(z.string(), z.any()), z.array(z.any())]),
+  ).optional(),
   type: z.literal("score"),
 });
 

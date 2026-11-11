@@ -16,6 +16,10 @@ export type ExtractionTimeField = {
    */
   nullThreshold?: number | undefined;
   type: "time";
+  /**
+   * Unit label for the value.
+   */
+  unit?: string | undefined;
 };
 
 /** @internal */
@@ -23,6 +27,7 @@ export type ExtractionTimeField$Outbound = {
   instructions?: string | undefined;
   null_threshold?: number | undefined;
   type: "time";
+  unit?: string | undefined;
 };
 
 /** @internal */
@@ -33,6 +38,7 @@ export const ExtractionTimeField$outboundSchema: z.ZodType<
   instructions: z.string().optional(),
   nullThreshold: z.number().optional(),
   type: z.literal("time"),
+  unit: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     nullThreshold: "null_threshold",

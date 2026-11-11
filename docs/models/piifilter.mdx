@@ -1,0 +1,22 @@
+---
+title: "PiiFilter"
+---
+
+## Example Usage
+
+```typescript
+import { PiiFilter } from "@openrouter/sdk/models";
+
+let value: PiiFilter = {
+  action: "flag",
+  entityType: "<value>",
+};
+```
+
+## Fields
+
+| Field                                                  | Type                                                   | Required                                               | Description                                            |
+| ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ |
+| `action`                                               | [models.PiiFilterAction](../models/piifilteraction.mdx) | ✔️                                     | N/A                                                    |
+| `entityType`                                           | *string*                                               | ✔️                                     | N/A                                                    |
+| `scoreThreshold`                                       | *number*                                               | ➖                                     | N/A                                                    |

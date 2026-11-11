@@ -1,0 +1,31 @@
+---
+title: "OutputItemMcpCall"
+---
+
+## Example Usage
+
+```typescript
+import { OutputItemMcpCall } from "@openrouter/sdk/models";
+
+let value: OutputItemMcpCall = {
+  arguments: "<value>",
+  id: "<id>",
+  name: "<value>",
+  serverLabel: "<value>",
+  type: "mcp_call",
+};
+```
+
+## Fields
+
+| Field                                                                  | Type                                                                   | Required                                                               | Description                                                            |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `approvalRequestId`                                                    | *string*                                                               | ➖                                                     | N/A                                                                    |
+| `arguments`                                                            | *string*                                                               | ✔️                                                     | N/A                                                                    |
+| `error`                                                                | *models.ErrorT*                                                        | ➖                                                     | N/A                                                                    |
+| `id`                                                                   | *string*                                                               | ✔️                                                     | N/A                                                                    |
+| `name`                                                                 | *string*                                                               | ✔️                                                     | N/A                                                                    |
+| `output`                                                               | *string*                                                               | ➖                                                     | N/A                                                                    |
+| `serverLabel`                                                          | *string*                                                               | ✔️                                                     | N/A                                                                    |
+| `status`                                                               | [models.OutputItemMcpCallStatus](../models/outputitemmcpcallstatus.mdx) | ➖                                                     | N/A                                                                    |
+| `type`                                                                 | *"mcp_call"*                                                           | ✔️                                                     | N/A                                                                    |

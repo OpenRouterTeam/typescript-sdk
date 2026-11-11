@@ -1,0 +1,31 @@
+---
+title: "ListModelAvailabilityGuardrailPoliciesResponse"
+---
+
+## Example Usage
+
+```typescript
+import { ListModelAvailabilityGuardrailPoliciesResponse } from "@openrouter/sdk/models";
+
+let value: ListModelAvailabilityGuardrailPoliciesResponse = {
+  data: [
+    {
+      apiKeyCount: 130847,
+      config: {},
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      memberCount: 185930,
+      name: "Engineering monthly budget",
+      policyType: "model_availability",
+      updatedAt: "1735604327655",
+    },
+  ],
+  totalCount: 1,
+};
+```
+
+## Fields
+
+| Field                                                                                                    | Type                                                                                                     | Required                                                                                                 | Description                                                                                              | Example                                                                                                  |
+| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `data`                                                                                                   | [models.ModelAvailabilityGuardrailPolicySummary](../models/modelavailabilityguardrailpolicysummary.mdx)[] | ✔️                                                                                       | N/A                                                                                                      |                                                                                                          |
+| `totalCount`                                                                                             | *number*                                                                                                 | ✔️                                                                                       | Total number of policies                                                                                 | 1                                                                                                        |

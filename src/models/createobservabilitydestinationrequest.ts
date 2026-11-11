@@ -48,7 +48,7 @@ export type CreateObservabilityDestinationRequestType = OpenEnum<
 
 export type CreateObservabilityDestinationRequest = {
   /**
-   * Optional allowlist of OpenRouter API key hashes whose traffic is forwarded. `null` or omitted means all keys. Must contain at least one hash if provided.
+   * Optional allowlist of OpenRouter API key hashes whose traffic is forwarded. `null` or omitted means all keys. Must contain at least one hash if provided. A workspace-scoped management key can only name API keys in its own workspace; any other hash returns 400.
    */
   apiKeyHashes?: Array<string> | null | undefined;
   /**
@@ -100,7 +100,7 @@ export type CreateObservabilityDestinationRequest = {
    */
   type: CreateObservabilityDestinationRequestType;
   /**
-   * Optional workspace ID. Defaults to the authenticated entity's default workspace.
+   * Optional workspace ID. Defaults to the authenticated entity's default workspace, or a workspace-scoped management key's own workspace.
    */
   workspaceId?: string | undefined;
 };

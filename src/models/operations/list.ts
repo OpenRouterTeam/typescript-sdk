@@ -167,11 +167,15 @@ export type ListData = {
 /**
  * List of API keys
  */
-export type ListResponse = {
+export type ListResponseBody = {
   /**
    * List of API keys
    */
   data: Array<ListData>;
+};
+
+export type ListResponse = {
+  result: ListResponseBody;
 };
 
 /** @internal */
@@ -272,9 +276,31 @@ export function listDataFromJSON(
 }
 
 /** @internal */
+export const ListResponseBody$inboundSchema: z.ZodType<
+  ListResponseBody,
+  unknown
+> = z.object({
+  data: z.array(z.lazy(() => ListData$inboundSchema)),
+});
+
+export function listResponseBodyFromJSON(
+  jsonString: string,
+): SafeParseResult<ListResponseBody, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ListResponseBody$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ListResponseBody' from JSON`,
+  );
+}
+
+/** @internal */
 export const ListResponse$inboundSchema: z.ZodType<ListResponse, unknown> = z
   .object({
-    data: z.array(z.lazy(() => ListData$inboundSchema)),
+    Result: z.lazy(() => ListResponseBody$inboundSchema),
+  }).transform((v) => {
+    return remap$(v, {
+      "Result": "result",
+    });
   });
 
 export function listResponseFromJSON(

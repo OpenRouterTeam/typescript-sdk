@@ -24,12 +24,20 @@ export type ExtractionListField = {
    * What the field should contain.
    */
   instructions?: string | undefined;
+  /**
+   * Whole numbers only. Lists of numbers only.
+   */
+  integer?: boolean | undefined;
   items: Items;
   /**
    * Probability of null above which `value` is null. Default 0.5.
    */
   nullThreshold?: number | undefined;
   type: "list";
+  /**
+   * Unit label for the value.
+   */
+  unit?: string | undefined;
 };
 
 /** @internal */
@@ -40,9 +48,11 @@ export const Items$outboundSchema: z.ZodType<string, Items> = openEnums
 export type ExtractionListField$Outbound = {
   decimals?: number | undefined;
   instructions?: string | undefined;
+  integer?: boolean | undefined;
   items: string;
   null_threshold?: number | undefined;
   type: "list";
+  unit?: string | undefined;
 };
 
 /** @internal */
@@ -52,9 +62,11 @@ export const ExtractionListField$outboundSchema: z.ZodType<
 > = z.object({
   decimals: z.int().optional(),
   instructions: z.string().optional(),
+  integer: z.boolean().optional(),
   items: Items$outboundSchema,
   nullThreshold: z.number().optional(),
   type: z.literal("list"),
+  unit: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     nullThreshold: "null_threshold",

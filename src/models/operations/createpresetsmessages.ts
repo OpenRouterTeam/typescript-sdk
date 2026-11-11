@@ -53,6 +53,10 @@ export type CreatePresetsMessagesRequest = {
    * URL-safe slug identifying the preset. Created if it does not exist.
    */
   slug: string;
+  /**
+   * Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace.
+   */
+  workspaceId?: string | undefined;
   messagesRequest: models.MessagesRequest;
 };
 
@@ -62,6 +66,7 @@ export type CreatePresetsMessagesRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   slug: string;
+  workspace_id?: string | undefined;
   MessagesRequest: models.MessagesRequest$Outbound;
 };
 
@@ -74,10 +79,12 @@ export const CreatePresetsMessagesRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   slug: z.string(),
+  workspaceId: z.string().optional(),
   messagesRequest: models.MessagesRequest$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    workspaceId: "workspace_id",
     messagesRequest: "MessagesRequest",
   });
 });

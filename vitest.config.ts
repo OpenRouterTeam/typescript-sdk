@@ -17,6 +17,13 @@ export default defineConfig({
     typecheck: {
       enabled: true,
     },
+    // tests/unit/signal-timeout-hooks.test.ts forces a GC to reproduce #1315.
+    pool: 'forks',
+    poolOptions: {
+      forks: {
+        execArgv: ['--expose-gc'],
+      },
+    },
     projects: [
       {
         extends: true,

@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Delete a guardrail
  *
  * @remarks
- * Delete an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Delete an existing guardrail. A workspace-scoped management key reaches only guardrails in its own workspace; any other guardrail returns 404. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function guardrailsDelete(
   client: OpenRouterCore,

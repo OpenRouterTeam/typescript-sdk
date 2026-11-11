@@ -48,7 +48,10 @@ export type ExtractionListAnswer = {
    * Set to `image` or `document` when the answer was read from an image or a PDF rather than the state text.
    */
   source?: ExtractionListAnswerSource | undefined;
-  spans?: Array<Array<number>> | undefined;
+  /**
+   * One span per item of `value`, in the same order; null for an item that has no offsets in the state text: one read from an image or a document, or one the provider returned without offsets that delimit it.
+   */
+  spans?: Array<Array<number> | null> | undefined;
   /**
    * Confidence in the spelling of text read from an image.
    */
@@ -105,7 +108,7 @@ export const ExtractionListAnswer$inboundSchema: z.ZodType<
   guess: z.array(z.union([z.string(), z.number()])).optional(),
   p_null: z.number().optional(),
   source: ExtractionListAnswerSource$inboundSchema.optional(),
-  spans: z.array(z.array(z.int())).optional(),
+  spans: z.array(z.nullable(z.array(z.int()))).optional(),
   spell_confidence: z.number().optional(),
   type: z.literal("list"),
   value: z.nullable(z.array(z.union([z.string(), z.number()]))),

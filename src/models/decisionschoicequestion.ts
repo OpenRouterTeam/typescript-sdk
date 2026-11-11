@@ -23,7 +23,7 @@ export type DecisionsChoiceQuestion = {
   /**
    * A plain string, or a JSON object or array of structured guidance.
    */
-  instructions: string | { [k: string]: any } | Array<any>;
+  instructions?: string | { [k: string]: any } | Array<any> | null | undefined;
   type: "choice";
 };
 
@@ -62,7 +62,7 @@ export function decisionsChoiceQuestionInstructionsToJSON(
 /** @internal */
 export type DecisionsChoiceQuestion$Outbound = {
   criteria: { [k: string]: string | { [k: string]: any } | Array<any> | null };
-  instructions: string | { [k: string]: any } | Array<any>;
+  instructions?: string | { [k: string]: any } | Array<any> | null | undefined;
   type: "choice";
 };
 
@@ -77,11 +77,9 @@ export const DecisionsChoiceQuestion$outboundSchema: z.ZodType<
       z.union([z.string(), z.record(z.string(), z.any()), z.array(z.any())]),
     ),
   ),
-  instructions: z.union([
-    z.string(),
-    z.record(z.string(), z.any()),
-    z.array(z.any()),
-  ]),
+  instructions: z.nullable(
+    z.union([z.string(), z.record(z.string(), z.any()), z.array(z.any())]),
+  ).optional(),
   type: z.literal("choice"),
 });
 

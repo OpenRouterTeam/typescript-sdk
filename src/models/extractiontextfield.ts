@@ -16,6 +16,10 @@ export type ExtractionTextField = {
    */
   nullThreshold?: number | undefined;
   type: "text";
+  /**
+   * Unit label for the value.
+   */
+  unit?: string | undefined;
 };
 
 /** @internal */
@@ -23,6 +27,7 @@ export type ExtractionTextField$Outbound = {
   instructions?: string | undefined;
   null_threshold?: number | undefined;
   type: "text";
+  unit?: string | undefined;
 };
 
 /** @internal */
@@ -33,6 +38,7 @@ export const ExtractionTextField$outboundSchema: z.ZodType<
   instructions: z.string().optional(),
   nullThreshold: z.number().optional(),
   type: z.literal("text"),
+  unit: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     nullThreshold: "null_threshold",

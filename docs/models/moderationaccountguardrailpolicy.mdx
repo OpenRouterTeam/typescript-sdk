@@ -1,0 +1,45 @@
+---
+title: "ModerationAccountGuardrailPolicy"
+---
+
+## Example Usage
+
+```typescript
+import { ModerationAccountGuardrailPolicy } from "@openrouter/sdk/models";
+
+let value: ModerationAccountGuardrailPolicy = {
+  config: {},
+  createdAt: "2025-08-24T10:30:00Z",
+  id: "550e8400-e29b-41d4-a716-446655440000",
+  isDefault: false,
+  isSynced: false,
+  isWorkspaceDefaultSynced: false,
+  name: "Engineering monthly budget",
+  optedOutWorkspaceIds: [
+    "0df9e665-d932-5740-b2c7-b52af166bc11",
+  ],
+  policyType: "moderation",
+  updatedAt: "1735609849683",
+  workspaceCount: 679615,
+  workspaceIds: [
+    "0df9e665-d932-5740-b2c7-b52af166bc11",
+  ],
+};
+```
+
+## Fields
+
+| Field                                                                                  | Type                                                                                   | Required                                                                               | Description                                                                            | Example                                                                                |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `config`                                                                               | [models.GuardrailModerationPolicyConfig](../models/guardrailmoderationpolicyconfig.mdx) | ✔️                                                                     | N/A                                                                                    | \{<br/>"content_filter_builtins": [<br/>\{<br/>"action": "block",<br/>"slug": "secrets"<br/>}<br/>]<br/>} |
+| `createdAt`                                                                            | *string*                                                                               | ✔️                                                                     | N/A                                                                                    | 2025-08-24T10:30:00Z                                                                   |
+| `id`                                                                                   | *string*                                                                               | ✔️                                                                     | Policy ID                                                                              | 550e8400-e29b-41d4-a716-446655440000                                                   |
+| `isDefault`                                                                            | *boolean*                                                                              | ✔️                                                                     | N/A                                                                                    |                                                                                        |
+| `isSynced`                                                                             | *boolean*                                                                              | ✔️                                                                     | Kept in sync with a v1 guardrail; saving changes creates an account copy               |                                                                                        |
+| `isWorkspaceDefaultSynced`                                                             | *boolean*                                                                              | ✔️                                                                     | Synced from a v1 workspace default guardrail                                           |                                                                                        |
+| `name`                                                                                 | *string*                                                                               | ✔️                                                                     | Policy name                                                                            | Engineering monthly budget                                                             |
+| `optedOutWorkspaceIds`                                                                 | *string*[]                                                                             | ✔️                                                                     | N/A                                                                                    | [<br/>"0df9e665-d932-5740-b2c7-b52af166bc11"<br/>]                                     |
+| `policyType`                                                                           | *"moderation"*                                                                         | ✔️                                                                     | N/A                                                                                    |                                                                                        |
+| `updatedAt`                                                                            | *string*                                                                               | ✔️                                                                     | N/A                                                                                    |                                                                                        |
+| `workspaceCount`                                                                       | *number*                                                                               | ✔️                                                                     | N/A                                                                                    |                                                                                        |
+| `workspaceIds`                                                                         | *string*[]                                                                             | ✔️                                                                     | N/A                                                                                    | [<br/>"0df9e665-d932-5740-b2c7-b52af166bc11"<br/>]                                     |

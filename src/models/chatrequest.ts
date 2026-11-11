@@ -220,6 +220,10 @@ export type ChatRequestReasoning = {
    * Constrains effort on reasoning for reasoning models
    */
   effort?: ChatRequestEffort | null | undefined;
+  /**
+   * Maximum number of tokens the model may spend on reasoning, for models that take a reasoning token budget instead of an effort level. Cannot be combined with `reasoning.effort` or the top-level `reasoning_effort`: a request that sets both is rejected with "Only one of "reasoning.effort" and "reasoning.max_tokens" can be specified".
+   */
+  maxTokens?: number | null | undefined;
   summary?: ChatReasoningSummaryVerbosityEnum | null | undefined;
 };
 
@@ -287,7 +291,7 @@ export type ChatRequest = {
    */
   debug?: ChatDebugOptions | undefined;
   /**
-   * Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation; keep the catalog unchanged.
+   * Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation. The portable profile needs the catalog unchanged across a continuation; the universal profile accepts a changed catalog and, with `announce_catalog_changes`, tells the model about it.
    */
   deferredTools?: DeferredToolsControl | undefined;
   /**
@@ -527,6 +531,7 @@ export const ChatRequestEffort$outboundSchema: z.ZodType<
 /** @internal */
 export type ChatRequestReasoning$Outbound = {
   effort?: string | null | undefined;
+  max_tokens?: number | null | undefined;
   summary?: string | null | undefined;
 };
 
@@ -536,8 +541,13 @@ export const ChatRequestReasoning$outboundSchema: z.ZodType<
   ChatRequestReasoning
 > = z.object({
   effort: z.nullable(ChatRequestEffort$outboundSchema).optional(),
+  maxTokens: z.nullable(z.int()).optional(),
   summary: z.nullable(ChatReasoningSummaryVerbosityEnum$outboundSchema)
     .optional(),
+}).transform((v) => {
+  return remap$(v, {
+    maxTokens: "max_tokens",
+  });
 });
 
 export function chatRequestReasoningToJSON(

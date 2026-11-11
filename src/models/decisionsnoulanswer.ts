@@ -9,6 +9,7 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type DecisionsNoulAnswer = {
+  confidence?: number | undefined;
   noul: number;
   type: "noul";
 };
@@ -18,6 +19,7 @@ export const DecisionsNoulAnswer$inboundSchema: z.ZodType<
   DecisionsNoulAnswer,
   unknown
 > = z.object({
+  confidence: z.number().optional(),
   noul: z.number(),
   type: z.literal("noul"),
 });

@@ -15,6 +15,9 @@ export type ExtractionDurationField = {
    * What the field should contain.
    */
   instructions?: string | undefined;
+  /**
+   * Whole numbers only.
+   */
   integer?: boolean | undefined;
   /**
    * Probability of null above which `value` is null. Default 0.5.

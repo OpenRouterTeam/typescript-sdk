@@ -54,6 +54,10 @@ export type OutputToolSearchServerToolItem = {
    */
   callId?: string | undefined;
   /**
+   * What the announced index added and removed since the previous one, when the request opted into `announce_catalog_changes` and the catalog changed between model turns. Replaying the item shows the same lines.
+   */
+  catalogChanges?: string | undefined;
+  /**
    * The deferred-tool index the router showed the model with a pre-search, listing tool sources and names. Replaying the item shows the same index.
    */
   catalogIndex?: string | undefined;
@@ -72,6 +76,10 @@ export type OutputToolSearchServerToolItem = {
   id?: string | undefined;
   matches?: Array<Match> | undefined;
   query?: string | undefined;
+  /**
+   * The other deferred tools of each source a match came from, by name, when the search listed siblings. Replaying the item shows the same names.
+   */
+  sources?: { [k: string]: Array<string> } | undefined;
   status: FailableToolCallStatus;
   /**
    * The IDs of every tool call in the model response that ran the search, in order. Replaying the item keeps those calls in one turn.
@@ -148,6 +156,7 @@ export const OutputToolSearchServerToolItem$inboundSchema: z.ZodType<
 > = z.object({
   arguments: z.string().optional(),
   call_id: z.string().optional(),
+  catalog_changes: z.string().optional(),
   catalog_index: z.string().optional(),
   error: z.string().optional(),
   format: OutputToolSearchServerToolItemFormat$inboundSchema.optional(),
@@ -155,12 +164,14 @@ export const OutputToolSearchServerToolItem$inboundSchema: z.ZodType<
   id: z.string().optional(),
   matches: z.array(z.lazy(() => Match$inboundSchema)).optional(),
   query: z.string().optional(),
+  sources: z.record(z.string(), z.array(z.string())).optional(),
   status: FailableToolCallStatus$inboundSchema,
   turn_call_ids: z.array(z.string()).optional(),
   type: OutputToolSearchServerToolItemType$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "call_id": "callId",
+    "catalog_changes": "catalogChanges",
     "catalog_index": "catalogIndex",
     "turn_call_ids": "turnCallIds",
   });
@@ -169,6 +180,7 @@ export const OutputToolSearchServerToolItem$inboundSchema: z.ZodType<
 export type OutputToolSearchServerToolItem$Outbound = {
   arguments?: string | undefined;
   call_id?: string | undefined;
+  catalog_changes?: string | undefined;
   catalog_index?: string | undefined;
   error?: string | undefined;
   format?: string | undefined;
@@ -176,6 +188,7 @@ export type OutputToolSearchServerToolItem$Outbound = {
   id?: string | undefined;
   matches?: Array<Match$Outbound> | undefined;
   query?: string | undefined;
+  sources?: { [k: string]: Array<string> } | undefined;
   status: string;
   turn_call_ids?: Array<string> | undefined;
   type: string;
@@ -188,6 +201,7 @@ export const OutputToolSearchServerToolItem$outboundSchema: z.ZodType<
 > = z.object({
   arguments: z.string().optional(),
   callId: z.string().optional(),
+  catalogChanges: z.string().optional(),
   catalogIndex: z.string().optional(),
   error: z.string().optional(),
   format: OutputToolSearchServerToolItemFormat$outboundSchema.optional(),
@@ -195,12 +209,14 @@ export const OutputToolSearchServerToolItem$outboundSchema: z.ZodType<
   id: z.string().optional(),
   matches: z.array(z.lazy(() => Match$outboundSchema)).optional(),
   query: z.string().optional(),
+  sources: z.record(z.string(), z.array(z.string())).optional(),
   status: FailableToolCallStatus$outboundSchema,
   turnCallIds: z.array(z.string()).optional(),
   type: OutputToolSearchServerToolItemType$outboundSchema,
 }).transform((v) => {
   return remap$(v, {
     callId: "call_id",
+    catalogChanges: "catalog_changes",
     catalogIndex: "catalog_index",
     turnCallIds: "turn_call_ids",
   });

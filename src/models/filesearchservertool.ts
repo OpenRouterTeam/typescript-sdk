@@ -60,7 +60,7 @@ export const TypeFileSearch = {
 export type TypeFileSearch = ClosedEnum<typeof TypeFileSearch>;
 
 /**
- * File search tool configuration
+ * File search tool configuration. `vector_store_ids` names OpenAI vector stores, so it requires BYOK (your own OpenAI key); requests on OpenRouter credits get a 400.
  */
 export type FileSearchServerTool = {
   filters?: Filters | CompoundFilter | null | undefined;

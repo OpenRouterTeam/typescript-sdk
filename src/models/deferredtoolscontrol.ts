@@ -4,6 +4,7 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
@@ -13,14 +14,38 @@ import {
 } from "./deferredtoolssearchstrategy.js";
 
 /**
- * Loading profile. `portable` serves the `defer_loading` tools with router-built search and call wrappers on any model and keeps the catalog fixed. `universal` defers every wrappable tool behind the same wrappers so the provider-facing tool list never changes, and rebuilds the catalog from each request so tools can be added or removed mid-conversation.
+ * How a universal `tool_search` query reaches the client's own tool search. Absent or `keywords`: a `select:` query becomes the words of the selected names and the limit is always filled. `native`: a `select:` query passes through verbatim when the client search documents `select:`, and the limit field is sent only when the model gave one, unless the client search requires it, in which case its documented default is sent. A tool the client sent with `defer_loading: true` that universal keeps direct is forwarded with that flag, so the provider loads it through the client search as it would without universal. Experimental.
+ */
+export const CascadeMode = {
+  Keywords: "keywords",
+  Native: "native",
+} as const;
+/**
+ * How a universal `tool_search` query reaches the client's own tool search. Absent or `keywords`: a `select:` query becomes the words of the selected names and the limit is always filled. `native`: a `select:` query passes through verbatim when the client search documents `select:`, and the limit field is sent only when the model gave one, unless the client search requires it, in which case its documented default is sent. A tool the client sent with `defer_loading: true` that universal keeps direct is forwarded with that flag, so the provider loads it through the client search as it would without universal. Experimental.
+ */
+export type CascadeMode = OpenEnum<typeof CascadeMode>;
+
+/**
+ * How the universal profile exposes the hidden catalog to the provider. Absent or `wrappers`: the `tool_search` and `tool_exec` tools. `code_mode`: one `tool_code` tool that runs a short JavaScript program in which `search()` and `call()` reach the catalog, so several searches and calls complete in one tool result. Experimental.
+ */
+export const Interface = {
+  Wrappers: "wrappers",
+  CodeMode: "code_mode",
+} as const;
+/**
+ * How the universal profile exposes the hidden catalog to the provider. Absent or `wrappers`: the `tool_search` and `tool_exec` tools. `code_mode`: one `tool_code` tool that runs a short JavaScript program in which `search()` and `call()` reach the catalog, so several searches and calls complete in one tool result. Experimental.
+ */
+export type Interface = OpenEnum<typeof Interface>;
+
+/**
+ * Loading profile. `portable` serves the `defer_loading` tools with router-built search and call wrappers on any model and keeps the catalog fixed. `universal` defers every wrappable tool behind the same wrappers so the provider-facing tool list never changes (unless `min_deferred_tools` inlines a small catalog), and rebuilds the catalog from each request so tools can be added or removed mid-conversation.
  */
 export const Profile = {
   Portable: "portable",
   Universal: "universal",
 } as const;
 /**
- * Loading profile. `portable` serves the `defer_loading` tools with router-built search and call wrappers on any model and keeps the catalog fixed. `universal` defers every wrappable tool behind the same wrappers so the provider-facing tool list never changes, and rebuilds the catalog from each request so tools can be added or removed mid-conversation.
+ * Loading profile. `portable` serves the `defer_loading` tools with router-built search and call wrappers on any model and keeps the catalog fixed. `universal` defers every wrappable tool behind the same wrappers so the provider-facing tool list never changes (unless `min_deferred_tools` inlines a small catalog), and rebuilds the catalog from each request so tools can be added or removed mid-conversation.
  */
 export type Profile = OpenEnum<typeof Profile>;
 
@@ -28,6 +53,20 @@ export const Protocol = {
   V1: "v1",
 } as const;
 export type Protocol = ClosedEnum<typeof Protocol>;
+
+/**
+ * Which tools the universal profile defers. Absent or `all`: every wrappable tool outside the coding-harness core set. `mcp`: only MCP server tools (`mcp__*` names and Responses namespaces outside `functions`); the harness keeps its own built-in tools direct. Experimental.
+ */
+export const DeferredToolsControlScope = {
+  All: "all",
+  Mcp: "mcp",
+} as const;
+/**
+ * Which tools the universal profile defers. Absent or `all`: every wrappable tool outside the coding-harness core set. `mcp`: only MCP server tools (`mcp__*` names and Responses namespaces outside `functions`); the harness keeps its own built-in tools direct. Experimental.
+ */
+export type DeferredToolsControlScope = OpenEnum<
+  typeof DeferredToolsControlScope
+>;
 
 /**
  * Where tool-call arguments are checked against the original schema. Only `runtime` (in OpenRouter) is available in this release.
@@ -41,14 +80,38 @@ export const Validation = {
 export type Validation = ClosedEnum<typeof Validation>;
 
 /**
- * Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation; keep the catalog unchanged.
+ * Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation. The portable profile needs the catalog unchanged across a continuation; the universal profile accepts a changed catalog and, with `announce_catalog_changes`, tells the model about it.
  */
 export type DeferredToolsControl = {
   /**
-   * Loading profile. `portable` serves the `defer_loading` tools with router-built search and call wrappers on any model and keeps the catalog fixed. `universal` defers every wrappable tool behind the same wrappers so the provider-facing tool list never changes, and rebuilds the catalog from each request so tools can be added or removed mid-conversation.
+   * Universal profile only. When true, a catalog whose deferred tools changed between two of the model's own turns (a client that connects MCP servers while the model works) is re-announced before the next model turn, with the sources added, changed and removed since the previous index, or that no deferred tools remain. Applies when the router lists the catalog itself; a client whose own tool search was adopted lists its deferred tools itself and is not re-announced. The announcement shares the result budget of the turn and is skipped when it does not fit. Absent or false: the catalog index is announced on a user turn only.
+   */
+  announceCatalogChanges?: boolean | undefined;
+  /**
+   * How a universal `tool_search` query reaches the client's own tool search. Absent or `keywords`: a `select:` query becomes the words of the selected names and the limit is always filled. `native`: a `select:` query passes through verbatim when the client search documents `select:`, and the limit field is sent only when the model gave one, unless the client search requires it, in which case its documented default is sent. A tool the client sent with `defer_loading: true` that universal keeps direct is forwarded with that flag, so the provider loads it through the client search as it would without universal. Experimental.
+   */
+  cascadeMode?: CascadeMode | undefined;
+  /**
+   * Universal profile only. Caller text announced to the model with the deferred catalog before its first turn, for example which sources the task needs. Repeated only when it changes. Trimmed before the length bounds apply. Recorded in the `catalog_index` discovery record of the response, so it is replayed with the conversation.
+   */
+  hint?: string | undefined;
+  /**
+   * How the universal profile exposes the hidden catalog to the provider. Absent or `wrappers`: the `tool_search` and `tool_exec` tools. `code_mode`: one `tool_code` tool that runs a short JavaScript program in which `search()` and `call()` reach the catalog, so several searches and calls complete in one tool result. Experimental.
+   */
+  interface?: Interface | undefined;
+  /**
+   * Universal profile only. When fewer tools than this would be deferred, the universal profile defers none of them and sends the client tools unchanged, so a harness with a handful of non-core tools and no MCP servers pays no search turn for them. Counted after the interface exclusions; ignored with a custom search, whose client decides what it loads. Absent: every wrappable tool in scope is deferred.
+   */
+  minDeferredTools?: number | undefined;
+  /**
+   * Loading profile. `portable` serves the `defer_loading` tools with router-built search and call wrappers on any model and keeps the catalog fixed. `universal` defers every wrappable tool behind the same wrappers so the provider-facing tool list never changes (unless `min_deferred_tools` inlines a small catalog), and rebuilds the catalog from each request so tools can be added or removed mid-conversation.
    */
   profile: Profile;
   protocol: Protocol;
+  /**
+   * Which tools the universal profile defers. Absent or `all`: every wrappable tool outside the coding-harness core set. `mcp`: only MCP server tools (`mcp__*` names and Responses namespaces outside `functions`); the harness keeps its own built-in tools direct. Experimental.
+   */
+  scope?: DeferredToolsControlScope | undefined;
   /**
    * Router-local regex/BM25 or caller-owned custom search.
    */
@@ -60,6 +123,14 @@ export type DeferredToolsControl = {
 };
 
 /** @internal */
+export const CascadeMode$outboundSchema: z.ZodType<string, CascadeMode> =
+  openEnums.outboundSchema(CascadeMode);
+
+/** @internal */
+export const Interface$outboundSchema: z.ZodType<string, Interface> = openEnums
+  .outboundSchema(Interface);
+
+/** @internal */
 export const Profile$outboundSchema: z.ZodType<string, Profile> = openEnums
   .outboundSchema(Profile);
 
@@ -69,14 +140,26 @@ export const Protocol$outboundSchema: z.ZodEnum<typeof Protocol> = z.enum(
 );
 
 /** @internal */
+export const DeferredToolsControlScope$outboundSchema: z.ZodType<
+  string,
+  DeferredToolsControlScope
+> = openEnums.outboundSchema(DeferredToolsControlScope);
+
+/** @internal */
 export const Validation$outboundSchema: z.ZodEnum<typeof Validation> = z.enum(
   Validation,
 );
 
 /** @internal */
 export type DeferredToolsControl$Outbound = {
+  announce_catalog_changes?: boolean | undefined;
+  cascade_mode?: string | undefined;
+  hint?: string | undefined;
+  interface?: string | undefined;
+  min_deferred_tools?: number | undefined;
   profile: string;
   protocol: string;
+  scope?: string | undefined;
   search: DeferredToolsSearchStrategy$Outbound;
   validation: string;
 };
@@ -86,10 +169,22 @@ export const DeferredToolsControl$outboundSchema: z.ZodType<
   DeferredToolsControl$Outbound,
   DeferredToolsControl
 > = z.object({
+  announceCatalogChanges: z.boolean().optional(),
+  cascadeMode: CascadeMode$outboundSchema.optional(),
+  hint: z.string().optional(),
+  interface: Interface$outboundSchema.optional(),
+  minDeferredTools: z.int().optional(),
   profile: Profile$outboundSchema,
   protocol: Protocol$outboundSchema,
+  scope: DeferredToolsControlScope$outboundSchema.optional(),
   search: DeferredToolsSearchStrategy$outboundSchema,
   validation: Validation$outboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    announceCatalogChanges: "announce_catalog_changes",
+    cascadeMode: "cascade_mode",
+    minDeferredTools: "min_deferred_tools",
+  });
 });
 
 export function deferredToolsControlToJSON(

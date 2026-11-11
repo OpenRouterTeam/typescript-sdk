@@ -37,7 +37,7 @@ import {
  * List all key assignments
  *
  * @remarks
- * List all API key guardrail assignments for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * List all API key guardrail assignments for the authenticated user. A workspace-scoped management key lists only its own workspace, which `workspace_id` defaults to; naming another workspace returns 403. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function guardrailsListKeyAssignments(
   client: OpenRouterCore,
@@ -118,6 +118,7 @@ async function $do(
   const query = encodeFormQuery({
     "limit": payload?.limit,
     "offset": payload?.offset,
+    "workspace_id": payload?.workspace_id,
   });
 
   const headers = new Headers(compactMap({

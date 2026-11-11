@@ -60,6 +60,10 @@ export type ListKeyAssignmentsRequest = {
    * Maximum number of records to return (max 100)
    */
   limit?: number | undefined;
+  /**
+   * Only list assignments of guardrails in this workspace. When omitted, an organization management key lists every workspace and a workspace-scoped key lists its own workspace. A workspace-scoped key gets 403 for any other workspace.
+   */
+  workspaceId?: string | undefined;
 };
 
 export type ListKeyAssignmentsResponse = {
@@ -73,6 +77,7 @@ export type ListKeyAssignmentsRequest$Outbound = {
   appCategories?: string | undefined;
   offset: number | null;
   limit: number;
+  workspace_id?: string | undefined;
 };
 
 /** @internal */
@@ -85,9 +90,11 @@ export const ListKeyAssignmentsRequest$outboundSchema: z.ZodType<
   appCategories: z.string().optional(),
   offset: z.nullable(z.int().default(0)),
   limit: z.int().default(50),
+  workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
+    workspaceId: "workspace_id",
   });
 });
 
