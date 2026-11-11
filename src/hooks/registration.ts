@@ -1,5 +1,6 @@
 import type { Hooks } from './types.js';
 
+import { DebugEnvHook } from './debug-env-hooks.js';
 import { SignalTimeoutHook } from './signal-hooks.js';
 
 /*
@@ -19,4 +20,8 @@ export function initHooks(hooks: Hooks) {
   hooks.registerSDKInitHook(signalTimeoutHook);
   hooks.registerBeforeCreateRequestHook(signalTimeoutHook);
   hooks.registerBeforeRequestHook(signalTimeoutHook);
+
+  // Parse OPENROUTER_DEBUG strictly so `false`, `0`, `off` and `no` do not
+  // turn on the console debug logger (#519).
+  hooks.registerSDKInitHook(new DebugEnvHook());
 }
