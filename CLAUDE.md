@@ -74,6 +74,7 @@ grep -F "  src/lib/env.ts:" .speakeasy/gen.lock
 - `src/hooks/registration.ts` - Hook registration. Speakeasy generates it once and never overwrites it
 - Other files you add under `src/hooks/` (for example `signal-hooks.ts`, `base-url-env.ts`) - The generator leaves them alone
 - `src/funcs/betaResponsesSend.ts` - Listed in `.genignore`
+- `src/lib/url.ts` - Listed in `.genignore`. Hand-maintained so `pathToFunc` rejects `.` and `..` path segments (the generator does not); see the header comment in the file for when to hand it back to the generator
 - `src/funcs/oAuthCreateAuthorizationUrl.ts`, `src/funcs/oAuthCreateSHA256CodeChallenge.ts` - OAuth PKCE helpers
 - `src/models/claude-message.ts` - Types copied from the Anthropic SDK
 - `scripts/` - Build and maintenance scripts (wired in through `additionalScripts` in `.speakeasy/gen.yaml`)
