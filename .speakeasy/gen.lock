@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 88b01b87c1b4b40f602f1c3e9d6bb238
+  docChecksum: 85cfc0bb1ed3d7f66a91fb1a284e6114
   docVersion: 1.0.0
   speakeasyVersion: 1.803.2
   generationVersion: 2.950.13
-  releaseVersion: 1.5.87
-  configChecksum: 7883d0d36f4a9bcc1b476bc699e0b23c
+  releaseVersion: 1.5.88
+  configChecksum: de83606dfc21a1d143cf450a0bd81054
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: b71894ab-631d-4d77-84cc-d41a350d798e
-  pristine_commit_hash: 2d410244f4f74198f03079a8895212c064747f1d
-  pristine_tree_hash: 5062694bfa1482fc4db96d6847e257581af1f112
+  generation_id: 93a43704-c1b0-4150-b2fa-ffc922573f9a
+  pristine_commit_hash: dff14bc3af6716ef1d06b59461a7b471644a0612
+  pristine_tree_hash: e89f6ddf4b3554c1810affa484d270966a87ec32
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -16674,8 +16674,8 @@ trackedFiles:
     pristine_git_object: 1fe3c13ba70b6baf53cc569af41d49a3db846e0b
   docs/sdks/privateendpoints/README.mdx:
     id: 54dee70b8cc7
-    last_write_checksum: sha1:6c45c55fefd99d52bd8204d17b7212e6785fee5a
-    pristine_git_object: d61259723ea99be88369df3a6cb8597cf1f785be
+    last_write_checksum: sha1:9b3b5ccc107bc47d5fe7f3328d56b9834591ef2a
+    pristine_git_object: 08933e6a321657892b55c2a0018c300946486fc9
   docs/sdks/privateproviders/README.mdx:
     id: 517c31195442
     last_write_checksum: sha1:cacc54a8bd3f270d98635cdadb2563cd369752d2
@@ -16775,12 +16775,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:da22ea6c9919a658965de22ebad0f04f3ff5415b
-    pristine_git_object: ea1f1ce958596b2bbda64e34510aa378e71f7076
+    last_write_checksum: sha1:35c6efb3ac5e80da69570af0b75fda767b4013dc
+    pristine_git_object: 4052ee0a4a93f8df4f80f54e604abb88c0a68c8e
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:d58a084f29f77bdd0e1f674fec3988012597d49c
-    pristine_git_object: 33b64dd18a78ffd0670f760e6a13101be5d6f504
+    last_write_checksum: sha1:fcc89192f2f4adb708534e60d7ccc636dec77998
+    pristine_git_object: 1a3095c1a69542118bfc737ca120b91f509307d4
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -17263,8 +17263,8 @@ trackedFiles:
     pristine_git_object: 61c7fc448f2bd33033ef33f7f47ef97413ffd563
   src/funcs/privateEndpointsUpdate.ts:
     id: a2d429fd280a
-    last_write_checksum: sha1:3f6529d1b18c8df60622ba304d9fc3ef5ddb7ce0
-    pristine_git_object: 6f2808f6dd5fd609b2d0a0d3653623ae7c3bd232
+    last_write_checksum: sha1:b279919ae45728b88d5cdbeae1eb6bd64f5987a1
+    pristine_git_object: 991c35b97ed7900222d5c5c962d0800178c6653b
   src/funcs/privateEndpointsValidate.ts:
     id: 4337dd4863e1
     last_write_checksum: sha1:98efd9c508dc51a0d5c0a6998c316961f86d33b2
@@ -17479,8 +17479,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:14fff558c61e4a7cf90b188f9574b80b2a2a7259
-    pristine_git_object: 0e22306e2f4517e37b223679f32e486f04bb5e22
+    last_write_checksum: sha1:5174486d91bfd877d848b4197a640447b8d49393
+    pristine_git_object: a2c646700e67eee383fd80256101cdc7aa5a58b7
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -22265,8 +22265,8 @@ trackedFiles:
     pristine_git_object: 51e9aba17e5cdee69a50a4abf96f71be54300a4a
   src/sdk/privateendpoints.ts:
     id: ed31ec182fa7
-    last_write_checksum: sha1:2139449036b96e57c1b29f2b25b7c808851910dd
-    pristine_git_object: b07dc490780bd52735aa88771f09e170a3b1dc6c
+    last_write_checksum: sha1:bfef02f8ac33781fc4232405f2bb1c94eb119dd8
+    pristine_git_object: 93ba23d9bb2ca062b53e34038ac79ec03a6006f9
   src/sdk/privateproviders.ts:
     id: 3fb163efa9be
     last_write_checksum: sha1:7fd9aba203d461962eb9a7ae0da4aaeb832d1a4d
