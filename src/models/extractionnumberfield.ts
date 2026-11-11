@@ -15,12 +15,18 @@ export type ExtractionNumberField = {
    * What the field should contain.
    */
   instructions?: string | undefined;
+  /**
+   * Whole numbers only.
+   */
   integer?: boolean | undefined;
   /**
    * Probability of null above which `value` is null. Default 0.5.
    */
   nullThreshold?: number | undefined;
   type: "number";
+  /**
+   * Unit label for the value.
+   */
   unit?: string | undefined;
 };
 
