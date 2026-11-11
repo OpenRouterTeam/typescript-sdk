@@ -111,6 +111,7 @@ export const ProviderName = {
   Seed: "Seed",
   SiliconFlow: "SiliconFlow",
   Sourceful: "Sourceful",
+  Speechify: "Speechify",
   StepFun: "StepFun",
   Stealth: "Stealth",
   StreamLake: "StreamLake",
