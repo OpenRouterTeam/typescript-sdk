@@ -8335,6 +8335,8 @@ components:
             effort: 'medium'
             summary: 'concise'
           properties:
+            context:
+              $ref: '#/components/schemas/ReasoningContext'
             effort:
               description: 'Constrains effort on reasoning for reasoning models'
               enum:
@@ -8350,12 +8352,22 @@ components:
               type:
                 - 'string'
                 - 'null'
+            enabled:
+              description: 'Enables reasoning with default settings. Defaults to being inferred from `effort` or `max_tokens`.'
+              example: true
+              type: 'boolean'
+            exclude:
+              description: 'When true, the model still reasons but the reasoning is omitted from the response. Defaults to false.'
+              example: false
+              type: 'boolean'
             max_tokens:
               description: 'Maximum number of tokens the model may spend on reasoning, for models that take a reasoning token budget instead of an effort level. Cannot be combined with `reasoning.effort` or the top-level `reasoning_effort`: a request that sets both is rejected with "Only one of "reasoning.effort" and "reasoning.max_tokens" can be specified".'
               example: 2000
               type:
                 - 'integer'
                 - 'null'
+            mode:
+              $ref: '#/components/schemas/ReasoningMode'
             summary:
               $ref: '#/components/schemas/ChatReasoningSummaryVerbosityEnum'
           type: 'object'
