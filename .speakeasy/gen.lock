@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 85cfc0bb1ed3d7f66a91fb1a284e6114
+  docChecksum: 4ef2e9f45fcffa6b38911e8de534e519
   docVersion: 1.0.0
   speakeasyVersion: 1.803.2
   generationVersion: 2.950.13
-  releaseVersion: 1.5.88
-  configChecksum: de83606dfc21a1d143cf450a0bd81054
+  releaseVersion: 1.5.89
+  configChecksum: 685f6b5873bd85a05198ec9169ed4213
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 93a43704-c1b0-4150-b2fa-ffc922573f9a
-  pristine_commit_hash: dff14bc3af6716ef1d06b59461a7b471644a0612
-  pristine_tree_hash: e89f6ddf4b3554c1810affa484d270966a87ec32
+  generation_id: ff69e806-787a-4b23-b7c7-853334bda47d
+  pristine_commit_hash: 1866a1002b282f9f8920e17d719f561e84c94979
+  pristine_tree_hash: 8a3d870b7a38611e015463bb9d62da5fb73526c0
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -14568,8 +14568,8 @@ trackedFiles:
     deleted: true
   docs/models/speechinput.mdx:
     id: f78b8ca9fd6f
-    last_write_checksum: sha1:2943a6a37a42093e6cd61a9dbdeb5d7a991873da
-    pristine_git_object: 809f281682c77b421b2d1abcd0fdf5b0fc165caf
+    last_write_checksum: sha1:225c9028dc51df258a04f6591f4d9bd9ef2b8998
+    pristine_git_object: 110dad757c632c74ea544ce343f987c8b1d0a983
   docs/models/speechinputreference.mdx:
     id: 185904811fc6
     last_write_checksum: sha1:dbf62d978e3b54f67edcb17963059946cb6e3034
@@ -14601,8 +14601,8 @@ trackedFiles:
     deleted: true
   docs/models/speechrequest.mdx:
     id: c9e3c03ff84e
-    last_write_checksum: sha1:091106b283f11839629a2eab1b76ac2172c89748
-    pristine_git_object: ba0c7ed477ae5685ca8c59a8b23562962800f642
+    last_write_checksum: sha1:cab94480e00e7522ac38fae31098f99e10a7da00
+    pristine_git_object: b874baa13f6c7e1b9a221df85f95ae25826eb74f
   docs/models/speechrequestdatacollection.mdx:
     id: c7d31873696d
     last_write_checksum: sha1:19d9e8046260fcbf41e9836491afd4881ae3adac
@@ -16775,12 +16775,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:35c6efb3ac5e80da69570af0b75fda767b4013dc
-    pristine_git_object: 4052ee0a4a93f8df4f80f54e604abb88c0a68c8e
+    last_write_checksum: sha1:b94ddc229bb6d0a0403d15e08d7a2d2e1959c444
+    pristine_git_object: fa3c5cbf2b34adc3fe82cd939e35ac603ee29b32
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:fcc89192f2f4adb708534e60d7ccc636dec77998
-    pristine_git_object: 1a3095c1a69542118bfc737ca120b91f509307d4
+    last_write_checksum: sha1:93070e56e7db79bc6ecad762d84c3b102c79017c
+    pristine_git_object: 876cdb3cf433efdc2f18194b265e36b9805f56bc
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -17479,8 +17479,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:5174486d91bfd877d848b4197a640447b8d49393
-    pristine_git_object: a2c646700e67eee383fd80256101cdc7aa5a58b7
+    last_write_checksum: sha1:3c49c7929c65511929f9ae4612eb4a639da8b47c
+    pristine_git_object: ea7a0de554e52c934020b8c02af6bab69fcdd8f4
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -21593,8 +21593,8 @@ trackedFiles:
     pristine_git_object: b7e831da0a7045eea3f87f9135d9e68af797df11
   src/models/speechinput.ts:
     id: 40afc7088e49
-    last_write_checksum: sha1:0e818ca8e54763074f81d372c0addeb0c1541ed8
-    pristine_git_object: 69f07910deb1ed6564b8a2612a4c51c4bfc1409a
+    last_write_checksum: sha1:bdf4553df53463ffedfe68ce469a55dcd040dc28
+    pristine_git_object: e03cafee00d0e2ebf58fc441da742dd9d3420797
   src/models/speechinputreference.ts:
     id: 25b19e4fa954
     last_write_checksum: sha1:4815d0bf1f8cb82c15020d02b475e6c7ec405203
@@ -21621,8 +21621,8 @@ trackedFiles:
     pristine_git_object: 9736271f1eca14fc2be3d7281472b25fc79fec3e
   src/models/speechrequest.ts:
     id: 96d573d68420
-    last_write_checksum: sha1:bcc82256cfdf174ce84e9db328436ba8128844fb
-    pristine_git_object: d599064abc0c09609b41371f0259634838665688
+    last_write_checksum: sha1:faf28bf5118a393613b998b37a204addf9f33ced
+    pristine_git_object: e2fd30a43aeb3892e167fb5d46b59bbc32fc3836
   src/models/speechturn.ts:
     id: 78beaa9d8388
     last_write_checksum: sha1:2553c52b89e863a1ec6c3f04c8b66beb1479584f
