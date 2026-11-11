@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: c1d1a8d6af6bc05e0e94d66df52a5819
+  docChecksum: 044c25547fe2fcc1c9dd1aa28aff9f90
   docVersion: 1.0.0
   speakeasyVersion: 1.803.2
   generationVersion: 2.950.13
-  releaseVersion: 1.5.90
-  configChecksum: 69496b15d2aca95c6ed91d1e21158d85
+  releaseVersion: 1.5.91
+  configChecksum: 72bfccfba34953baaa3765dc0e862225
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 864ac3ab-ff5e-4b9e-9a99-ab00013effd8
-  pristine_commit_hash: d1df035da784bb16b7cfe224c19c745083fb8711
-  pristine_tree_hash: 62e4510ae3fc1f923e87b84ac4c071746e593ad0
+  generation_id: f9247ac6-16a5-4a15-8d13-67b0987159a2
+  pristine_commit_hash: 567382d96cc820abebebc4f6936c3896b67dbf27
+  pristine_tree_hash: 54d053696be1f24bfecdf1275de395f0ca52226d
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -2004,8 +2004,8 @@ trackedFiles:
     pristine_git_object: 027894894098a9376931bc0d0a3de01aa475a99d
   docs/models/batchobjectdata.mdx:
     id: 2cef408f944f
-    last_write_checksum: sha1:90e58fdbcab8cceef5e4d137b82b54567c8ca1dd
-    pristine_git_object: 363f355542d0ef290c6439239eb79aa118f31328
+    last_write_checksum: sha1:420f3cba1177525b2ec50285abe526c6be11f2b9
+    pristine_git_object: b9e4d0c0647fbe686e77049043e61d0542d7b115
   docs/models/batchobjectdebug.mdx:
     id: 93df2434648d
     last_write_checksum: sha1:b41dca5b0603fb14bcb12373e3927caa805fb113
@@ -9364,8 +9364,8 @@ trackedFiles:
     pristine_git_object: 34f0a3cd9330f97b2520ac54b011c0a26457a7f9
   docs/models/operations/createembeddingsdata.mdx:
     id: 4603e7c2f657
-    last_write_checksum: sha1:11c05b26c4c2ba8cd6f683bf57d2195f1389c538
-    pristine_git_object: 1d69ad675d75c4266efa33c6045186266ff82ef1
+    last_write_checksum: sha1:d3c8913ffb31a56daab2583be6533138eb99d7e4
+    pristine_git_object: 5278f3c7abf4df51bed5f540df8ec18a98b8d61a
   docs/models/operations/createembeddingsglobals.mdx:
     id: c2d8573d1776
     last_write_checksum: sha1:493b44d456b9c3987d68f791d2b1c7a79477e43e
@@ -9376,8 +9376,8 @@ trackedFiles:
     pristine_git_object: 5026617bb792d42e7fa003f8f29a57abc16127d7
   docs/models/operations/createembeddingsrequestbody.mdx:
     id: 7cd415289092
-    last_write_checksum: sha1:251bd3375d0447338772e33cbc084403d7fcb2fb
-    pristine_git_object: c6fb9d8c3b56abf54204f4615cc224ce7b40e02b
+    last_write_checksum: sha1:648e38303e142c96a2c23f1272cb7c2baf346d39
+    pristine_git_object: 36aca73cbb00cd7f00a062a74058889296749dc2
   docs/models/operations/createembeddingsresponse.mdx:
     id: 3ec9a191e3ed
     last_write_checksum: sha1:dd3e874a1139947a2c99d1d93865a2c6964fa8a9
@@ -10695,8 +10695,8 @@ trackedFiles:
     pristine_git_object: 44bf0c2be12a9ebb7a0f962b2491b9f8781f1041
   docs/models/operations/inputunion.mdx:
     id: e1966b690efd
-    last_write_checksum: sha1:75b21f671e2bdeb55b6badd248f27a3d9a3431d6
-    pristine_git_object: e7222d1f3e732241030df7ab5612b086ab2bda9a
+    last_write_checksum: sha1:24306634e8279fe726be6da461257a06aaa98650
+    pristine_git_object: 40089435a86773b2c6360c7e99e234050736c5ee
   docs/models/operations/keepmembers.mdx:
     id: 591598fdced8
     last_write_checksum: sha1:19946e98301ceb2e71252f3ea74798df803c9548
@@ -16807,12 +16807,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:46841677b4ab950bf8ca832c36f56c99a5ac01e6
-    pristine_git_object: ffcea686980185f1aeef175e329205580cd56b7a
+    last_write_checksum: sha1:21ce2b70c58a6b36759a5458297159a31aaf483b
+    pristine_git_object: 480422331c5dd84adbbe340c7b6faf60f41a646d
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:87d69ac8dbe592d025974d31def61f3beab6dfd2
-    pristine_git_object: 447e47a3f76698b52621c4e0e8a42e1912a727a6
+    last_write_checksum: sha1:99e25b6cd65781903dadf16348566a934450bb89
+    pristine_git_object: f2af6f5e4d41d1c93124a37a07b07fb1b12d601c
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -17511,8 +17511,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:40ac15b12095bac9fa5ff35547c1d4888a0b4599
-    pristine_git_object: fea27cdb8a20ba1a560202846a31ba440c90797b
+    last_write_checksum: sha1:4b84d3e66fb91115da20f9a40044707ec21c76c4
+    pristine_git_object: d624dbf5a748efbd8defc5d30b6b64139e35a2ea
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -18245,8 +18245,8 @@ trackedFiles:
     pristine_git_object: 4e0a13eca780e3b9bf44c3bc61b2338f69a4d007
   src/models/batchobject.ts:
     id: 8103bc5f4aeb
-    last_write_checksum: sha1:5d4932011c678ac6f22ae49ef5bc8264f651256a
-    pristine_git_object: 11090108b69fccd43454da00ddd1185764ff0cc9
+    last_write_checksum: sha1:635279af350a8fb01a2e36a20286ef401c963a13
+    pristine_git_object: adb7e2072bc95557322312c412fab57a5650fccc
   src/models/batchpaymentrequiredresponseerror.ts:
     id: 9e233f8dd38a
     last_write_checksum: sha1:c649fcdeab97a015fa155cc51540163c469ab871
@@ -20277,8 +20277,8 @@ trackedFiles:
     pristine_git_object: 536c37a011550df4f81508b09ac6790233bf92c6
   src/models/operations/createembeddings.ts:
     id: 7c210337fdff
-    last_write_checksum: sha1:b71388f10adb9ba3cd3ca19117b1aea65154a44f
-    pristine_git_object: 3b6f5f9b7e3272cfce46b223963e8be2c0f3afb4
+    last_write_checksum: sha1:af5534ccb1d11f68b5722cb250fcbe5a7f0dd384
+    pristine_git_object: 5828a573a05d7616dbf99139eb3f2384c5f7e837
   src/models/operations/createexternaluser.ts:
     id: 33325d78a120
     last_write_checksum: sha1:16d72011613abaa9517613be3031c3c9698b03e8
@@ -27513,4 +27513,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.batch.createBatches()`: \n  *  `request.batchSubmitBody.endpoint.enum(/v1/audio/speech)` **Added**\n  *  `response.results[].response.body.union(class (4))` **Added** (Breaking ⚠️)\n* `openrouter.batch.getBatches()`:  `response.results[].response.body.union(class (4))` **Added** (Breaking ⚠️)\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.batch.createBatches()`:  `response.results[].response.body.union(class (3)).data[].documentIndex` **Added**\n* `openrouter.batch.getBatches()`:  `response.results[].response.body.union(class (3)).data[].documentIndex` **Added**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.input.union(Array<Array<string>>)` **Added**\n  *  `response.data[].documentIndex` **Added**\n"

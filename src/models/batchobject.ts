@@ -189,6 +189,10 @@ export type ObjectEmbedding = ClosedEnum<typeof ObjectEmbedding>;
  */
 export type BatchObjectData = {
   /**
+   * Index of the source document when `input` was a list of documents (contextual embeddings). Absent otherwise.
+   */
+  documentIndex?: number | undefined;
+  /**
    * Embedding vector as an array of floats or a base64 string
    */
   embedding: Array<number> | string;
@@ -1041,9 +1045,14 @@ export const BatchObjectData$inboundSchema: z.ZodType<
   BatchObjectData,
   unknown
 > = z.object({
+  document_index: z.int().optional(),
   embedding: z.union([z.array(z.number()), z.string()]),
   index: z.int().optional(),
   object: ObjectEmbedding$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "document_index": "documentIndex",
+  });
 });
 
 export function batchObjectDataFromJSON(
