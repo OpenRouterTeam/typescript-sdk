@@ -12,6 +12,7 @@ export const ExtractionAssetFormat = {
   Png: "png",
   Jpg: "jpg",
   Jpeg: "jpeg",
+  Webp: "webp",
   Pdf: "pdf",
 } as const;
 export type ExtractionAssetFormat = OpenEnum<typeof ExtractionAssetFormat>;
@@ -23,7 +24,7 @@ export const ExtractionAssetType = {
 export type ExtractionAssetType = OpenEnum<typeof ExtractionAssetType>;
 
 /**
- * An image or PDF sent once and referenced by its key in the `assets` map. `data_base64` is the file in standard base64 with no `data:` prefix. PDF is read by document models only.
+ * An image or PDF sent once and referenced by its key in the `assets` map. `data_base64` is the file in standard base64 with no `data:` prefix. Which formats are read is model-specific: a format the model cannot read fails with a 400.
  */
 export type ExtractionAsset = {
   dataBase64: string;

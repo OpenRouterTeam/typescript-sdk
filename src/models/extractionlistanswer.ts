@@ -49,7 +49,7 @@ export type ExtractionListAnswer = {
    */
   source?: ExtractionListAnswerSource | undefined;
   /**
-   * One span per item of `value`, in the same order; null for an item that has no offsets in the state text (read from an image or a document).
+   * One span per item of `value`, in the same order; null for an item that has no offsets in the state text: one read from an image or a document, or one the provider returned without offsets that delimit it.
    */
   spans?: Array<Array<number> | null> | undefined;
   /**

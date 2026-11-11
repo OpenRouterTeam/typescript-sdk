@@ -61,7 +61,7 @@ export type ListObservabilityDestinationsRequest = {
    */
   limit?: number | undefined;
   /**
-   * Optional workspace ID to filter by. Defaults to the authenticated entity's default workspace.
+   * Optional workspace ID to filter by. Defaults to the authenticated entity's default workspace, or a workspace-scoped management key's own workspace.
    */
   workspaceId?: string | undefined;
 };

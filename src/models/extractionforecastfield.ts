@@ -64,7 +64,7 @@ export type ExtractionForecastField = {
   max: number | string;
   min: number | string;
   /**
-   * Probability of null above which `value` is null. Default 0.5.
+   * Not read on this field type: no model takes a null threshold here, and a request that sets it fails with a 400.
    */
   nullThreshold?: number | undefined;
   scale?: ExtractionForecastFieldScale | undefined;
@@ -74,6 +74,9 @@ export type ExtractionForecastField = {
     | ExtractionForecastFieldStepYear
     | undefined;
   type: "forecast";
+  /**
+   * Unit label for the value.
+   */
   unit?: string | undefined;
 };
 
