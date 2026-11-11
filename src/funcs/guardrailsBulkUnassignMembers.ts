@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Bulk unassign members from a guardrail
  *
  * @remarks
- * Unassign multiple organization members from a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Unassign multiple organization members from a specific guardrail. Requires an organization-scoped management key; workspace-scoped management keys return 403. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function guardrailsBulkUnassignMembers(
   client: OpenRouterCore,

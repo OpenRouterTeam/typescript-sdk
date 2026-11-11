@@ -37,7 +37,7 @@ import {
  * List member assignments for a guardrail
  *
  * @remarks
- * List all organization member assignments for a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * List all organization member assignments for a specific guardrail. A workspace-scoped management key reaches only guardrails in its own workspace; any other guardrail returns 404. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function guardrailsListGuardrailMemberAssignments(
   client: OpenRouterCore,
