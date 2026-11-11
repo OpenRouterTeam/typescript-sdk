@@ -177,7 +177,7 @@ export type VideoModel = {
    */
   supportedAspectRatios: Array<SupportedAspectRatio> | null;
   /**
-   * Supported video durations in seconds
+   * Supported video durations in seconds. -1 means the model accepts duration -1 and chooses the length itself.
    */
   supportedDurations: Array<number> | null;
   /**

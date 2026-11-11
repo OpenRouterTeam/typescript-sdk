@@ -25,7 +25,7 @@ export type UpdateBYOKKeyRequestDeclaredRegion = OpenEnum<
 
 export type UpdateBYOKKeyRequest = {
   /**
-   * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` clears the restriction. Must contain at least one hash if provided. Hashes that do not belong to your account return a 400; for a workspace-scoped management key, so do hashes of API keys outside its own workspace.
+   * Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` clears the restriction. Must contain at least one hash if provided. Hashes that do not belong to your account return a 400; for a credential pinned to a workspace, so do hashes of API keys outside that workspace, unless the credential already lists them (a listed key that has since moved to another workspace stays listed and can be written back).
    */
   allowedApiKeyHashes?: Array<string> | null | undefined;
   /**

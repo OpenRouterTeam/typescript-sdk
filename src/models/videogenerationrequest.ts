@@ -25,7 +25,7 @@ import {
 } from "./traceconfig.js";
 
 /**
- * Aspect ratio of the generated video
+ * Aspect ratio of the generated video. Omit it to use the model default, which on models with adaptive aspect ratio (e.g. BytePlus Seedance) follows the input image or video.
  */
 export const VideoGenerationRequestAspectRatio = {
   OneHundredAndSixtyNine: "16:9",
@@ -39,7 +39,7 @@ export const VideoGenerationRequestAspectRatio = {
   NineHundredAndTwentyOne: "9:21",
 } as const;
 /**
- * Aspect ratio of the generated video
+ * Aspect ratio of the generated video. Omit it to use the model default, which on models with adaptive aspect ratio (e.g. BytePlus Seedance) follows the input image or video.
  */
 export type VideoGenerationRequestAspectRatio = OpenEnum<
   typeof VideoGenerationRequestAspectRatio
@@ -254,7 +254,7 @@ export type VideoGenerationRequestResolution = OpenEnum<
 
 export type VideoGenerationRequest = {
   /**
-   * Aspect ratio of the generated video
+   * Aspect ratio of the generated video. Omit it to use the model default, which on models with adaptive aspect ratio (e.g. BytePlus Seedance) follows the input image or video.
    */
   aspectRatio?: VideoGenerationRequestAspectRatio | undefined;
   /**
@@ -266,7 +266,7 @@ export type VideoGenerationRequest = {
    */
   creativity?: number | undefined;
   /**
-   * Duration of the generated video in seconds
+   * Duration of the generated video in seconds, or -1 to let the provider choose the length (e.g. following an input video). -1 is only accepted by models that list it in supported_durations.
    */
   duration?: number | undefined;
   /**
