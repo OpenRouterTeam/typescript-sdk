@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * Get a guardrail
  *
  * @remarks
- * Get a single guardrail by ID. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Get a single guardrail by ID. A workspace-scoped management key reaches only guardrails in its own workspace; any other guardrail returns 404. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function guardrailsGet(
   client: OpenRouterCore,
