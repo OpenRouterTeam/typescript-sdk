@@ -72,7 +72,7 @@ grep -F "  src/lib/env.ts:" .speakeasy/gen.lock
 
 **Hand-Written Files** (safe to edit):
 - `src/hooks/registration.ts` - Hook registration. Speakeasy generates it once and never overwrites it
-- Other files you add under `src/hooks/` (for example `signal-hooks.ts`) - The generator leaves them alone
+- Other files you add under `src/hooks/` (for example `signal-hooks.ts`, `base-url-env.ts`) - The generator leaves them alone
 - `src/funcs/betaResponsesSend.ts` - Listed in `.genignore`
 - `src/funcs/oAuthCreateAuthorizationUrl.ts`, `src/funcs/oAuthCreateSHA256CodeChallenge.ts` - OAuth PKCE helpers
 - `src/models/claude-message.ts` - Types copied from the Anthropic SDK
@@ -107,7 +107,7 @@ SDK generation does **not** happen in the monorepo. Instead:
 
 1. **Edit code** in `sdks/typescript/` in the monorepo (any file, including generated ones with custom regions)
 2. **PR check** automatically validates your changes can generate cleanly by dry-running against the OSS repo
-3. **Release workflow** (`workflow_dispatch` on `sdk-auto-generate.yaml`) clones the OSS repo, copies your changes, runs `speakeasy run` there (where persistent edits work), pushes to the OSS repo, and copies generated `src/` back
+3. **Release workflow** (`workflow_dispatch` on `sdk-auto-generate.yaml`) clones the OSS repo, copies your changes, runs `speakeasy run` there, pushes to the OSS repo, and copies generated `src/` back
 
 To generate the OpenAPI spec locally (for linting, not SDK generation):
 ```bash
@@ -121,13 +121,14 @@ pnpm sdk:bootstrap
 
 ### Making Changes to Generated Code
 
-Speakeasy's [persistent edits](https://www.speakeasy.com/docs/sdks/customize/code/custom-code/custom-code) is enabled in `.speakeasy/gen.yaml`, so a hand edit to a generated file is kept across regeneration via 3-way merge instead of being overwritten. Treat that as a last resort: if the generator later changes the same lines, generation fails with a merge conflict until someone resolves it by hand. Prefer, in order:
+Speakeasy's [persistent edits](https://www.speakeasy.com/docs/sdks/customize/code/custom-code/custom-code) is turned off (`persistentEdits.enabled: never` in `.speakeasy/gen.yaml`). A hand edit to a generated file is **overwritten by the next regeneration**, with no warning. Do not hand-edit generated files. Instead, in order of preference:
 
 1. **For type/schema changes**: Update the Hono/Zod routes in the monorepo (the OpenAPI spec is generated from them)
 2. **For overlays**: Edit files in `.speakeasy/overlays/`
 3. **For generation config**: Edit `.speakeasy/gen.yaml`
 4. **For runtime behavior**: Add an SDK hook in `src/hooks/`
-5. Changes are synced to the OSS repo during the release workflow
+5. **For a file the generator should stop writing** (for example `RUNTIMES.md`): Add it to `.genignore`. The file is then hand-maintained and no longer picks up generator updates
+6. Changes are synced to the OSS repo during the release workflow
 
 ## Architecture
 

@@ -1,5 +1,6 @@
 import type { Hooks } from './types.js';
 
+import { BaseURLEnvHook } from './base-url-env.js';
 import { SignalTimeoutHook } from './signal-hooks.js';
 
 /*
@@ -12,6 +13,10 @@ export function initHooks(hooks: Hooks) {
   // Add hooks by calling hooks.register{ClientInit/BeforeCreateRequest/BeforeRequest/AfterSuccess/AfterError}Hook
   // with an instance of a hook that implements that specific Hook interface
   // Hooks are registered per SDK instance, and are valid for the lifetime of the SDK instance
+
+  // Default serverURL from OPENROUTER_BASE_URL (#832). Kept in a hook so it
+  // does not depend on hand edits to generated files.
+  hooks.registerSDKInitHook(new BaseURLEnvHook());
 
   // Compose timeoutMs with caller signals (#1123) and keep aborts working
   // after GC in Node (#1315).
