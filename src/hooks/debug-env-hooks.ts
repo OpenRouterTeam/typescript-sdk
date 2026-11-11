@@ -16,12 +16,12 @@
  *       this.#logger = console;
  *     }
  *
- * `env()` returns one memoized object, so this hook parses the raw variable
- * strictly and writes the result onto that object before the constructor
- * reads it. If that write does not take effect (for example a future regen
- * makes `env()` return a copy), the hook falls back to supplying a logger
- * that discards everything, which also stops the constructor from choosing
- * `console`.
+ * `env()` returns one memoized object. When the generated parser turned
+ * logging on but the raw variable is not a true-like value, this hook writes
+ * `false` onto that object before the constructor reads it. If that write
+ * does not take effect (for example a future regen makes `env()` return a
+ * copy), the hook falls back to supplying a logger that discards everything,
+ * which also stops the constructor from choosing `console`.
  *
  * Accepted values, after trimming and ignoring case:
  *
@@ -31,8 +31,19 @@
  *   Unrecognised values fail closed because the log contains credentials.
  * - Unset: left alone (off).
  *
+ * The hook only ever turns logging off. It never turns it on, so it cannot
+ * make a client log that would not have logged without it.
+ *
+ * The decision is made once per parsed environment, which the generated
+ * `env()` memoizes for the life of the process. The init hooks run again
+ * every time a client creates one of its namespaces (`client.models`,
+ * `client.chat`, ...), and re-reading the variable there would let a client
+ * change its logging part-way through its life.
+ *
  * A `debugLogger` passed to the SDK is never replaced or removed. The
  * variable only ever chose whether to default to `console`.
+ *
+ * Everything exported from this module is internal to the SDK and its tests.
  */
 
 import type { SDKOptions } from "../lib/config.js";
@@ -54,6 +65,8 @@ function isObject(value: unknown): value is object {
  * Strictly parses a raw `OPENROUTER_DEBUG` value. Returns `undefined` when
  * the variable is unset, `true` for `1`, `true`, `yes` and `on` (trimmed,
  * case-insensitive), and `false` for every other value.
+ *
+ * @internal
  */
 export function parseDebugEnv(raw: string | undefined): boolean | undefined {
   if (typeof raw === "undefined") {
@@ -65,7 +78,10 @@ export function parseDebugEnv(raw: string | undefined): boolean | undefined {
 /**
  * Reads the raw `OPENROUTER_DEBUG` value from the same place the generated
  * `env()` does: `Deno.env` on Deno, otherwise `process.env`. Returns
- * `undefined` on runtimes that have neither.
+ * `undefined` on runtimes that have neither. Can throw, for example on Deno
+ * without env permission.
+ *
+ * @internal
  */
 export function readRawDebugEnv(): string | undefined {
   let vars: unknown;
@@ -90,13 +106,18 @@ export function readRawDebugEnv(): string | undefined {
   return typeof value === "string" ? value : undefined;
 }
 
-/** A logger that discards everything. */
+/**
+ * A logger that discards everything.
+ *
+ * @internal
+ */
 export const silentLogger: Logger = {
   group() {},
   groupEnd() {},
   log() {},
 };
 
+/** @internal */
 export type DebugEnvHookOptions = {
   /** Reads the raw variable. Defaults to {@link readRawDebugEnv}. */
   readRaw?: () => string | undefined;
@@ -104,6 +125,13 @@ export type DebugEnvHookOptions = {
   readEnv?: () => Env;
 };
 
+/**
+ * Whether to suppress console logging, keyed by the parsed environment
+ * object so the decision lives exactly as long as the generated memo.
+ */
+const suppressDecisions = new WeakMap<object, boolean>();
+
+/** @internal */
 export class DebugEnvHook implements SDKInitHook {
   readonly #readRaw: () => string | undefined;
   readonly #readEnv: () => Env;
@@ -113,25 +141,48 @@ export class DebugEnvHook implements SDKInitHook {
     this.#readEnv = options.readEnv ?? env;
   }
 
+  #shouldSuppress(parsed: Env): boolean {
+    const decided = suppressDecisions.get(parsed);
+    if (typeof decided !== "undefined") {
+      return decided;
+    }
+    let suppress = false;
+    if (parsed.OPENROUTER_DEBUG) {
+      // The generated parser turned logging on. Keep it on only for a
+      // true-like raw value. A raw value that cannot be read counts as not
+      // true-like, so logging stays off.
+      let raw: string | undefined;
+      try {
+        raw = this.#readRaw();
+      } catch {
+        raw = undefined;
+      }
+      suppress = parseDebugEnv(raw) !== true;
+    }
+    suppressDecisions.set(parsed, suppress);
+    return suppress;
+  }
+
   sdkInit(opts: SDKOptions): SDKOptions {
-    const enabled = parseDebugEnv(this.#readRaw());
-    if (typeof enabled === "undefined") {
+    let parsed: Env;
+    try {
+      parsed = this.#readEnv();
+    } catch {
+      // `env()` throws on an invalid environment (for example a malformed
+      // OPENROUTER_BASE_URL). The constructor will throw the same error on
+      // its own, so leave reporting to it.
+      return opts;
+    }
+    if (!this.#shouldSuppress(parsed)) {
       return opts;
     }
 
-    // The generated parser turns every non-empty string into `true`. Write
-    // the strict result onto the memoized object that the constructor reads
-    // right after this hook.
+    // Write the correction onto the memoized object that the constructor
+    // reads right after this hook.
     try {
-      const parsed = this.#readEnv();
-      if (parsed.OPENROUTER_DEBUG !== enabled) {
-        parsed.OPENROUTER_DEBUG = enabled;
-      }
+      parsed.OPENROUTER_DEBUG = false;
     } catch {
-      // Fall through to the check below.
-    }
-    if (enabled) {
-      return opts;
+      // Frozen object. Fall through to the check below.
     }
 
     let stillEnabled = true;
@@ -139,9 +190,6 @@ export class DebugEnvHook implements SDKInitHook {
       stillEnabled = Boolean(this.#readEnv().OPENROUTER_DEBUG);
     } catch {
       stillEnabled = false;
-      // `env()` throws on an invalid environment (for example a malformed
-      // OPENROUTER_BASE_URL). The constructor will throw the same error on
-      // its own, so leave reporting to it.
     }
 
     if (stillEnabled && !opts.debugLogger) {
