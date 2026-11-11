@@ -10670,7 +10670,7 @@ components:
         reset_interval:
           $ref: '#/components/schemas/GuardrailInterval'
         workspace_id:
-          description: 'The workspace to create the guardrail in. When omitted, the guardrail is created in the default workspace; if that default has been deleted, the request returns a 400 and you must pass `workspace_id` explicitly. This only places the guardrail in the workspace; the created guardrail enforces nothing for that workspace''s traffic until it is assigned to API keys or members. To restrict all traffic in a workspace, update the workspace''s default guardrail instead.'
+          description: 'The workspace to create the guardrail in. When omitted, an organization management key creates the guardrail in the default workspace (a 400 if that default has been deleted, so pass `workspace_id` explicitly) and a workspace-scoped key creates it in its own workspace. A workspace-scoped key gets a 403 for any other workspace. This only places the guardrail in the workspace; the created guardrail enforces nothing for that workspace''s traffic until it is assigned to API keys or members. To restrict all traffic in a workspace, update the workspace''s default guardrail instead.'
           example: '0df9e665-d932-5740-b2c7-b52af166bc11'
           format: 'uuid'
           type: 'string'
@@ -45632,7 +45632,7 @@ paths:
       x-speakeasy-name-override: 'submitFeedback'
   /guardrails:
     get:
-      description: 'List all guardrails for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'List all guardrails for the authenticated user. A workspace-scoped management key lists only its own workspace, which `workspace_id` defaults to; naming another workspace returns 403. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'listGuardrails'
       parameters:
         - description: 'Number of records to skip for pagination'
@@ -45658,12 +45658,12 @@ paths:
             maximum: 100
             minimum: 1
             type: 'integer'
-        - description: 'Filter guardrails by workspace ID. By default, guardrails in the default workspace are returned.'
+        - description: 'Filter guardrails by workspace ID. When omitted, an organization management key gets guardrails in the default workspace and a workspace-scoped key gets guardrails in its own workspace. A workspace-scoped key gets 403 for any other workspace.'
           in: 'query'
           name: 'workspace_id'
           required: false
           schema:
-            description: 'Filter guardrails by workspace ID. By default, guardrails in the default workspace are returned.'
+            description: 'Filter guardrails by workspace ID. When omitted, an organization management key gets guardrails in the default workspace and a workspace-scoped key gets guardrails in its own workspace. A workspace-scoped key gets 403 for any other workspace.'
             example: '0df9e665-d932-5740-b2c7-b52af166bc11'
             format: 'uuid'
             type: 'string'
@@ -45750,7 +45750,7 @@ paths:
           results: '$.data'
         type: 'offsetLimit'
     post:
-      description: 'Create a new guardrail for the authenticated user. A newly created guardrail enforces nothing until it is assigned to API keys or organization members; `workspace_id` places the guardrail in a workspace but does not apply it to that workspace''s traffic. To restrict all traffic in a workspace, update the workspace''s default guardrail instead. Set `allowed_data_regions` to enforce [In-Region Routing](/docs/guides/features/in-region-routing#enforcing-in-region-routing-with-guardrails): governed requests must arrive through one of the listed OpenRouter domains and are rejected with a 403 otherwise. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Create a new guardrail for the authenticated user. A newly created guardrail enforces nothing until it is assigned to API keys or organization members; `workspace_id` places the guardrail in a workspace but does not apply it to that workspace''s traffic. To restrict all traffic in a workspace, update the workspace''s default guardrail instead. Set `allowed_data_regions` to enforce [In-Region Routing](/docs/guides/features/in-region-routing#enforcing-in-region-routing-with-guardrails): governed requests must arrive through one of the listed OpenRouter domains and are rejected with a 403 otherwise. A workspace-scoped management key creates in its own workspace, which `workspace_id` defaults to; naming another workspace returns 403. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'createGuardrail'
       requestBody:
         content:
@@ -45854,7 +45854,7 @@ paths:
       x-speakeasy-name-override: 'create'
   /guardrails/{id}:
     delete:
-      description: 'Delete an existing guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Delete an existing guardrail. A workspace-scoped management key reaches only guardrails in its own workspace; any other guardrail returns 404. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'deleteGuardrail'
       parameters:
         - description: 'The unique identifier of the guardrail to delete'
@@ -45920,7 +45920,7 @@ paths:
         - 'Guardrails'
       x-speakeasy-name-override: 'delete'
     get:
-      description: 'Get a single guardrail by ID. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Get a single guardrail by ID. A workspace-scoped management key reaches only guardrails in its own workspace; any other guardrail returns 404. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'getGuardrail'
       parameters:
         - description: 'The unique identifier of the guardrail to retrieve'
@@ -46003,7 +46003,7 @@ paths:
         - 'Guardrails'
       x-speakeasy-name-override: 'get'
     patch:
-      description: 'Update an existing guardrail, or materialize an unconfigured workspace default guardrail. Collection fields use replace semantics: send the full desired set on every update. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Update an existing guardrail, or materialize an unconfigured workspace default guardrail. Collection fields use replace semantics: send the full desired set on every update. A workspace-scoped management key reaches only guardrails in its own workspace; any other guardrail returns 404. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'updateGuardrail'
       parameters:
         - description: 'The unique identifier of the guardrail to update'
@@ -46121,7 +46121,7 @@ paths:
       x-speakeasy-name-override: 'update'
   /guardrails/{id}/assignments/keys:
     get:
-      description: 'List all API key assignments for a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'List all API key assignments for a specific guardrail. A workspace-scoped management key reaches only guardrails in its own workspace; any other guardrail returns 404. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'listGuardrailKeyAssignments'
       parameters:
         - description: 'The unique identifier of the guardrail'
@@ -46229,7 +46229,7 @@ paths:
           results: '$.data'
         type: 'offsetLimit'
     post:
-      description: 'Assign multiple API keys to a specific guardrail. A key may hold at most one guardrail; assigning replaces any existing assignment. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Assign multiple API keys to a specific guardrail. A key may hold at most one guardrail; assigning replaces any existing assignment. A workspace-scoped management key reaches only guardrails in its own workspace (any other returns 404), and a batch naming an unknown or out-of-workspace key hash is rejected with 400 before anything changes. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'bulkAssignKeysToGuardrail'
       parameters:
         - description: 'The unique identifier of the guardrail'
@@ -46315,7 +46315,7 @@ paths:
       x-speakeasy-name-override: 'bulkAssignKeys'
   /guardrails/{id}/assignments/keys/remove:
     post:
-      description: 'Unassign multiple API keys from a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Unassign multiple API keys from a specific guardrail. A workspace-scoped management key reaches only guardrails in its own workspace (any other returns 404), and a batch naming an unknown or out-of-workspace key hash is rejected with 400 before anything changes. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'bulkUnassignKeysFromGuardrail'
       parameters:
         - description: 'The unique identifier of the guardrail'
@@ -46401,7 +46401,7 @@ paths:
       x-speakeasy-name-override: 'bulkUnassignKeys'
   /guardrails/{id}/assignments/members:
     get:
-      description: 'List all organization member assignments for a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'List all organization member assignments for a specific guardrail. A workspace-scoped management key reaches only guardrails in its own workspace; any other guardrail returns 404. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'listGuardrailMemberAssignments'
       parameters:
         - description: 'The unique identifier of the guardrail'
@@ -46508,7 +46508,7 @@ paths:
           results: '$.data'
         type: 'offsetLimit'
     post:
-      description: 'Assign multiple organization members to a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Assign multiple organization members to a specific guardrail. Requires an organization-scoped management key; workspace-scoped management keys return 403. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'bulkAssignMembersToGuardrail'
       parameters:
         - description: 'The unique identifier of the guardrail'
@@ -46595,7 +46595,7 @@ paths:
       x-speakeasy-name-override: 'bulkAssignMembers'
   /guardrails/{id}/assignments/members/remove:
     post:
-      description: 'Unassign multiple organization members from a specific guardrail. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Unassign multiple organization members from a specific guardrail. Requires an organization-scoped management key; workspace-scoped management keys return 403. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'bulkUnassignMembersFromGuardrail'
       parameters:
         - description: 'The unique identifier of the guardrail'
@@ -46682,7 +46682,7 @@ paths:
       x-speakeasy-name-override: 'bulkUnassignMembers'
   /guardrails/assignments/keys:
     get:
-      description: 'List all API key guardrail assignments for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'List all API key guardrail assignments for the authenticated user. A workspace-scoped management key lists only its own workspace, which `workspace_id` defaults to; naming another workspace returns 403. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'listKeyAssignments'
       parameters:
         - description: 'Number of records to skip for pagination'
@@ -46792,7 +46792,7 @@ paths:
         type: 'offsetLimit'
   /guardrails/assignments/members:
     get:
-      description: 'List all organization member guardrail assignments for the authenticated user. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'List all organization member guardrail assignments for the authenticated user. A workspace-scoped management key lists only its own workspace, which `workspace_id` defaults to; naming another workspace returns 403. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'listMemberAssignments'
       parameters:
         - description: 'Number of records to skip for pagination'
