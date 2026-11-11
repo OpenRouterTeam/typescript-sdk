@@ -1,0 +1,27 @@
+---
+title: "AudioPcm1"
+---
+
+## Example Usage
+
+```typescript
+import { AudioPcm1 } from "@openrouter/sdk/models";
+
+let value: AudioPcm1 = {
+  bitsPerSample: 5247.25,
+  channels: 457136,
+  data: "<value>",
+  format: "pcm",
+  sampleRate: 499060,
+};
+```
+
+## Fields
+
+| Field                                                             | Type                                                              | Required                                                          | Description                                                       |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `bitsPerSample`                                                   | *number*                                                          | ✔️                                                | N/A                                                               |
+| `channels`                                                        | *number*                                                          | ✔️                                                | N/A                                                               |
+| `data`                                                            | *string*                                                          | ✔️                                                | Base64-encoded PCM16 audio in the format the sibling fields give. |
+| `format`                                                          | [models.BatchObjectFormat1](../models/batchobjectformat1.mdx)      | ✔️                                                | N/A                                                               |
+| `sampleRate`                                                      | *number*                                                          | ✔️                                                | N/A                                                               |
