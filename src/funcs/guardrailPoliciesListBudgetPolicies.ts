@@ -41,7 +41,7 @@ import {
  */
 export function guardrailPoliciesListBudgetPolicies(
   client: OpenRouterCore,
-  request: operations.ListBudgetPoliciesRequest,
+  request?: operations.ListBudgetPoliciesRequest | undefined,
   options?: RequestOptions,
 ): APIPromise<
   PageIterator<
@@ -73,7 +73,7 @@ export function guardrailPoliciesListBudgetPolicies(
 
 async function $do(
   client: OpenRouterCore,
-  request: operations.ListBudgetPoliciesRequest,
+  request?: operations.ListBudgetPoliciesRequest | undefined,
   options?: RequestOptions,
 ): Promise<
   [
@@ -101,7 +101,10 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) => operations.ListBudgetPoliciesRequest$outboundSchema.parse(value),
+    (value) =>
+      operations.ListBudgetPoliciesRequest$outboundSchema.optional().parse(
+        value,
+      ),
     "Input validation failed",
   );
   if (!parsed.ok) {
@@ -113,26 +116,26 @@ async function $do(
   const path = pathToFunc("/guardrails/policies/budget")();
 
   const query = encodeFormQuery({
-    "limit": payload.limit,
-    "offset": payload.offset,
-    "workspace_id": payload.workspace_id,
+    "limit": payload?.limit,
+    "offset": payload?.offset,
+    "workspace_id": payload?.workspace_id,
   });
 
   const headers = new Headers(compactMap({
     Accept: "application/json",
     "HTTP-Referer": encodeSimple(
       "HTTP-Referer",
-      payload["HTTP-Referer"] ?? client._options.httpReferer,
+      payload?.["HTTP-Referer"] ?? client._options.httpReferer,
       { explode: false, charEncoding: "none" },
     ),
     "X-OpenRouter-Categories": encodeSimple(
       "X-OpenRouter-Categories",
-      payload.appCategories ?? client._options.appCategories,
+      payload?.appCategories ?? client._options.appCategories,
       { explode: false, charEncoding: "none" },
     ),
     "X-OpenRouter-Title": encodeSimple(
       "X-OpenRouter-Title",
-      payload.appTitle ?? client._options.appTitle,
+      payload?.appTitle ?? client._options.appTitle,
       { explode: false, charEncoding: "none" },
     ),
   }));
@@ -275,7 +278,7 @@ async function $do(
       guardrailPoliciesListBudgetPolicies(
         client,
         {
-          ...request,
+          ...request!,
           offset: nextOffset,
         },
         options,
