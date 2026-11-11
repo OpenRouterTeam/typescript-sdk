@@ -144,6 +144,7 @@ export const Provider = {
   Seed: "seed",
   Siliconflow: "siliconflow",
   Sourceful: "sourceful",
+  Speechify: "speechify",
   Stepfun: "stepfun",
   Streamlake: "streamlake",
   Switchpoint: "switchpoint",
