@@ -25,6 +25,7 @@ export const Endpoint = {
   RootV1Responses: "/v1/responses",
   RootV1Messages: "/v1/messages",
   RootV1Embeddings: "/v1/embeddings",
+  RootV1AudioSpeech: "/v1/audio/speech",
 } as const;
 export type Endpoint = OpenEnum<typeof Endpoint>;
 

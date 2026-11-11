@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 4ef2e9f45fcffa6b38911e8de534e519
+  docChecksum: c1d1a8d6af6bc05e0e94d66df52a5819
   docVersion: 1.0.0
   speakeasyVersion: 1.803.2
   generationVersion: 2.950.13
-  releaseVersion: 1.5.89
-  configChecksum: 685f6b5873bd85a05198ec9169ed4213
+  releaseVersion: 1.5.90
+  configChecksum: 69496b15d2aca95c6ed91d1e21158d85
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: ff69e806-787a-4b23-b7c7-853334bda47d
-  pristine_commit_hash: 1866a1002b282f9f8920e17d719f561e84c94979
-  pristine_tree_hash: 8a3d870b7a38611e015463bb9d62da5fb73526c0
+  generation_id: 864ac3ab-ff5e-4b9e-9a99-ab00013effd8
+  pristine_commit_hash: d1df035da784bb16b7cfe224c19c745083fb8711
+  pristine_tree_hash: 62e4510ae3fc1f923e87b84ac4c071746e593ad0
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -1584,6 +1584,18 @@ trackedFiles:
     last_write_checksum: sha1:afff7949b1d353ec2497664f3ea12b7a8a11da60
     pristine_git_object: 71a6cb915f22c7ce2dd3c438998bc818dc05ffdf
     deleted: true
+  docs/models/audio.mdx:
+    id: 78e6e2ea5144
+    last_write_checksum: sha1:38be153e435ad96c6cbfa35e5bfbef64b5779815
+    pristine_git_object: dd55976c0477b2e674bb002605d72c6cc3f7a603
+  docs/models/audiopcm1.mdx:
+    id: e12687d2fbbe
+    last_write_checksum: sha1:6a670ff69fb94b14d44f2dead5ae4b44bc6f0631
+    pristine_git_object: 14c4a2e52fe364f40dcaaf111534b3b7ca55c730
+  docs/models/audiopcm2.mdx:
+    id: b61177881e72
+    last_write_checksum: sha1:39c32a0f64ca5438deec7563ca73156c05a56529
+    pristine_git_object: 51af9bd39a9dd2ec35828a22063ffe9435e9246d
   docs/models/audiourl.md:
     id: 5cf317caac89
     last_write_checksum: sha1:88deaca4b1bf2a6be578d230223485119bfccb14
@@ -2010,6 +2022,14 @@ trackedFiles:
     id: d8c535ccecc1
     last_write_checksum: sha1:c0007e74ccce78952c0b511ea7af0e001073576b
     pristine_git_object: 32714bc0f724a65f2080b2a219b5007941eb40cf
+  docs/models/batchobjectformat1.mdx:
+    id: 9e0743d0f31d
+    last_write_checksum: sha1:2588d9c819c80a3d35e3d050ddca9d567f74a634
+    pristine_git_object: 2156ce48eca3e8f2a613d0a1d3ac4a164945fc45
+  docs/models/batchobjectformat2.mdx:
+    id: cfcc75463250
+    last_write_checksum: sha1:fa71134b52527d2b2390c9ba737855e329d1f5ad
+    pristine_git_object: 3b24d46b2ad46c559eff0a172d7f7596913c4f5d
   docs/models/batchobjectfunction.mdx:
     id: 220d9adb5a44
     last_write_checksum: sha1:bc8b9a26d83561a31c9b12865e47ed79e9cd4983
@@ -2112,8 +2132,8 @@ trackedFiles:
     pristine_git_object: ce374dff4e452599c5f3e2d962aae653e3bbda29
   docs/models/batchsubmitbody.mdx:
     id: 113c1c833017
-    last_write_checksum: sha1:8a4b06c301928a17674f79a815426f1b02209e0d
-    pristine_git_object: 85c5f6efe55ded554aee51ab916685d4b91c701a
+    last_write_checksum: sha1:c27429f5c86f9bec935269f9fc463ac28ac5fb70
+    pristine_git_object: 41b8b2361159a24310b7f639ed78eb0b31eb4f14
   docs/models/batchsubmitbodycompletionwindow.mdx:
     id: 76f438d6eb6e
     last_write_checksum: sha1:f2f10f32e5bc0d2a2e0dce659d54111a65ba003e
@@ -2194,8 +2214,12 @@ trackedFiles:
     pristine_git_object: 9e1a518c17def479ce1a4a3435609c6e0993fae7
   docs/models/body.mdx:
     id: fe33e4b0af52
-    last_write_checksum: sha1:f663ebfd1608b548ce74bb9c4aa4ef2812ca1c8a
-    pristine_git_object: 4f20da15964d89a16ae6344c862f08287eea8f0b
+    last_write_checksum: sha1:314479b0f79f361ce52519366ee99c83d2d42486
+    pristine_git_object: 2f7cc08796a63c2e047f150a9f89521027356879
+  docs/models/bodyaudiospeech.mdx:
+    id: 54f54073ab6b
+    last_write_checksum: sha1:12079f6b33935fb3335ce35f9f33ddf63c0a06ca
+    pristine_git_object: fa86aefdf037037480279cdc3e1f52fccf708848
   docs/models/bodychatcompletion.mdx:
     id: 2810adc22232
     last_write_checksum: sha1:15759de850fea7031d119f435f86fdda62b56ed6
@@ -2244,6 +2268,10 @@ trackedFiles:
     id: 2bebb4d73181
     last_write_checksum: sha1:22fc787f548479cd5bc8da654cd7ca53256576e4
     pristine_git_object: 7f123957e89868e3b27338c6cd6fb1aac2712b76
+  docs/models/bodyusage4.mdx:
+    id: 0886114b1a05
+    last_write_checksum: sha1:2e1b2afc52e5197226b16ee53b4a6b6dbaf6f6a1
+    pristine_git_object: 68e0ce054185a9b7049b469507d1dd7d36fc4641
   docs/models/booleancapability.md:
     id: 7e7d64d5a817
     last_write_checksum: sha1:c7066bd2a82e8bc98e024fff369f5d1ca546a763
@@ -4841,8 +4869,8 @@ trackedFiles:
     pristine_git_object: 1b639390bbbbba919d33dc57280e2d5c2d40544c
   docs/models/endpoint.mdx:
     id: c46337ca39db
-    last_write_checksum: sha1:6ae51f43ef457d07133ed950a4858a868b42d6d6
-    pristine_git_object: 7038b7f628c122a4fd4e70c431cfe174c4eac7d8
+    last_write_checksum: sha1:5b60919f0abc058fcbe9eb10f74d721ba6c025a6
+    pristine_git_object: 83309b1bda7f53981d1e8bf4f451b7ab6ad23738
   docs/models/endpointinfo.md:
     id: f7b3d465a4f5
     last_write_checksum: sha1:a7d5f680e50f1c0188feb8d174ea01f59eb162a8
@@ -8228,6 +8256,10 @@ trackedFiles:
     id: ec012151e8af
     last_write_checksum: sha1:2908380076f9079761fbce9c1abab4d74a783c2e
     pristine_git_object: ffe63041ac8593a8fbd94aab35ef70ee7fb2a0a8
+  docs/models/objectaudiospeech.mdx:
+    id: 3d9b2eeeff47
+    last_write_checksum: sha1:c9041aa0b5235b3067e8913b929ac32ee604fb3d
+    pristine_git_object: c6249fa7a8f9d5d9f43bfd5ce1227198a17a6299
   docs/models/objectembedding.mdx:
     id: 1ea61ee1efe3
     last_write_checksum: sha1:41c0c64f21435c65339550e20932f9eaeab67e24
@@ -16524,8 +16556,8 @@ trackedFiles:
     pristine_git_object: 5f9aaaa785666416714c3df76102d437e07cb233
   docs/sdks/batch/README.mdx:
     id: e367aa4f4295
-    last_write_checksum: sha1:12c27414c8696f73cdf67dfe4861eb644b15c8be
-    pristine_git_object: eafcba85a3e64bd30361f180cf42fc5adb82f9f5
+    last_write_checksum: sha1:85dd5c9c85d0568af07109e7e821095b9fe6bd99
+    pristine_git_object: cd410d4c9d556189b73c9bb8cd817de5f4acbb37
   docs/sdks/benchmarks/README.md:
     id: 61c16262af9b
     last_write_checksum: sha1:17fd0e4aa4c358c6298ee9a434a14ff68ce83dbf
@@ -16775,12 +16807,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:b94ddc229bb6d0a0403d15e08d7a2d2e1959c444
-    pristine_git_object: fa3c5cbf2b34adc3fe82cd939e35ac603ee29b32
+    last_write_checksum: sha1:46841677b4ab950bf8ca832c36f56c99a5ac01e6
+    pristine_git_object: ffcea686980185f1aeef175e329205580cd56b7a
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:93070e56e7db79bc6ecad762d84c3b102c79017c
-    pristine_git_object: 876cdb3cf433efdc2f18194b265e36b9805f56bc
+    last_write_checksum: sha1:87d69ac8dbe592d025974d31def61f3beab6dfd2
+    pristine_git_object: 447e47a3f76698b52621c4e0e8a42e1912a727a6
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -16831,8 +16863,8 @@ trackedFiles:
     pristine_git_object: 913f253c6ba572dc3df10a3d647a70aa13c9ef98
   src/funcs/batchCreateBatches.ts:
     id: 8796df347125
-    last_write_checksum: sha1:bbf2369387e8922cdf18a33b28840c40e2b79c4e
-    pristine_git_object: 3c03a47c64d55a71ba97176578ff493bf698d63c
+    last_write_checksum: sha1:0a6089b8ebe2caade175c70cbc7e57240d4f4558
+    pristine_git_object: 81f8ee7d8254bc065cdd49286648fd487e47e1c0
   src/funcs/batchDelete.ts:
     id: c86d26d514be
     last_write_checksum: sha1:44a815310b2664f02ff821d63e38e1ec19d4e2f2
@@ -17479,8 +17511,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:3c49c7929c65511929f9ae4612eb4a639da8b47c
-    pristine_git_object: ea7a0de554e52c934020b8c02af6bab69fcdd8f4
+    last_write_checksum: sha1:40ac15b12095bac9fa5ff35547c1d4888a0b4599
+    pristine_git_object: fea27cdb8a20ba1a560202846a31ba440c90797b
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -18213,8 +18245,8 @@ trackedFiles:
     pristine_git_object: 4e0a13eca780e3b9bf44c3bc61b2338f69a4d007
   src/models/batchobject.ts:
     id: 8103bc5f4aeb
-    last_write_checksum: sha1:39da23b0da6ac2393eb44e1422271a432e97f077
-    pristine_git_object: 3d2aa63ac683a78a9e3262b98d8a1ced7cbafe65
+    last_write_checksum: sha1:5d4932011c678ac6f22ae49ef5bc8264f651256a
+    pristine_git_object: 11090108b69fccd43454da00ddd1185764ff0cc9
   src/models/batchpaymentrequiredresponseerror.ts:
     id: 9e233f8dd38a
     last_write_checksum: sha1:c649fcdeab97a015fa155cc51540163c469ab871
@@ -18225,8 +18257,8 @@ trackedFiles:
     pristine_git_object: 86c08d8df8d05bf7359a2fbac201d73b019067d8
   src/models/batchsubmitbody.ts:
     id: ae38a7f7eb9d
-    last_write_checksum: sha1:b0f5ba9b550639a26a719cc740474a6ca860cb96
-    pristine_git_object: af2443fc6918ab2089b5a93b20883ba91e51eb5a
+    last_write_checksum: sha1:1e51d5287b5d8439d7bbc5742a1785ef055504a8
+    pristine_git_object: 96a18a3d562ccb82d88585330eeffdab1d5ca92d
   src/models/booleancapability.ts:
     id: b920d99cecda
     last_write_checksum: sha1:d699ec6e03a7bad0aa439bdf4e2094f1bff5cca3
@@ -22157,8 +22189,8 @@ trackedFiles:
     pristine_git_object: d70f0e5f38251d56e564479ccec67a9e0927a53d
   src/sdk/batch.ts:
     id: 254a218f7d6b
-    last_write_checksum: sha1:060fefc69e19501be3cabe381e44091a14f36c12
-    pristine_git_object: 5d9705d9fbbff7991fd783993a21b8c840f6af4b
+    last_write_checksum: sha1:8d2e4683776fada5d86833571e52cb631535d5af
+    pristine_git_object: d7826b69a24b1a48904708d6d0004a3bcc58cc1e
   src/sdk/benchmarks.ts:
     id: 72ce7b70fba8
     last_write_checksum: sha1:4e243ac5896b6f8dae4ca47e467830c658d5fd65
@@ -27481,3 +27513,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.batch.createBatches()`: \n  *  `request.batchSubmitBody.endpoint.enum(/v1/audio/speech)` **Added**\n  *  `response.results[].response.body.union(class (4))` **Added** (Breaking ⚠️)\n* `openrouter.batch.getBatches()`:  `response.results[].response.body.union(class (4))` **Added** (Breaking ⚠️)\n"
