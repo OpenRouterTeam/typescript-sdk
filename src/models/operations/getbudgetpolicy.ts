@@ -53,9 +53,9 @@ export type GetBudgetPolicyRequest = {
    */
   id: string;
   /**
-   * Workspace the policy belongs to
+   * Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.
    */
-  workspaceId: string;
+  workspaceId?: string | undefined;
 };
 
 /** @internal */
@@ -64,7 +64,7 @@ export type GetBudgetPolicyRequest$Outbound = {
   appTitle?: string | undefined;
   appCategories?: string | undefined;
   id: string;
-  workspace_id: string;
+  workspace_id?: string | undefined;
 };
 
 /** @internal */
@@ -76,7 +76,7 @@ export const GetBudgetPolicyRequest$outboundSchema: z.ZodType<
   appTitle: z.string().optional(),
   appCategories: z.string().optional(),
   id: z.string(),
-  workspaceId: z.string(),
+  workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",

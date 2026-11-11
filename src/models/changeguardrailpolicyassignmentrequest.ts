@@ -44,9 +44,9 @@ export type ChangeGuardrailPolicyAssignmentRequest = {
    */
   policyType: ChangeGuardrailPolicyAssignmentRequestPolicyType;
   /**
-   * Workspace the policy belongs to
+   * Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.
    */
-  workspaceId: string;
+  workspaceId?: string | undefined;
 };
 
 /** @internal */
@@ -60,7 +60,7 @@ export type ChangeGuardrailPolicyAssignmentRequest$Outbound = {
   expected_assignment: GuardrailPolicyAssignmentState$Outbound;
   policy_id: string;
   policy_type: string;
-  workspace_id: string;
+  workspace_id?: string | undefined;
 };
 
 /** @internal */
@@ -72,7 +72,7 @@ export const ChangeGuardrailPolicyAssignmentRequest$outboundSchema: z.ZodType<
   expectedAssignment: GuardrailPolicyAssignmentState$outboundSchema,
   policyId: z.string(),
   policyType: ChangeGuardrailPolicyAssignmentRequestPolicyType$outboundSchema,
-  workspaceId: z.string(),
+  workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     expectedAssignment: "expected_assignment",

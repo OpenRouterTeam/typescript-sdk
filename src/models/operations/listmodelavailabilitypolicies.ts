@@ -61,9 +61,9 @@ export type ListModelAvailabilityPoliciesRequest = {
    */
   limit?: number | undefined;
   /**
-   * Workspace the policy belongs to
+   * Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other.
    */
-  workspaceId: string;
+  workspaceId?: string | undefined;
 };
 
 export type ListModelAvailabilityPoliciesResponse = {
@@ -77,7 +77,7 @@ export type ListModelAvailabilityPoliciesRequest$Outbound = {
   appCategories?: string | undefined;
   offset?: number | undefined;
   limit?: number | undefined;
-  workspace_id: string;
+  workspace_id?: string | undefined;
 };
 
 /** @internal */
@@ -90,7 +90,7 @@ export const ListModelAvailabilityPoliciesRequest$outboundSchema: z.ZodType<
   appCategories: z.string().optional(),
   offset: z.int().optional(),
   limit: z.int().optional(),
-  workspaceId: z.string(),
+  workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
