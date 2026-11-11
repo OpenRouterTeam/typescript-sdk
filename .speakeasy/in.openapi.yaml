@@ -39023,7 +39023,7 @@ openapi: '3.1.0'
 paths:
   /activity:
     get:
-      description: 'Returns user activity data grouped by endpoint for the last 30 (completed) UTC days. Pass `workspace_id` to scope the response to a single workspace. Pass `group_by=workspace` to split each row per workspace and include `workspace_id` on every item; by default rows are aggregated across workspaces and `workspace_id` is not returned. Activity recorded before workspace resolution existed is permanently attributed to the account default workspace (no backfill is possible). [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Returns user activity data grouped by endpoint for the last 30 (completed) UTC days. Pass `workspace_id` to scope the response to a single workspace. Pass `group_by=workspace` to split each row per workspace and include `workspace_id` on every item; by default rows are aggregated across workspaces and `workspace_id` is not returned. Activity recorded before workspace resolution existed is permanently attributed to the account default workspace (no backfill is possible). A workspace-scoped management key needs `activity:view_all` on its own workspace and reads only that workspace: an omitted `workspace_id` defaults to it, a `workspace_id` naming any other workspace returns 403, `api_key_hash` and `user_id` resolve only keys and members of that workspace, and legacy activity with no workspace is excluded (including for the default workspace). [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'getUserActivity'
       parameters:
         - description: 'Filter by a single UTC date in the last 30 days (YYYY-MM-DD format).'
