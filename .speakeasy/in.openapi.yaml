@@ -32257,6 +32257,61 @@ components:
         - 'type'
         - 'text'
       type: 'object'
+    ResponsesBadRequestResponse:
+      description: 'Bad Request - Invalid request parameters or malformed input. Request-shape validation failures carry a Responses API string code (e.g. `invalid_prompt`) with details in the top-level `metadata`; all other failures carry the integer HTTP status.'
+      example:
+        error:
+          code: 'invalid_prompt'
+          message: 'Invalid Responses API request'
+        metadata:
+          raw: '[{"code":"invalid_value","path":["input",0,"type"]}]'
+      properties:
+        error:
+          $ref: '#/components/schemas/ResponsesBadRequestResponseErrorData'
+        metadata:
+          additionalProperties:
+            type: 'string'
+          description: 'Validation details for string-coded errors; `raw` holds the serialized schema issues'
+          example:
+            raw: '[{"code":"invalid_value","path":["input",0,"type"]}]'
+          type:
+            - 'object'
+            - 'null'
+        openrouter_metadata:
+          additionalProperties: {}
+          type:
+            - 'object'
+            - 'null'
+        user_id:
+          type:
+            - 'string'
+            - 'null'
+      required:
+        - 'error'
+      type: 'object'
+    ResponsesBadRequestResponseErrorData:
+      description: 'Error data for ResponsesBadRequestResponse'
+      example:
+        code: 'invalid_prompt'
+        message: 'Invalid Responses API request'
+      properties:
+        code:
+          anyOf:
+            - type: 'integer'
+            - type: 'string'
+          description: 'Integer HTTP status, or a Responses API error code string (e.g. `invalid_prompt`) when the request body fails validation'
+          example: 'invalid_prompt'
+        message:
+          type: 'string'
+        metadata:
+          additionalProperties: {}
+          type:
+            - 'object'
+            - 'null'
+      required:
+        - 'code'
+        - 'message'
+      type: 'object'
     ResponsesErrorField:
       description: 'Error information returned from the API'
       example:
@@ -56971,13 +57026,24 @@ paths:
         '400':
           content:
             application/json:
-              example:
-                error:
-                  code: 400
-                  message: 'Invalid request parameters'
+              examples:
+                invalid-parameters:
+                  summary: 'Invalid request parameters'
+                  value:
+                    error:
+                      code: 400
+                      message: 'Invalid request parameters'
+                invalid-request-body:
+                  summary: 'Request body failed Responses API validation'
+                  value:
+                    error:
+                      code: 'invalid_prompt'
+                      message: 'Invalid Responses API request'
+                    metadata:
+                      raw: '[{"code":"invalid_value","path":["input",0,"type"]}]'
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
-          description: 'Bad Request - Invalid request parameters or malformed input'
+                $ref: '#/components/schemas/ResponsesBadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input. Request-shape validation failures carry a Responses API string code (e.g. `invalid_prompt`) with details in the top-level `metadata`; all other failures carry the integer HTTP status.'
         '401':
           content:
             application/json:
