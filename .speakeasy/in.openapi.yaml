@@ -11480,6 +11480,37 @@ components:
       required:
         - 'data'
       type: 'object'
+    CreditPurchaseUnavailableResponse:
+      example:
+        error:
+          code: 503
+          message: 'The payment transfer could not be confirmed; poll the purchase before retrying'
+          metadata:
+            purchase_id: 'pi_3PqXyZ2eZvKYlo2C0abc1234'
+      properties:
+        error:
+          properties:
+            code:
+              type: 'integer'
+            message:
+              type: 'string'
+            metadata:
+              description: 'Present when the outcome of a paid request is unknown and its purchase is known.'
+              properties:
+                purchase_id:
+                  description: 'The purchase to poll with `GET /api/v1/credits/purchases/{id}` before paying again.'
+                  example: 'pi_3PqXyZ2eZvKYlo2C0abc1234'
+                  type: 'string'
+              required:
+                - 'purchase_id'
+              type: 'object'
+          required:
+            - 'code'
+            - 'message'
+          type: 'object'
+      required:
+        - 'error'
+      type: 'object'
     CustomTool:
       description: 'Custom tool configuration'
       example:
@@ -42986,13 +43017,17 @@ paths:
         '503':
           content:
             application/json:
-              example:
-                error:
-                  code: 503
-                  message: 'Service temporarily unavailable'
               schema:
-                $ref: '#/components/schemas/ServiceUnavailableResponse'
-          description: 'Service Unavailable - Service temporarily unavailable'
+                $ref: '#/components/schemas/CreditPurchaseUnavailableResponse'
+          description: 'Temporarily unavailable, or the outcome of a paid request is unknown. When the outcome is unknown and the purchase is known, `Location` and `error.metadata.purchase_id` name the purchase: poll it before paying again.'
+          headers:
+            Location:
+              description: 'The purchase to poll: `GET /api/v1/credits/purchases/{id}`. Present when the outcome of a paid request is unknown and its purchase is known.'
+              required: false
+              schema:
+                description: 'The purchase to poll: `GET /api/v1/credits/purchases/{id}`. Present when the outcome of a paid request is unknown and its purchase is known.'
+                example: '/api/v1/credits/purchases/pi_3PqXyZ2eZvKYlo2C0abc1234'
+                type: 'string'
       security:
         - bearerAuth: []
       summary: 'Buy credits with a machine payment'
