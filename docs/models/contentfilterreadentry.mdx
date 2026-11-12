@@ -1,0 +1,26 @@
+---
+title: "ContentFilterReadEntry"
+---
+
+A custom regex content filter, with whether inference enforces it.
+
+## Example Usage
+
+```typescript
+import { ContentFilterReadEntry } from "@openrouter/sdk/models";
+
+let value: ContentFilterReadEntry = {
+  action: "redact",
+  pattern: "\\b(sk-[a-zA-Z0-9]{48})\\b",
+  isEnforced: true,
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                                 | Type                                                                                                                                                                  | Required                                                                                                                                                              | Description                                                                                                                                                           | Example                                                                                                                                                               |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `action`                                                                                                                                                              | [models.ContentFilterAction](../models/contentfilteraction.mdx)                                                                                                        | ✔️                                                                                                                                                    | Action taken when the pattern matches                                                                                                                                 | block                                                                                                                                                                 |
+| `label`                                                                                                                                                               | *string*                                                                                                                                                              | ➖                                                                                                                                                    | Optional label used in redaction placeholders or error messages                                                                                                       | [API_KEY]                                                                                                                                                             |
+| `pattern`                                                                                                                                                             | *string*                                                                                                                                                              | ✔️                                                                                                                                                    | A regex pattern to match against request content                                                                                                                      | \b(sk-[a-zA-Z0-9]\{48})\b                                                                                                                                              |
+| `isEnforced`                                                                                                                                                          | *boolean*                                                                                                                                                             | ✔️                                                                                                                                                    | Whether inference applies this pattern. False for a pattern saved before pattern validation that is too complex to run safely; it is kept but skipped until replaced. | true                                                                                                                                                                  |
