@@ -62,6 +62,10 @@ export type OutputToolSearchServerToolItem = {
    */
   catalogIndex?: string | undefined;
   /**
+   * Whether the model read, after the catalog index, that the listed sources are those connected so far. Replaying the item shows that note only when this is true. Its wording follows the replaying request: it names `WaitForMcpServers` only while that request carries the tool.
+   */
+  catalogIndexNote?: boolean | undefined;
+  /**
    * The error message when the tool call failed before producing a result. Set together with `status: 'failed'`; absent on a successful call.
    */
   error?: string | undefined;
@@ -158,6 +162,7 @@ export const OutputToolSearchServerToolItem$inboundSchema: z.ZodType<
   call_id: z.string().optional(),
   catalog_changes: z.string().optional(),
   catalog_index: z.string().optional(),
+  catalog_index_note: z.boolean().optional(),
   error: z.string().optional(),
   format: OutputToolSearchServerToolItemFormat$inboundSchema.optional(),
   hint: z.string().optional(),
@@ -173,6 +178,7 @@ export const OutputToolSearchServerToolItem$inboundSchema: z.ZodType<
     "call_id": "callId",
     "catalog_changes": "catalogChanges",
     "catalog_index": "catalogIndex",
+    "catalog_index_note": "catalogIndexNote",
     "turn_call_ids": "turnCallIds",
   });
 });
@@ -182,6 +188,7 @@ export type OutputToolSearchServerToolItem$Outbound = {
   call_id?: string | undefined;
   catalog_changes?: string | undefined;
   catalog_index?: string | undefined;
+  catalog_index_note?: boolean | undefined;
   error?: string | undefined;
   format?: string | undefined;
   hint?: string | undefined;
@@ -203,6 +210,7 @@ export const OutputToolSearchServerToolItem$outboundSchema: z.ZodType<
   callId: z.string().optional(),
   catalogChanges: z.string().optional(),
   catalogIndex: z.string().optional(),
+  catalogIndexNote: z.boolean().optional(),
   error: z.string().optional(),
   format: OutputToolSearchServerToolItemFormat$outboundSchema.optional(),
   hint: z.string().optional(),
@@ -218,6 +226,7 @@ export const OutputToolSearchServerToolItem$outboundSchema: z.ZodType<
     callId: "call_id",
     catalogChanges: "catalog_changes",
     catalogIndex: "catalog_index",
+    catalogIndexNote: "catalog_index_note",
     turnCallIds: "turn_call_ids",
   });
 });

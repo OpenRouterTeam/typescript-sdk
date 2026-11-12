@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 70ec3dc7fabe92fafaacb48046c89bf6
+  docChecksum: cc7f3cb3c6a4778b9dbf3d3aa9656786
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.96
-  configChecksum: 2ec31b7429bcb22f4d42ab1a71289802
+  releaseVersion: 1.5.97
+  configChecksum: dafbecffdf01a039d7af1466a41c8acc
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: ff5528b5-edb4-4c52-ac51-901f1793e67d
-  pristine_commit_hash: 99a08079d5ca35bba900c1c1e4f532671d95051b
-  pristine_tree_hash: 97e06bda14798da2d5da9e61f529b1824ed162e7
+  generation_id: dd9af580-efa0-498f-ae19-a5d34c530e40
+  pristine_commit_hash: 54ae4faa799c2e21b96da152e436230dd114b929
+  pristine_tree_hash: 7b6eec5741fea88b1c3926d54ec8ad13d763963d
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -8485,8 +8485,8 @@ trackedFiles:
     deleted: true
   docs/models/observabilityotelcollectordestinationconfig.mdx:
     id: 4e40b53bedb1
-    last_write_checksum: sha1:595d10b83d092908c8a331994c661d46960463d1
-    pristine_git_object: 88f94226c0a453910863478afce196a42b6df70b
+    last_write_checksum: sha1:9636ba0de741499a883fc98e29eb7da81e6ba503
+    pristine_git_object: 0328cc3cb9acffdaa6f6e85666dff47c4cad7f8a
   docs/models/observabilityposthogdestination.md:
     id: 0ce2e1097c19
     last_write_checksum: sha1:45acf3bb8b0c4681970b99750f1f7e2fd24e6d21
@@ -12957,8 +12957,8 @@ trackedFiles:
     deleted: true
   docs/models/outputtoolsearchservertoolitem.mdx:
     id: "038724320073"
-    last_write_checksum: sha1:05ff608160de169d90b3d5ef75984c76e46f52b0
-    pristine_git_object: 241f1dbe552502a3beed5df8ca490ab63920c38d
+    last_write_checksum: sha1:553a9d0f1dcfa617defb5dc785acb1fd66cfdb8d
+    pristine_git_object: 0176997709ff4d6c739104c366033b0c832b003a
   docs/models/outputtoolsearchservertoolitemformat.mdx:
     id: d4f5140570a9
     last_write_checksum: sha1:43dfa212c18895037958ce32ff2b9d5ba74b14e6
@@ -16807,12 +16807,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:703dd113f13cd134491c7573038552544498aabd
-    pristine_git_object: 8bb38beeeb2847e769dcc8d164901fa60c478e06
+    last_write_checksum: sha1:29075b40d7773a45a3161e320741ea98010e0687
+    pristine_git_object: 79055f63987d1f1f8039ebcab159e350e50922cf
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:f561778a050588dd457df8b443fd2034ed5a6474
-    pristine_git_object: 8ec3fb2bbd0c969bbd936531c28d41acb61dbeaf
+    last_write_checksum: sha1:28d185c8dd7ed1f2cc9dae3eb9336328da19a02c
+    pristine_git_object: 0d743c383cccb4dfd88200961bf11226e287d6d2
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -17511,8 +17511,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:529413a403c527a8a4f7b9a5fbc659ff9c2c8ff2
-    pristine_git_object: a448df01055990bfa621224fb998294f4fd4f144
+    last_write_checksum: sha1:46ebc88f0fb5f76205372bfae56ab9534dd952d9
+    pristine_git_object: a11e19c8028e7b16f13e5dd2e3c47f5eec531c1c
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -20073,8 +20073,8 @@ trackedFiles:
     pristine_git_object: 282cd063bde1adcb74b9c14a50f7cded223419c1
   src/models/observabilityotelcollectordestination.ts:
     id: a10e04b8d635
-    last_write_checksum: sha1:7ca79fd4428c6c9c0a3c46dca3e59626d0c748f8
-    pristine_git_object: b49ff1d3f5095ce2d0d9ed0d008a88bea9e192b0
+    last_write_checksum: sha1:1011a77a4cf81dc95fb282e41f79b3784c1cdbab
+    pristine_git_object: 18ef52f7d2cd08b32efed246f94c1bb90bac8bd1
   src/models/observabilityposthogdestination.ts:
     id: 7b13c8a68c92
     last_write_checksum: sha1:7cf7b4a41cc0215a2aee051f6cd1574542f13a9e
@@ -21093,8 +21093,8 @@ trackedFiles:
     pristine_git_object: 413b81969bde848ae1cb67c6438359569b21641c
   src/models/outputtoolsearchservertoolitem.ts:
     id: 54b4dacceeab
-    last_write_checksum: sha1:bb0f5dddd521cf71e415a27cbc8e44c097fcf9a2
-    pristine_git_object: facca683722fb568c40eaa9d961b8b59bda6c488
+    last_write_checksum: sha1:320a47d461902c6b96c2620ffee5c3e02da5674f
+    pristine_git_object: 9219a2f7518a1388ab057d2686760c7d85813869
   src/models/outputwebfetchservertoolitem.ts:
     id: a28b106c9b49
     last_write_checksum: sha1:52c6416d22524512f343912f705ed785b3b61cf8
@@ -27513,4 +27513,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.include[]` **Changed**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.include[]` **Changed**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.include[]` **Changed**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.batch.createBatches()`:  `response.results[].response.body.union(OpenResponsesResult).output[].union(openrouter:tool_search).catalogIndexNote` **Added**\n* `openrouter.batch.getBatches()`:  `response.results[].response.body.union(OpenResponsesResult).output[].union(openrouter:tool_search).catalogIndexNote` **Added**\n* `openrouter.observability.list()`:  `response.data[].union(otel-collector).config` **Changed**\n* `openrouter.observability.create()`:  `response.data.union(otel-collector).config` **Changed**\n* `openrouter.observability.get()`:  `response.data.union(otel-collector).config` **Changed**\n* `openrouter.observability.update()`:  `response.data.union(otel-collector).config` **Changed**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputToolSearchServerToolItem).catalogIndexNote` **Added**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputToolSearchServerToolItem).catalogIndexNote` **Added**\n  *  `response` **Changed**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputToolSearchServerToolItem).catalogIndexNote` **Added**\n  *  `response` **Changed**\n"
