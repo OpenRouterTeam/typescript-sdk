@@ -24142,6 +24142,13 @@ components:
                 type: 'string'
               description: 'Custom HTTP headers as a JSON object. For Axiom, use {"Authorization": "Bearer xaat-xxx", "X-Axiom-Dataset": "your-dataset"}'
               type: 'object'
+            metricsEndpoint:
+              description: 'OTLP/HTTP metrics URL. Required when `shouldSendMetrics` (Send OTLP metrics) is true; ignored otherwise.'
+              type: 'string'
+            shouldSendMetrics:
+              default: false
+              description: 'Also send OTLP metrics for each delivered generation to the metrics endpoint, with the same headers.'
+              type: 'boolean'
           required:
             - 'endpoint'
           type: 'object'
@@ -28675,6 +28682,10 @@ components:
           description: 'The deferred-tool index the router showed the model with a pre-search, listing tool sources and names. Replaying the item shows the same index.'
           example: "Deferred tools, found with tool_search and called with tool_exec:\nSources: mcp__sentry (12)."
           type: 'string'
+        catalog_index_note:
+          description: 'Whether the model read, after the catalog index, that the listed sources are those connected so far. Replaying the item shows that note only when this is true. Its wording follows the replaying request: it names `WaitForMcpServers` only while that request carries the tool.'
+          example: true
+          type: 'boolean'
         error:
           description: 'The error message when the tool call failed before producing a result. Set together with `status: ''failed''`; absent on a successful call.'
           example: 'Tool execution failed'
