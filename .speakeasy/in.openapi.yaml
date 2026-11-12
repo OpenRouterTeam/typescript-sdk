@@ -28787,6 +28787,10 @@ components:
           type: 'integer'
         id:
           type: 'string'
+        retrieved_at:
+          description: 'The time the content was fetched, as an ISO 8601 timestamp.'
+          example: '2026-11-12T05:27:43.000Z'
+          type: 'string'
         status:
           $ref: '#/components/schemas/ToolCallStatus'
         title:
