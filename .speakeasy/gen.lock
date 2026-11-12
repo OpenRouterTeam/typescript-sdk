@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 671837da2150b0bc047e3c4444fd9348
+  docChecksum: 61aed0e1a9aca64352bc81d45a045956
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.98
-  configChecksum: 51b3ab7995be886bd8d3bd1c6ee3915f
+  releaseVersion: 1.5.99
+  configChecksum: 34850a2c0185d246969066248433f25c
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 0f7d366a-f3eb-4509-a7a2-2b02bfc13660
-  pristine_commit_hash: 74d28fd40edfcebaf9d1b818039e76c06a76bdbc
-  pristine_tree_hash: 55840609faf3b07d0a37b766b1a02569a2fb584d
+  generation_id: 1fc7a33e-34a1-4d51-897e-43d1df3005c7
+  pristine_commit_hash: 78c531e24eba651e4798ac4f01f6a1f77acd7634
+  pristine_tree_hash: bbca417f5698ec6d865cf357cab6ad9c9641d0a7
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -3864,6 +3864,10 @@ trackedFiles:
     id: 645178b115ce
     last_write_checksum: sha1:3d919ec8819b25e3ff60cac53e7de3287ce03cf5
     pristine_git_object: 8279699ca6ae4f6dda5338f9044bfd92f7e5673b
+  docs/models/contentfilterreadentry.mdx:
+    id: eca56929935f
+    last_write_checksum: sha1:576910bc932be6fd1a14db1387f7149b84a1e264
+    pristine_git_object: 9737758d25157a03d1ef9884ad40f95632e5faeb
   docs/models/contentimageurl.mdx:
     id: fb086ec08fcc
     last_write_checksum: sha1:ce2fd18d54ea4e68797797b86da49c1d6c9c83bd
@@ -6083,8 +6087,8 @@ trackedFiles:
     deleted: true
   docs/models/guardrail.mdx:
     id: a2b474ab82ce
-    last_write_checksum: sha1:93b8302f29d2bf0c1d127cbaee7d815af150dbb4
-    pristine_git_object: 08654143908bd4963a831afb32ebec32c983e282
+    last_write_checksum: sha1:bb8e33f9a4f5e9583b18b4fa3e6abe2cc35adc24
+    pristine_git_object: c63cd1626d2f02b9852dede1a3df727232efc81c
   docs/models/guardrailbudgetpolicyauthoringconfig.mdx:
     id: 18f2138aef0d
     last_write_checksum: sha1:ada4d06cda0938633fd4e4777a179554d3458fc5
@@ -16819,12 +16823,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:cddc738f78404982773567845d43d9856b0ada19
-    pristine_git_object: be5118778e4f755a039335106e5dda65e1a8d4e8
+    last_write_checksum: sha1:fdfb851bf25d7d2e55558234948376f11604b6f9
+    pristine_git_object: ba450ea25950761b4b2ce6cf30e6224217d4fcda
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:7d5c104b5da8387c243a0651d4ce8cee6a836eea
-    pristine_git_object: 211f1938186e1f41233241ae72a9d855d1ea7842
+    last_write_checksum: sha1:8bce4f1753af6cd96af40e8a71456fb496cb06e6
+    pristine_git_object: 0918f794c209ebec7f5b099ac4892e5f0e253370
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -17523,8 +17527,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:c61dfc0810f9f1d5c7f80ca0d7dd230cdf01330d
-    pristine_git_object: 1c8c26f51df195fc62cc7c847101b98f71b0ce4d
+    last_write_checksum: sha1:f26c25d097ee44cb70b2474e9dea3ce6f7c0063f
+    pristine_git_object: 03b05a073f829baf7d8fc87c0fe807700ef252ac
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -18689,8 +18693,12 @@ trackedFiles:
     pristine_git_object: b6c355d47b3b855b95ba70417b3c574e82c21170
   src/models/contentfilterentry.ts:
     id: 309efd3ad069
-    last_write_checksum: sha1:82b55bfaa8fb887b4ff9657ed55e28e40d04915d
-    pristine_git_object: 546464b374756ef0bde9cadf9fd92d22b977f147
+    last_write_checksum: sha1:d45ffc277b90a49c600a07280811935bca9e4db2
+    pristine_git_object: 9f93d0f9617f3d073e3e239da07b31544b4a18f8
+  src/models/contentfilterreadentry.ts:
+    id: b8a70234f549
+    last_write_checksum: sha1:d763f582538348517c0f525bb00bd37163434b25
+    pristine_git_object: 59ec51ac7314dc2abad5936cce1d3be608d502ac
   src/models/contentpartaddedevent.ts:
     id: 5ba581a076ec
     last_write_checksum: sha1:5d1bf02961e8964ec46fccf30f7a30bf7502caad
@@ -19449,8 +19457,8 @@ trackedFiles:
     pristine_git_object: aeb6d01013f040ef578a351c8ae232cb1391dd20
   src/models/guardrail.ts:
     id: 240a4b8d7a7d
-    last_write_checksum: sha1:40567e31644781bc9920ba482f455841d8a4e4b5
-    pristine_git_object: 0c3d12a13f0469a9af39c7597b3ae4b074722537
+    last_write_checksum: sha1:369557bc52dea44cec5abb0cccd54dd353cdb5d5
+    pristine_git_object: 5c465a6073d1e8d97025b06ca57b779b278d05ae
   src/models/guardrailbudgetpolicyauthoringconfig.ts:
     id: 0ca705390b15
     last_write_checksum: sha1:126c3bace75e979706194f28cc4f91fbcb6ce4ed
@@ -19605,8 +19613,8 @@ trackedFiles:
     pristine_git_object: 7abdfe096d3adff317db6837dc689c69db92e127
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:c1735ed393f1733b1e2163ad718f1ad8738de815
-    pristine_git_object: 51bd56d2a1e5bbc59467cf1a9357ecae8b782dc8
+    last_write_checksum: sha1:374685467f7a13e668cf4ebd0e168b4cd9913409
+    pristine_git_object: 25c2ee13a1ca9369503656f84b241a031b33579f
   src/models/inputaudio.ts:
     id: 9bdc14c7565f
     last_write_checksum: sha1:cc3b750b39a3c3563b76930fd2989f9bfdb24c1f
@@ -27547,5 +27555,7 @@ examples:
 examplesVersion: 1.0.2
 releaseNotes: |
   ## Typescript SDK Changes:
-  * `openrouter.responses.send()`:  `error` **Changed** (Breaking ⚠️)
-  * `openrouter.beta.responses.send()`:  `error` **Changed** (Breaking ⚠️)
+  * `openrouter.guardrails.list()`:  `response.data[].contentFilters[].isEnforced` **Added**
+  * `openrouter.guardrails.create()`:  `response.data.contentFilters[].isEnforced` **Added**
+  * `openrouter.guardrails.get()`:  `response.data.contentFilters[].isEnforced` **Added**
+  * `openrouter.guardrails.update()`:  `response.data.contentFilters[].isEnforced` **Added**

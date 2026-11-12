@@ -279,6 +279,7 @@ export * from "./contentfilterbuiltinentry.js";
 export * from "./contentfilterbuiltinentryinput.js";
 export * from "./contentfilterbuiltinslug.js";
 export * from "./contentfilterentry.js";
+export * from "./contentfilterreadentry.js";
 export * from "./contentpartaddedevent.js";
 export * from "./contentpartaudio.js";
 export * from "./contentpartdoneevent.js";
