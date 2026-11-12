@@ -17,6 +17,17 @@ declare global {
   }
 }
 
+type StreamIterator<T> = (
+  & ReadableStream<T>[typeof Symbol.asyncIterator]
+  & (() => unknown)
+) extends {
+  (options?: any): infer A;
+  (options?: any): infer B;
+  (options?: any): infer C;
+  (options?: any): infer D;
+} ? A & B & C & D
+  : never;
+
 export type SseMessage<T> = {
   data?: T | undefined;
   event?: string | null | undefined;
@@ -87,35 +98,57 @@ export class EventStream<T> extends ReadableStream<T> {
 
   // Use ReadableStream's iterator return type instead of `any` so stream events
   // keep their generated type in for-await loops.
-  override [Symbol.asyncIterator](): ReturnType<
-    ReadableStream<T>[typeof Symbol.asyncIterator]
-  > {
+  override [Symbol.asyncIterator](): StreamIterator<T> {
     const fn = (ReadableStream.prototype as any)[Symbol.asyncIterator];
     if (typeof fn === "function") return fn.call(this);
     const reader = this.getReader();
-    return {
+    let released = false;
+    const release = () => {
+      released = true;
+      reader.releaseLock();
+    };
+    const iterator = {
       next: async () => {
-        const r = await reader.read();
+        if (released) return { done: true, value: undefined };
+        const r = await reader.read().catch((e: unknown) => {
+          release();
+          throw e;
+        });
         if (r.done) {
-          reader.releaseLock();
+          release();
           return { done: true, value: undefined };
         }
         return { done: false, value: r.value };
       },
-      throw: async (e) => {
-        await reader.cancel(e);
-        reader.releaseLock();
+      throw: async (e?: unknown) => {
+        if (released) return { done: true, value: undefined };
+        try {
+          await reader.cancel(e);
+        } finally {
+          release();
+        }
         return { done: true, value: undefined };
       },
       return: async () => {
-        await reader.cancel("done");
-        reader.releaseLock();
+        if (released) return { done: true, value: undefined };
+        try {
+          await reader.cancel("done");
+        } finally {
+          release();
+        }
         return { done: true, value: undefined };
       },
       [Symbol.asyncIterator]() {
         return this;
       },
-    } as ReturnType<ReadableStream<T>[typeof Symbol.asyncIterator]>;
+    };
+    const asyncDispose = (Symbol as any).asyncDispose;
+    if (asyncDispose) {
+      (iterator as any)[asyncDispose] = async () => {
+        await iterator.return();
+      };
+    }
+    return iterator as unknown as StreamIterator<T>;
   }
 }
 
