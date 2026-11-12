@@ -4,6 +4,7 @@
  */
 
 import * as z from "zod/v4";
+import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
@@ -35,6 +36,10 @@ export type OutputWebFetchServerToolItem = {
    */
   httpStatus?: number | undefined;
   id?: string | undefined;
+  /**
+   * The time the content was fetched, as an ISO 8601 timestamp.
+   */
+  retrievedAt?: string | undefined;
   status: ToolCallStatus;
   title?: string | undefined;
   type: OutputWebFetchServerToolItemType;
@@ -59,10 +64,15 @@ export const OutputWebFetchServerToolItem$inboundSchema: z.ZodType<
   error: z.string().optional(),
   httpStatus: z.int().optional(),
   id: z.string().optional(),
+  retrieved_at: z.string().optional(),
   status: ToolCallStatus$inboundSchema,
   title: z.string().optional(),
   type: OutputWebFetchServerToolItemType$inboundSchema,
   url: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "retrieved_at": "retrievedAt",
+  });
 });
 /** @internal */
 export type OutputWebFetchServerToolItem$Outbound = {
@@ -70,6 +80,7 @@ export type OutputWebFetchServerToolItem$Outbound = {
   error?: string | undefined;
   httpStatus?: number | undefined;
   id?: string | undefined;
+  retrieved_at?: string | undefined;
   status: string;
   title?: string | undefined;
   type: string;
@@ -85,10 +96,15 @@ export const OutputWebFetchServerToolItem$outboundSchema: z.ZodType<
   error: z.string().optional(),
   httpStatus: z.int().optional(),
   id: z.string().optional(),
+  retrievedAt: z.string().optional(),
   status: ToolCallStatus$outboundSchema,
   title: z.string().optional(),
   type: OutputWebFetchServerToolItemType$outboundSchema,
   url: z.string().optional(),
+}).transform((v) => {
+  return remap$(v, {
+    retrievedAt: "retrieved_at",
+  });
 });
 
 export function outputWebFetchServerToolItemToJSON(
