@@ -1,0 +1,24 @@
+---
+title: "ResponsesBadRequestResponseErrorData"
+---
+
+Error data for ResponsesBadRequestResponse
+
+## Example Usage
+
+```typescript
+import { ResponsesBadRequestResponseErrorData } from "@openrouter/sdk/models";
+
+let value: ResponsesBadRequestResponseErrorData = {
+  code: "invalid_prompt",
+  message: "Invalid Responses API request",
+};
+```
+
+## Fields
+
+| Field                                                                                                                    | Type                                                                                                                     | Required                                                                                                                 | Description                                                                                                              | Example                                                                                                                  |
+| ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| `code`                                                                                                                   | *models.Code*                                                                                                            | ✔️                                                                                                       | Integer HTTP status, or a Responses API error code string (e.g. `invalid_prompt`) when the request body fails validation | invalid_prompt                                                                                                           |
+| `message`                                                                                                                | *string*                                                                                                                 | ✔️                                                                                                       | N/A                                                                                                                      |                                                                                                                          |
+| `metadata`                                                                                                               | Record\<string, *any*>                                                                                                    | ➖                                                                                                       | N/A                                                                                                                      |                                                                                                                          |

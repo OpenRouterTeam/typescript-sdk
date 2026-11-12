@@ -25,6 +25,7 @@ export * from "./payloadtoolargeresponseerror.js";
 export * from "./paymentrequiredresponseerror.js";
 export * from "./provideroverloadedresponseerror.js";
 export * from "./requesttimeoutresponseerror.js";
+export * from "./responsesbadrequestresponseerror.js";
 export * from "./responsevalidationerror.js";
 export * from "./sdkvalidationerror.js";
 export * from "./serviceunavailableresponseerror.js";
