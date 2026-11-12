@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 61aed0e1a9aca64352bc81d45a045956
+  docChecksum: 11a577806bd4fd2907ee5cf2791a5082
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.99
-  configChecksum: 34850a2c0185d246969066248433f25c
+  releaseVersion: 1.5.100
+  configChecksum: 709dcbf0dede4208a1027bb24428f92a
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 1fc7a33e-34a1-4d51-897e-43d1df3005c7
-  pristine_commit_hash: 78c531e24eba651e4798ac4f01f6a1f77acd7634
-  pristine_tree_hash: bbca417f5698ec6d865cf357cab6ad9c9641d0a7
+  generation_id: 62b399f0-d84f-4d9f-9d02-2227e9745d28
+  pristine_commit_hash: 592911a56522a4c5e1fa0196991eb5b0b427c200
+  pristine_tree_hash: 5dc042d35d6987b1b615d40353564cb641fb6ba2
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -12991,8 +12991,8 @@ trackedFiles:
     deleted: true
   docs/models/outputwebfetchservertoolitem.mdx:
     id: 30d3817c7bbd
-    last_write_checksum: sha1:be7d4ee93c348b12387723ea2fdaa53a0f4ec293
-    pristine_git_object: 2de81ecd112a40aea23d20bafdcf10df3cbc68de
+    last_write_checksum: sha1:e2a671ce3d2c8f54678cd055681cc10e3248cf72
+    pristine_git_object: 41b98102019a89c18d563fe445e067a8e18fcdab
   docs/models/outputwebfetchservertoolitemtype.md:
     id: b43f7a22e846
     last_write_checksum: sha1:b3ea0da8243bfb053e9ef0a3f07458482d711a36
@@ -16823,12 +16823,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:fdfb851bf25d7d2e55558234948376f11604b6f9
-    pristine_git_object: ba450ea25950761b4b2ce6cf30e6224217d4fcda
+    last_write_checksum: sha1:2bf9d4de02607a8a83f640fe9cdcfd4f49529cb7
+    pristine_git_object: 41c41734ee22e5c14f7abb9e81b8d7ba6cb46ff7
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:8bce4f1753af6cd96af40e8a71456fb496cb06e6
-    pristine_git_object: 0918f794c209ebec7f5b099ac4892e5f0e253370
+    last_write_checksum: sha1:263cab1235d0c2cdf66b515e2710565f3091381e
+    pristine_git_object: ba69c11af2e587cadb78ed0b4813a9c35d0b8341
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -17527,8 +17527,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:f26c25d097ee44cb70b2474e9dea3ce6f7c0063f
-    pristine_git_object: 03b05a073f829baf7d8fc87c0fe807700ef252ac
+    last_write_checksum: sha1:bf5ec4284a339444810a8b31fb3fbb4a9a14b068
+    pristine_git_object: b852a46222114c84d31fd1b956b2eedf2dfae96a
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -21121,8 +21121,8 @@ trackedFiles:
     pristine_git_object: 9219a2f7518a1388ab057d2686760c7d85813869
   src/models/outputwebfetchservertoolitem.ts:
     id: a28b106c9b49
-    last_write_checksum: sha1:52c6416d22524512f343912f705ed785b3b61cf8
-    pristine_git_object: cbeb7f041dd317496f92220cdeb9ac60d7167eb6
+    last_write_checksum: sha1:c18dee22337da98ccae006110ab3a2c0c7997e3f
+    pristine_git_object: 370e5ffe793f30a9a1cccd6774a3a20aff9595a1
   src/models/outputwebsearchcallitem.ts:
     id: b4585d176186
     last_write_checksum: sha1:46c46480ff7db1d22457b2d3dcda682e37c6d59e
@@ -27553,9 +27553,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `openrouter.guardrails.list()`:  `response.data[].contentFilters[].isEnforced` **Added**
-  * `openrouter.guardrails.create()`:  `response.data.contentFilters[].isEnforced` **Added**
-  * `openrouter.guardrails.get()`:  `response.data.contentFilters[].isEnforced` **Added**
-  * `openrouter.guardrails.update()`:  `response.data.contentFilters[].isEnforced` **Added**
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.batch.createBatches()`:  `response.results[].response.body.union(OpenResponsesResult).output[].union(openrouter:web_fetch).retrievedAt` **Added**\n* `openrouter.batch.getBatches()`:  `response.results[].response.body.union(OpenResponsesResult).output[].union(openrouter:web_fetch).retrievedAt` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputWebFetchServerToolItem).retrievedAt` **Added**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputWebFetchServerToolItem).retrievedAt` **Added**\n  *  `response` **Changed**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputWebFetchServerToolItem).retrievedAt` **Added**\n  *  `response` **Changed**\n"
