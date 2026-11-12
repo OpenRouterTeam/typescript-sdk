@@ -12,9 +12,9 @@ import {
   ContentFilterBuiltinEntry$inboundSchema,
 } from "./contentfilterbuiltinentry.js";
 import {
-  ContentFilterEntry,
-  ContentFilterEntry$inboundSchema,
-} from "./contentfilterentry.js";
+  ContentFilterReadEntry,
+  ContentFilterReadEntry$inboundSchema,
+} from "./contentfilterreadentry.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   GuardrailDataRegion,
@@ -53,7 +53,7 @@ export type Guardrail = {
   /**
    * Custom regex content filters applied to request messages
    */
-  contentFilters?: Array<ContentFilterEntry> | null | undefined;
+  contentFilters?: Array<ContentFilterReadEntry> | null | undefined;
   /**
    * ISO 8601 timestamp of when the guardrail was created
    */
@@ -153,7 +153,7 @@ export const Guardrail$inboundSchema: z.ZodType<Guardrail, unknown> = z.object({
   content_filter_builtins: z.nullable(
     z.array(ContentFilterBuiltinEntry$inboundSchema),
   ).optional(),
-  content_filters: z.nullable(z.array(ContentFilterEntry$inboundSchema))
+  content_filters: z.nullable(z.array(ContentFilterReadEntry$inboundSchema))
     .optional(),
   created_at: z.string(),
   description: z.nullable(z.string()).optional(),
