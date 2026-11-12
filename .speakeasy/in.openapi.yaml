@@ -42882,6 +42882,22 @@ paths:
       x-speakeasy-ignore: true
       x-speakeasy-name-override: 'createCoinbaseCharge'
   /credits/purchases:
+    get:
+      operationId: 'getCreditPurchasesSetupGuide'
+      responses:
+        '200':
+          content:
+            text/markdown:
+              schema:
+                type: 'string'
+          description: 'Markdown document, readable without a key.'
+      security: []
+      summary: 'Agent setup guide, served at the purchases collection'
+      tags:
+        - 'Credits'
+      x-fern-ignore: true
+      x-hidden: true
+      x-speakeasy-ignore: true
     post:
       description: 'Starts an agent credit purchase paid with a Machine Payments Protocol (MPP) credential: USDC on Tempo, or a card when one is offered. The first call answers `402` with one `WWW-Authenticate: Payment ...` challenge per payment option; pay one of them and retry the same request, same `Idempotency-Key`, with the signed credential in `Payment-Authorization: Payment ...` (or in `Authorization: Payment ...` when the management key is sent as `X-Api-Key`). A paid request answers `202`: the transfer was broadcast or the card was charged, and the payment is still being confirmed, so credits arrive asynchronously. Poll the URL in the `Location` header, `GET /api/v1/credits/purchases/{id}`, until `status` is `credited` or `failed`.'
       operationId: 'createCreditsPurchases'
