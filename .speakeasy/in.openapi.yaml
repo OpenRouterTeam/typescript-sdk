@@ -7126,7 +7126,7 @@ components:
           - 'user_def456'
       properties:
         user_ids:
-          description: 'List of user IDs to add to the workspace. Members are assigned the same role they hold in the organization.'
+          description: 'List of user IDs to add to the workspace. New members are assigned the workspace role that matches their organization role; users already in the workspace keep their current role.'
           example:
             - 'user_abc123'
             - 'user_def456'
@@ -7149,7 +7149,7 @@ components:
             workspace_id: '550e8400-e29b-41d4-a716-446655440000'
       properties:
         added_count:
-          description: 'Number of workspace memberships created or updated'
+          description: 'Number of workspace memberships created'
           example: 2
           type: 'integer'
         data:
@@ -11352,7 +11352,7 @@ components:
           format: 'double'
           type: 'number'
         is_data_discount_logging_enabled:
-          description: 'Whether data discount logging is enabled'
+          description: 'Whether data discount logging is enabled. Enabling it requires the account to allow workspace data-discount logging; otherwise the request returns 403.'
           example: true
           type: 'boolean'
         is_observability_broadcast_enabled:
@@ -37095,7 +37095,7 @@ components:
           format: 'double'
           type: 'number'
         is_data_discount_logging_enabled:
-          description: 'Whether data discount logging is enabled'
+          description: 'Whether data discount logging is enabled. Enabling it requires the account to allow workspace data-discount logging; otherwise the request returns 403.'
           example: true
           type: 'boolean'
         is_observability_broadcast_enabled:
@@ -60986,7 +60986,7 @@ paths:
         type: 'offsetLimit'
   /workspaces/{id}/members/add:
     post:
-      description: 'Add multiple organization members to a workspace. Members are assigned the same role they hold in the organization. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Add multiple organization members to a workspace. New members are assigned the workspace role that matches their organization role. Users who are already members of the workspace keep their current role and are not included in the response. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'bulkAddWorkspaceMembers'
       parameters:
         - description: 'The workspace ID (UUID) or slug'
