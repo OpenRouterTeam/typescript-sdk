@@ -16836,6 +16836,17 @@ components:
           type:
             - 'boolean'
             - 'null'
+        data_collection:
+          description: "Data collection setting. If no available model provider meets the requirement, your request will return an error.\n- allow: (default) allow providers that may train on user data\n\n- deny: use only providers that do not train on user data. Providers may still retain prompts; set `zdr: true` to exclude retention."
+          enum:
+            - 'deny'
+            - 'allow'
+            - null
+          example: 'allow'
+          title: 'ImageGenerationRequestDataCollection'
+          type:
+            - 'string'
+            - 'null'
         ignore:
           description: 'List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.'
           example:
@@ -16886,6 +16897,12 @@ components:
             - type: 'null'
           description: 'The sorting strategy to use for this request, if "order" is not specified. When set, no load balancing is performed.'
           example: 'price'
+        zdr:
+          description: 'Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.'
+          example: true
+          type:
+            - 'boolean'
+            - 'null'
       type: 'object'
     ImageGenerationRequest:
       description: 'Image generation request input'
@@ -38243,8 +38260,19 @@ components:
           example: 'A serene mountain landscape at sunset'
           type: 'string'
         provider:
-          description: 'Provider routing preferences (order, only, ignore) and provider-specific passthrough configuration'
+          description: 'Provider routing preferences (order, only, ignore), request-level data policy (zdr, data_collection) and provider-specific passthrough configuration. No video endpoint currently offers Zero Data Retention, so `zdr: true` fails routing.'
           properties:
+            data_collection:
+              description: "Data collection setting. If no available model provider meets the requirement, your request will return an error.\n- allow: (default) allow providers that may train on user data\n\n- deny: use only providers that do not train on user data. Providers may still retain prompts; set `zdr: true` to exclude retention."
+              enum:
+                - 'deny'
+                - 'allow'
+                - null
+              example: 'allow'
+              title: 'VideoGenerationRequestDataCollection'
+              type:
+                - 'string'
+                - 'null'
             ignore:
               description: 'List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.'
               example:
@@ -38287,6 +38315,12 @@ components:
                   - type: 'string'
               type:
                 - 'array'
+                - 'null'
+            zdr:
+              description: 'Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.'
+              example: true
+              type:
+                - 'boolean'
                 - 'null'
           type: 'object'
         resolution:
