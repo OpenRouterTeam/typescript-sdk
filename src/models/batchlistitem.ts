@@ -184,7 +184,7 @@ export type BatchListItem = {
   model: string;
   object: BatchListItemObject;
   /**
-   * The output location of a batch submitted with `input`, whose `results` are `null`. Returned only by `GET /batches/{id}`, once the batch has ended and the provider reported an output folder. Batch lists and responses for a batch with an unpaid charge leave it out.
+   * The output location of a batch submitted with `input`, whose `results` are `null`. Returned only by `GET /batches/{id}`, once the batch has ended and the provider reported an output folder or table. Batch lists and responses for a batch with an unpaid charge leave it out.
    */
   output?: BatchOutputReference | undefined;
   /**
