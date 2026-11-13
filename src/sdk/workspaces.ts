@@ -131,7 +131,7 @@ export class Workspaces extends ClientSDK {
    * Bulk add members to a workspace
    *
    * @remarks
-   * Add multiple organization members to a workspace. Members are assigned the same role they hold in the organization. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Add multiple organization members to a workspace. New members are assigned the workspace role that matches their organization role. Users who are already members of the workspace keep their current role and are not included in the response. [Management key](/docs/guides/overview/auth/management-api-keys) required.
    */
   async bulkAddMembers(
     request: operations.BulkAddWorkspaceMembersRequest,

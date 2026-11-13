@@ -14,7 +14,7 @@ import {
 
 export type BulkAddWorkspaceMembersResponse = {
   /**
-   * Number of workspace memberships created or updated
+   * Number of workspace memberships created
    */
   addedCount: number;
   /**

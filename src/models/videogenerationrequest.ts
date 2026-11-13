@@ -24,7 +24,7 @@ import {
 } from "./traceconfig.js";
 
 /**
- * Aspect ratio of the generated video
+ * Aspect ratio of the generated video. Omit it to use the model default, which on models with adaptive aspect ratio (e.g. BytePlus Seedance) follows the input image or video.
  */
 export const VideoGenerationRequestAspectRatio = {
   OneHundredAndSixtyNine: "16:9",
@@ -38,7 +38,7 @@ export const VideoGenerationRequestAspectRatio = {
   NineHundredAndTwentyOne: "9:21",
 } as const;
 /**
- * Aspect ratio of the generated video
+ * Aspect ratio of the generated video. Omit it to use the model default, which on models with adaptive aspect ratio (e.g. BytePlus Seedance) follows the input image or video.
  */
 export type VideoGenerationRequestAspectRatio = OpenEnum<
   typeof VideoGenerationRequestAspectRatio
@@ -185,6 +185,7 @@ export type VideoGenerationRequestOptions = {
   sfCompute?: { [k: string]: any } | undefined;
   siliconflow?: { [k: string]: any } | undefined;
   sourceful?: { [k: string]: any } | undefined;
+  speechify?: { [k: string]: any } | undefined;
   stealth?: { [k: string]: any } | undefined;
   stepfun?: { [k: string]: any } | undefined;
   streamlake?: { [k: string]: any } | undefined;
@@ -252,7 +253,7 @@ export type VideoGenerationRequestResolution = OpenEnum<
 
 export type VideoGenerationRequest = {
   /**
-   * Aspect ratio of the generated video
+   * Aspect ratio of the generated video. Omit it to use the model default, which on models with adaptive aspect ratio (e.g. BytePlus Seedance) follows the input image or video.
    */
   aspectRatio?: VideoGenerationRequestAspectRatio | undefined;
   /**
@@ -264,7 +265,7 @@ export type VideoGenerationRequest = {
    */
   creativity?: number | undefined;
   /**
-   * Duration of the generated video in seconds
+   * Duration of the generated video in seconds, or -1 to let the provider choose the length (e.g. following an input video). -1 is only accepted by models that list it in supported_durations.
    */
   duration?: number | undefined;
   /**
@@ -499,6 +500,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   "sf-compute"?: { [k: string]: any } | undefined;
   siliconflow?: { [k: string]: any } | undefined;
   sourceful?: { [k: string]: any } | undefined;
+  speechify?: { [k: string]: any } | undefined;
   stealth?: { [k: string]: any } | undefined;
   stepfun?: { [k: string]: any } | undefined;
   streamlake?: { [k: string]: any } | undefined;
@@ -661,6 +663,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   sfCompute: z.record(z.string(), z.any()).optional(),
   siliconflow: z.record(z.string(), z.any()).optional(),
   sourceful: z.record(z.string(), z.any()).optional(),
+  speechify: z.record(z.string(), z.any()).optional(),
   stealth: z.record(z.string(), z.any()).optional(),
   stepfun: z.record(z.string(), z.any()).optional(),
   streamlake: z.record(z.string(), z.any()).optional(),

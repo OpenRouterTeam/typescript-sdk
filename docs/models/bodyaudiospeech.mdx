@@ -1,0 +1,35 @@
+---
+title: "BodyAudioSpeech"
+---
+
+## Example Usage
+
+```typescript
+import { BodyAudioSpeech } from "@openrouter/sdk/models";
+
+let value: BodyAudioSpeech = {
+  audio: {
+    bitsPerSample: 3566.63,
+    channels: 10921,
+    data: "<value>",
+    format: "pcm",
+    sampleRate: 824429,
+  },
+  model: "Cruze",
+  object: "audio.speech",
+  usage: {
+    completionTokens: 463308,
+    promptTokens: 651618,
+    totalTokens: 110464,
+  },
+};
+```
+
+## Fields
+
+| Field                                                      | Type                                                       | Required                                                   | Description                                                |
+| ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| `audio`                                                    | *models.Audio*                                             | ✔️                                         | N/A                                                        |
+| `model`                                                    | *string*                                                   | ✔️                                         | N/A                                                        |
+| `object`                                                   | [models.ObjectAudioSpeech](../models/objectaudiospeech.mdx) | ✔️                                         | N/A                                                        |
+| `usage`                                                    | [models.BodyUsage4](../models/bodyusage4.mdx)               | ✔️                                         | N/A                                                        |

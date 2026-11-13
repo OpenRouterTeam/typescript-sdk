@@ -5221,6 +5221,17 @@ components:
       required:
         - 'error'
       type: 'object'
+    BatchInputReference:
+      additionalProperties: false
+      description: 'A batch input file or table in your own storage, named in place of `requests`. Available to allowlisted callers on Google Vertex BYOK endpoints only.'
+      properties:
+        uri:
+          description: 'URI of the batch input: a Cloud Storage file in the form `gs://bucket/object`, or a BigQuery table in the form `bq://project.dataset.table`. The input stays in your project and must already be in the provider batch input format.'
+          example: 'gs://my-bucket/batches/input.jsonl'
+          type: 'string'
+      required:
+        - 'uri'
+      type: 'object'
     BatchListItem:
       description: 'Metadata-only batch object. `results` is always `null` in list responses.'
       properties:
@@ -5258,6 +5269,8 @@ components:
           enum:
             - 'batch'
           type: 'string'
+        output:
+          $ref: '#/components/schemas/BatchOutputReference'
         provider:
           description: 'Provider OpenRouter assigned to run the batch, using the same name as the `provider` field of sync responses.'
           type:
@@ -5514,6 +5527,8 @@ components:
           enum:
             - 'batch'
           type: 'string'
+        output:
+          $ref: '#/components/schemas/BatchOutputReference'
         provider:
           description: 'Provider OpenRouter assigned to run the batch, using the same name as the `provider` field of sync responses.'
           type:
@@ -6140,6 +6155,10 @@ components:
                                 index: 0
                                 object: 'embedding'
                               properties:
+                                document_index:
+                                  description: 'Index of the source document when `input` was a list of documents (contextual embeddings). Absent otherwise.'
+                                  example: 0
+                                  type: 'integer'
                                 embedding:
                                   anyOf:
                                     - items:
@@ -6229,6 +6248,101 @@ components:
                           - 'object'
                           - 'data'
                           - 'model'
+                        type: 'object'
+                      - additionalProperties: false
+                        properties:
+                          audio:
+                            anyOf:
+                              - additionalProperties: false
+                                properties:
+                                  bits_per_sample:
+                                    enum:
+                                      - 16
+                                    type: 'number'
+                                  channels:
+                                    exclusiveMinimum: true
+                                    minimum: 0
+                                    type: 'integer'
+                                  data:
+                                    description: 'Base64-encoded PCM16 audio in the format the sibling fields give.'
+                                    minLength: 1
+                                    type: 'string'
+                                  format:
+                                    enum:
+                                      - 'pcm'
+                                    type: 'string'
+                                  sample_rate:
+                                    exclusiveMinimum: true
+                                    minimum: 0
+                                    type: 'integer'
+                                required:
+                                  - 'format'
+                                  - 'sample_rate'
+                                  - 'channels'
+                                  - 'bits_per_sample'
+                                  - 'data'
+                                type: 'object'
+                              - additionalProperties: false
+                                properties:
+                                  bits_per_sample:
+                                    enum:
+                                      - 16
+                                    type: 'number'
+                                  byte_length:
+                                    exclusiveMinimum: true
+                                    minimum: 0
+                                    type: 'integer'
+                                  channels:
+                                    exclusiveMinimum: true
+                                    minimum: 0
+                                    type: 'integer'
+                                  format:
+                                    enum:
+                                      - 'pcm'
+                                    type: 'string'
+                                  sample_rate:
+                                    exclusiveMinimum: true
+                                    minimum: 0
+                                    type: 'integer'
+                                  sha256:
+                                    pattern: '^[0-9a-f]{64}$'
+                                    type: 'string'
+                                required:
+                                  - 'format'
+                                  - 'sample_rate'
+                                  - 'channels'
+                                  - 'bits_per_sample'
+                                  - 'byte_length'
+                                  - 'sha256'
+                                type: 'object'
+                          model:
+                            type: 'string'
+                          object:
+                            enum:
+                              - 'audio.speech'
+                            type: 'string'
+                          usage:
+                            additionalProperties: false
+                            properties:
+                              completion_tokens:
+                                minimum: 0
+                                type: 'integer'
+                              prompt_tokens:
+                                minimum: 0
+                                type: 'integer'
+                              total_tokens:
+                                minimum: 0
+                                type: 'integer'
+                            required:
+                              - 'prompt_tokens'
+                              - 'completion_tokens'
+                              - 'total_tokens'
+                            type: 'object'
+                        required:
+                          - 'object'
+                          - 'model'
+                          - 'audio'
+                          - 'usage'
                         type: 'object'
                   request_id:
                     type:
@@ -6395,6 +6509,16 @@ components:
         - 'results'
         - 'error'
       type: 'object'
+    BatchOutputReference:
+      description: 'The output location of a batch submitted with `input`, whose `results` are `null`. Returned only by `GET /batches/{id}`, once the batch has ended and the provider reported an output folder or table. Batch lists and responses for a batch with an unpaid charge leave it out.'
+      properties:
+        uri:
+          description: 'URI of the batch output in your own storage. For a Cloud Storage input file it is the output folder, in the form `gs://bucket/folder`, and the files are in the provider batch output format. For a BigQuery input table it is the output table, in the form `bq://project.dataset.table`.'
+          example: 'gs://my-bucket/openrouter-batch/output/org_abc/batch_123/batch_123/prediction-model-2026-01-01T00:00:00.000000Z'
+          type: 'string'
+      required:
+        - 'uri'
+      type: 'object'
     BatchPaymentRequiredResponse:
       description: 'Batch metadata with results withheld (results: null) plus the standard error envelope. Add credits to unlock the already-computed results; the batch is not re-run.'
       properties:
@@ -6433,6 +6557,8 @@ components:
           enum:
             - 'batch'
           type: 'string'
+        output:
+          $ref: '#/components/schemas/BatchOutputReference'
         provider:
           description: 'Provider OpenRouter assigned to run the batch, using the same name as the `provider` field of sync responses.'
           type:
@@ -6642,13 +6768,17 @@ components:
             - '/v1/responses'
             - '/v1/messages'
             - '/v1/embeddings'
+            - '/v1/audio/speech'
           type: 'string'
+        input:
+          $ref: '#/components/schemas/BatchInputReference'
         model:
           minLength: 1
           type: 'string'
         provider:
           $ref: '#/components/schemas/BatchProviderPreferences'
         requests:
+          description: 'The batch requests. Send exactly one of `requests` or `input`; `requests` must be the last field in the request body.'
           items:
             properties:
               body:
@@ -6667,7 +6797,6 @@ components:
       required:
         - 'endpoint'
         - 'model'
-        - 'requests'
       type: 'object'
     BooleanCapability:
       description: 'A supported-or-not flag. Present means the parameter is accepted.'
@@ -7026,7 +7155,7 @@ components:
           - 'user_def456'
       properties:
         user_ids:
-          description: 'List of user IDs to add to the workspace. Members are assigned the same role they hold in the organization.'
+          description: 'List of user IDs to add to the workspace. New members are assigned the workspace role that matches their organization role; users already in the workspace keep their current role.'
           example:
             - 'user_abc123'
             - 'user_def456'
@@ -7049,7 +7178,7 @@ components:
             workspace_id: '550e8400-e29b-41d4-a716-446655440000'
       properties:
         added_count:
-          description: 'Number of workspace memberships created or updated'
+          description: 'Number of workspace memberships created'
           example: 2
           type: 'integer'
         data:
@@ -7231,7 +7360,7 @@ components:
         workspace_id: '550e8400-e29b-41d4-a716-446655440000'
       properties:
         allowed_api_key_hashes:
-          description: 'Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` means no restriction. A workspace-scoped management key can only name API keys in its own workspace.'
+          description: 'Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` means no restriction. Keys newly added to a credential pinned to a workspace must be in that workspace; a listed key that has since moved to another workspace stays listed.'
           example:
             - 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
           items:
@@ -8335,6 +8464,8 @@ components:
             effort: 'medium'
             summary: 'concise'
           properties:
+            context:
+              $ref: '#/components/schemas/ReasoningContext'
             effort:
               description: 'Constrains effort on reasoning for reasoning models'
               enum:
@@ -8350,12 +8481,22 @@ components:
               type:
                 - 'string'
                 - 'null'
+            enabled:
+              description: 'Enables reasoning with default settings. Defaults to being inferred from `effort` or `max_tokens`.'
+              example: true
+              type: 'boolean'
+            exclude:
+              description: 'When true, the model still reasons but the reasoning is omitted from the response. Defaults to false.'
+              example: false
+              type: 'boolean'
             max_tokens:
               description: 'Maximum number of tokens the model may spend on reasoning, for models that take a reasoning token budget instead of an effort level. Cannot be combined with `reasoning.effort` or the top-level `reasoning_effort`: a request that sets both is rejected with "Only one of "reasoning.effort" and "reasoning.max_tokens" can be specified".'
               example: 2000
               type:
                 - 'integer'
                 - 'null'
+            mode:
+              $ref: '#/components/schemas/ReasoningMode'
             summary:
               $ref: '#/components/schemas/ChatReasoningSummaryVerbosityEnum'
           type: 'object'
@@ -9994,6 +10135,23 @@ components:
         - 'pattern'
         - 'action'
       type: 'object'
+    ContentFilterReadEntry:
+      allOf:
+        - $ref: '#/components/schemas/ContentFilterEntry'
+        - properties:
+            is_enforced:
+              description: 'Whether inference applies this pattern. False for a pattern saved before pattern validation that is too complex to run safely; it is kept but skipped until replaced.'
+              example: true
+              type: 'boolean'
+          required:
+            - 'is_enforced'
+          type: 'object'
+      description: 'A custom regex content filter, with whether inference enforces it.'
+      example:
+        action: 'redact'
+        is_enforced: true
+        label: '[API_KEY]'
+        pattern: '\b(sk-[a-zA-Z0-9]{48})\b'
     ContentPartAddedEvent:
       allOf:
         - $ref: '#/components/schemas/BaseContentPartAddedEvent'
@@ -10296,7 +10454,7 @@ components:
         provider: 'openai'
       properties:
         allowed_api_key_hashes:
-          description: 'Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` means no restriction. Must contain at least one hash if provided. Hashes that do not belong to your account return a 400; for a workspace-scoped management key, so do hashes of API keys outside its own workspace.'
+          description: 'Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` means no restriction. Must contain at least one hash if provided. Hashes that do not belong to your account return a 400; for a credential pinned to a workspace, so do hashes of API keys outside that workspace.'
           example:
             - 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
           items:
@@ -10853,7 +11011,7 @@ components:
         type: 'langfuse'
       properties:
         api_key_hashes:
-          description: 'Optional allowlist of OpenRouter API key hashes whose traffic is forwarded. `null` or omitted means all keys. Must contain at least one hash if provided. A workspace-scoped management key can only name API keys in its own workspace; any other hash returns 400.'
+          description: 'Optional allowlist of OpenRouter API key hashes whose traffic is forwarded. `null` or omitted means all keys. Must contain at least one hash if provided. Every hash must belong to an API key in the destination''s workspace; any other hash returns 400.'
           example: null
           items:
             type: 'string'
@@ -11240,7 +11398,7 @@ components:
           format: 'double'
           type: 'number'
         is_data_discount_logging_enabled:
-          description: 'Whether data discount logging is enabled'
+          description: 'Whether data discount logging is enabled. Enabling it requires the account to allow workspace data-discount logging; otherwise the request returns 403.'
           example: true
           type: 'boolean'
         is_observability_broadcast_enabled:
@@ -11367,6 +11525,37 @@ components:
           $ref: '#/components/schemas/CreditPurchase'
       required:
         - 'data'
+      type: 'object'
+    CreditPurchaseUnavailableResponse:
+      example:
+        error:
+          code: 503
+          message: 'The payment transfer could not be confirmed; poll the purchase before retrying'
+          metadata:
+            purchase_id: 'pi_3PqXyZ2eZvKYlo2C0abc1234'
+      properties:
+        error:
+          properties:
+            code:
+              type: 'integer'
+            message:
+              type: 'string'
+            metadata:
+              description: 'Present when the outcome of a paid request is unknown and its purchase is known.'
+              properties:
+                purchase_id:
+                  description: 'The purchase to poll with `GET /api/v1/credits/purchases/{id}` before paying again.'
+                  example: 'pi_3PqXyZ2eZvKYlo2C0abc1234'
+                  type: 'string'
+              required:
+                - 'purchase_id'
+              type: 'object'
+          required:
+            - 'code'
+            - 'message'
+          type: 'object'
+      required:
+        - 'error'
       type: 'object'
     CustomTool:
       description: 'Custom tool configuration'
@@ -15684,10 +15873,11 @@ components:
           description: 'Custom regex content filters applied to request messages'
           example:
             - action: 'redact'
+              is_enforced: true
               label: '[API_KEY]'
               pattern: '\b(sk-[a-zA-Z0-9]{48})\b'
           items:
-            $ref: '#/components/schemas/ContentFilterEntry'
+            $ref: '#/components/schemas/ContentFilterReadEntry'
           type:
             - 'array'
             - 'null'
@@ -16497,6 +16687,139 @@ components:
         - 'throughput'
         - 'request_count'
       type: 'object'
+    ImageGenerationLayer:
+      description: 'Layer metadata, present when the request asked the provider to split the image into layers (Seedream: `provider.options.seed.layer_decomposition: true` with the required `layer_decomposition_options.max_images`, 2 to 16). Decomposition requires `n` to be 1 or omitted; the response returns up to `max_images` images (the base image plus its layers).'
+      example:
+        background: 'transparent'
+        bounding_box:
+          absolute:
+            - 238
+            - 124
+            - 786
+            - 673
+          normalized:
+            - 232
+            - 121
+            - 768
+            - 657
+        description: 'A solid red circle'
+        name: 'Red circle'
+        z_index: 1
+      properties:
+        background:
+          description: 'Whether the layer image has a transparent background'
+          enum:
+            - 'opaque'
+            - 'transparent'
+          type: 'string'
+        bounding_box:
+          $ref: '#/components/schemas/ImageGenerationLayerBoundingBox'
+        description:
+          description: 'Provider description of the layer'
+          type: 'string'
+        name:
+          description: 'Short provider-assigned layer name'
+          type: 'string'
+        text_recognition:
+          $ref: '#/components/schemas/ImageGenerationLayerTextRecognition'
+        z_index:
+          description: 'Stacking order; 0 is the opaque base image and higher values sit on top'
+          type: 'integer'
+      required:
+        - 'z_index'
+      type: 'object'
+    ImageGenerationLayerBoundingBox:
+      description: 'Where a layer sits on the base image'
+      example:
+        absolute:
+          - 238
+          - 124
+          - 786
+          - 673
+        normalized:
+          - 232
+          - 121
+          - 768
+          - 657
+      properties:
+        absolute:
+          description: 'Layer box in pixels of the base image, as `[x_min, y_min, x_max, y_max]`'
+          items:
+            type: 'integer'
+          maxItems: 4
+          minItems: 4
+          type: 'array'
+        normalized:
+          description: 'Layer box scaled to 0-1000 on each axis, as `[x_min, y_min, x_max, y_max]`'
+          items:
+            type: 'integer'
+          maxItems: 4
+          minItems: 4
+          type: 'array'
+      required:
+        - 'absolute'
+        - 'normalized'
+      type: 'object'
+    ImageGenerationLayerTextRecognition:
+      description: 'Text found in the layer, present when the provider ran text recognition'
+      example:
+        lines:
+          - bounding_box:
+              absolute:
+                - 238
+                - 124
+                - 786
+                - 673
+              normalized:
+                - 232
+                - 121
+                - 768
+                - 657
+            runs:
+              - text: 'SALE'
+        text: 'SALE'
+      properties:
+        lines:
+          items:
+            properties:
+              bounding_box:
+                $ref: '#/components/schemas/ImageGenerationLayerBoundingBox'
+              runs:
+                items:
+                  $ref: '#/components/schemas/ImageGenerationLayerTextRun'
+                type: 'array'
+            required:
+              - 'runs'
+            type: 'object'
+          type: 'array'
+        text:
+          description: 'Full text recognized in the layer'
+          type: 'string'
+      required:
+        - 'text'
+      type: 'object'
+    ImageGenerationLayerTextRun:
+      description: 'A run of text that shares one style'
+      example:
+        style:
+          bold: true
+          similar_font_family: 'Menlo'
+        text: 'SALE'
+      properties:
+        style:
+          additionalProperties:
+            anyOf:
+              - type: 'string'
+              - type: 'boolean'
+              - format: 'double'
+                type: 'number'
+          description: 'Font and style the provider recognized for this run, e.g. `similar_font_family`, `foreground_color`, `bold`'
+          type: 'object'
+        text:
+          type: 'string'
+      required:
+        - 'text'
+      type: 'object'
     ImageGenerationProviderPreferences:
       description: 'Provider routing preferences and provider-specific passthrough configuration.'
       example:
@@ -16731,6 +17054,8 @@ components:
               b64_json:
                 description: 'Base64-encoded image bytes'
                 type: 'string'
+              layer:
+                $ref: '#/components/schemas/ImageGenerationLayer'
               media_type:
                 description: 'Media type (MIME type) of the image, e.g. `image/png`, `image/jpeg`, `image/webp`, `image/svg+xml`. May be omitted if the format could not be determined.'
                 example: 'image/png'
@@ -23999,6 +24324,13 @@ components:
                 type: 'string'
               description: 'Custom HTTP headers as a JSON object. For Axiom, use {"Authorization": "Bearer xaat-xxx", "X-Axiom-Dataset": "your-dataset"}'
               type: 'object'
+            metricsEndpoint:
+              description: 'OTLP/HTTP metrics URL. Required when `shouldSendMetrics` (Send OTLP metrics) is true; ignored otherwise.'
+              type: 'string'
+            shouldSendMetrics:
+              default: false
+              description: 'Also send OTLP metrics for each delivered generation to the metrics endpoint, with the same headers.'
+              type: 'boolean'
           required:
             - 'endpoint'
           type: 'object'
@@ -28532,6 +28864,10 @@ components:
           description: 'The deferred-tool index the router showed the model with a pre-search, listing tool sources and names. Replaying the item shows the same index.'
           example: "Deferred tools, found with tool_search and called with tool_exec:\nSources: mcp__sentry (12)."
           type: 'string'
+        catalog_index_note:
+          description: 'Whether the model read, after the catalog index, that the listed sources are those connected so far. Replaying the item shows that note only when this is true. Its wording follows the replaying request: it names `WaitForMcpServers` only while that request carries the tool.'
+          example: true
+          type: 'boolean'
         error:
           description: 'The error message when the tool call failed before producing a result. Set together with `status: ''failed''`; absent on a successful call.'
           example: 'Tool execution failed'
@@ -28614,6 +28950,10 @@ components:
           description: 'The HTTP status code returned by the upstream URL fetch.'
           type: 'integer'
         id:
+          type: 'string'
+        retrieved_at:
+          description: 'The time the content was fetched, as an ISO 8601 timestamp.'
+          example: '2026-11-12T05:27:43.000Z'
           type: 'string'
         status:
           $ref: '#/components/schemas/ToolCallStatus'
@@ -32037,6 +32377,8 @@ components:
         - 'reasoning.encrypted_content'
         - 'output.encrypted_content'
         - 'code_interpreter_call.outputs'
+        - 'web_search_call.results'
+        - 'web_search_call.action.sources'
       example: 'file_search_call.results'
       type: 'string'
     ResponseOutputText:
@@ -32100,6 +32442,61 @@ components:
       required:
         - 'type'
         - 'text'
+      type: 'object'
+    ResponsesBadRequestResponse:
+      description: 'Bad Request - Invalid request parameters or malformed input. Request-shape validation failures carry a Responses API string code (e.g. `invalid_prompt`) with details in the top-level `metadata`; all other failures carry the integer HTTP status.'
+      example:
+        error:
+          code: 'invalid_prompt'
+          message: 'Invalid Responses API request'
+        metadata:
+          raw: '[{"code":"invalid_value","path":["input",0,"type"]}]'
+      properties:
+        error:
+          $ref: '#/components/schemas/ResponsesBadRequestResponseErrorData'
+        metadata:
+          additionalProperties:
+            type: 'string'
+          description: 'Validation details for string-coded errors; `raw` holds the serialized schema issues'
+          example:
+            raw: '[{"code":"invalid_value","path":["input",0,"type"]}]'
+          type:
+            - 'object'
+            - 'null'
+        openrouter_metadata:
+          additionalProperties: {}
+          type:
+            - 'object'
+            - 'null'
+        user_id:
+          type:
+            - 'string'
+            - 'null'
+      required:
+        - 'error'
+      type: 'object'
+    ResponsesBadRequestResponseErrorData:
+      description: 'Error data for ResponsesBadRequestResponse'
+      example:
+        code: 'invalid_prompt'
+        message: 'Invalid Responses API request'
+      properties:
+        code:
+          anyOf:
+            - type: 'integer'
+            - type: 'string'
+          description: 'Integer HTTP status, or a Responses API error code string (e.g. `invalid_prompt`) when the request body fails validation'
+          example: 'invalid_prompt'
+        message:
+          type: 'string'
+        metadata:
+          additionalProperties: {}
+          type:
+            - 'object'
+            - 'null'
+      required:
+        - 'code'
+        - 'message'
       type: 'object'
     ResponsesErrorField:
       description: 'Error information returned from the API'
@@ -33417,7 +33814,7 @@ components:
             $ref: '#/components/schemas/SpeechTurn'
           minItems: 1
           type: 'array'
-      description: 'Text to synthesize, or a list of turns for multi-speaker input. Each turn has its own text, voice, and instructions. Multi-speaker input is supported by Gemini TTS models and by Fish Audio models other than S1.'
+      description: 'Text to synthesize, or a list of turns for multi-speaker input. Each turn has its own text, voice, and instructions. Multi-speaker input is supported by Gemini TTS models, by Fish Audio models other than S1, and by Speechify dialogue models.'
       example: 'Hello world'
     SpeechInputReference:
       description: 'Reference content part for stateless voice cloning or voice design'
@@ -36147,7 +36544,7 @@ components:
         name: 'Updated OpenAI Key'
       properties:
         allowed_api_key_hashes:
-          description: 'Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` clears the restriction. Must contain at least one hash if provided. Hashes that do not belong to your account return a 400; for a workspace-scoped management key, so do hashes of API keys outside its own workspace.'
+          description: 'Optional allowlist of OpenRouter API key hashes (`api_keys.hash`) that may use this credential. `null` clears the restriction. Must contain at least one hash if provided. Hashes that do not belong to your account return a 400; for a credential pinned to a workspace, so do hashes of API keys outside that workspace, unless the credential already lists them (a listed key that has since moved to another workspace stays listed and can be written back).'
           example:
             - 'f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943'
           items:
@@ -36599,7 +36996,7 @@ components:
         name: 'Updated Langfuse'
       properties:
         api_key_hashes:
-          description: 'Optional allowlist of OpenRouter API key hashes. `null` clears the filter (all keys). Omitting leaves the current value, including any API key from another workspace that an organization-scoped key attached. Must contain at least one hash if provided. A workspace-scoped management key can only name API keys in its own workspace; any other hash returns 400.'
+          description: 'Optional allowlist of OpenRouter API key hashes. `null` clears the filter (all keys). Omitting leaves the current value. Must contain at least one hash if provided. Every hash must belong to an API key in the destination''s workspace; any other hash returns 400. A hash the destination already lists is kept even if that key has since moved to another workspace, so an already-listed hash can always be written back.'
           example: null
           items:
             type: 'string'
@@ -36983,7 +37380,7 @@ components:
           format: 'double'
           type: 'number'
         is_data_discount_logging_enabled:
-          description: 'Whether data discount logging is enabled'
+          description: 'Whether data discount logging is enabled. Enabling it requires the account to allow workspace data-discount logging; otherwise the request returns 403.'
           example: true
           type: 'boolean'
         is_observability_broadcast_enabled:
@@ -37780,7 +38177,7 @@ components:
         resolution: '720p'
       properties:
         aspect_ratio:
-          description: 'Aspect ratio of the generated video'
+          description: 'Aspect ratio of the generated video. Omit it to use the model default, which on models with adaptive aspect ratio (e.g. BytePlus Seedance) follows the input image or video.'
           enum:
             - '16:9'
             - '9:16'
@@ -37803,9 +38200,9 @@ components:
           example: 1
           type: 'integer'
         duration:
-          description: 'Duration of the generated video in seconds'
+          description: 'Duration of the generated video in seconds, or -1 to let the provider choose the length (e.g. following an input video). -1 is only accepted by models that list it in supported_durations.'
           example: 8
-          minimum: 1
+          minimum: -1
           type: 'integer'
         frame_images:
           description: 'Images to use as the first and/or last frame of the generated video. Each image must specify a frame_type of first_frame or last_frame.'
@@ -38080,7 +38477,7 @@ components:
             - 'array'
             - 'null'
         supported_durations:
-          description: 'Supported video durations in seconds'
+          description: 'Supported video durations in seconds. -1 means the model accepts duration -1 and chooses the length itself.'
           items:
             type: 'integer'
           type:
@@ -40716,7 +41113,7 @@ paths:
           results: '$.data'
         type: 'cursor'
     post:
-      description: 'Creates a batch of requests that run asynchronously against a single endpoint (`/v1/chat/completions`, `/v1/responses`, `/v1/messages`, `/v1/embeddings`). Returns `202` with `status: "validating"`. Poll `GET /batches/{id}` for progress and results. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart).'
+      description: 'Creates a batch of requests that run asynchronously against a single endpoint (`/v1/chat/completions`, `/v1/responses`, `/v1/messages`, `/v1/embeddings`, `/v1/audio/speech`). Returns `202` with `status: "validating"`. Poll `GET /batches/{id}` for progress and results. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart).'
       operationId: 'createBatches'
       requestBody:
         content:
@@ -42739,6 +43136,22 @@ paths:
       x-speakeasy-ignore: true
       x-speakeasy-name-override: 'createCoinbaseCharge'
   /credits/purchases:
+    get:
+      operationId: 'getCreditPurchasesSetupGuide'
+      responses:
+        '200':
+          content:
+            text/markdown:
+              schema:
+                type: 'string'
+          description: 'Markdown document, readable without a key.'
+      security: []
+      summary: 'Agent setup guide, served at the purchases collection'
+      tags:
+        - 'Credits'
+      x-fern-ignore: true
+      x-hidden: true
+      x-speakeasy-ignore: true
     post:
       description: 'Starts an agent credit purchase paid with a Machine Payments Protocol (MPP) credential: USDC on Tempo, or a card when one is offered. The first call answers `402` with one `WWW-Authenticate: Payment ...` challenge per payment option; pay one of them and retry the same request, same `Idempotency-Key`, with the signed credential in `Payment-Authorization: Payment ...` (or in `Authorization: Payment ...` when the management key is sent as `X-Api-Key`). A paid request answers `202`: the transfer was broadcast or the card was charged, and the payment is still being confirmed, so credits arrive asynchronously. Poll the URL in the `Location` header, `GET /api/v1/credits/purchases/{id}`, until `status` is `credited` or `failed`.'
       operationId: 'createCreditsPurchases'
@@ -42874,13 +43287,17 @@ paths:
         '503':
           content:
             application/json:
-              example:
-                error:
-                  code: 503
-                  message: 'Service temporarily unavailable'
               schema:
-                $ref: '#/components/schemas/ServiceUnavailableResponse'
-          description: 'Service Unavailable - Service temporarily unavailable'
+                $ref: '#/components/schemas/CreditPurchaseUnavailableResponse'
+          description: 'Temporarily unavailable, or the outcome of a paid request is unknown. When the outcome is unknown and the purchase is known, `Location` and `error.metadata.purchase_id` name the purchase: poll it before paying again.'
+          headers:
+            Location:
+              description: 'The purchase to poll: `GET /api/v1/credits/purchases/{id}`. Present when the outcome of a paid request is unknown and its purchase is known.'
+              required: false
+              schema:
+                description: 'The purchase to poll: `GET /api/v1/credits/purchases/{id}`. Present when the outcome of a paid request is unknown and its purchase is known.'
+                example: '/api/v1/credits/purchases/pi_3PqXyZ2eZvKYlo2C0abc1234'
+                type: 'string'
       security:
         - bearerAuth: []
       summary: 'Buy credits with a machine payment'
@@ -43519,6 +43936,19 @@ paths:
                         minLength: 1
                         type: 'string'
                       type: 'array'
+                    - description: 'Documents to embed with document-level context: each item is an ordered list of chunk strings. One embedding is returned per chunk, in document order, with `document_index` set on each. Only models that support contextual embeddings accept this shape.'
+                      example:
+                        - - 'Paris is the capital of France.'
+                          - 'It sits on the Seine.'
+                        - - 'Berlin is the capital of Germany.'
+                      items:
+                        items:
+                          minLength: 1
+                          type: 'string'
+                        minItems: 1
+                        type: 'array'
+                      minItems: 1
+                      type: 'array'
                     - items:
                         type: 'number'
                       type: 'array'
@@ -43572,7 +44002,7 @@ paths:
                   description: 'Text, token, or multimodal input(s) to embed'
                   example: 'The quick brown fox jumps over the lazy dog'
                 input_type:
-                  description: 'The type of input (e.g. search_query, search_document)'
+                  description: 'The type of input (e.g. search_query, search_document). Document-chunk input (`string[][]`) is only valid with a document input type.'
                   example: 'search_query'
                   type: 'string'
                 model:
@@ -43638,6 +44068,10 @@ paths:
                         index: 0
                         object: 'embedding'
                       properties:
+                        document_index:
+                          description: 'Index of the source document when `input` was a list of documents (contextual embeddings). Absent otherwise.'
+                          example: 0
+                          type: 'integer'
                         embedding:
                           anyOf:
                             - items:
@@ -54692,7 +55126,7 @@ paths:
         - 'Private Endpoints'
       x-speakeasy-name-override: 'get'
     patch:
-      description: 'Change any of the endpoint fields you own in one call; only the fields present change, and the response is the whole endpoint. `pricing` and `declared_parameters` replace their stored value, `settings` changes only the fields it names (`null` clears a limit or restores the provider default); routing picks these up for subsequent requests on drafts and active endpoints alike. `declared_zdr` and `declared_region` change on drafts and active endpoints alike; on an active endpoint the change keeps its validation and tested parameters, and routing applies it to subsequent requests. `upstream_model_id` and `base_url` re-point a draft: an omitted `upstream_model_id` or `base_url` keeps the stored one, omitted data-policy declarations are kept while the upstream is unchanged and cleared when it changes, and any change to the upstream or declarations of a draft clears earlier validation. Naming `upstream_model_id` or `base_url` on an active endpoint returns 409 `already_active` and writes nothing, even alongside other fields; delete and re-create instead. Every group is checked before anything is written: 400 `parameters_invalid` when `tool_choice` is declared without `tools` tested or declared, 400 `settings_invalid` when `max_prompt_tokens` exceeds the context length, both completion APIs are off, or `excluded_parameters` names a tested parameter, 422 `pricing_invalid` for rates the provider strategy cannot represent. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Change any of the endpoint fields you own in one call; only the fields present change, and the response is the whole endpoint. `pricing` and `declared_parameters` replace their stored value, `settings` changes only the fields it names (`null` clears a limit or restores the provider default); routing picks these up for subsequent requests on drafts and active endpoints alike. `declared_zdr` and `declared_region` change on drafts and active endpoints alike; on an active endpoint the change keeps its validation and tested parameters, and routing applies it to subsequent requests. `upstream_model_id` and `base_url` re-point a draft: an omitted `upstream_model_id` or `base_url` keeps the stored one, omitted data-policy declarations are kept while the upstream is unchanged and cleared when it changes, and any change to the upstream or declarations of a draft clears earlier validation. Naming `upstream_model_id` or `base_url` on an active endpoint returns 409 `already_active` and writes nothing, even alongside other fields; delete and re-create instead. Every group is checked before anything is written: 400 `parameters_invalid` when `tool_choice` is declared without `tools` tested or declared, 400 `settings_invalid` when `max_prompt_tokens` exceeds the context length, both completion APIs are off, or `excluded_parameters` names a tested parameter, 422 `pricing_invalid` for rates the provider strategy cannot represent, or `pricing_cache_read_unsupported` or `pricing_cache_write_unsupported` when that rate is a cache rate the strategy has no SKU for. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'updatePrivateEndpoint'
       parameters:
         - description: 'Stable identifier of the private endpoint.'
@@ -56778,13 +57212,24 @@ paths:
         '400':
           content:
             application/json:
-              example:
-                error:
-                  code: 400
-                  message: 'Invalid request parameters'
+              examples:
+                invalid-parameters:
+                  summary: 'Invalid request parameters'
+                  value:
+                    error:
+                      code: 400
+                      message: 'Invalid request parameters'
+                invalid-request-body:
+                  summary: 'Request body failed Responses API validation'
+                  value:
+                    error:
+                      code: 'invalid_prompt'
+                      message: 'Invalid Responses API request'
+                    metadata:
+                      raw: '[{"code":"invalid_value","path":["input",0,"type"]}]'
               schema:
-                $ref: '#/components/schemas/BadRequestResponse'
-          description: 'Bad Request - Invalid request parameters or malformed input'
+                $ref: '#/components/schemas/ResponsesBadRequestResponse'
+          description: 'Bad Request - Invalid request parameters or malformed input. Request-shape validation failures carry a Responses API string code (e.g. `invalid_prompt`) with details in the top-level `metadata`; all other failures carry the integer HTTP status.'
         '401':
           content:
             application/json:
@@ -60857,7 +61302,7 @@ paths:
         type: 'offsetLimit'
   /workspaces/{id}/members/add:
     post:
-      description: 'Add multiple organization members to a workspace. Members are assigned the same role they hold in the organization. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Add multiple organization members to a workspace. New members are assigned the workspace role that matches their organization role. Users who are already members of the workspace keep their current role and are not included in the response. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'bulkAddWorkspaceMembers'
       parameters:
         - description: 'The workspace ID (UUID) or slug'

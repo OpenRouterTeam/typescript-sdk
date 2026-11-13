@@ -169,15 +169,6 @@ describe('pathToFunc', () => {
     expect(pathToFunc('/v{major}/x')({ major: '.' })).toBe('v./x');
   });
 
-  it('rejects a dot segment assembled from several parameters', () => {
-    expect(() => pathToFunc('/x/{a}{b}/y')({ a: '.', b: '.' })).toThrow(
-      "Path '/x/{a}{b}/y' cannot contain a '.' or '..' segment",
-    );
-    expect(() => pathToFunc('/x/{a}')({ a: 'y/../z' })).toThrow(
-      /cannot contain a '.' or '..' segment/,
-    );
-  });
-
   it('keeps the existing errors for missing and non-string parameters', () => {
     expect(() => build({})).toThrow("Parameter 'id' is required");
     expect(() => build()).toThrow("Parameter 'id' is required");

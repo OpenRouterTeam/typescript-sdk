@@ -8,6 +8,10 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
+  ImageGenerationLayer,
+  ImageGenerationLayer$inboundSchema,
+} from "./imagegenerationlayer.js";
+import {
   ImageGenerationUsage,
   ImageGenerationUsage$inboundSchema,
 } from "./imagegenerationusage.js";
@@ -17,6 +21,10 @@ export type ImageGenerationResponseData = {
    * Base64-encoded image bytes
    */
   b64Json: string;
+  /**
+   * Layer metadata, present when the request asked the provider to split the image into layers (Seedream: `provider.options.seed.layer_decomposition: true` with the required `layer_decomposition_options.max_images`, 2 to 16). Decomposition requires `n` to be 1 or omitted; the response returns up to `max_images` images (the base image plus its layers).
+   */
+  layer?: ImageGenerationLayer | undefined;
   /**
    * Media type (MIME type) of the image, e.g. `image/png`, `image/jpeg`, `image/webp`, `image/svg+xml`. May be omitted if the format could not be determined.
    */
@@ -47,6 +55,7 @@ export const ImageGenerationResponseData$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   b64_json: z.string(),
+  layer: ImageGenerationLayer$inboundSchema.optional(),
   media_type: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {

@@ -7,6 +7,11 @@ import { remap as remap$ } from "../lib/primitives.js";
 import * as openEnums from "../types/enums.js";
 import { ClosedEnum, OpenEnum } from "../types/enums.js";
 import {
+  BatchInputReference,
+  BatchInputReference$Outbound,
+  BatchInputReference$outboundSchema,
+} from "./batchinputreference.js";
+import {
   BatchProviderPreferences,
   BatchProviderPreferences$Outbound,
   BatchProviderPreferences$outboundSchema,
@@ -24,6 +29,7 @@ export const Endpoint = {
   RootV1Responses: "/v1/responses",
   RootV1Messages: "/v1/messages",
   RootV1Embeddings: "/v1/embeddings",
+  RootV1AudioSpeech: "/v1/audio/speech",
 } as const;
 export type Endpoint = OpenEnum<typeof Endpoint>;
 
@@ -45,12 +51,19 @@ export type BatchSubmitBody = {
   callbackUrl?: string | undefined;
   completionWindow?: BatchSubmitBodyCompletionWindow | undefined;
   endpoint: Endpoint;
+  /**
+   * A batch input file or table in your own storage, named in place of `requests`. Available to allowlisted callers on Google Vertex BYOK endpoints only.
+   */
+  input?: BatchInputReference | undefined;
   model: string;
   /**
    * Batch provider routing preferences. Only `provider.only` and `provider.allow_fallbacks` are supported.
    */
   provider?: BatchProviderPreferences | null | undefined;
-  requests: Array<RequestT>;
+  /**
+   * The batch requests. Send exactly one of `requests` or `input`; `requests` must be the last field in the request body.
+   */
+  requests?: Array<RequestT> | undefined;
 };
 
 /** @internal */
@@ -88,9 +101,10 @@ export type BatchSubmitBody$Outbound = {
   callback_url?: string | undefined;
   completion_window: string;
   endpoint: string;
+  input?: BatchInputReference$Outbound | undefined;
   model: string;
   provider?: BatchProviderPreferences$Outbound | null | undefined;
-  requests: Array<RequestT$Outbound>;
+  requests?: Array<RequestT$Outbound> | undefined;
 };
 
 /** @internal */
@@ -103,9 +117,10 @@ export const BatchSubmitBody$outboundSchema: z.ZodType<
     "24h",
   ),
   endpoint: Endpoint$outboundSchema,
+  input: BatchInputReference$outboundSchema.optional(),
   model: z.string(),
   provider: z.nullable(BatchProviderPreferences$outboundSchema).optional(),
-  requests: z.array(z.lazy(() => RequestT$outboundSchema)),
+  requests: z.array(z.lazy(() => RequestT$outboundSchema)).optional(),
 }).transform((v) => {
   return remap$(v, {
     callbackUrl: "callback_url",

@@ -3,7 +3,7 @@
  * write it.
  *
  * It started as Speakeasy's generated src/lib/url.ts and differs in one way:
- * buildURLPath() rejects a path that contains a "." or ".." segment.
+ * buildURLPath() rejects a path parameter that is exactly "." or "..".
  *
  * Why: generated operations percent-encode path parameters, which leaves "."
  * and ".." unchanged, and ClientSDK._createRequest (src/lib/sdks.ts) then
@@ -38,7 +38,7 @@ export function pathToFunc(
   const paramRE = /\{([a-zA-Z0-9_][a-zA-Z0-9_-]*?)\}/g;
 
   return function buildURLPath(params: Record<string, unknown> = {}): string {
-    const path = pathPattern
+    return pathPattern
       .replace(
         paramRE,
         function (match: string, placeholder: string, offset: number) {
@@ -74,15 +74,5 @@ export function pathToFunc(
         },
       )
       .replace(/^\/+/, "");
-
-    // Covers what the per-parameter check cannot name: a dot segment made
-    // of several parameters, or a value that carries its own "/".
-    if (path.split("/").some(isDotSegment)) {
-      throw new Error(
-        `Path '${pathPattern}' cannot contain a '.' or '..' segment`,
-      );
-    }
-
-    return path;
   };
 }

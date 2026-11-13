@@ -59,7 +59,7 @@ export type CreateWorkspaceRequest = {
    */
   ioLoggingSamplingRate?: number | undefined;
   /**
-   * Whether data discount logging is enabled
+   * Whether data discount logging is enabled. Enabling it requires the account to allow workspace data-discount logging; otherwise the request returns 403.
    */
   isDataDiscountLoggingEnabled?: boolean | undefined;
   /**

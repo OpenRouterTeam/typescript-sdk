@@ -10,7 +10,7 @@ import {
 } from "./speechturn.js";
 
 /**
- * Text to synthesize, or a list of turns for multi-speaker input. Each turn has its own text, voice, and instructions. Multi-speaker input is supported by Gemini TTS models and by Fish Audio models other than S1.
+ * Text to synthesize, or a list of turns for multi-speaker input. Each turn has its own text, voice, and instructions. Multi-speaker input is supported by Gemini TTS models, by Fish Audio models other than S1, and by Speechify dialogue models.
  */
 export type SpeechInput = string | Array<SpeechTurn>;
 

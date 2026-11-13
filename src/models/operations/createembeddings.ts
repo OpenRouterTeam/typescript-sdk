@@ -82,6 +82,7 @@ export type Input = {
 export type InputUnion =
   | string
   | Array<string>
+  | Array<Array<string>>
   | Array<number>
   | Array<Array<number>>
   | Array<Input>;
@@ -104,11 +105,12 @@ export type CreateEmbeddingsRequestBody = {
   input:
     | string
     | Array<string>
+    | Array<Array<string>>
     | Array<number>
     | Array<Array<number>>
     | Array<Input>;
   /**
-   * The type of input (e.g. search_query, search_document)
+   * The type of input (e.g. search_query, search_document). Document-chunk input (`string[][]`) is only valid with a document input type.
    */
   inputType?: string | undefined;
   /**
@@ -167,6 +169,10 @@ export type ObjectEmbedding = ClosedEnum<typeof ObjectEmbedding>;
  * A single embedding object
  */
 export type CreateEmbeddingsData = {
+  /**
+   * Index of the source document when `input` was a list of documents (contextual embeddings). Absent otherwise.
+   */
+  documentIndex?: number | undefined;
   /**
    * Embedding vector as an array of floats or a base64 string
    */
@@ -381,6 +387,7 @@ export function inputToJSON(input: Input): string {
 export type InputUnion$Outbound =
   | string
   | Array<string>
+  | Array<Array<string>>
   | Array<number>
   | Array<Array<number>>
   | Array<Input$Outbound>;
@@ -392,6 +399,7 @@ export const InputUnion$outboundSchema: z.ZodType<
 > = z.union([
   z.string(),
   z.array(z.string()),
+  z.array(z.array(z.string())),
   z.array(z.number()),
   z.array(z.array(z.number())),
   z.array(z.lazy(() => Input$outboundSchema)),
@@ -408,6 +416,7 @@ export type CreateEmbeddingsRequestBody$Outbound = {
   input:
     | string
     | Array<string>
+    | Array<Array<string>>
     | Array<number>
     | Array<Array<number>>
     | Array<Input$Outbound>;
@@ -429,6 +438,7 @@ export const CreateEmbeddingsRequestBody$outboundSchema: z.ZodType<
   input: z.union([
     z.string(),
     z.array(z.string()),
+    z.array(z.array(z.string())),
     z.array(z.number()),
     z.array(z.array(z.number())),
     z.array(z.lazy(() => Input$outboundSchema)),
@@ -514,9 +524,14 @@ export const CreateEmbeddingsData$inboundSchema: z.ZodType<
   CreateEmbeddingsData,
   unknown
 > = z.object({
+  document_index: z.int().optional(),
   embedding: z.union([z.array(z.number()), z.string()]),
   index: z.int().optional(),
   object: ObjectEmbedding$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "document_index": "documentIndex",
+  });
 });
 
 export function createEmbeddingsDataFromJSON(

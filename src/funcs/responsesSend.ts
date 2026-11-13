@@ -43,7 +43,7 @@ export function responsesSend(
 ): APIPromise<
   Result<
     models.OpenResponsesResult,
-    | errors.BadRequestResponseError
+    | errors.ResponsesBadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
     | errors.ForbiddenResponseError
@@ -76,7 +76,7 @@ export function responsesSend(
 ): APIPromise<
   Result<
     EventStream<models.StreamEvents>,
-    | errors.BadRequestResponseError
+    | errors.ResponsesBadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
     | errors.ForbiddenResponseError
@@ -107,7 +107,7 @@ export function responsesSend(
 ): APIPromise<
   Result<
     operations.CreateResponsesResponse,
-    | errors.BadRequestResponseError
+    | errors.ResponsesBadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
     | errors.ForbiddenResponseError
@@ -138,7 +138,7 @@ export function responsesSend(
 ): APIPromise<
   Result<
     operations.CreateResponsesResponse,
-    | errors.BadRequestResponseError
+    | errors.ResponsesBadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
     | errors.ForbiddenResponseError
@@ -177,7 +177,7 @@ async function $do(
   [
     Result<
       operations.CreateResponsesResponse,
-      | errors.BadRequestResponseError
+      | errors.ResponsesBadRequestResponseError
       | errors.UnauthorizedResponseError
       | errors.PaymentRequiredResponseError
       | errors.ForbiddenResponseError
@@ -305,7 +305,7 @@ async function $do(
 
   const [result] = await M.match<
     operations.CreateResponsesResponse,
-    | errors.BadRequestResponseError
+    | errors.ResponsesBadRequestResponseError
     | errors.UnauthorizedResponseError
     | errors.PaymentRequiredResponseError
     | errors.ForbiddenResponseError
@@ -330,7 +330,7 @@ async function $do(
   >(
     M.json(200, operations.CreateResponsesResponse$inboundSchema),
     M.sse(200, operations.CreateResponsesResponse$inboundSchema),
-    M.jsonErr(400, errors.BadRequestResponseError$inboundSchema),
+    M.jsonErr(400, errors.ResponsesBadRequestResponseError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedResponseError$inboundSchema),
     M.jsonErr(402, errors.PaymentRequiredResponseError$inboundSchema),
     M.jsonErr(403, errors.ForbiddenResponseError$inboundSchema),

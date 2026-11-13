@@ -55,6 +55,10 @@ import {
   ArmorSafeguardResult,
   ArmorSafeguardResult$inboundSchema,
 } from "./armorsafeguardresult.js";
+import {
+  BatchOutputReference,
+  BatchOutputReference$inboundSchema,
+} from "./batchoutputreference.js";
 import { CostDetails, CostDetails$inboundSchema } from "./costdetails.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import { FinishReason, FinishReason$inboundSchema } from "./finishreason.js";
@@ -123,6 +127,56 @@ export type ResultError = {
   type: string;
 };
 
+export const BatchObjectFormat2 = {
+  Pcm: "pcm",
+} as const;
+export type BatchObjectFormat2 = ClosedEnum<typeof BatchObjectFormat2>;
+
+export type AudioPcm2 = {
+  bitsPerSample: number;
+  byteLength: number;
+  channels: number;
+  format: BatchObjectFormat2;
+  sampleRate: number;
+  sha256: string;
+};
+
+export const BatchObjectFormat1 = {
+  Pcm: "pcm",
+} as const;
+export type BatchObjectFormat1 = ClosedEnum<typeof BatchObjectFormat1>;
+
+export type AudioPcm1 = {
+  bitsPerSample: number;
+  channels: number;
+  /**
+   * Base64-encoded PCM16 audio in the format the sibling fields give.
+   */
+  data: string;
+  format: BatchObjectFormat1;
+  sampleRate: number;
+};
+
+export type Audio = AudioPcm2 | AudioPcm1;
+
+export const ObjectAudioSpeech = {
+  AudioSpeech: "audio.speech",
+} as const;
+export type ObjectAudioSpeech = ClosedEnum<typeof ObjectAudioSpeech>;
+
+export type BodyUsage4 = {
+  completionTokens: number;
+  promptTokens: number;
+  totalTokens: number;
+};
+
+export type BodyAudioSpeech = {
+  audio: AudioPcm2 | AudioPcm1;
+  model: string;
+  object: ObjectAudioSpeech;
+  usage: BodyUsage4;
+};
+
 /**
  * Embedding vector as an array of floats or a base64 string
  */
@@ -137,6 +191,10 @@ export type ObjectEmbedding = ClosedEnum<typeof ObjectEmbedding>;
  * A single embedding object
  */
 export type BatchObjectData = {
+  /**
+   * Index of the source document when `input` was a list of documents (contextual embeddings). Absent otherwise.
+   */
+  documentIndex?: number | undefined;
   /**
    * Embedding vector as an array of floats or a base64 string
    */
@@ -604,10 +662,16 @@ export type Body =
   | OpenResponsesResult
   | BodyMessage
   | BodyChatCompletion
+  | BodyAudioSpeech
   | BodyList;
 
 export type BatchObjectResponse = {
-  body: OpenResponsesResult | BodyMessage | BodyChatCompletion | BodyList;
+  body:
+    | OpenResponsesResult
+    | BodyMessage
+    | BodyChatCompletion
+    | BodyAudioSpeech
+    | BodyList;
   requestId: string | null;
   statusCode: number;
 };
@@ -750,6 +814,10 @@ export type BatchObject = {
   model: string;
   object: BatchObjectObjectBatch;
   /**
+   * The output location of a batch submitted with `input`, whose `results` are `null`. Returned only by `GET /batches/{id}`, once the batch has ended and the provider reported an output folder or table. Batch lists and responses for a batch with an unpaid charge leave it out.
+   */
+  output?: BatchOutputReference | undefined;
+  /**
    * Provider OpenRouter assigned to run the batch, using the same name as the `provider` field of sync responses.
    */
   provider: string | null;
@@ -831,6 +899,135 @@ export function resultErrorFromJSON(
 }
 
 /** @internal */
+export const BatchObjectFormat2$inboundSchema: z.ZodEnum<
+  typeof BatchObjectFormat2
+> = z.enum(BatchObjectFormat2);
+
+/** @internal */
+export const AudioPcm2$inboundSchema: z.ZodType<AudioPcm2, unknown> = z.object({
+  bits_per_sample: z.number(),
+  byte_length: z.int(),
+  channels: z.int(),
+  format: BatchObjectFormat2$inboundSchema,
+  sample_rate: z.int(),
+  sha256: z.string(),
+}).transform((v) => {
+  return remap$(v, {
+    "bits_per_sample": "bitsPerSample",
+    "byte_length": "byteLength",
+    "sample_rate": "sampleRate",
+  });
+});
+
+export function audioPcm2FromJSON(
+  jsonString: string,
+): SafeParseResult<AudioPcm2, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => AudioPcm2$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'AudioPcm2' from JSON`,
+  );
+}
+
+/** @internal */
+export const BatchObjectFormat1$inboundSchema: z.ZodEnum<
+  typeof BatchObjectFormat1
+> = z.enum(BatchObjectFormat1);
+
+/** @internal */
+export const AudioPcm1$inboundSchema: z.ZodType<AudioPcm1, unknown> = z.object({
+  bits_per_sample: z.number(),
+  channels: z.int(),
+  data: z.string(),
+  format: BatchObjectFormat1$inboundSchema,
+  sample_rate: z.int(),
+}).transform((v) => {
+  return remap$(v, {
+    "bits_per_sample": "bitsPerSample",
+    "sample_rate": "sampleRate",
+  });
+});
+
+export function audioPcm1FromJSON(
+  jsonString: string,
+): SafeParseResult<AudioPcm1, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => AudioPcm1$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'AudioPcm1' from JSON`,
+  );
+}
+
+/** @internal */
+export const Audio$inboundSchema: z.ZodType<Audio, unknown> = z.union([
+  z.lazy(() => AudioPcm2$inboundSchema),
+  z.lazy(() => AudioPcm1$inboundSchema),
+]);
+
+export function audioFromJSON(
+  jsonString: string,
+): SafeParseResult<Audio, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Audio$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Audio' from JSON`,
+  );
+}
+
+/** @internal */
+export const ObjectAudioSpeech$inboundSchema: z.ZodEnum<
+  typeof ObjectAudioSpeech
+> = z.enum(ObjectAudioSpeech);
+
+/** @internal */
+export const BodyUsage4$inboundSchema: z.ZodType<BodyUsage4, unknown> = z
+  .object({
+    completion_tokens: z.int(),
+    prompt_tokens: z.int(),
+    total_tokens: z.int(),
+  }).transform((v) => {
+    return remap$(v, {
+      "completion_tokens": "completionTokens",
+      "prompt_tokens": "promptTokens",
+      "total_tokens": "totalTokens",
+    });
+  });
+
+export function bodyUsage4FromJSON(
+  jsonString: string,
+): SafeParseResult<BodyUsage4, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => BodyUsage4$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'BodyUsage4' from JSON`,
+  );
+}
+
+/** @internal */
+export const BodyAudioSpeech$inboundSchema: z.ZodType<
+  BodyAudioSpeech,
+  unknown
+> = z.object({
+  audio: z.union([
+    z.lazy(() => AudioPcm2$inboundSchema),
+    z.lazy(() => AudioPcm1$inboundSchema),
+  ]),
+  model: z.string(),
+  object: ObjectAudioSpeech$inboundSchema,
+  usage: z.lazy(() => BodyUsage4$inboundSchema),
+});
+
+export function bodyAudioSpeechFromJSON(
+  jsonString: string,
+): SafeParseResult<BodyAudioSpeech, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => BodyAudioSpeech$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'BodyAudioSpeech' from JSON`,
+  );
+}
+
+/** @internal */
 export const Embedding$inboundSchema: z.ZodType<Embedding, unknown> = z.union([
   z.array(z.number()),
   z.string(),
@@ -855,9 +1052,14 @@ export const BatchObjectData$inboundSchema: z.ZodType<
   BatchObjectData,
   unknown
 > = z.object({
+  document_index: z.int().optional(),
   embedding: z.union([z.array(z.number()), z.string()]),
   index: z.int().optional(),
   object: ObjectEmbedding$inboundSchema,
+}).transform((v) => {
+  return remap$(v, {
+    "document_index": "documentIndex",
+  });
 });
 
 export function batchObjectDataFromJSON(
@@ -1803,6 +2005,7 @@ export const Body$inboundSchema: z.ZodType<Body, unknown> = z.union([
   OpenResponsesResult$inboundSchema,
   z.lazy(() => BodyMessage$inboundSchema),
   z.lazy(() => BodyChatCompletion$inboundSchema),
+  z.lazy(() => BodyAudioSpeech$inboundSchema),
   z.lazy(() => BodyList$inboundSchema),
 ]);
 
@@ -1825,6 +2028,7 @@ export const BatchObjectResponse$inboundSchema: z.ZodType<
     OpenResponsesResult$inboundSchema,
     z.lazy(() => BodyMessage$inboundSchema),
     z.lazy(() => BodyChatCompletion$inboundSchema),
+    z.lazy(() => BodyAudioSpeech$inboundSchema),
     z.lazy(() => BodyList$inboundSchema),
   ]),
   request_id: z.nullable(z.string()),
@@ -2019,6 +2223,7 @@ export const BatchObject$inboundSchema: z.ZodType<BatchObject, unknown> = z
     id: z.string(),
     model: z.string(),
     object: BatchObjectObjectBatch$inboundSchema,
+    output: BatchOutputReference$inboundSchema.optional(),
     provider: z.nullable(z.string()),
     request_counts: z.lazy(() => BatchObjectRequestCounts$inboundSchema),
     results: z.nullable(z.array(z.lazy(() => Result$inboundSchema))),

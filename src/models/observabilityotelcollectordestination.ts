@@ -22,6 +22,14 @@ export type ObservabilityOtelCollectorDestinationConfig = {
    * Custom HTTP headers as a JSON object. For Axiom, use {"Authorization": "Bearer xaat-xxx", "X-Axiom-Dataset": "your-dataset"}
    */
   headers?: { [k: string]: string } | undefined;
+  /**
+   * OTLP/HTTP metrics URL. Required when `shouldSendMetrics` (Send OTLP metrics) is true; ignored otherwise.
+   */
+  metricsEndpoint?: string | undefined;
+  /**
+   * Also send OTLP metrics for each delivered generation to the metrics endpoint, with the same headers.
+   */
+  shouldSendMetrics: boolean;
 };
 
 export type ObservabilityOtelCollectorDestination = {
@@ -94,6 +102,8 @@ export const ObservabilityOtelCollectorDestinationConfig$inboundSchema:
   z.ZodType<ObservabilityOtelCollectorDestinationConfig, unknown> = z.object({
     endpoint: z.string(),
     headers: z.record(z.string(), z.string()).optional(),
+    metricsEndpoint: z.string().optional(),
+    shouldSendMetrics: z.boolean().default(false),
   });
 
 export function observabilityOtelCollectorDestinationConfigFromJSON(

@@ -153,6 +153,7 @@ export type ImageGenerationProviderPreferencesOptions = {
   sfCompute?: { [k: string]: any } | undefined;
   siliconflow?: { [k: string]: any } | undefined;
   sourceful?: { [k: string]: any } | undefined;
+  speechify?: { [k: string]: any } | undefined;
   stealth?: { [k: string]: any } | undefined;
   stepfun?: { [k: string]: any } | undefined;
   streamlake?: { [k: string]: any } | undefined;
@@ -392,6 +393,7 @@ export type ImageGenerationProviderPreferencesOptions$Outbound = {
   "sf-compute"?: { [k: string]: any } | undefined;
   siliconflow?: { [k: string]: any } | undefined;
   sourceful?: { [k: string]: any } | undefined;
+  speechify?: { [k: string]: any } | undefined;
   stealth?: { [k: string]: any } | undefined;
   stepfun?: { [k: string]: any } | undefined;
   streamlake?: { [k: string]: any } | undefined;
@@ -555,6 +557,7 @@ export const ImageGenerationProviderPreferencesOptions$outboundSchema:
     sfCompute: z.record(z.string(), z.any()).optional(),
     siliconflow: z.record(z.string(), z.any()).optional(),
     sourceful: z.record(z.string(), z.any()).optional(),
+    speechify: z.record(z.string(), z.any()).optional(),
     stealth: z.record(z.string(), z.any()).optional(),
     stepfun: z.record(z.string(), z.any()).optional(),
     streamlake: z.record(z.string(), z.any()).optional(),

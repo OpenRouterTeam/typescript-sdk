@@ -1,0 +1,22 @@
+---
+title: "ResponsesBadRequestResponseError"
+---
+
+Bad Request - Invalid request parameters or malformed input. Request-shape validation failures carry a Responses API string code (e.g. `invalid_prompt`) with details in the top-level `metadata`; all other failures carry the integer HTTP status.
+
+## Example Usage
+
+```typescript
+import { ResponsesBadRequestResponseError } from "@openrouter/sdk/models/errors";
+
+// No examples available for this model
+```
+
+## Fields
+
+| Field                                                                                               | Type                                                                                                | Required                                                                                            | Description                                                                                         | Example                                                                                             |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `error`                                                                                             | [models.ResponsesBadRequestResponseErrorData](../../models/responsesbadrequestresponseerrordata.mdx) | ✔️                                                                                  | Error data for ResponsesBadRequestResponse                                                          | \{<br/>"code": "invalid_prompt",<br/>"message": "Invalid Responses API request"<br/>}                |
+| `metadata`                                                                                          | Record\<string, *string*>                                                                            | ➖                                                                                  | Validation details for string-coded errors; `raw` holds the serialized schema issues                | \{<br/>"raw": "[\{\"code\":\"invalid_value\",\"path\":[\"input\",0,\"type\"]}]"<br/>}                 |
+| `openrouterMetadata`                                                                                | Record\<string, *any*>                                                                               | ➖                                                                                  | N/A                                                                                                 |                                                                                                     |
+| `userId`                                                                                            | *string*                                                                                            | ➖                                                                                  | N/A                                                                                                 |                                                                                                     |

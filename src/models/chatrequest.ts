@@ -141,6 +141,14 @@ import {
   ProviderPreferences$outboundSchema,
 } from "./providerpreferences.js";
 import {
+  ReasoningContext,
+  ReasoningContext$outboundSchema,
+} from "./reasoningcontext.js";
+import {
+  ReasoningMode,
+  ReasoningMode$outboundSchema,
+} from "./reasoningmode.js";
+import {
   ResponseHealingPlugin,
   ResponseHealingPlugin$Outbound,
   ResponseHealingPlugin$outboundSchema,
@@ -216,13 +224,29 @@ export type ChatRequestEffort = OpenEnum<typeof ChatRequestEffort>;
  */
 export type ChatRequestReasoning = {
   /**
+   * Controls which reasoning is available to the model. `auto` uses the model default (same as omitting); `all_turns` includes reasoning from earlier turns passed in input; `current_turn` limits to the current turn only. Only supported by OpenAI GPT-5.6 and newer.
+   */
+  context?: ReasoningContext | null | undefined;
+  /**
    * Constrains effort on reasoning for reasoning models
    */
   effort?: ChatRequestEffort | null | undefined;
   /**
+   * Enables reasoning with default settings. Defaults to being inferred from `effort` or `max_tokens`.
+   */
+  enabled?: boolean | undefined;
+  /**
+   * When true, the model still reasons but the reasoning is omitted from the response. Defaults to false.
+   */
+  exclude?: boolean | undefined;
+  /**
    * Maximum number of tokens the model may spend on reasoning, for models that take a reasoning token budget instead of an effort level. Cannot be combined with `reasoning.effort` or the top-level `reasoning_effort`: a request that sets both is rejected with "Only one of "reasoning.effort" and "reasoning.max_tokens" can be specified".
    */
   maxTokens?: number | null | undefined;
+  /**
+   * Selects the reasoning mode. `standard` is the default; `pro` engages deeper reasoning on models that support it, billed at standard token rates. Only supported by OpenAI GPT-5.6 and newer.
+   */
+  mode?: ReasoningMode | null | undefined;
   summary?: ChatReasoningSummaryVerbosityEnum | null | undefined;
 };
 
@@ -529,8 +553,12 @@ export const ChatRequestEffort$outboundSchema: z.ZodType<
 
 /** @internal */
 export type ChatRequestReasoning$Outbound = {
+  context?: string | null | undefined;
   effort?: string | null | undefined;
+  enabled?: boolean | undefined;
+  exclude?: boolean | undefined;
   max_tokens?: number | null | undefined;
+  mode?: string | null | undefined;
   summary?: string | null | undefined;
 };
 
@@ -539,8 +567,12 @@ export const ChatRequestReasoning$outboundSchema: z.ZodType<
   ChatRequestReasoning$Outbound,
   ChatRequestReasoning
 > = z.object({
+  context: z.nullable(ReasoningContext$outboundSchema).optional(),
   effort: z.nullable(ChatRequestEffort$outboundSchema).optional(),
+  enabled: z.boolean().optional(),
+  exclude: z.boolean().optional(),
   maxTokens: z.nullable(z.int()).optional(),
+  mode: z.nullable(ReasoningMode$outboundSchema).optional(),
   summary: z.nullable(ChatReasoningSummaryVerbosityEnum$outboundSchema)
     .optional(),
 }).transform((v) => {

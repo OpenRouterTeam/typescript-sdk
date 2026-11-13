@@ -7,7 +7,7 @@ import { remap as remap$ } from "../lib/primitives.js";
 
 export type BulkAddWorkspaceMembersRequest = {
   /**
-   * List of user IDs to add to the workspace. Members are assigned the same role they hold in the organization.
+   * List of user IDs to add to the workspace. New members are assigned the workspace role that matches their organization role; users already in the workspace keep their current role.
    */
   userIds: Array<string>;
 };

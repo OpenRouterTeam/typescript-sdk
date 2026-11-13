@@ -3,14 +3,10 @@
  */
 
 import * as z from "zod/v4";
-import { safeParse } from "../lib/schemas.js";
-import { Result as SafeParseResult } from "../types/fp.js";
 import {
   ContentFilterAction,
-  ContentFilterAction$inboundSchema,
   ContentFilterAction$outboundSchema,
 } from "./contentfilteraction.js";
-import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
  * A custom regex content filter that scans request messages for matching patterns.
@@ -30,15 +26,6 @@ export type ContentFilterEntry = {
   pattern: string;
 };
 
-/** @internal */
-export const ContentFilterEntry$inboundSchema: z.ZodType<
-  ContentFilterEntry,
-  unknown
-> = z.object({
-  action: ContentFilterAction$inboundSchema,
-  label: z.nullable(z.string()).optional(),
-  pattern: z.string(),
-});
 /** @internal */
 export type ContentFilterEntry$Outbound = {
   action: string;
@@ -61,14 +48,5 @@ export function contentFilterEntryToJSON(
 ): string {
   return JSON.stringify(
     ContentFilterEntry$outboundSchema.parse(contentFilterEntry),
-  );
-}
-export function contentFilterEntryFromJSON(
-  jsonString: string,
-): SafeParseResult<ContentFilterEntry, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ContentFilterEntry$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ContentFilterEntry' from JSON`,
   );
 }

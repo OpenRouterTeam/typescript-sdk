@@ -1,0 +1,22 @@
+---
+title: "ImageGenerationLayerTextRecognition"
+---
+
+Text found in the layer, present when the provider ran text recognition
+
+## Example Usage
+
+```typescript
+import { ImageGenerationLayerTextRecognition } from "@openrouter/sdk/models";
+
+let value: ImageGenerationLayerTextRecognition = {
+  text: "SALE",
+};
+```
+
+## Fields
+
+| Field                              | Type                               | Required                           | Description                        |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| `lines`                            | [models.Line](../models/line.mdx)[] | ➖                 | N/A                                |
+| `text`                             | *string*                           | ✔️                 | Full text recognized in the layer  |
