@@ -53,7 +53,7 @@ export type BatchSubmitBody = {
   completionWindow?: BatchSubmitBodyCompletionWindow | undefined;
   endpoint: Endpoint;
   /**
-   * A batch input file in your own storage, named in place of `requests`. Available to allowlisted callers on Google Vertex BYOK endpoints only.
+   * A batch input file or table in your own storage, named in place of `requests`. Available to allowlisted callers on Google Vertex BYOK endpoints only.
    */
   input?: BatchInputReference | undefined;
   model: string;
