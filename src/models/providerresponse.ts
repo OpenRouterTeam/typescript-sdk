@@ -80,6 +80,7 @@ export const ProviderResponseProviderName = {
   DeepSeek: "DeepSeek",
   DekaLLM: "DekaLLM",
   DigitalOcean: "DigitalOcean",
+  Doubleword: "Doubleword",
   ElevenLabs: "ElevenLabs",
   Featherless: "Featherless",
   Fireworks: "Fireworks",

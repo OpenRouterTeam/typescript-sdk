@@ -75,6 +75,7 @@ export const Provider = {
   Deepseek: "deepseek",
   Dekallm: "dekallm",
   Digitalocean: "digitalocean",
+  Doubleword: "doubleword",
   Elevenlabs: "elevenlabs",
   Featherless: "featherless",
   Fireworks: "fireworks",

@@ -53,6 +53,7 @@ export type ProviderOptions = {
   deepseek?: { [k: string]: any } | undefined;
   dekallm?: { [k: string]: any } | undefined;
   digitalocean?: { [k: string]: any } | undefined;
+  doubleword?: { [k: string]: any } | undefined;
   elevenlabs?: { [k: string]: any } | undefined;
   enfer?: { [k: string]: any } | undefined;
   fakeProvider?: { [k: string]: any } | undefined;
@@ -213,6 +214,7 @@ export type ProviderOptions$Outbound = {
   deepseek?: { [k: string]: any } | undefined;
   dekallm?: { [k: string]: any } | undefined;
   digitalocean?: { [k: string]: any } | undefined;
+  doubleword?: { [k: string]: any } | undefined;
   elevenlabs?: { [k: string]: any } | undefined;
   enfer?: { [k: string]: any } | undefined;
   "fake-provider"?: { [k: string]: any } | undefined;
@@ -376,6 +378,7 @@ export const ProviderOptions$outboundSchema: z.ZodType<
   deepseek: z.record(z.string(), z.any()).optional(),
   dekallm: z.record(z.string(), z.any()).optional(),
   digitalocean: z.record(z.string(), z.any()).optional(),
+  doubleword: z.record(z.string(), z.any()).optional(),
   elevenlabs: z.record(z.string(), z.any()).optional(),
   enfer: z.record(z.string(), z.any()).optional(),
   fakeProvider: z.record(z.string(), z.any()).optional(),

@@ -44,6 +44,30 @@ export type VideoGenerationRequestAspectRatio = OpenEnum<
   typeof VideoGenerationRequestAspectRatio
 >;
 
+/**
+ * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+ *
+ * @remarks
+ * - allow: (default) allow providers that may train on user data
+ *
+ * - deny: use only providers that do not train on user data. Providers may still retain prompts; set `zdr: true` to exclude retention.
+ */
+export const VideoGenerationRequestDataCollection = {
+  Deny: "deny",
+  Allow: "allow",
+} as const;
+/**
+ * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+ *
+ * @remarks
+ * - allow: (default) allow providers that may train on user data
+ *
+ * - deny: use only providers that do not train on user data. Providers may still retain prompts; set `zdr: true` to exclude retention.
+ */
+export type VideoGenerationRequestDataCollection = OpenEnum<
+  typeof VideoGenerationRequestDataCollection
+>;
+
 export type VideoGenerationRequestIgnore = ProviderName | string;
 
 export type VideoGenerationRequestOnly = ProviderName | string;
@@ -96,6 +120,7 @@ export type VideoGenerationRequestOptions = {
   deepseek?: { [k: string]: any } | undefined;
   dekallm?: { [k: string]: any } | undefined;
   digitalocean?: { [k: string]: any } | undefined;
+  doubleword?: { [k: string]: any } | undefined;
   elevenlabs?: { [k: string]: any } | undefined;
   enfer?: { [k: string]: any } | undefined;
   fakeProvider?: { [k: string]: any } | undefined;
@@ -213,9 +238,18 @@ export type VideoGenerationRequestOptions = {
 export type VideoGenerationRequestOrder = ProviderName | string;
 
 /**
- * Provider routing preferences (order, only, ignore) and provider-specific passthrough configuration
+ * Provider routing preferences (order, only, ignore), request-level data policy (zdr, data_collection) and provider-specific passthrough configuration. No video endpoint currently offers Zero Data Retention, so `zdr: true` fails routing.
  */
 export type VideoGenerationRequestProvider = {
+  /**
+   * Data collection setting. If no available model provider meets the requirement, your request will return an error.
+   *
+   * @remarks
+   * - allow: (default) allow providers that may train on user data
+   *
+   * - deny: use only providers that do not train on user data. Providers may still retain prompts; set `zdr: true` to exclude retention.
+   */
+  dataCollection?: VideoGenerationRequestDataCollection | null | undefined;
   /**
    * List of provider slugs to ignore. If provided, this list is merged with your account-wide ignored provider settings for this request.
    */
@@ -229,6 +263,10 @@ export type VideoGenerationRequestProvider = {
    * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
    */
   order?: Array<ProviderName | string> | null | undefined;
+  /**
+   * Whether to restrict routing to only ZDR (Zero Data Retention) endpoints. When true, only endpoints that do not retain prompts will be used.
+   */
+  zdr?: boolean | null | undefined;
 };
 
 /**
@@ -290,7 +328,7 @@ export type VideoGenerationRequest = {
    */
   prompt?: string | undefined;
   /**
-   * Provider routing preferences (order, only, ignore) and provider-specific passthrough configuration
+   * Provider routing preferences (order, only, ignore), request-level data policy (zdr, data_collection) and provider-specific passthrough configuration. No video endpoint currently offers Zero Data Retention, so `zdr: true` fails routing.
    */
   provider?: VideoGenerationRequestProvider | undefined;
   /**
@@ -328,6 +366,12 @@ export const VideoGenerationRequestAspectRatio$outboundSchema: z.ZodType<
   string,
   VideoGenerationRequestAspectRatio
 > = openEnums.outboundSchema(VideoGenerationRequestAspectRatio);
+
+/** @internal */
+export const VideoGenerationRequestDataCollection$outboundSchema: z.ZodType<
+  string,
+  VideoGenerationRequestDataCollection
+> = openEnums.outboundSchema(VideoGenerationRequestDataCollection);
 
 /** @internal */
 export type VideoGenerationRequestIgnore$Outbound = string | string;
@@ -411,6 +455,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   deepseek?: { [k: string]: any } | undefined;
   dekallm?: { [k: string]: any } | undefined;
   digitalocean?: { [k: string]: any } | undefined;
+  doubleword?: { [k: string]: any } | undefined;
   elevenlabs?: { [k: string]: any } | undefined;
   enfer?: { [k: string]: any } | undefined;
   "fake-provider"?: { [k: string]: any } | undefined;
@@ -574,6 +619,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   deepseek: z.record(z.string(), z.any()).optional(),
   dekallm: z.record(z.string(), z.any()).optional(),
   digitalocean: z.record(z.string(), z.any()).optional(),
+  doubleword: z.record(z.string(), z.any()).optional(),
   elevenlabs: z.record(z.string(), z.any()).optional(),
   enfer: z.record(z.string(), z.any()).optional(),
   fakeProvider: z.record(z.string(), z.any()).optional(),
@@ -755,10 +801,12 @@ export function videoGenerationRequestOrderToJSON(
 
 /** @internal */
 export type VideoGenerationRequestProvider$Outbound = {
+  data_collection?: string | null | undefined;
   ignore?: Array<string | string> | null | undefined;
   only?: Array<string | string> | null | undefined;
   options?: VideoGenerationRequestOptions$Outbound | undefined;
   order?: Array<string | string> | null | undefined;
+  zdr?: boolean | null | undefined;
 };
 
 /** @internal */
@@ -766,6 +814,9 @@ export const VideoGenerationRequestProvider$outboundSchema: z.ZodType<
   VideoGenerationRequestProvider$Outbound,
   VideoGenerationRequestProvider
 > = z.object({
+  dataCollection: z.nullable(
+    VideoGenerationRequestDataCollection$outboundSchema,
+  ).optional(),
   ignore: z.nullable(
     z.array(z.union([ProviderName$outboundSchema, z.string()])),
   ).optional(),
@@ -775,6 +826,11 @@ export const VideoGenerationRequestProvider$outboundSchema: z.ZodType<
     .optional(),
   order: z.nullable(z.array(z.union([ProviderName$outboundSchema, z.string()])))
     .optional(),
+  zdr: z.nullable(z.boolean()).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    dataCollection: "data_collection",
+  });
 });
 
 export function videoGenerationRequestProviderToJSON(
