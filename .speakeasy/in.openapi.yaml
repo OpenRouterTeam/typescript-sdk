@@ -5221,6 +5221,17 @@ components:
       required:
         - 'error'
       type: 'object'
+    BatchInputReference:
+      additionalProperties: false
+      description: 'A batch input file in your own storage, named in place of `requests`. Available to allowlisted callers on Google Vertex BYOK endpoints only.'
+      properties:
+        uri:
+          description: 'Cloud Storage URI of the batch input file, in the form `gs://bucket/object`. The file stays in your bucket and must already be in the provider batch input format.'
+          example: 'gs://my-bucket/batches/input.jsonl'
+          type: 'string'
+      required:
+        - 'uri'
+      type: 'object'
     BatchListItem:
       description: 'Metadata-only batch object. `results` is always `null` in list responses.'
       properties:
@@ -5258,6 +5269,8 @@ components:
           enum:
             - 'batch'
           type: 'string'
+        output:
+          $ref: '#/components/schemas/BatchOutputReference'
         provider:
           description: 'Provider OpenRouter assigned to run the batch, using the same name as the `provider` field of sync responses.'
           type:
@@ -5514,6 +5527,8 @@ components:
           enum:
             - 'batch'
           type: 'string'
+        output:
+          $ref: '#/components/schemas/BatchOutputReference'
         provider:
           description: 'Provider OpenRouter assigned to run the batch, using the same name as the `provider` field of sync responses.'
           type:
@@ -6494,6 +6509,16 @@ components:
         - 'results'
         - 'error'
       type: 'object'
+    BatchOutputReference:
+      description: 'The output location of a batch submitted with `input`, whose `results` are `null`. Returned only by `GET /batches/{id}`, once the batch has ended and the provider reported an output folder. Batch lists and responses for a batch with an unpaid charge leave it out.'
+      properties:
+        uri:
+          description: 'URI of the batch output in your own storage. For a Cloud Storage input file it is the output folder, in the form `gs://bucket/folder`, and the files are in the provider batch output format.'
+          example: 'gs://my-bucket/openrouter-batch/output/org_abc/batch_123/batch_123/prediction-model-2026-01-01T00:00:00.000000Z'
+          type: 'string'
+      required:
+        - 'uri'
+      type: 'object'
     BatchPaymentRequiredResponse:
       description: 'Batch metadata with results withheld (results: null) plus the standard error envelope. Add credits to unlock the already-computed results; the batch is not re-run.'
       properties:
@@ -6532,6 +6557,8 @@ components:
           enum:
             - 'batch'
           type: 'string'
+        output:
+          $ref: '#/components/schemas/BatchOutputReference'
         provider:
           description: 'Provider OpenRouter assigned to run the batch, using the same name as the `provider` field of sync responses.'
           type:
@@ -6743,12 +6770,15 @@ components:
             - '/v1/embeddings'
             - '/v1/audio/speech'
           type: 'string'
+        input:
+          $ref: '#/components/schemas/BatchInputReference'
         model:
           minLength: 1
           type: 'string'
         provider:
           $ref: '#/components/schemas/BatchProviderPreferences'
         requests:
+          description: 'The batch requests. Send exactly one of `requests` or `input`; `requests` must be the last field in the request body.'
           items:
             properties:
               body:
@@ -6767,7 +6797,6 @@ components:
       required:
         - 'endpoint'
         - 'model'
-        - 'requests'
       type: 'object'
     BooleanCapability:
       description: 'A supported-or-not flag. Present means the parameter is accepted.'
@@ -16658,6 +16687,139 @@ components:
         - 'throughput'
         - 'request_count'
       type: 'object'
+    ImageGenerationLayer:
+      description: 'Layer metadata, present when the request asked the provider to split the image into layers (Seedream: `provider.options.seed.layer_decomposition: true` with the required `layer_decomposition_options.max_images`, 2 to 16). Decomposition requires `n` to be 1 or omitted; the response returns up to `max_images` images (the base image plus its layers).'
+      example:
+        background: 'transparent'
+        bounding_box:
+          absolute:
+            - 238
+            - 124
+            - 786
+            - 673
+          normalized:
+            - 232
+            - 121
+            - 768
+            - 657
+        description: 'A solid red circle'
+        name: 'Red circle'
+        z_index: 1
+      properties:
+        background:
+          description: 'Whether the layer image has a transparent background'
+          enum:
+            - 'opaque'
+            - 'transparent'
+          type: 'string'
+        bounding_box:
+          $ref: '#/components/schemas/ImageGenerationLayerBoundingBox'
+        description:
+          description: 'Provider description of the layer'
+          type: 'string'
+        name:
+          description: 'Short provider-assigned layer name'
+          type: 'string'
+        text_recognition:
+          $ref: '#/components/schemas/ImageGenerationLayerTextRecognition'
+        z_index:
+          description: 'Stacking order; 0 is the opaque base image and higher values sit on top'
+          type: 'integer'
+      required:
+        - 'z_index'
+      type: 'object'
+    ImageGenerationLayerBoundingBox:
+      description: 'Where a layer sits on the base image'
+      example:
+        absolute:
+          - 238
+          - 124
+          - 786
+          - 673
+        normalized:
+          - 232
+          - 121
+          - 768
+          - 657
+      properties:
+        absolute:
+          description: 'Layer box in pixels of the base image, as `[x_min, y_min, x_max, y_max]`'
+          items:
+            type: 'integer'
+          maxItems: 4
+          minItems: 4
+          type: 'array'
+        normalized:
+          description: 'Layer box scaled to 0-1000 on each axis, as `[x_min, y_min, x_max, y_max]`'
+          items:
+            type: 'integer'
+          maxItems: 4
+          minItems: 4
+          type: 'array'
+      required:
+        - 'absolute'
+        - 'normalized'
+      type: 'object'
+    ImageGenerationLayerTextRecognition:
+      description: 'Text found in the layer, present when the provider ran text recognition'
+      example:
+        lines:
+          - bounding_box:
+              absolute:
+                - 238
+                - 124
+                - 786
+                - 673
+              normalized:
+                - 232
+                - 121
+                - 768
+                - 657
+            runs:
+              - text: 'SALE'
+        text: 'SALE'
+      properties:
+        lines:
+          items:
+            properties:
+              bounding_box:
+                $ref: '#/components/schemas/ImageGenerationLayerBoundingBox'
+              runs:
+                items:
+                  $ref: '#/components/schemas/ImageGenerationLayerTextRun'
+                type: 'array'
+            required:
+              - 'runs'
+            type: 'object'
+          type: 'array'
+        text:
+          description: 'Full text recognized in the layer'
+          type: 'string'
+      required:
+        - 'text'
+      type: 'object'
+    ImageGenerationLayerTextRun:
+      description: 'A run of text that shares one style'
+      example:
+        style:
+          bold: true
+          similar_font_family: 'Menlo'
+        text: 'SALE'
+      properties:
+        style:
+          additionalProperties:
+            anyOf:
+              - type: 'string'
+              - type: 'boolean'
+              - format: 'double'
+                type: 'number'
+          description: 'Font and style the provider recognized for this run, e.g. `similar_font_family`, `foreground_color`, `bold`'
+          type: 'object'
+        text:
+          type: 'string'
+      required:
+        - 'text'
+      type: 'object'
     ImageGenerationProviderPreferences:
       description: 'Provider routing preferences and provider-specific passthrough configuration.'
       example:
@@ -16892,6 +17054,8 @@ components:
               b64_json:
                 description: 'Base64-encoded image bytes'
                 type: 'string'
+              layer:
+                $ref: '#/components/schemas/ImageGenerationLayer'
               media_type:
                 description: 'Media type (MIME type) of the image, e.g. `image/png`, `image/jpeg`, `image/webp`, `image/svg+xml`. May be omitted if the format could not be determined.'
                 example: 'image/png'
