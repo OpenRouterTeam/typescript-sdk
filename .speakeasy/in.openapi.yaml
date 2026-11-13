@@ -5223,10 +5223,10 @@ components:
       type: 'object'
     BatchInputReference:
       additionalProperties: false
-      description: 'A batch input file in your own storage, named in place of `requests`. Available to allowlisted callers on Google Vertex BYOK endpoints only.'
+      description: 'A batch input file or table in your own storage, named in place of `requests`. Available to allowlisted callers on Google Vertex BYOK endpoints only.'
       properties:
         uri:
-          description: 'Cloud Storage URI of the batch input file, in the form `gs://bucket/object`. The file stays in your bucket and must already be in the provider batch input format.'
+          description: 'URI of the batch input: a Cloud Storage file in the form `gs://bucket/object`, or a BigQuery table in the form `bq://project.dataset.table`. The input stays in your project and must already be in the provider batch input format.'
           example: 'gs://my-bucket/batches/input.jsonl'
           type: 'string'
       required:
@@ -6510,10 +6510,10 @@ components:
         - 'error'
       type: 'object'
     BatchOutputReference:
-      description: 'The output location of a batch submitted with `input`, whose `results` are `null`. Returned only by `GET /batches/{id}`, once the batch has ended and the provider reported an output folder. Batch lists and responses for a batch with an unpaid charge leave it out.'
+      description: 'The output location of a batch submitted with `input`, whose `results` are `null`. Returned only by `GET /batches/{id}`, once the batch has ended and the provider reported an output folder or table. Batch lists and responses for a batch with an unpaid charge leave it out.'
       properties:
         uri:
-          description: 'URI of the batch output in your own storage. For a Cloud Storage input file it is the output folder, in the form `gs://bucket/folder`, and the files are in the provider batch output format.'
+          description: 'URI of the batch output in your own storage. For a Cloud Storage input file it is the output folder, in the form `gs://bucket/folder`, and the files are in the provider batch output format. For a BigQuery input table it is the output table, in the form `bq://project.dataset.table`.'
           example: 'gs://my-bucket/openrouter-batch/output/org_abc/batch_123/batch_123/prediction-model-2026-01-01T00:00:00.000000Z'
           type: 'string'
       required:
