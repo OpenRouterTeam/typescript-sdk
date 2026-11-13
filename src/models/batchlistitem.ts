@@ -21,6 +21,10 @@ import {
   AnthropicUsageIteration,
   AnthropicUsageIteration$inboundSchema,
 } from "./anthropicusageiteration.js";
+import {
+  BatchOutputReference,
+  BatchOutputReference$inboundSchema,
+} from "./batchoutputreference.js";
 import { CostDetails, CostDetails$inboundSchema } from "./costdetails.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
@@ -179,6 +183,10 @@ export type BatchListItem = {
   id: string;
   model: string;
   object: BatchListItemObject;
+  /**
+   * The output location of a batch submitted with `input`, whose `results` are `null`. Returned only by `GET /batches/{id}`, once the batch has ended and the provider reported an output folder. Batch lists and responses for a batch with an unpaid charge leave it out.
+   */
+  output?: BatchOutputReference | undefined;
   /**
    * Provider OpenRouter assigned to run the batch, using the same name as the `provider` field of sync responses.
    */
@@ -391,6 +399,7 @@ export const BatchListItem$inboundSchema: z.ZodType<BatchListItem, unknown> = z
     id: z.string(),
     model: z.string(),
     object: BatchListItemObject$inboundSchema,
+    output: BatchOutputReference$inboundSchema.optional(),
     provider: z.nullable(z.string()),
     request_counts: z.lazy(() => BatchListItemRequestCounts$inboundSchema),
     results: z.nullable(z.any()),

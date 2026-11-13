@@ -25,6 +25,10 @@ export type BatchPaymentRequiredResponseErrorData = {
   model: string;
   object: models.BatchPaymentRequiredResponseObject;
   /**
+   * The output location of a batch submitted with `input`, whose `results` are `null`. Returned only by `GET /batches/{id}`, once the batch has ended and the provider reported an output folder. Batch lists and responses for a batch with an unpaid charge leave it out.
+   */
+  output?: models.BatchOutputReference | undefined;
+  /**
    * Provider OpenRouter assigned to run the batch, using the same name as the `provider` field of sync responses.
    */
   provider: string | null;
@@ -53,6 +57,10 @@ export class BatchPaymentRequiredResponseError extends OpenRouterError {
   id: string;
   model: string;
   object: models.BatchPaymentRequiredResponseObject;
+  /**
+   * The output location of a batch submitted with `input`, whose `results` are `null`. Returned only by `GET /batches/{id}`, once the batch has ended and the provider reported an output folder. Batch lists and responses for a batch with an unpaid charge leave it out.
+   */
+  output?: models.BatchOutputReference | undefined;
   /**
    * Provider OpenRouter assigned to run the batch, using the same name as the `provider` field of sync responses.
    */
@@ -85,6 +93,7 @@ export class BatchPaymentRequiredResponseError extends OpenRouterError {
     this.id = err.id;
     this.model = err.model;
     this.object = err.object;
+    if (err.output != null) this.output = err.output;
     this.provider = err.provider;
     this.requestCounts = err.requestCounts;
     this.results = err.results;
@@ -110,6 +119,7 @@ export const BatchPaymentRequiredResponseError$inboundSchema: z.ZodType<
   id: z.string(),
   model: z.string(),
   object: models.BatchPaymentRequiredResponseObject$inboundSchema,
+  output: models.BatchOutputReference$inboundSchema.optional(),
   provider: z.nullable(z.string()),
   request_counts: z.lazy(() =>
     models.BatchPaymentRequiredResponseRequestCounts$inboundSchema

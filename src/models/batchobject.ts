@@ -56,6 +56,10 @@ import {
   ArmorSafeguardResult,
   ArmorSafeguardResult$inboundSchema,
 } from "./armorsafeguardresult.js";
+import {
+  BatchOutputReference,
+  BatchOutputReference$inboundSchema,
+} from "./batchoutputreference.js";
 import { CostDetails, CostDetails$inboundSchema } from "./costdetails.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import { FinishReason, FinishReason$inboundSchema } from "./finishreason.js";
@@ -810,6 +814,10 @@ export type BatchObject = {
   id: string;
   model: string;
   object: BatchObjectObjectBatch;
+  /**
+   * The output location of a batch submitted with `input`, whose `results` are `null`. Returned only by `GET /batches/{id}`, once the batch has ended and the provider reported an output folder. Batch lists and responses for a batch with an unpaid charge leave it out.
+   */
+  output?: BatchOutputReference | undefined;
   /**
    * Provider OpenRouter assigned to run the batch, using the same name as the `provider` field of sync responses.
    */
@@ -2216,6 +2224,7 @@ export const BatchObject$inboundSchema: z.ZodType<BatchObject, unknown> = z
     id: z.string(),
     model: z.string(),
     object: BatchObjectObjectBatch$inboundSchema,
+    output: BatchOutputReference$inboundSchema.optional(),
     provider: z.nullable(z.string()),
     request_counts: z.lazy(() => BatchObjectRequestCounts$inboundSchema),
     results: z.nullable(z.array(z.lazy(() => Result$inboundSchema))),

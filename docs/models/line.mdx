@@ -1,0 +1,24 @@
+---
+title: "Line"
+---
+
+## Example Usage
+
+```typescript
+import { Line } from "@openrouter/sdk/models";
+
+let value: Line = {
+  runs: [
+    {
+      text: "SALE",
+    },
+  ],
+};
+```
+
+## Fields
+
+| Field                                                                                  | Type                                                                                   | Required                                                                               | Description                                                                            | Example                                                                                |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `boundingBox`                                                                          | [models.ImageGenerationLayerBoundingBox](../models/imagegenerationlayerboundingbox.mdx) | ➖                                                                     | Where a layer sits on the base image                                                   | \{<br/>"absolute": [<br/>238,<br/>124,<br/>786,<br/>673<br/>],<br/>"normalized": [<br/>232,<br/>121,<br/>768,<br/>657<br/>]<br/>} |
+| `runs`                                                                                 | [models.ImageGenerationLayerTextRun](../models/imagegenerationlayertextrun.mdx)[]       | ✔️                                                                     | N/A                                                                                    |                                                                                        |

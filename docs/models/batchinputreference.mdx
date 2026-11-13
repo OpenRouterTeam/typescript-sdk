@@ -1,0 +1,21 @@
+---
+title: "BatchInputReference"
+---
+
+A batch input file in your own storage, named in place of `requests`. Available to allowlisted callers on Google Vertex BYOK endpoints only.
+
+## Example Usage
+
+```typescript
+import { BatchInputReference } from "@openrouter/sdk/models";
+
+let value: BatchInputReference = {
+  uri: "gs://my-bucket/batches/input.jsonl",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                              | Type                                                                                                                                                               | Required                                                                                                                                                           | Description                                                                                                                                                        | Example                                                                                                                                                            |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `uri`                                                                                                                                                              | *string*                                                                                                                                                           | ✔️                                                                                                                                                 | Cloud Storage URI of the batch input file, in the form `gs://bucket/object`. The file stays in your bucket and must already be in the provider batch input format. | gs://my-bucket/batches/input.jsonl                                                                                                                                 |

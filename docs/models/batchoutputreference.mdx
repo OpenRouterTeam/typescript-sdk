@@ -1,0 +1,22 @@
+---
+title: "BatchOutputReference"
+---
+
+The output location of a batch submitted with `input`, whose `results` are `null`. Returned only by `GET /batches/{id}`, once the batch has ended and the provider reported an output folder. Batch lists and responses for a batch with an unpaid charge leave it out.
+
+## Example Usage
+
+```typescript
+import { BatchOutputReference } from "@openrouter/sdk/models";
+
+let value: BatchOutputReference = {
+  uri:
+    "gs://my-bucket/openrouter-batch/output/org_abc/batch_123/batch_123/prediction-model-2026-01-01T00:00:00.000000Z",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                                                         | Type                                                                                                                                                                                          | Required                                                                                                                                                                                      | Description                                                                                                                                                                                   | Example                                                                                                                                                                                       |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `uri`                                                                                                                                                                                         | *string*                                                                                                                                                                                      | ✔️                                                                                                                                                                            | URI of the batch output in your own storage. For a Cloud Storage input file it is the output folder, in the form `gs://bucket/folder`, and the files are in the provider batch output format. | gs://my-bucket/openrouter-batch/output/org_abc/batch_123/batch_123/prediction-model-2026-01-01T00:00:00.000000Z                                                                               |
