@@ -24,12 +24,6 @@ export interface Env {
   OPENROUTER_APP_CATEGORIES?: string | undefined;
 
   OPENROUTER_DEBUG?: boolean | undefined;
-
-  /**
-   * Sets the default server URL used by the SDK. Must include the API version
-   * path, for example `https://openrouter.ai/api/v1`.
-   */
-  OPENROUTER_BASE_URL?: string | undefined;
 }
 
 export const envSchema: z.ZodType<Env, unknown> = z.object({
@@ -40,8 +34,6 @@ export const envSchema: z.ZodType<Env, unknown> = z.object({
   OPENROUTER_APP_CATEGORIES: z.string().optional(),
 
   OPENROUTER_DEBUG: z.unknown().transform(parseEnvFlag).optional(),
-
-  OPENROUTER_BASE_URL: z.string().url().optional(),
 });
 
 function parseEnvFlag(value: unknown): boolean {
