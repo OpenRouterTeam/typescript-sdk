@@ -1,0 +1,33 @@
+---
+title: "ImageGenerationLayerBoundingBox"
+---
+
+Where a layer sits on the base image
+
+## Example Usage
+
+```typescript
+import { ImageGenerationLayerBoundingBox } from "@openrouter/sdk/models";
+
+let value: ImageGenerationLayerBoundingBox = {
+  absolute: [
+    238,
+    124,
+    786,
+    673,
+  ],
+  normalized: [
+    232,
+    121,
+    768,
+    657,
+  ],
+};
+```
+
+## Fields
+
+| Field                                                                      | Type                                                                       | Required                                                                   | Description                                                                |
+| -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `absolute`                                                                 | *number*[]                                                                 | ✔️                                                         | Layer box in pixels of the base image, as `[x_min, y_min, x_max, y_max]`   |
+| `normalized`                                                               | *number*[]                                                                 | ✔️                                                         | Layer box scaled to 0-1000 on each axis, as `[x_min, y_min, x_max, y_max]` |

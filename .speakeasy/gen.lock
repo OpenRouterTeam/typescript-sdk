@@ -1,19 +1,19 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 11a577806bd4fd2907ee5cf2791a5082
+  docChecksum: 76f84da7f29fd254f2a9340c6cb844fc
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.100
-  configChecksum: 709dcbf0dede4208a1027bb24428f92a
+  releaseVersion: 1.5.101
+  configChecksum: e912f0d9d31a881cbdb89e38146c455f
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
 persistentEdits:
-  generation_id: 62b399f0-d84f-4d9f-9d02-2227e9745d28
-  pristine_commit_hash: 592911a56522a4c5e1fa0196991eb5b0b427c200
-  pristine_tree_hash: 5dc042d35d6987b1b615d40353564cb641fb6ba2
+  generation_id: e7218698-a93f-4178-99e9-c460e9db507c
+  pristine_commit_hash: 837b7243a65f75240998dbe55d11bffed86477a4
+  pristine_tree_hash: 2a9cf7d77a10b232d40583e211ea57ca6b38b47e
 features:
   typescript:
     acceptHeaders: 2.81.2
@@ -1938,10 +1938,14 @@ trackedFiles:
     id: 2a1312a38f2a
     last_write_checksum: sha1:3dfdd74a203e55dda10d5e1233436ec0e0c763f8
     pristine_git_object: 52a0d7ef7034b3b4b077b4d91aaf33af18a53117
+  docs/models/batchinputreference.mdx:
+    id: c3be424a4ad9
+    last_write_checksum: sha1:8c46983b43b3a3884fb57c647ff24eb42f6f4d71
+    pristine_git_object: 17afb6fe2183998d5a3d2b4234f019b38002c94b
   docs/models/batchlistitem.mdx:
     id: a023561aadf2
-    last_write_checksum: sha1:9f21f373f5477bcf8e00cd81716a1dd9265ed5ca
-    pristine_git_object: 2d21448f38416708f4820cc9c985659d3d48a132
+    last_write_checksum: sha1:f2bd0344b3e4ef47a4d561ddbc4ad1a74c3ea4d4
+    pristine_git_object: 73cd9b66d1a936645c1cb9209c6460af122bba8a
   docs/models/batchlistitemcompletiontokensdetails.mdx:
     id: 23249e9c1342
     last_write_checksum: sha1:4bbd14665f89c224666ad874da1064740f25d634
@@ -1992,8 +1996,8 @@ trackedFiles:
     pristine_git_object: ee049ee18f96cd7a9b0aa0c052384052268e280a
   docs/models/batchobject.mdx:
     id: c06403eed7f8
-    last_write_checksum: sha1:205ccf6f42f0b7e8d4899dba324058776f46a605
-    pristine_git_object: 212312a7826bef782241d608393bae1994fbb296
+    last_write_checksum: sha1:ae95b56e25eeb90e6dd674bd55f2baa1abc9b39d
+    pristine_git_object: bd18dcaaa340736d057b34e862fbc8de3d2d073d
   docs/models/batchobjectcompletiontokensdetails.mdx:
     id: e2b3ec8653b7
     last_write_checksum: sha1:4f01434fd5450b0653b3c8b267b10049fa52d141
@@ -2086,6 +2090,10 @@ trackedFiles:
     id: 83a126a5d105
     last_write_checksum: sha1:3fe8a5d16db8d924b4219035a3363c6f9e75dac9
     pristine_git_object: 5a00d07cdecb713ffd2787f3d618a3abb6739eaa
+  docs/models/batchoutputreference.mdx:
+    id: 6a981fafa877
+    last_write_checksum: sha1:694526dc96f5469aa4e747f1945020a274dd56d5
+    pristine_git_object: 91b41a45c1f4981e814cb31c0735be56d419a378
   docs/models/batchpaymentrequiredresponsecompletiontokensdetails.mdx:
     id: a1ff93de1c53
     last_write_checksum: sha1:8b76e223b29984f2875fbc6935a861d1523c3412
@@ -2132,8 +2140,8 @@ trackedFiles:
     pristine_git_object: ce374dff4e452599c5f3e2d962aae653e3bbda29
   docs/models/batchsubmitbody.mdx:
     id: 113c1c833017
-    last_write_checksum: sha1:c27429f5c86f9bec935269f9fc463ac28ac5fb70
-    pristine_git_object: 41b8b2361159a24310b7f639ed78eb0b31eb4f14
+    last_write_checksum: sha1:4940415a22118ae8fdc4a7d099df0ed1b4dda459
+    pristine_git_object: dead5d2e217d3dc16abdc3e8e9173981b7c72949
   docs/models/batchsubmitbodycompletionwindow.mdx:
     id: 76f438d6eb6e
     last_write_checksum: sha1:f2f10f32e5bc0d2a2e0dce659d54111a65ba003e
@@ -4971,8 +4979,8 @@ trackedFiles:
     pristine_git_object: 1410a0415b59f59d0825f9ece94853c0574d90eb
   docs/models/errors/batchpaymentrequiredresponseerror.mdx:
     id: 6bbc01c5cb1e
-    last_write_checksum: sha1:4561fc24a53752756fcac88203ffbb27d16e8323
-    pristine_git_object: ba05738695f0857fcd712b19ae832b93cfe92a58
+    last_write_checksum: sha1:b7b7ac7afe168acb097846a34036518f39276d27
+    pristine_git_object: 97a49721ce8d5384bb2b76546a2589f1e1798cb5
   docs/models/errors/clientclosedrequestresponseerror.mdx:
     id: 5d67a63a28a7
     last_write_checksum: sha1:402743e3f883514dbccef335912ffeb3f771961b
@@ -6234,6 +6242,26 @@ trackedFiles:
     id: 4487f08c5465
     last_write_checksum: sha1:e6e0e77c9505f76115023f39d5d9778e42bdba3f
     pristine_git_object: 06ab7666659af6f791f5a4d09bd2d2c109ee620b
+  docs/models/imagegenerationlayer.mdx:
+    id: d1a68db028d0
+    last_write_checksum: sha1:2bda3677fd336543c2ed828626c373f0ce22700b
+    pristine_git_object: 9254612d9f1a699882cd6d20098a67e76a657c34
+  docs/models/imagegenerationlayerbackground.mdx:
+    id: e42d151ed0d8
+    last_write_checksum: sha1:9bfc86d009bb1b11a92a1df4d74b115411cf3a47
+    pristine_git_object: 0a4057b2c6e96cbf11ec4bc2cafa132ffba39d60
+  docs/models/imagegenerationlayerboundingbox.mdx:
+    id: a193f2e4a13c
+    last_write_checksum: sha1:8bb4ca968d09ca8d7cdd71b021209b122db64f52
+    pristine_git_object: b8264f8d0f58b36f832587732ea5e5ff15134d03
+  docs/models/imagegenerationlayertextrecognition.mdx:
+    id: 9e22918500ec
+    last_write_checksum: sha1:e2b36e6a3665acd258997a6b7ad145f0d3fab46e
+    pristine_git_object: 63a1ebbbfec20f170ba27c04437da2741606470b
+  docs/models/imagegenerationlayertextrun.mdx:
+    id: 79bc3474e62e
+    last_write_checksum: sha1:fcb485d29ebe86a2fb1b2c3168f51606ad6f6310
+    pristine_git_object: 0ae5bb471a1b448c89a7e435398ac3618f4362ea
   docs/models/imagegenerationproviderpreferences.mdx:
     id: c4dec1a4193a
     last_write_checksum: sha1:bf10aa510ae60488833729bf3374830e05bf56bd
@@ -6346,8 +6374,8 @@ trackedFiles:
     deleted: true
   docs/models/imagegenerationresponsedata.mdx:
     id: 5feca23bfc53
-    last_write_checksum: sha1:48022a8511446d85063204f9899000b40bc26249
-    pristine_git_object: 1bf4c12ac9bf8de343997bdb3c64f9293cbf11d7
+    last_write_checksum: sha1:49b9501afc9b7c14d8cbc8b50b3dc4be5b1150b2
+    pristine_git_object: 934b5251fe9f2d4d38dc24c9918864be8057132d
   docs/models/imagegenerationservertool.md:
     id: 025e7df31fc2
     last_write_checksum: sha1:b379923bd3d435fa9b9ac9341a16938257a37426
@@ -7164,6 +7192,10 @@ trackedFiles:
     id: 4ac2797095fd
     last_write_checksum: sha1:45eefe4bf307602e1cec85f5f8c131b0d3e50eae
     pristine_git_object: fe1d440797852da7d96ed2a2615032782f419109
+  docs/models/line.mdx:
+    id: 6499db99479b
+    last_write_checksum: sha1:2160a09e2a51be7a4e1437776688c5bbe15cb9bc
+    pristine_git_object: b188d864d5b375fa31628ce45b436d5da1f5379b
   docs/models/listaccountguardrailpoliciesresponse.mdx:
     id: 0f5dbe8185d2
     last_write_checksum: sha1:87aa1155288edab249c11f50a8ff04f2b3e0102b
@@ -9346,8 +9378,8 @@ trackedFiles:
     pristine_git_object: 52e79de217a79dd27976c589606d4fe90f4aa948
   docs/models/operations/createbatchesrequest.mdx:
     id: 52cba981a736
-    last_write_checksum: sha1:8d1a4d5b704af82210c397cd11d0dcbe9f2f3e4a
-    pristine_git_object: 817ca5d147587ee7c5d999bfbb813faa450d6563
+    last_write_checksum: sha1:58b97a4d97269118ca7c4f103975b42db47e7cad
+    pristine_git_object: c1afb654e66b8c958b70372e22f35f9d0c9d62b7
   docs/models/operations/createbudgetpolicyglobals.mdx:
     id: b1dfcdb46a5b
     last_write_checksum: sha1:738ee25a2150ea65a3f88bcf9c121ac0e2783f2a
@@ -14958,6 +14990,10 @@ trackedFiles:
     id: c0d83424d04a
     last_write_checksum: sha1:8af79814bd5a4982600f25b2927a48f6af774ad2
     pristine_git_object: 71ed7d613bf4ceb306cbf5be7aef1cd016a75895
+  docs/models/style.mdx:
+    id: bd572a83e55c
+    last_write_checksum: sha1:fd7e56142d3df50c664c7344afa2350a0cf23738
+    pristine_git_object: 097f915581a989df1ffd43575687d9e1bc2f1423
   docs/models/subagentnestedtool.md:
     id: 64f36dbb6ae1
     last_write_checksum: sha1:a0115ffc5e144eabe874bee90968a8856e9b28b5
@@ -16572,8 +16608,8 @@ trackedFiles:
     pristine_git_object: 5f9aaaa785666416714c3df76102d437e07cb233
   docs/sdks/batch/README.mdx:
     id: e367aa4f4295
-    last_write_checksum: sha1:85dd5c9c85d0568af07109e7e821095b9fe6bd99
-    pristine_git_object: cd410d4c9d556189b73c9bb8cd817de5f4acbb37
+    last_write_checksum: sha1:950620d0318b8c4f6f386f4461b403fc9a73708d
+    pristine_git_object: 5311701dff5dbfab5d05b2af76f7e9e543a22913
   docs/sdks/benchmarks/README.md:
     id: 61c16262af9b
     last_write_checksum: sha1:17fd0e4aa4c358c6298ee9a434a14ff68ce83dbf
@@ -16823,12 +16859,12 @@ trackedFiles:
     pristine_git_object: 410efafd6a7f50d91ccb87131fedbe0c3d47e15a
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:2bf9d4de02607a8a83f640fe9cdcfd4f49529cb7
-    pristine_git_object: 41c41734ee22e5c14f7abb9e81b8d7ba6cb46ff7
+    last_write_checksum: sha1:a9bd6bbbaad753dd703386cbc67628b76d7bc278
+    pristine_git_object: 93ee6264e38051518f1a9b58e1485ad061202a17
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:263cab1235d0c2cdf66b515e2710565f3091381e
-    pristine_git_object: ba69c11af2e587cadb78ed0b4813a9c35d0b8341
+    last_write_checksum: sha1:9c6c6d346ce97d8c13a88041ae6270b677d8c8ee
+    pristine_git_object: 91ef513613bb2d4a5c46b8499df712ab557e3d96
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:5aa66b0b6a5964f3eea7f3098c2eb3c0ee9c0131
@@ -17527,8 +17563,8 @@ trackedFiles:
     pristine_git_object: a187e58707bdb726ca2aff74941efe7493422d4e
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:bf5ec4284a339444810a8b31fb3fbb4a9a14b068
-    pristine_git_object: b852a46222114c84d31fd1b956b2eedf2dfae96a
+    last_write_checksum: sha1:0f75248ed4e6e13636818ed877bb8b4df1c2e525
+    pristine_git_object: 889efc363d9cdb0665931c0a0e94e963085feb55
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:eaac763b22717206a6199104e0403ed17a4e2711
@@ -18247,10 +18283,14 @@ trackedFiles:
     id: 61c415402d74
     last_write_checksum: sha1:b5cdfde3050d682da61f018a5b3dd683eb0235e5
     pristine_git_object: 1b8bf7795089ff1d8333b03619792739db4bbce5
+  src/models/batchinputreference.ts:
+    id: 28a8897d1937
+    last_write_checksum: sha1:fd60135d9e1e50ccd74cca5d6ccb6e51fbcd764c
+    pristine_git_object: 68372a1b2e8264d5ce449994efa97deb8394e6ce
   src/models/batchlistitem.ts:
     id: 7032c65d52eb
-    last_write_checksum: sha1:a570fbf3bdd0d23c62b74b0a3f5e78bbe2cd0ae7
-    pristine_git_object: fbe795fc4aa93ec29af53f91624043f31fb7c902
+    last_write_checksum: sha1:baf68cccdfa09f4fff0b3d33ba7a12a0cba13fb9
+    pristine_git_object: a78ffd8cec8f5577bcb36b3aded6977f2cfbc9be
   src/models/batchlistresponse.ts:
     id: 951626e2dafe
     last_write_checksum: sha1:d57c3c7d0d67d1a17496c0c17e3d2449190b14c4
@@ -18261,8 +18301,12 @@ trackedFiles:
     pristine_git_object: 4e0a13eca780e3b9bf44c3bc61b2338f69a4d007
   src/models/batchobject.ts:
     id: 8103bc5f4aeb
-    last_write_checksum: sha1:635279af350a8fb01a2e36a20286ef401c963a13
-    pristine_git_object: adb7e2072bc95557322312c412fab57a5650fccc
+    last_write_checksum: sha1:4a5f70bd5c618f15091309ff5e515a5e92eb1266
+    pristine_git_object: b54afd7c32bf3337c386880f2957e2d397589214
+  src/models/batchoutputreference.ts:
+    id: e3f617b2f818
+    last_write_checksum: sha1:ca6913fcf45c0aff10b5237a8fe229234f3d9813
+    pristine_git_object: 6bd53d22b666c63df595c76a754a643829fac317
   src/models/batchpaymentrequiredresponseerror.ts:
     id: 9e233f8dd38a
     last_write_checksum: sha1:c649fcdeab97a015fa155cc51540163c469ab871
@@ -18273,8 +18317,8 @@ trackedFiles:
     pristine_git_object: 86c08d8df8d05bf7359a2fbac201d73b019067d8
   src/models/batchsubmitbody.ts:
     id: ae38a7f7eb9d
-    last_write_checksum: sha1:1e51d5287b5d8439d7bbc5742a1785ef055504a8
-    pristine_git_object: 96a18a3d562ccb82d88585330eeffdab1d5ca92d
+    last_write_checksum: sha1:bf4dfa5c93c5c52e20513571cae1cde6c3b9a3af
+    pristine_git_object: efa5dc6653d8cf30bbffdd8f0f6324734a34cc3d
   src/models/booleancapability.ts:
     id: b920d99cecda
     last_write_checksum: sha1:d699ec6e03a7bad0aa439bdf4e2094f1bff5cca3
@@ -19025,8 +19069,8 @@ trackedFiles:
     pristine_git_object: 1e0c611694f58cf13291bf37a01f78a0ef12c563
   src/models/errors/batchpaymentrequiredresponseerror.ts:
     id: 2d141acc5a71
-    last_write_checksum: sha1:8ad7ba3b36a65a80ba5b8878164cdf32cea2a8bf
-    pristine_git_object: 0f8459b404b63b47b802960faf430fcef22a297b
+    last_write_checksum: sha1:1a2356329fffb21ceb604868bce8daf4d6238cd1
+    pristine_git_object: 2dc564bbac638450bb7e4ce6035d0e57771ed794
   src/models/errors/clientclosedrequestresponseerror.ts:
     id: b7ebd71cc56f
     last_write_checksum: sha1:0cc11729313c6a95f1960e0153b2abcc581678a3
@@ -19527,6 +19571,22 @@ trackedFiles:
     id: a157e2a02f24
     last_write_checksum: sha1:7fc8efa7cacdbcd591d2e579a374c9d674a07650
     pristine_git_object: 99b4113103adb9598a3bd88f555231fe55b3c43d
+  src/models/imagegenerationlayer.ts:
+    id: e2d60a7c2586
+    last_write_checksum: sha1:587070a00fabe8059106c91c98212082ae2b0559
+    pristine_git_object: 361ec4c12a0f026c7482525e0663e0991b8e748e
+  src/models/imagegenerationlayerboundingbox.ts:
+    id: 7edcf15c632a
+    last_write_checksum: sha1:2748cedecd34678fbb34e16ba12a6efaaa3a30d4
+    pristine_git_object: 6b8b5df195dd684354be789d66114df957268304
+  src/models/imagegenerationlayertextrecognition.ts:
+    id: a65fb7850c73
+    last_write_checksum: sha1:abd386b1396ae1aec3ae72f71f4244b5736235cf
+    pristine_git_object: e4e6a537ce2716b4d698688a86cccfdf235c7481
+  src/models/imagegenerationlayertextrun.ts:
+    id: b71d171b5081
+    last_write_checksum: sha1:890d9b9bf0367c844687d825c928f2c68301b2dc
+    pristine_git_object: f9f487a5a7633f5176b790f45037814bcb294a6d
   src/models/imagegenerationproviderpreferences.ts:
     id: 55445c92cf9f
     last_write_checksum: sha1:243cec4ea3c8d2c77a9d03c45d0e1c06b07ab620
@@ -19537,8 +19597,8 @@ trackedFiles:
     pristine_git_object: 2f231cea14955153c9d3640e140d2da510f65aa6
   src/models/imagegenerationresponse.ts:
     id: 18aeba0f13cc
-    last_write_checksum: sha1:4cd19da234bbdae4d406bd1cbc9629bd2e15f2a5
-    pristine_git_object: 8599da8502aff20722f5e2135db2acd4eab2f96f
+    last_write_checksum: sha1:b81b35f92daa295a0850e4e63628808490d0b314
+    pristine_git_object: c2e33234c97256b0fe3eaad7fb0ee57745b36e5c
   src/models/imagegenerationservertool.ts:
     id: 1efbad50f534
     last_write_checksum: sha1:a3ad84f7868cae4f36bb52c57fca970640533373
@@ -19613,8 +19673,8 @@ trackedFiles:
     pristine_git_object: 7abdfe096d3adff317db6837dc689c69db92e127
   src/models/index.ts:
     id: f93644b0f37e
-    last_write_checksum: sha1:374685467f7a13e668cf4ebd0e168b4cd9913409
-    pristine_git_object: 25c2ee13a1ca9369503656f84b241a031b33579f
+    last_write_checksum: sha1:11f1471f25a9ec5a26fe191fd96a10089320d700
+    pristine_git_object: b5f18eb999eac61337a0fcaa6fff2f12cb9fca78
   src/models/inputaudio.ts:
     id: 9bdc14c7565f
     last_write_checksum: sha1:cc3b750b39a3c3563b76930fd2989f9bfdb24c1f
@@ -25936,7 +25996,7 @@ examples:
   createBatches:
     chatCompletions:
       requestBody:
-        application/json: {"completion_window": "24h", "endpoint": "/v1/chat/completions", "model": "openai/gpt-4o", "requests": [{"body": {"messages": [{"content": "Summarize ...", "role": "user"}], "model": "openai/gpt-4o"}, "custom_id": "req-0001"}]}
+        application/json: {"completion_window": "24h", "endpoint": "/v1/chat/completions", "model": "openai/gpt-4o"}
       responses:
         "202":
           application/json: {"completion_window": "24h", "created_at": 511243, "endpoint": "<value>", "error": {"message": "<value>"}, "expires_at": 239149, "finalized_at": 665164, "id": "<id>", "model": "CX-9", "object": "batch", "provider": "<value>", "request_counts": {"completed": 719289, "failed": 238478, "total": 928444}, "results": [{"custom_id": "<id>", "error": {"message": "<value>", "param": "<value>", "type": "<value>"}, "id": "<id>", "response": {"body": {"completed_at": 1704067210, "created_at": 1704067200, "error": null, "frequency_penalty": null, "id": "resp-abc123", "incomplete_details": null, "instructions": null, "metadata": null, "model": "gpt-4", "object": "response", "output": [{"content": [{"text": "Hello! How can I help you today?", "type": "output_text"}], "id": "msg-abc123", "role": "assistant", "type": "message"}], "parallel_tool_calls": true, "presence_penalty": null, "status": "completed", "temperature": null, "tool_choice": "auto", "tools": [], "top_p": null}, "request_id": "<id>", "status_code": 296735}}], "status": "in_progress", "usage": {"completion_tokens": 323461, "prompt_tokens": 784076, "total_tokens": 757531}}
@@ -25946,7 +26006,7 @@ examples:
           application/json: {"error": {"code": 400, "message": "custom_id is required on requests[0]."}}
     messages:
       requestBody:
-        application/json: {"completion_window": "24h", "endpoint": "/v1/messages", "model": "openai/gpt-5-nano", "requests": [{"body": {"max_tokens": 1024, "messages": [{"content": "Summarize ...", "role": "user"}], "model": "openai/gpt-5-nano"}, "custom_id": "req-0001"}]}
+        application/json: {"completion_window": "24h", "endpoint": "/v1/messages", "model": "openai/gpt-5-nano"}
       responses:
         "202":
           application/json: {"completion_window": "24h", "created_at": 511243, "endpoint": "<value>", "error": {"message": "<value>"}, "expires_at": 239149, "finalized_at": 665164, "id": "<id>", "model": "CX-9", "object": "batch", "provider": "<value>", "request_counts": {"completed": 719289, "failed": 238478, "total": 928444}, "results": [{"custom_id": "<id>", "error": {"message": "<value>", "param": "<value>", "type": "<value>"}, "id": "<id>", "response": {"body": {"completed_at": 1704067210, "created_at": 1704067200, "error": null, "frequency_penalty": null, "id": "resp-abc123", "incomplete_details": null, "instructions": null, "metadata": null, "model": "gpt-4", "object": "response", "output": [{"content": [{"text": "Hello! How can I help you today?", "type": "output_text"}], "id": "msg-abc123", "role": "assistant", "type": "message"}], "parallel_tool_calls": true, "presence_penalty": null, "status": "completed", "temperature": null, "tool_choice": "auto", "tools": [], "top_p": null}, "request_id": "<id>", "status_code": 296735}}], "status": "in_progress", "usage": {"completion_tokens": 323461, "prompt_tokens": 784076, "total_tokens": 757531}}
@@ -25956,7 +26016,7 @@ examples:
           application/json: {"error": {"code": 400, "message": "custom_id is required on requests[0]."}}
     providerPinned:
       requestBody:
-        application/json: {"completion_window": "24h", "endpoint": "/v1/chat/completions", "model": "google/gemini-3.6-flash", "requests": [{"body": {"messages": [{"content": "Summarize ...", "role": "user"}], "model": "google/gemini-3.6-flash"}, "custom_id": "req-0001"}]}
+        application/json: {"completion_window": "24h", "endpoint": "/v1/chat/completions", "model": "google/gemini-3.6-flash"}
       responses:
         "202":
           application/json: {"completion_window": "24h", "created_at": 511243, "endpoint": "<value>", "error": {"message": "<value>"}, "expires_at": 239149, "finalized_at": 665164, "id": "<id>", "model": "CX-9", "object": "batch", "provider": "<value>", "request_counts": {"completed": 719289, "failed": 238478, "total": 928444}, "results": [{"custom_id": "<id>", "error": {"message": "<value>", "param": "<value>", "type": "<value>"}, "id": "<id>", "response": {"body": {"completed_at": 1704067210, "created_at": 1704067200, "error": null, "frequency_penalty": null, "id": "resp-abc123", "incomplete_details": null, "instructions": null, "metadata": null, "model": "gpt-4", "object": "response", "output": [{"content": [{"text": "Hello! How can I help you today?", "type": "output_text"}], "id": "msg-abc123", "role": "assistant", "type": "message"}], "parallel_tool_calls": true, "presence_penalty": null, "status": "completed", "temperature": null, "tool_choice": "auto", "tools": [], "top_p": null}, "request_id": "<id>", "status_code": 296735}}], "status": "in_progress", "usage": {"completion_tokens": 323461, "prompt_tokens": 784076, "total_tokens": 757531}}
@@ -25966,7 +26026,7 @@ examples:
           application/json: {"error": {"code": 400, "message": "custom_id is required on requests[0]."}}
     responses:
       requestBody:
-        application/json: {"completion_window": "24h", "endpoint": "/v1/responses", "model": "openai/gpt-4o", "requests": [{"body": {"input": [{"content": [{"text": "Summarize ...", "type": "input_text"}], "role": "user"}], "model": "openai/gpt-4o"}, "custom_id": "req-0001"}]}
+        application/json: {"completion_window": "24h", "endpoint": "/v1/responses", "model": "openai/gpt-4o"}
       responses:
         "202":
           application/json: {"completion_window": "24h", "created_at": 511243, "endpoint": "<value>", "error": {"message": "<value>"}, "expires_at": 239149, "finalized_at": 665164, "id": "<id>", "model": "CX-9", "object": "batch", "provider": "<value>", "request_counts": {"completed": 719289, "failed": 238478, "total": 928444}, "results": [{"custom_id": "<id>", "error": {"message": "<value>", "param": "<value>", "type": "<value>"}, "id": "<id>", "response": {"body": {"completed_at": 1704067210, "created_at": 1704067200, "error": null, "frequency_penalty": null, "id": "resp-abc123", "incomplete_details": null, "instructions": null, "metadata": null, "model": "gpt-4", "object": "response", "output": [{"content": [{"text": "Hello! How can I help you today?", "type": "output_text"}], "id": "msg-abc123", "role": "assistant", "type": "message"}], "parallel_tool_calls": true, "presence_penalty": null, "status": "completed", "temperature": null, "tool_choice": "auto", "tools": [], "top_p": null}, "request_id": "<id>", "status_code": 296735}}], "status": "in_progress", "usage": {"completion_tokens": 323461, "prompt_tokens": 784076, "total_tokens": 757531}}
@@ -25976,7 +26036,7 @@ examples:
           application/json: {"error": {"code": 400, "message": "custom_id is required on requests[0]."}}
     speakeasy-default-create-batches:
       requestBody:
-        application/json: {"completion_window": "24h", "endpoint": "/v1/responses", "model": "Land Cruiser", "requests": [{"body": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "custom_id": "<id>"}]}
+        application/json: {"completion_window": "24h", "endpoint": "/v1/responses", "model": "Land Cruiser"}
       responses:
         "202":
           application/json: {"completion_window": "24h", "created_at": 511243, "endpoint": "<value>", "error": {"message": "<value>"}, "expires_at": 239149, "finalized_at": 665164, "id": "<id>", "model": "CX-9", "object": "batch", "provider": "<value>", "request_counts": {"completed": 719289, "failed": 238478, "total": 928444}, "results": [{"custom_id": "<id>", "error": {"message": "<value>", "param": "<value>", "type": "<value>"}, "id": "<id>", "response": {"body": {"completed_at": 1704067210, "created_at": 1704067200, "error": null, "frequency_penalty": null, "id": "resp-abc123", "incomplete_details": null, "instructions": null, "metadata": null, "model": "gpt-4", "object": "response", "output": [{"content": [{"text": "Hello! How can I help you today?", "type": "output_text"}], "id": "msg-abc123", "role": "assistant", "type": "message"}], "parallel_tool_calls": true, "presence_penalty": null, "status": "completed", "temperature": null, "tool_choice": "auto", "tools": [], "top_p": null}, "request_id": "<id>", "status_code": 296735}}], "status": "in_progress", "usage": {"completion_tokens": 323461, "prompt_tokens": 784076, "total_tokens": 757531}}
@@ -27553,4 +27613,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.batch.createBatches()`:  `response.results[].response.body.union(OpenResponsesResult).output[].union(openrouter:web_fetch).retrievedAt` **Added**\n* `openrouter.batch.getBatches()`:  `response.results[].response.body.union(OpenResponsesResult).output[].union(openrouter:web_fetch).retrievedAt` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputWebFetchServerToolItem).retrievedAt` **Added**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputWebFetchServerToolItem).retrievedAt` **Added**\n  *  `response` **Changed**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(OutputWebFetchServerToolItem).retrievedAt` **Added**\n  *  `response` **Changed**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.batch.list()`:  `response.data[].output` **Added**\n* `openrouter.batch.createBatches()`: \n  *  `request.batchSubmitBody` **Changed**\n  *  `response.output` **Added**\n* `openrouter.batch.getBatches()`: \n  *  `response.output` **Added**\n  *  `error.output` **Added**\n* `openrouter.images.generate()`:  `response.data[].layer` **Added**\n"
