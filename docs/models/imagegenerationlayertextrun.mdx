@@ -1,0 +1,22 @@
+---
+title: "ImageGenerationLayerTextRun"
+---
+
+A run of text that shares one style
+
+## Example Usage
+
+```typescript
+import { ImageGenerationLayerTextRun } from "@openrouter/sdk/models";
+
+let value: ImageGenerationLayerTextRun = {
+  text: "SALE",
+};
+```
+
+## Fields
+
+| Field                                                                                                       | Type                                                                                                        | Required                                                                                                    | Description                                                                                                 |
+| ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `style`                                                                                                     | Record\<string, *models.Style*>                                                                              | ➖                                                                                          | Font and style the provider recognized for this run, e.g. `similar_font_family`, `foreground_color`, `bold` |
+| `text`                                                                                                      | *string*                                                                                                    | ✔️                                                                                          | N/A                                                                                                         |
