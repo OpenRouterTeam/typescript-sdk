@@ -379,6 +379,7 @@ export type BatchObjectUrlCitation = {
   endIndex: number;
   startIndex: number;
   title: string;
+  uncited?: true | undefined;
   url: string;
 };
 
@@ -1400,6 +1401,7 @@ export const BatchObjectUrlCitation$inboundSchema: z.ZodType<
   end_index: z.int(),
   start_index: z.int(),
   title: z.string(),
+  uncited: z.literal(true).optional(),
   url: z.string(),
 }).transform((v) => {
   return remap$(v, {

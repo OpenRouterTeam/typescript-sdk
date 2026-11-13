@@ -14,6 +14,7 @@ export type URLCitation = {
   startIndex: number;
   title: string;
   type: "url_citation";
+  uncited?: true | undefined;
   url: string;
 };
 
@@ -25,6 +26,7 @@ export const URLCitation$inboundSchema: z.ZodType<URLCitation, unknown> = z
     start_index: z.int(),
     title: z.string(),
     type: z.literal("url_citation"),
+    uncited: z.literal(true).optional(),
     url: z.string(),
   }).transform((v) => {
     return remap$(v, {
@@ -39,6 +41,7 @@ export type URLCitation$Outbound = {
   start_index: number;
   title: string;
   type: "url_citation";
+  uncited?: true | undefined;
   url: string;
 };
 
@@ -52,6 +55,7 @@ export const URLCitation$outboundSchema: z.ZodType<
   startIndex: z.int(),
   title: z.string(),
   type: z.literal("url_citation"),
+  uncited: z.literal(true).optional(),
   url: z.string(),
 }).transform((v) => {
   return remap$(v, {
