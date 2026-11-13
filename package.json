@@ -71,14 +71,14 @@
   },
   "scripts": {
     "lint": "eslint --cache --max-warnings=0 src",
-    "build": "tsc && node scripts/unbarrel-imports.js",
+    "build": "node --max-old-space-size=8192 ./node_modules/typescript/bin/tsc && node scripts/unbarrel-imports.js",
     "prepublishOnly": "npm run build",
     "postinstall": "node scripts/check-types.js || true",
     "test:e2e": "vitest --run --project e2e",
     "test:transit": "exit 0",
     "test:watch": "vitest --watch --project unit",
     "typecheck:transit": "exit 0",
-    "compile": "tsc && node scripts/unbarrel-imports.js",
+    "compile": "node --max-old-space-size=8192 ./node_modules/typescript/bin/tsc && node scripts/unbarrel-imports.js",
     "prepare": "npm run build",
     "test": "vitest --run --project unit",
     "typecheck": "tsc --noEmit"

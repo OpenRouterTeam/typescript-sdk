@@ -70,8 +70,8 @@ typescript:
       access: public
       provenance: true
   additionalScripts:
-    build: tsc && node scripts/unbarrel-imports.js
-    compile: tsc && node scripts/unbarrel-imports.js
+    build: node --max-old-space-size=8192 ./node_modules/typescript/bin/tsc && node scripts/unbarrel-imports.js
+    compile: node --max-old-space-size=8192 ./node_modules/typescript/bin/tsc && node scripts/unbarrel-imports.js
     postinstall: node scripts/check-types.js || true
     prepare: npm run build
     test: vitest --run --project unit
