@@ -5751,6 +5751,9 @@ components:
                                                     type: 'integer'
                                                   title:
                                                     type: 'string'
+                                                  uncited:
+                                                    const: true
+                                                    type: 'boolean'
                                                   url:
                                                     type: 'string'
                                                 required:
@@ -7510,6 +7513,7 @@ components:
         - 'deepseek'
         - 'dekallm'
         - 'digitalocean'
+        - 'doubleword'
         - 'elevenlabs'
         - 'featherless'
         - 'fireworks'
@@ -21105,6 +21109,7 @@ components:
                 - 'DeepSeek'
                 - 'DekaLLM'
                 - 'DigitalOcean'
+                - 'Doubleword'
                 - 'ElevenLabs'
                 - 'Featherless'
                 - 'Fireworks'
@@ -30527,6 +30532,7 @@ components:
         - 'DeepSeek'
         - 'DekaLLM'
         - 'DigitalOcean'
+        - 'Doubleword'
         - 'ElevenLabs'
         - 'Featherless'
         - 'Fireworks'
@@ -30751,6 +30757,9 @@ components:
           additionalProperties: {}
           type: 'object'
         digitalocean:
+          additionalProperties: {}
+          type: 'object'
+        doubleword:
           additionalProperties: {}
           type: 'object'
         elevenlabs:
@@ -31347,6 +31356,7 @@ components:
             - 'DeepSeek'
             - 'DekaLLM'
             - 'DigitalOcean'
+            - 'Doubleword'
             - 'ElevenLabs'
             - 'Featherless'
             - 'Fireworks'
@@ -37494,6 +37504,9 @@ components:
           enum:
             - 'url_citation'
           type: 'string'
+        uncited:
+          const: true
+          type: 'boolean'
         url:
           type: 'string'
       required:
@@ -41728,6 +41741,7 @@ paths:
               - 'deepseek'
               - 'dekallm'
               - 'digitalocean'
+              - 'doubleword'
               - 'elevenlabs'
               - 'featherless'
               - 'fireworks'
