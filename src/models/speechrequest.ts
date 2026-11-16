@@ -160,7 +160,7 @@ export type SpeechRequest = {
    */
   user?: string | undefined;
   /**
-   * Voice identifier (provider-specific).
+   * Voice identifier (provider-specific). Required by most providers; only Seed Audio, HeyGen, Fish Audio, AssemblyAI, Speechify accept requests without it.
    */
   voice?: string | undefined;
 };
