@@ -36,6 +36,8 @@ export const VideoGenerationRequestAspectRatio = {
   TwentyThree: "2:3",
   TwoHundredAndNineteen: "21:9",
   NineHundredAndTwentyOne: "9:21",
+  TwentyOne: "2:1",
+  FiftyTwo: "5:2",
 } as const;
 /**
  * Aspect ratio of the generated video. Omit it to use the model default, which on models with adaptive aspect ratio (e.g. BytePlus Seedance) follows the input image or video.
@@ -311,7 +313,7 @@ export type VideoGenerationRequest = {
    */
   frameImages?: Array<FrameImage> | undefined;
   /**
-   * Whether to generate audio alongside the video. Defaults to the endpoint's generate_audio capability flag, false if not set.
+   * Whether to generate audio alongside the video. Defaults to the endpoint's generate_audio capability flag, false if not set. When neither is set, some providers (such as xAI) apply their own default and generate audio, so send false to request a silent video. Some models always include audio and ignore false.
    */
   generateAudio?: boolean | undefined;
   /**
