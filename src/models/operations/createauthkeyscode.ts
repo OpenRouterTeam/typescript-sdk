@@ -65,7 +65,7 @@ export type CreateAuthKeysCodeRequestBody = {
    */
   callbackUrl: string;
   /**
-   * PKCE code challenge for enhanced security
+   * PKCE code challenge: the base64url-encoded SHA-256 hash of your `code_verifier`. Send it with `code_challenge_method` set to `S256`.
    */
   codeChallenge?: string | undefined;
   /**
