@@ -34350,7 +34350,7 @@ components:
           maxLength: 256
           type: 'string'
         voice:
-          description: 'Voice identifier (provider-specific).'
+          description: 'Voice identifier (provider-specific). Required by most providers; only Seed Audio, HeyGen, Fish Audio, AssemblyAI, Speechify accept requests without it.'
           example: 'en_paul_neutral'
           minLength: 1
           type: 'string'
@@ -46515,6 +46515,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/BadGatewayResponse'
           description: 'Bad Gateway - Provider/upstream API failure'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
         '524':
           content:
             application/json:

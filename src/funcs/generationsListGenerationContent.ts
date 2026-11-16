@@ -44,6 +44,7 @@ export function generationsListGenerationContent(
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
     | errors.BadGatewayResponseError
+    | errors.ServiceUnavailableResponseError
     | errors.EdgeNetworkTimeoutResponseError
     | errors.ProviderOverloadedResponseError
     | OpenRouterError
@@ -78,6 +79,7 @@ async function $do(
       | errors.TooManyRequestsResponseError
       | errors.InternalServerResponseError
       | errors.BadGatewayResponseError
+      | errors.ServiceUnavailableResponseError
       | errors.EdgeNetworkTimeoutResponseError
       | errors.ProviderOverloadedResponseError
       | OpenRouterError
@@ -199,6 +201,7 @@ async function $do(
     | errors.TooManyRequestsResponseError
     | errors.InternalServerResponseError
     | errors.BadGatewayResponseError
+    | errors.ServiceUnavailableResponseError
     | errors.EdgeNetworkTimeoutResponseError
     | errors.ProviderOverloadedResponseError
     | OpenRouterError
@@ -218,6 +221,7 @@ async function $do(
     M.jsonErr(429, errors.TooManyRequestsResponseError$inboundSchema),
     M.jsonErr(500, errors.InternalServerResponseError$inboundSchema),
     M.jsonErr(502, errors.BadGatewayResponseError$inboundSchema),
+    M.jsonErr(503, errors.ServiceUnavailableResponseError$inboundSchema),
     M.jsonErr(524, errors.EdgeNetworkTimeoutResponseError$inboundSchema),
     M.jsonErr(529, errors.ProviderOverloadedResponseError$inboundSchema),
     M.fail("4XX"),
