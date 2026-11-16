@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 96822a2a97eed3f7687bf844c3ec4cee
+  docChecksum: 83d1d4fd3deaf5964f7ad5e0085fb85a
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.106
-  configChecksum: 1c65fc1f31146711f54dd92abc33ae2b
+  releaseVersion: 1.5.107
+  configChecksum: 5fc03d75bb6f5f70ac86e29772ba0e5d
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -23623,4 +23623,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.aspectRatio` **Changed**\n* `openrouter.videoGeneration.listVideosModels()`:  `response.data[]` **Changed**\n"

@@ -8,7 +8,7 @@ import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
 /**
- * Named cost/quality setting. Tiers select cost-percentile bands: low = [0, 20), medium = [20, 40), high = [40, 60), xhigh = [60, 80), and max = [80, 100]. Takes precedence over the deprecated numeric cost_quality_tradeoff when both are provided.
+ * Named cost/quality setting. Tiers select cost-percentile bands: low = [0, 20), medium = [20, 40), high = [40, 60), xhigh = [60, 80), and max = [80, 100]. Takes precedence over the deprecated numeric cost_quality_tradeoff when both are provided. On openrouter/auto-code, low and high pick a cheaper or stronger version of the Auto Code policy (xhigh and max count as high), and medium, or a version that is not available, runs on the default Auto Code policy.
  */
 export const AutoRouterPluginCostTier = {
   Low: "low",
@@ -18,7 +18,7 @@ export const AutoRouterPluginCostTier = {
   Max: "max",
 } as const;
 /**
- * Named cost/quality setting. Tiers select cost-percentile bands: low = [0, 20), medium = [20, 40), high = [40, 60), xhigh = [60, 80), and max = [80, 100]. Takes precedence over the deprecated numeric cost_quality_tradeoff when both are provided.
+ * Named cost/quality setting. Tiers select cost-percentile bands: low = [0, 20), medium = [20, 40), high = [40, 60), xhigh = [60, 80), and max = [80, 100]. Takes precedence over the deprecated numeric cost_quality_tradeoff when both are provided. On openrouter/auto-code, low and high pick a cheaper or stronger version of the Auto Code policy (xhigh and max count as high), and medium, or a version that is not available, runs on the default Auto Code policy.
  */
 export type AutoRouterPluginCostTier = OpenEnum<
   typeof AutoRouterPluginCostTier
@@ -36,7 +36,7 @@ export type AutoRouterPlugin = {
    */
   costQualityTradeoff?: number | undefined;
   /**
-   * Named cost/quality setting. Tiers select cost-percentile bands: low = [0, 20), medium = [20, 40), high = [40, 60), xhigh = [60, 80), and max = [80, 100]. Takes precedence over the deprecated numeric cost_quality_tradeoff when both are provided.
+   * Named cost/quality setting. Tiers select cost-percentile bands: low = [0, 20), medium = [20, 40), high = [40, 60), xhigh = [60, 80), and max = [80, 100]. Takes precedence over the deprecated numeric cost_quality_tradeoff when both are provided. On openrouter/auto-code, low and high pick a cheaper or stronger version of the Auto Code policy (xhigh and max count as high), and medium, or a version that is not available, runs on the default Auto Code policy.
    */
   costTier?: AutoRouterPluginCostTier | undefined;
   /**
