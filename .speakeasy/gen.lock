@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 68de4ce31a2656b2ca5e0a705a32cc65
+  docChecksum: 4f9a9e1f64edf3a49296648781642918
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.104
-  configChecksum: 2ee12e2c4d14e730314d51e991e4c297
+  releaseVersion: 1.5.105
+  configChecksum: 068393d03e66c3c79f09d35674937e04
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -23623,6 +23623,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `openrouter.generations.listGenerationContent()`:  `error.status[503]` **Added**
