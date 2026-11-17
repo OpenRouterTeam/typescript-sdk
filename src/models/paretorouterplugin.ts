@@ -30,7 +30,7 @@ export type ParetoRouterPlugin = {
    */
   maxPrice?: number | undefined;
   /**
-   * Minimum coding quality score between 0 and 1. Maps to internal quality tiers: >= 0.66 → high (top coding models), >= 0.33 → medium (strong modern flagships), < 0.33 → low (capable coders above the median). Omit to default to the highest tier (equivalent to >= 0.66). Not used when max_price is set (price-based selection takes over).
+   * Selects one of three tiers of coding models with a number between 0 and 1. It is not a threshold on a model score: the tiers are groups of the current shortlist of top coding models. >= 0.66 → high (the strongest group), >= 0.33 → medium (the two strongest groups), < 0.33 → low (the whole shortlist). Omit to use the high tier. Not used when max_price is set (price-based selection takes over).
    */
   minCodingScore?: number | undefined;
   /**
