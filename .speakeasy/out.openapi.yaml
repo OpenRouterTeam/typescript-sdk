@@ -51136,6 +51136,7 @@ paths:
       summary: 'List API keys'
       tags:
         - 'API Keys'
+      x-speakeasy-max-method-params: 5
       x-speakeasy-name-override: 'list'
       x-speakeasy-pagination:
         inputs:
