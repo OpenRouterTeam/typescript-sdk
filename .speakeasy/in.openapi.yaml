@@ -26528,6 +26528,12 @@ components:
               $ref: '#/components/schemas/OpenResponsesErrorField'
             error_type:
               $ref: '#/components/schemas/ApiErrorType'
+            input_transformations:
+              description: 'Input items the upstream provider changed before inference (OpenAI `input_transformations`). Present only when the provider reported the field; empty when it changed nothing.'
+              example: []
+              items:
+                $ref: '#/components/schemas/ResponsesInputTransformation'
+              type: 'array'
             openrouter_metadata:
               $ref: '#/components/schemas/OpenRouterMetadata'
             output:
@@ -32668,6 +32674,28 @@ components:
       type:
         - 'object'
         - 'null'
+    ResponsesInputTransformation:
+      description: 'One input item the upstream provider changed before inference, e.g. a replayed reasoning item removed because the conversation before it was edited.'
+      example:
+        action: 'removed'
+        id: 'rs_0ca73592c5f68037016afcc009779887'
+        reason: 'prefix_mismatch'
+        type: 'reasoning'
+      properties:
+        action:
+          type: 'string'
+        id:
+          type: 'string'
+        reason:
+          type: 'string'
+        type:
+          type: 'string'
+      required:
+        - 'id'
+        - 'type'
+        - 'action'
+        - 'reason'
+      type: 'object'
     ResponsesRequest:
       description: 'Request schema for Responses endpoint'
       example:
