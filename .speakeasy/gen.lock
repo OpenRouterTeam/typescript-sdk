@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 217f48946c779fcb64e183e1f04e0b3d
+  docChecksum: 50aca51733ed79077664208445f95d2e
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.109
-  configChecksum: 63669572b40ae36bdd7acec1b4142038
+  releaseVersion: 1.5.110
+  configChecksum: b8177b3fdcf81b083021d56c5a648b48
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -20232,7 +20232,7 @@ examples:
           include_run_config: true
       responses:
         "200":
-          application/json: {"data": [{"agentic_index": 58.3, "coding_index": 65.8, "display_name": "GPT-4o", "intelligence_index": 71.2, "model_permaslug": "openai/gpt-4o", "pricing": {"completion": "0.00001", "prompt": "0.0000025"}, "source": "artificial-analysis"}, {"accuracy": 0.72, "accuracy_stddev": 0.03, "avg_cost_per_task": 0.002, "benchmark_type": "gpqa_diamond", "display_name": "GPT-4o", "last_run_timestamp": "2026-06-03T12:00:00Z", "model_permaslug": "openai/gpt-4o", "source": "openrouter", "total_tasks": 300}], "meta": {"as_of": "2026-06-03T12:00:00Z", "citation": null, "model_count": 1, "source": null, "source_url": null, "task_type": null, "version": "v1"}}
+          application/json: {"data": [{"agentic_index": 55.8, "coding_index": 63.2, "cyber_index": 36.4, "decision_index": 75.7, "display_name": "GPT-4o", "economics_index": 57.2, "engineering_index": 60.4, "finance_and_accounting_index": 58.1, "healthcare_and_medical_index": 56.9, "intelligence_index": 71.4, "legal_index": 52.3, "model_permaslug": "openai/gpt-4o", "multilingual_index": 0.82, "openness_index": 33.3, "pricing": {"completion": "0.00001", "prompt": "0.0000025"}, "source": "artificial-analysis", "strategy_and_ops_index": 61.7}, {"accuracy": 0.72, "accuracy_stddev": 0.03, "avg_cost_per_task": 0.002, "benchmark_type": "gpqa_diamond", "display_name": "GPT-4o", "last_run_timestamp": "2026-06-03T12:00:00Z", "model_permaslug": "openai/gpt-4o", "source": "openrouter", "total_tasks": 300}], "meta": {"as_of": "2026-06-03T12:00:00Z", "citation": null, "model_count": 1, "source": null, "source_url": null, "task_type": null, "version": "v1"}}
         "400":
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "401":
@@ -23623,3 +23623,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.benchmarks.getBenchmarks()`: \n  *  `request.taskType` **Changed**\n  *  `response.data[].union(UnifiedBenchmarksAAItem)` **Changed**\n* `openrouter.embeddings.listModels()`:  `response.data[].benchmarks.artificialAnalysis` **Changed**\n* `openrouter.models.get()`:  `response.data.benchmarks.artificialAnalysis` **Changed**\n* `openrouter.models.list()`: \n  *  `request` **Changed**\n  *  `response.data[].benchmarks.artificialAnalysis` **Changed**\n* `openrouter.models.listForUser()`: \n  *  `request.sort` **Changed**\n  *  `response.data[].benchmarks.artificialAnalysis` **Changed**\n"

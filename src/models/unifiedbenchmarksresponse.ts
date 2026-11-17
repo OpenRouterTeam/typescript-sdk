@@ -28,17 +28,17 @@ import {
 } from "./unifiedbenchmarkssearchitem.js";
 
 export type UnifiedBenchmarksResponseData =
+  | UnifiedBenchmarksAAItem
   | UnifiedBenchmarksSearchItem
   | UnifiedBenchmarksDAItem
-  | UnifiedBenchmarksORItem
-  | UnifiedBenchmarksAAItem;
+  | UnifiedBenchmarksORItem;
 
 export type UnifiedBenchmarksResponse = {
   data: Array<
+    | UnifiedBenchmarksAAItem
     | UnifiedBenchmarksSearchItem
     | UnifiedBenchmarksDAItem
     | UnifiedBenchmarksORItem
-    | UnifiedBenchmarksAAItem
   >;
   meta: UnifiedBenchmarksMeta;
 };
@@ -48,10 +48,10 @@ export const UnifiedBenchmarksResponseData$inboundSchema: z.ZodType<
   UnifiedBenchmarksResponseData,
   unknown
 > = z.union([
+  UnifiedBenchmarksAAItem$inboundSchema,
   UnifiedBenchmarksSearchItem$inboundSchema,
   UnifiedBenchmarksDAItem$inboundSchema,
   UnifiedBenchmarksORItem$inboundSchema,
-  UnifiedBenchmarksAAItem$inboundSchema,
 ]);
 
 export function unifiedBenchmarksResponseDataFromJSON(
@@ -71,10 +71,10 @@ export const UnifiedBenchmarksResponse$inboundSchema: z.ZodType<
 > = z.object({
   data: z.array(
     z.union([
+      UnifiedBenchmarksAAItem$inboundSchema,
       UnifiedBenchmarksSearchItem$inboundSchema,
       UnifiedBenchmarksDAItem$inboundSchema,
       UnifiedBenchmarksORItem$inboundSchema,
-      UnifiedBenchmarksAAItem$inboundSchema,
     ]),
   ),
   meta: UnifiedBenchmarksMeta$inboundSchema,

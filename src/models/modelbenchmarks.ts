@@ -21,7 +21,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  */
 export type ModelBenchmarks = {
   /**
-   * Artificial Analysis benchmark index scores.
+   * Benchmark index scores published by Artificial Analysis (artificialanalysis.ai), one field per index. Each score is the model's best on that index across the configurations Artificial Analysis evaluated (for example reasoning levels), so two indexes of one model can come from different configurations. The deprecated Coding and Agentic Index scores are the exception: both come from one configuration, the model's strongest by Intelligence Index, then Coding Index, then Agentic Index. Attribute Artificial Analysis when you republish them. Omitted when Artificial Analysis has scored the model on none of them.
    */
   artificialAnalysis?: AABenchmarkEntry | undefined;
   /**

@@ -2,7 +2,7 @@
 title: "TaskType"
 ---
 
-Filter results by task type. For Artificial Analysis, maps to the corresponding index. For Design Arena, maps to the matching category. `search` returns OpenRouter search benchmark results only.
+Filter results by task type. Every value except `search` names the Artificial Analysis index of the same name and returns only models scored on it, best first (`coding` and `agentic` are deprecated: Artificial Analysis has retired those indexes). Design Arena answers only `coding`, `intelligence` and `agentic`, and OpenRouter's own evals only `intelligence` and `agentic`. `search` returns OpenRouter search benchmark results only.
 
 ## Example Usage
 
@@ -17,5 +17,5 @@ let value: TaskType = "coding";
 ## Values
 
 ```typescript
-"coding" | "intelligence" | "agentic" | "search" | Unrecognized<string>
+"intelligence" | "coding" | "agentic" | "finance-and-accounting" | "strategy-and-ops" | "legal" | "healthcare-and-medical" | "engineering" | "economics" | "cyber" | "multilingual" | "decision" | "search" | Unrecognized<string>
 ```

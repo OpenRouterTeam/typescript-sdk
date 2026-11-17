@@ -56,7 +56,7 @@ export const GetModelsCategory = {
 export type GetModelsCategory = OpenEnum<typeof GetModelsCategory>;
 
 /**
- * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low, coding-high-to-low, agentic-high-to-low (Artificial Analysis indices), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. When omitted, the existing default ordering is preserved.
+ * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), <index>-high-to-low for each Artificial Analysis index (the coding and agentic sorts are deprecated: Artificial Analysis has retired those indexes), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. The decision sort ranks decision models, so pass output_modalities=decisions or all with it. When omitted, the existing default ordering is preserved.
  */
 export const GetModelsSort = {
   MostPopular: "most-popular",
@@ -70,10 +70,20 @@ export const GetModelsSort = {
   IntelligenceHighToLow: "intelligence-high-to-low",
   CodingHighToLow: "coding-high-to-low",
   AgenticHighToLow: "agentic-high-to-low",
+  FinanceAndAccountingHighToLow: "finance-and-accounting-high-to-low",
+  StrategyAndOpsHighToLow: "strategy-and-ops-high-to-low",
+  LegalHighToLow: "legal-high-to-low",
+  HealthcareAndMedicalHighToLow: "healthcare-and-medical-high-to-low",
+  EngineeringHighToLow: "engineering-high-to-low",
+  EconomicsHighToLow: "economics-high-to-low",
+  CyberHighToLow: "cyber-high-to-low",
+  OpennessHighToLow: "openness-high-to-low",
+  MultilingualHighToLow: "multilingual-high-to-low",
+  DecisionHighToLow: "decision-high-to-low",
   DesignArenaEloHighToLow: "design-arena-elo-high-to-low",
 } as const;
 /**
- * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low, coding-high-to-low, agentic-high-to-low (Artificial Analysis indices), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. When omitted, the existing default ordering is preserved.
+ * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), <index>-high-to-low for each Artificial Analysis index (the coding and agentic sorts are deprecated: Artificial Analysis has retired those indexes), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. The decision sort ranks decision models, so pass output_modalities=decisions or all with it. When omitted, the existing default ordering is preserved.
  */
 export type GetModelsSort = OpenEnum<typeof GetModelsSort>;
 
@@ -153,7 +163,7 @@ export type GetModelsRequest = {
    */
   outputModalities?: string | undefined;
   /**
-   * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), intelligence-high-to-low, coding-high-to-low, agentic-high-to-low (Artificial Analysis indices), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. When omitted, the existing default ordering is preserved.
+   * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), <index>-high-to-low for each Artificial Analysis index (the coding and agentic sorts are deprecated: Artificial Analysis has retired those indexes), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. The decision sort ranks decision models, so pass output_modalities=decisions or all with it. When omitted, the existing default ordering is preserved.
    */
   sort?: GetModelsSort | undefined;
   /**
@@ -221,29 +231,117 @@ export type GetModelsRequest = {
    */
   maxAgeDays?: number | null | undefined;
   /**
-   * Minimum Artificial Analysis intelligence index.
+   * Minimum Artificial Analysis Intelligence Index score (0-100); unscored models are excluded.
    */
   minIntelligenceIndex?: number | null | undefined;
   /**
-   * Maximum Artificial Analysis intelligence index.
+   * Maximum Artificial Analysis Intelligence Index score (0-100); unscored models are excluded.
    */
   maxIntelligenceIndex?: number | null | undefined;
   /**
-   * Minimum Artificial Analysis coding index.
+   * Deprecated: Artificial Analysis has retired its Coding Index. Minimum score (0-100); unscored models are excluded.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   minCodingIndex?: number | null | undefined;
   /**
-   * Maximum Artificial Analysis coding index.
+   * Deprecated: Artificial Analysis has retired its Coding Index. Maximum score (0-100); unscored models are excluded.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   maxCodingIndex?: number | null | undefined;
   /**
-   * Minimum Artificial Analysis agentic index.
+   * Deprecated: Artificial Analysis has retired its Agentic Index. Minimum score (0-100); unscored models are excluded.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   minAgenticIndex?: number | null | undefined;
   /**
-   * Maximum Artificial Analysis agentic index.
+   * Deprecated: Artificial Analysis has retired its Agentic Index. Maximum score (0-100); unscored models are excluded.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   maxAgenticIndex?: number | null | undefined;
+  /**
+   * Minimum Artificial Analysis Finance & Accounting Index score (0-100); unscored models are excluded.
+   */
+  minFinanceAndAccountingIndex?: number | null | undefined;
+  /**
+   * Maximum Artificial Analysis Finance & Accounting Index score (0-100); unscored models are excluded.
+   */
+  maxFinanceAndAccountingIndex?: number | null | undefined;
+  /**
+   * Minimum Artificial Analysis Strategy & Ops Index score (0-100); unscored models are excluded.
+   */
+  minStrategyAndOpsIndex?: number | null | undefined;
+  /**
+   * Maximum Artificial Analysis Strategy & Ops Index score (0-100); unscored models are excluded.
+   */
+  maxStrategyAndOpsIndex?: number | null | undefined;
+  /**
+   * Minimum Artificial Analysis Legal Index score (0-100); unscored models are excluded.
+   */
+  minLegalIndex?: number | null | undefined;
+  /**
+   * Maximum Artificial Analysis Legal Index score (0-100); unscored models are excluded.
+   */
+  maxLegalIndex?: number | null | undefined;
+  /**
+   * Minimum Artificial Analysis Healthcare & Medical Index score (0-100); unscored models are excluded.
+   */
+  minHealthcareAndMedicalIndex?: number | null | undefined;
+  /**
+   * Maximum Artificial Analysis Healthcare & Medical Index score (0-100); unscored models are excluded.
+   */
+  maxHealthcareAndMedicalIndex?: number | null | undefined;
+  /**
+   * Minimum Artificial Analysis Engineering Index score (0-100); unscored models are excluded.
+   */
+  minEngineeringIndex?: number | null | undefined;
+  /**
+   * Maximum Artificial Analysis Engineering Index score (0-100); unscored models are excluded.
+   */
+  maxEngineeringIndex?: number | null | undefined;
+  /**
+   * Minimum Artificial Analysis Economics Index score (0-100); unscored models are excluded.
+   */
+  minEconomicsIndex?: number | null | undefined;
+  /**
+   * Maximum Artificial Analysis Economics Index score (0-100); unscored models are excluded.
+   */
+  maxEconomicsIndex?: number | null | undefined;
+  /**
+   * Minimum Artificial Analysis Cyber Index score (0-100); unscored models are excluded.
+   */
+  minCyberIndex?: number | null | undefined;
+  /**
+   * Maximum Artificial Analysis Cyber Index score (0-100); unscored models are excluded.
+   */
+  maxCyberIndex?: number | null | undefined;
+  /**
+   * Minimum Artificial Analysis Openness Index score (0-100); unscored models are excluded.
+   */
+  minOpennessIndex?: number | null | undefined;
+  /**
+   * Maximum Artificial Analysis Openness Index score (0-100); unscored models are excluded.
+   */
+  maxOpennessIndex?: number | null | undefined;
+  /**
+   * Minimum Artificial Analysis Multilingual Index score (0-1); unscored models are excluded.
+   */
+  minMultilingualIndex?: number | null | undefined;
+  /**
+   * Maximum Artificial Analysis Multilingual Index score (0-1); unscored models are excluded.
+   */
+  maxMultilingualIndex?: number | null | undefined;
+  /**
+   * Minimum Artificial Analysis Decision Index score (0-100); unscored models are excluded.
+   */
+  minDecisionIndex?: number | null | undefined;
+  /**
+   * Maximum Artificial Analysis Decision Index score (0-100); unscored models are excluded.
+   */
+  maxDecisionIndex?: number | null | undefined;
   /**
    * Minimum tool-calling success rate, as a fraction in [0, 1] (e.g. 0.9 = 90% of requests finishing with a tool_calls finish reason).
    */
@@ -312,6 +410,26 @@ export type GetModelsRequest$Outbound = {
   max_coding_index?: number | null | undefined;
   min_agentic_index?: number | null | undefined;
   max_agentic_index?: number | null | undefined;
+  min_finance_and_accounting_index?: number | null | undefined;
+  max_finance_and_accounting_index?: number | null | undefined;
+  min_strategy_and_ops_index?: number | null | undefined;
+  max_strategy_and_ops_index?: number | null | undefined;
+  min_legal_index?: number | null | undefined;
+  max_legal_index?: number | null | undefined;
+  min_healthcare_and_medical_index?: number | null | undefined;
+  max_healthcare_and_medical_index?: number | null | undefined;
+  min_engineering_index?: number | null | undefined;
+  max_engineering_index?: number | null | undefined;
+  min_economics_index?: number | null | undefined;
+  max_economics_index?: number | null | undefined;
+  min_cyber_index?: number | null | undefined;
+  max_cyber_index?: number | null | undefined;
+  min_openness_index?: number | null | undefined;
+  max_openness_index?: number | null | undefined;
+  min_multilingual_index?: number | null | undefined;
+  max_multilingual_index?: number | null | undefined;
+  min_decision_index?: number | null | undefined;
+  max_decision_index?: number | null | undefined;
   min_tool_success_rate?: number | null | undefined;
   max_tool_success_rate?: number | null | undefined;
 };
@@ -352,6 +470,26 @@ export const GetModelsRequest$outboundSchema: z.ZodType<
   maxCodingIndex: z.nullable(z.number()).optional(),
   minAgenticIndex: z.nullable(z.number()).optional(),
   maxAgenticIndex: z.nullable(z.number()).optional(),
+  minFinanceAndAccountingIndex: z.nullable(z.number()).optional(),
+  maxFinanceAndAccountingIndex: z.nullable(z.number()).optional(),
+  minStrategyAndOpsIndex: z.nullable(z.number()).optional(),
+  maxStrategyAndOpsIndex: z.nullable(z.number()).optional(),
+  minLegalIndex: z.nullable(z.number()).optional(),
+  maxLegalIndex: z.nullable(z.number()).optional(),
+  minHealthcareAndMedicalIndex: z.nullable(z.number()).optional(),
+  maxHealthcareAndMedicalIndex: z.nullable(z.number()).optional(),
+  minEngineeringIndex: z.nullable(z.number()).optional(),
+  maxEngineeringIndex: z.nullable(z.number()).optional(),
+  minEconomicsIndex: z.nullable(z.number()).optional(),
+  maxEconomicsIndex: z.nullable(z.number()).optional(),
+  minCyberIndex: z.nullable(z.number()).optional(),
+  maxCyberIndex: z.nullable(z.number()).optional(),
+  minOpennessIndex: z.nullable(z.number()).optional(),
+  maxOpennessIndex: z.nullable(z.number()).optional(),
+  minMultilingualIndex: z.nullable(z.number()).optional(),
+  maxMultilingualIndex: z.nullable(z.number()).optional(),
+  minDecisionIndex: z.nullable(z.number()).optional(),
+  maxDecisionIndex: z.nullable(z.number()).optional(),
   minToolSuccessRate: z.nullable(z.number()).optional(),
   maxToolSuccessRate: z.nullable(z.number()).optional(),
 }).transform((v) => {
@@ -373,6 +511,26 @@ export const GetModelsRequest$outboundSchema: z.ZodType<
     maxCodingIndex: "max_coding_index",
     minAgenticIndex: "min_agentic_index",
     maxAgenticIndex: "max_agentic_index",
+    minFinanceAndAccountingIndex: "min_finance_and_accounting_index",
+    maxFinanceAndAccountingIndex: "max_finance_and_accounting_index",
+    minStrategyAndOpsIndex: "min_strategy_and_ops_index",
+    maxStrategyAndOpsIndex: "max_strategy_and_ops_index",
+    minLegalIndex: "min_legal_index",
+    maxLegalIndex: "max_legal_index",
+    minHealthcareAndMedicalIndex: "min_healthcare_and_medical_index",
+    maxHealthcareAndMedicalIndex: "max_healthcare_and_medical_index",
+    minEngineeringIndex: "min_engineering_index",
+    maxEngineeringIndex: "max_engineering_index",
+    minEconomicsIndex: "min_economics_index",
+    maxEconomicsIndex: "max_economics_index",
+    minCyberIndex: "min_cyber_index",
+    maxCyberIndex: "max_cyber_index",
+    minOpennessIndex: "min_openness_index",
+    maxOpennessIndex: "max_openness_index",
+    minMultilingualIndex: "min_multilingual_index",
+    maxMultilingualIndex: "max_multilingual_index",
+    minDecisionIndex: "min_decision_index",
+    maxDecisionIndex: "max_decision_index",
     minToolSuccessRate: "min_tool_success_rate",
     maxToolSuccessRate: "max_tool_success_rate",
   });

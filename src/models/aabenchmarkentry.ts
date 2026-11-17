@@ -9,21 +9,65 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 /**
- * Artificial Analysis benchmark index scores.
+ * Benchmark index scores published by Artificial Analysis (artificialanalysis.ai), one field per index. Each score is the model's best on that index across the configurations Artificial Analysis evaluated (for example reasoning levels), so two indexes of one model can come from different configurations. The deprecated Coding and Agentic Index scores are the exception: both come from one configuration, the model's strongest by Intelligence Index, then Coding Index, then Agentic Index. Attribute Artificial Analysis when you republish them. Omitted when Artificial Analysis has scored the model on none of them.
  */
 export type AABenchmarkEntry = {
   /**
-   * Artificial Analysis Agentic Index score
+   * Deprecated: Artificial Analysis has retired its Agentic Index and no longer publishes it. Holds the last score Artificial Analysis published for the model, on a 0-100 scale, or null; it will be null for every model once those stored scores are removed.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   agenticIndex: number | null;
   /**
-   * Artificial Analysis Coding Index score
+   * Deprecated: Artificial Analysis has retired its Coding Index and no longer publishes it. Holds the last score Artificial Analysis published for the model, on a 0-100 scale, or null; it will be null for every model once those stored scores are removed.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   codingIndex: number | null;
   /**
-   * Artificial Analysis Intelligence Index score
+   * Artificial Analysis Cyber Index score, on a 0-100 scale: the model's best across the configurations Artificial Analysis evaluated. Higher is better. Null when Artificial Analysis has not published a score for the model.
+   */
+  cyberIndex: number | null;
+  /**
+   * Artificial Analysis Decision Index score, on a 0-100 scale: the model's best across the configurations Artificial Analysis evaluated. Higher is better. Published for decision models and for the language models Artificial Analysis evaluates on decision tasks. Null when Artificial Analysis has not published a score for the model.
+   */
+  decisionIndex: number | null;
+  /**
+   * Artificial Analysis Economics Index score, on a 0-100 scale: the model's best across the configurations Artificial Analysis evaluated. Higher is better. One of the six Artificial Analysis Capability Indexes. Null when Artificial Analysis has not published a score for the model.
+   */
+  economicsIndex: number | null;
+  /**
+   * Artificial Analysis Engineering Index score, on a 0-100 scale: the model's best across the configurations Artificial Analysis evaluated. Higher is better. One of the six Artificial Analysis Capability Indexes. Null when Artificial Analysis has not published a score for the model.
+   */
+  engineeringIndex: number | null;
+  /**
+   * Artificial Analysis Finance & Accounting Index score, on a 0-100 scale: the model's best across the configurations Artificial Analysis evaluated. Higher is better. One of the six Artificial Analysis Capability Indexes. Null when Artificial Analysis has not published a score for the model.
+   */
+  financeAndAccountingIndex: number | null;
+  /**
+   * Artificial Analysis Healthcare & Medical Index score, on a 0-100 scale: the model's best across the configurations Artificial Analysis evaluated. Higher is better. One of the six Artificial Analysis Capability Indexes. Null when Artificial Analysis has not published a score for the model.
+   */
+  healthcareAndMedicalIndex: number | null;
+  /**
+   * Artificial Analysis Intelligence Index score, on a 0-100 scale: the model's best across the configurations Artificial Analysis evaluated. Higher is better. Null when Artificial Analysis has not published a score for the model.
    */
   intelligenceIndex: number | null;
+  /**
+   * Artificial Analysis Legal Index score, on a 0-100 scale: the model's best across the configurations Artificial Analysis evaluated. Higher is better. One of the six Artificial Analysis Capability Indexes. Null when Artificial Analysis has not published a score for the model.
+   */
+  legalIndex: number | null;
+  /**
+   * Artificial Analysis Multilingual Index score, as a fraction from 0 to 1: the model's best across the configurations Artificial Analysis evaluated. Higher is better. Null when Artificial Analysis has not published a score for the model.
+   */
+  multilingualIndex: number | null;
+  /**
+   * Artificial Analysis Openness Index score, on a 0-100 scale: the model's best across the configurations Artificial Analysis evaluated. Higher is better. Null when Artificial Analysis has not published a score for the model.
+   */
+  opennessIndex: number | null;
+  /**
+   * Artificial Analysis Strategy & Ops Index score, on a 0-100 scale: the model's best across the configurations Artificial Analysis evaluated. Higher is better. One of the six Artificial Analysis Capability Indexes. Null when Artificial Analysis has not published a score for the model.
+   */
+  strategyAndOpsIndex: number | null;
 };
 
 /** @internal */
@@ -33,12 +77,32 @@ export const AABenchmarkEntry$inboundSchema: z.ZodType<
 > = z.object({
   agentic_index: z.nullable(z.number()),
   coding_index: z.nullable(z.number()),
+  cyber_index: z.nullable(z.number()),
+  decision_index: z.nullable(z.number()),
+  economics_index: z.nullable(z.number()),
+  engineering_index: z.nullable(z.number()),
+  finance_and_accounting_index: z.nullable(z.number()),
+  healthcare_and_medical_index: z.nullable(z.number()),
   intelligence_index: z.nullable(z.number()),
+  legal_index: z.nullable(z.number()),
+  multilingual_index: z.nullable(z.number()),
+  openness_index: z.nullable(z.number()),
+  strategy_and_ops_index: z.nullable(z.number()),
 }).transform((v) => {
   return remap$(v, {
     "agentic_index": "agenticIndex",
     "coding_index": "codingIndex",
+    "cyber_index": "cyberIndex",
+    "decision_index": "decisionIndex",
+    "economics_index": "economicsIndex",
+    "engineering_index": "engineeringIndex",
+    "finance_and_accounting_index": "financeAndAccountingIndex",
+    "healthcare_and_medical_index": "healthcareAndMedicalIndex",
     "intelligence_index": "intelligenceIndex",
+    "legal_index": "legalIndex",
+    "multilingual_index": "multilingualIndex",
+    "openness_index": "opennessIndex",
+    "strategy_and_ops_index": "strategyAndOpsIndex",
   });
 });
 

@@ -43,16 +43,25 @@ export const Source = {
 export type Source = OpenEnum<typeof Source>;
 
 /**
- * Filter results by task type. For Artificial Analysis, maps to the corresponding index. For Design Arena, maps to the matching category. `search` returns OpenRouter search benchmark results only.
+ * Filter results by task type. Every value except `search` names the Artificial Analysis index of the same name and returns only models scored on it, best first (`coding` and `agentic` are deprecated: Artificial Analysis has retired those indexes). Design Arena answers only `coding`, `intelligence` and `agentic`, and OpenRouter's own evals only `intelligence` and `agentic`. `search` returns OpenRouter search benchmark results only.
  */
 export const TaskType = {
-  Coding: "coding",
   Intelligence: "intelligence",
+  Coding: "coding",
   Agentic: "agentic",
+  FinanceAndAccounting: "finance-and-accounting",
+  StrategyAndOps: "strategy-and-ops",
+  Legal: "legal",
+  HealthcareAndMedical: "healthcare-and-medical",
+  Engineering: "engineering",
+  Economics: "economics",
+  Cyber: "cyber",
+  Multilingual: "multilingual",
+  Decision: "decision",
   Search: "search",
 } as const;
 /**
- * Filter results by task type. For Artificial Analysis, maps to the corresponding index. For Design Arena, maps to the matching category. `search` returns OpenRouter search benchmark results only.
+ * Filter results by task type. Every value except `search` names the Artificial Analysis index of the same name and returns only models scored on it, best first (`coding` and `agentic` are deprecated: Artificial Analysis has retired those indexes). Design Arena answers only `coding`, `intelligence` and `agentic`, and OpenRouter's own evals only `intelligence` and `agentic`. `search` returns OpenRouter search benchmark results only.
  */
 export type TaskType = OpenEnum<typeof TaskType>;
 
@@ -122,7 +131,7 @@ export type GetBenchmarksRequest = {
    */
   source?: Source | undefined;
   /**
-   * Filter results by task type. For Artificial Analysis, maps to the corresponding index. For Design Arena, maps to the matching category. `search` returns OpenRouter search benchmark results only.
+   * Filter results by task type. Every value except `search` names the Artificial Analysis index of the same name and returns only models scored on it, best first (`coding` and `agentic` are deprecated: Artificial Analysis has retired those indexes). Design Arena answers only `coding`, `intelligence` and `agentic`, and OpenRouter's own evals only `intelligence` and `agentic`. `search` returns OpenRouter search benchmark results only.
    */
   taskType?: TaskType | undefined;
   /**
