@@ -94,6 +94,10 @@ import {
   PromptCacheOptions$inboundSchema,
 } from "./promptcacheoptions.js";
 import {
+  ResponsesInputTransformation,
+  ResponsesInputTransformation$inboundSchema,
+} from "./responsesinputtransformation.js";
+import {
   ServerToolUseDetails,
   ServerToolUseDetails$inboundSchema,
 } from "./servertoolusedetails.js";
@@ -316,6 +320,10 @@ export type OpenResponsesResult = {
    * Canonical OpenRouter error type, stable across all API formats
    */
   errorType?: ApiErrorType | undefined;
+  /**
+   * Input items the upstream provider changed before inference (OpenAI `input_transformations`). Present only when the provider reported the field; empty when it changed nothing.
+   */
+  inputTransformations?: Array<ResponsesInputTransformation> | undefined;
   openrouterMetadata?: OpenRouterMetadata | undefined;
   /**
    * OpenRouter Armor's verdict for each client tool call of this response, present whenever Armor evaluated the response (even when nothing was flagged). Independent of the `openrouter_metadata` opt-in.
@@ -648,6 +656,8 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
   ).optional(),
   alignment: Alignment$inboundSchema.optional(),
   error_type: ApiErrorType$inboundSchema.optional(),
+  input_transformations: z.array(ResponsesInputTransformation$inboundSchema)
+    .optional(),
   openrouter_metadata: OpenRouterMetadata$inboundSchema.optional(),
   safeguard_results: z.array(ArmorSafeguardResult$inboundSchema).optional(),
 }).transform((v) => {
@@ -671,6 +681,7 @@ export const OpenResponsesResult$inboundSchema: z.ZodType<
     "top_p": "topP",
     "access_programs": "accessPrograms",
     "error_type": "errorType",
+    "input_transformations": "inputTransformations",
     "openrouter_metadata": "openrouterMetadata",
     "safeguard_results": "safeguardResults",
   });

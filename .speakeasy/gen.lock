@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 50aca51733ed79077664208445f95d2e
+  docChecksum: 6c003fa9919d1d9ce660c781a3b3aeba
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.110
-  configChecksum: b8177b3fdcf81b083021d56c5a648b48
+  releaseVersion: 1.5.111
+  configChecksum: fa2b1958fca9d471012e7dd18b06b293
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -11883,6 +11883,7 @@ trackedFiles:
   docs/models/responsesbadrequestresponseerrordata.mdx:
     id: 9a2f716e641c
     pristine_git_object: 2f5631eaf8345c203ed7d18dcd07c1a6a3a1e4e5
+  docs/models/responsesinputtransformation.mdx: {}
   docs/models/responsesrequest.md:
     id: 8c2dd311f9ae
     last_write_checksum: sha1:d436d7a5eddfe2f2151278500759510241958260
@@ -17793,6 +17794,7 @@ trackedFiles:
   src/models/responsesbadrequestresponseerrordata.ts:
     id: 24e206b34a71
     pristine_git_object: 433c280a3128ea5351e56f5fab55ac199570a451
+  src/models/responsesinputtransformation.ts: {}
   src/models/responsesrequest.ts:
     id: 39799702f982
     pristine_git_object: 0037730c3968eef580a866b7ca1c8b98ef4e1211
@@ -23623,4 +23625,9 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.benchmarks.getBenchmarks()`: \n  *  `request.taskType` **Changed**\n  *  `response.data[].union(UnifiedBenchmarksAAItem)` **Changed**\n* `openrouter.embeddings.listModels()`:  `response.data[].benchmarks.artificialAnalysis` **Changed**\n* `openrouter.models.get()`:  `response.data.benchmarks.artificialAnalysis` **Changed**\n* `openrouter.models.list()`: \n  *  `request` **Changed**\n  *  `response.data[].benchmarks.artificialAnalysis` **Changed**\n* `openrouter.models.listForUser()`: \n  *  `request.sort` **Changed**\n  *  `response.data[].benchmarks.artificialAnalysis` **Changed**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.batch.createBatches()`:  `response.results[].response.body.union(OpenResponsesResult).inputTransformations` **Added**
+  * `openrouter.batch.getBatches()`:  `response.results[].response.body.union(OpenResponsesResult).inputTransformations` **Added**
+  * `openrouter.responses.send()`:  `response` **Changed**
+  * `openrouter.beta.responses.send()`:  `response` **Changed**
