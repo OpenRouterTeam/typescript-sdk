@@ -1,0 +1,27 @@
+---
+title: "ResponsesInputTransformation"
+---
+
+One input item the upstream provider changed before inference, e.g. a replayed reasoning item removed because the conversation before it was edited.
+
+## Example Usage
+
+```typescript
+import { ResponsesInputTransformation } from "@openrouter/sdk/models";
+
+let value: ResponsesInputTransformation = {
+  action: "removed",
+  id: "rs_0ca73592c5f68037016afcc009779887",
+  reason: "prefix_mismatch",
+  type: "reasoning",
+};
+```
+
+## Fields
+
+| Field              | Type               | Required           | Description        |
+| ------------------ | ------------------ | ------------------ | ------------------ |
+| `action`           | *string*           | ✔️ | N/A                |
+| `id`               | *string*           | ✔️ | N/A                |
+| `reason`           | *string*           | ✔️ | N/A                |
+| `type`             | *string*           | ✔️ | N/A                |
