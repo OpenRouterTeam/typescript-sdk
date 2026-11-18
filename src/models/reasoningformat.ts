@@ -15,6 +15,7 @@ export const ReasoningFormat = {
   XaiResponsesV1: "xai-responses-v1",
   MetaResponsesV1: "meta-responses-v1",
   GoogleVertexMetaResponsesV1: "google-vertex-meta-responses-v1",
+  GoogleVertexXaiResponsesV1: "google-vertex-xai-responses-v1",
   OpenrouterStealthV1: "openrouter-stealth-v1",
   AnthropicClaudeV1: "anthropic-claude-v1",
   GoogleGeminiV1: "google-gemini-v1",
