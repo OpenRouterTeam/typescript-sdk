@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 75f7e32be8afb16441ac86354944c80f
+  docChecksum: 5c891fa410eb14d16ee4a3827a9e1b8d
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.115
-  configChecksum: 6e6309c9e5b1dbc81f94412e254383b1
+  releaseVersion: 1.5.116
+  configChecksum: d0811d56c486512b59020d3d2170635d
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -11377,6 +11377,7 @@ trackedFiles:
   docs/models/privateendpointpricing.mdx:
     id: 064406fd1903
     pristine_git_object: eedb7e5b3563312f44cca7b0cfab01427d0b95d8
+  docs/models/privateendpointpromptcaching.mdx: {}
   docs/models/privateendpointquantization.mdx:
     id: 9b09f4b2294c
     pristine_git_object: 6d422d150f85076626f5b17167b47004e462e066
@@ -13524,6 +13525,7 @@ trackedFiles:
   docs/models/updateorganizationsettingsrequest.mdx:
     id: c3c58be302ec
     pristine_git_object: dde28434d13dc6fbedf7a78c1bb3c05267064db9
+  docs/models/updateprivateendpointpromptcaching.mdx: {}
   docs/models/updateprivateendpointrequest.mdx:
     id: d298e4499123
     pristine_git_object: 06283498adae7f66b0a15463c2d191d79a8831fe
@@ -17626,6 +17628,7 @@ trackedFiles:
   src/models/privateendpointpricing.ts:
     id: c780fa3f1dc9
     pristine_git_object: e8f698c2a7ddd76ba5e29886ea3527aeea890651
+  src/models/privateendpointpromptcaching.ts: {}
   src/models/privateendpointquantization.ts:
     id: 76e7da632993
     pristine_git_object: c98843ea81bdbd8913c029c889445b61b7d376ce
@@ -18176,6 +18179,7 @@ trackedFiles:
   src/models/updateorganizationsettingsrequest.ts:
     id: 0eff61f1211f
     pristine_git_object: 7cd434b08a9403d243e4808c65e090f369865efc
+  src/models/updateprivateendpointpromptcaching.ts: {}
   src/models/updateprivateendpointrequest.ts:
     id: 998472d2d99c
     pristine_git_object: 0ddee12df6ff3a67f733e9e37602a7cc53396870
@@ -23625,3 +23629,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.privateEndpoints.create()`: \n  *  `request.createPrivateEndpointRequest.settings.promptCaching` **Added**\n* `openrouter.privateEndpoints.get()`:  `response.data.settings.promptCaching` **Added**\n* `openrouter.privateEndpoints.update()`: \n  *  `request.updatePrivateEndpointRequest.settings.promptCaching` **Added**\n  *  `response.data.settings.promptCaching` **Added**\n"

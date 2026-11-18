@@ -10,6 +10,10 @@ import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
+  PrivateEndpointPromptCaching,
+  PrivateEndpointPromptCaching$inboundSchema,
+} from "./privateendpointpromptcaching.js";
+import {
   PrivateEndpointQuantization,
   PrivateEndpointQuantization$inboundSchema,
 } from "./privateendpointquantization.js";
@@ -137,6 +141,10 @@ export type PrivateEndpointSettings = {
    */
   maxPromptTokens: number | null;
   /**
+   * Prompt-caching controls for an OpenAI-compatible private endpoint. Accepted fields default on after validation; explicit owner settings override the defaults.
+   */
+  promptCaching?: PrivateEndpointPromptCaching | undefined;
+  /**
    * Weight precision the deployment runs at; `unknown` when not stated.
    */
   quantization: PrivateEndpointQuantization;
@@ -258,6 +266,7 @@ export const PrivateEndpointSettings$inboundSchema: z.ZodType<
   inputs: z.lazy(() => PrivateEndpointSettingsInputs$inboundSchema),
   max_completion_tokens: z.nullable(z.int()),
   max_prompt_tokens: z.nullable(z.int()),
+  prompt_caching: PrivateEndpointPromptCaching$inboundSchema.optional(),
   quantization: PrivateEndpointQuantization$inboundSchema,
   reasoning: z.lazy(() => PrivateEndpointSettingsReasoning$inboundSchema),
   tool_choice: z.lazy(() => PrivateEndpointSettingsToolChoice$inboundSchema),
@@ -267,6 +276,7 @@ export const PrivateEndpointSettings$inboundSchema: z.ZodType<
     "excluded_parameters": "excludedParameters",
     "max_completion_tokens": "maxCompletionTokens",
     "max_prompt_tokens": "maxPromptTokens",
+    "prompt_caching": "promptCaching",
     "tool_choice": "toolChoice",
   });
 });

@@ -14,6 +14,11 @@ import {
   PrivateEndpointReasoningReturnMechanism,
   PrivateEndpointReasoningReturnMechanism$outboundSchema,
 } from "./privateendpointreasoningreturnmechanism.js";
+import {
+  UpdatePrivateEndpointPromptCaching,
+  UpdatePrivateEndpointPromptCaching$Outbound,
+  UpdatePrivateEndpointPromptCaching$outboundSchema,
+} from "./updateprivateendpointpromptcaching.js";
 
 export type UpdatePrivateEndpointSettingsRequestCompletions = {
   /**
@@ -135,6 +140,10 @@ export type UpdatePrivateEndpointSettingsRequest = {
    * Longest prompt, in tokens, or `null` for no cap below the context length. Cannot exceed `context_length`, or the model context length while `context_length` is `null`.
    */
   maxPromptTokens?: number | null | undefined;
+  /**
+   * Change only the named prompt-caching flags; omitted flags keep their stored value.
+   */
+  promptCaching?: UpdatePrivateEndpointPromptCaching | undefined;
   /**
    * Weight precision the deployment runs at; `unknown` when not stated.
    */
@@ -291,6 +300,7 @@ export type UpdatePrivateEndpointSettingsRequest$Outbound = {
   inputs?: UpdatePrivateEndpointSettingsRequestInputs$Outbound | undefined;
   max_completion_tokens?: number | null | undefined;
   max_prompt_tokens?: number | null | undefined;
+  prompt_caching?: UpdatePrivateEndpointPromptCaching$Outbound | undefined;
   quantization?: string | undefined;
   reasoning?:
     | UpdatePrivateEndpointSettingsRequestReasoning$Outbound
@@ -317,6 +327,7 @@ export const UpdatePrivateEndpointSettingsRequest$outboundSchema: z.ZodType<
   ).optional(),
   maxCompletionTokens: z.nullable(z.int()).optional(),
   maxPromptTokens: z.nullable(z.int()).optional(),
+  promptCaching: UpdatePrivateEndpointPromptCaching$outboundSchema.optional(),
   quantization: PrivateEndpointQuantization$outboundSchema.optional(),
   reasoning: z.lazy(() =>
     UpdatePrivateEndpointSettingsRequestReasoning$outboundSchema
@@ -330,6 +341,7 @@ export const UpdatePrivateEndpointSettingsRequest$outboundSchema: z.ZodType<
     excludedParameters: "excluded_parameters",
     maxCompletionTokens: "max_completion_tokens",
     maxPromptTokens: "max_prompt_tokens",
+    promptCaching: "prompt_caching",
     toolChoice: "tool_choice",
   });
 });
