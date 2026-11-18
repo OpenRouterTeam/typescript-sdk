@@ -56,7 +56,7 @@ export const GetModelsCategory = {
 export type GetModelsCategory = OpenEnum<typeof GetModelsCategory>;
 
 /**
- * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), <index>-high-to-low for each Artificial Analysis index (the coding and agentic sorts are deprecated: Artificial Analysis has retired those indexes), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. The decision sort ranks decision models, so pass output_modalities=decisions or all with it. When omitted, the existing default ordering is preserved.
+ * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), <index>-high-to-low for each Artificial Analysis index (the coding and agentic sorts are deprecated: Artificial Analysis has retired those indexes, so they order by canonical slug and variant alone), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. The decision sort ranks decision models, so pass output_modalities=decisions or all with it. When omitted, the existing default ordering is preserved.
  */
 export const GetModelsSort = {
   MostPopular: "most-popular",
@@ -83,7 +83,7 @@ export const GetModelsSort = {
   DesignArenaEloHighToLow: "design-arena-elo-high-to-low",
 } as const;
 /**
- * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), <index>-high-to-low for each Artificial Analysis index (the coding and agentic sorts are deprecated: Artificial Analysis has retired those indexes), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. The decision sort ranks decision models, so pass output_modalities=decisions or all with it. When omitted, the existing default ordering is preserved.
+ * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), <index>-high-to-low for each Artificial Analysis index (the coding and agentic sorts are deprecated: Artificial Analysis has retired those indexes, so they order by canonical slug and variant alone), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. The decision sort ranks decision models, so pass output_modalities=decisions or all with it. When omitted, the existing default ordering is preserved.
  */
 export type GetModelsSort = OpenEnum<typeof GetModelsSort>;
 
@@ -163,7 +163,7 @@ export type GetModelsRequest = {
    */
   outputModalities?: string | undefined;
   /**
-   * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), <index>-high-to-low for each Artificial Analysis index (the coding and agentic sorts are deprecated: Artificial Analysis has retired those indexes), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. The decision sort ranks decision models, so pass output_modalities=decisions or all with it. When omitted, the existing default ordering is preserved.
+   * Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), <index>-high-to-low for each Artificial Analysis index (the coding and agentic sorts are deprecated: Artificial Analysis has retired those indexes, so they order by canonical slug and variant alone), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. The decision sort ranks decision models, so pass output_modalities=decisions or all with it. When omitted, the existing default ordering is preserved.
    */
   sort?: GetModelsSort | undefined;
   /**
@@ -239,25 +239,25 @@ export type GetModelsRequest = {
    */
   maxIntelligenceIndex?: number | null | undefined;
   /**
-   * Deprecated: Artificial Analysis has retired its Coding Index. Minimum score (0-100); unscored models are excluded.
+   * Deprecated: Artificial Analysis has retired its Coding Index; no model has a score, so this matches no model.
    *
    * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   minCodingIndex?: number | null | undefined;
   /**
-   * Deprecated: Artificial Analysis has retired its Coding Index. Maximum score (0-100); unscored models are excluded.
+   * Deprecated: Artificial Analysis has retired its Coding Index; no model has a score, so this matches no model.
    *
    * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   maxCodingIndex?: number | null | undefined;
   /**
-   * Deprecated: Artificial Analysis has retired its Agentic Index. Minimum score (0-100); unscored models are excluded.
+   * Deprecated: Artificial Analysis has retired its Agentic Index; no model has a score, so this matches no model.
    *
    * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   minAgenticIndex?: number | null | undefined;
   /**
-   * Deprecated: Artificial Analysis has retired its Agentic Index. Maximum score (0-100); unscored models are excluded.
+   * Deprecated: Artificial Analysis has retired its Agentic Index; no model has a score, so this matches no model.
    *
    * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
