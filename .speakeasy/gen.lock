@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 6c003fa9919d1d9ce660c781a3b3aeba
+  docChecksum: d51f530b50952d59333a635c03a77bb5
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.111
-  configChecksum: fa2b1958fca9d471012e7dd18b06b293
+  releaseVersion: 1.5.112
+  configChecksum: 8d44bc5535d06e0598779585cd5c0cd6
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -23625,9 +23625,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `openrouter.batch.createBatches()`:  `response.results[].response.body.union(OpenResponsesResult).inputTransformations` **Added**
-  * `openrouter.batch.getBatches()`:  `response.results[].response.body.union(OpenResponsesResult).inputTransformations` **Added**
-  * `openrouter.responses.send()`:  `response` **Changed**
-  * `openrouter.beta.responses.send()`:  `response` **Changed**
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.batch.createBatches()`:  `response.results[].response.body.union(class (0)).choices[].message.reasoningDetails[].union(reasoning.text).format` **Changed** (Breaking ⚠️)\n* `openrouter.batch.getBatches()`:  `response.results[].response.body.union(class (0)).choices[].message.reasoningDetails[].union(reasoning.text).format` **Changed** (Breaking ⚠️)\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.messages[].union(assistant).reasoningDetails[].union(reasoning.server_tool_call).format` **Changed** (Breaking ⚠️)\n  *  `response` **Changed** (Breaking ⚠️)\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.messages[].union(assistant).reasoningDetails[].union(reasoning.summary).format` **Changed** (Breaking ⚠️)\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(ReasoningItem).format` **Changed** (Breaking ⚠️)\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(class (8)).format` **Changed** (Breaking ⚠️)\n  *  `response` **Changed** (Breaking ⚠️)\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(ReasoningItem).format` **Changed** (Breaking ⚠️)\n  *  `response` **Changed** (Breaking ⚠️)\n"
