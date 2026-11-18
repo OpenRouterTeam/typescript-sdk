@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 21dbbadd066edbd9f6c5de6491fcf3b5
+  docChecksum: 75f7e32be8afb16441ac86354944c80f
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.114
-  configChecksum: 0cf622f5d991b492133a2c104bf5c8c6
+  releaseVersion: 1.5.115
+  configChecksum: 6e6309c9e5b1dbc81f94412e254383b1
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -20234,7 +20234,7 @@ examples:
           include_run_config: true
       responses:
         "200":
-          application/json: {"data": [{"agentic_index": 55.8, "coding_index": 63.2, "cyber_index": 36.4, "decision_index": 75.7, "display_name": "GPT-4o", "economics_index": 57.2, "engineering_index": 60.4, "finance_and_accounting_index": 58.1, "healthcare_and_medical_index": 56.9, "intelligence_index": 71.4, "legal_index": 52.3, "model_permaslug": "openai/gpt-4o", "multilingual_index": 0.82, "openness_index": 33.3, "pricing": {"completion": "0.00001", "prompt": "0.0000025"}, "source": "artificial-analysis", "strategy_and_ops_index": 61.7}, {"accuracy": 0.72, "accuracy_stddev": 0.03, "avg_cost_per_task": 0.002, "benchmark_type": "gpqa_diamond", "display_name": "GPT-4o", "last_run_timestamp": "2026-06-03T12:00:00Z", "model_permaslug": "openai/gpt-4o", "source": "openrouter", "total_tasks": 300}], "meta": {"as_of": "2026-06-03T12:00:00Z", "citation": null, "model_count": 1, "source": null, "source_url": null, "task_type": null, "version": "v1"}}
+          application/json: {"data": [{"agentic_index": null, "coding_index": null, "cyber_index": 36.4, "decision_index": 75.7, "display_name": "GPT-4o", "economics_index": 57.2, "engineering_index": 60.4, "finance_and_accounting_index": 58.1, "healthcare_and_medical_index": 56.9, "intelligence_index": 71.4, "legal_index": 52.3, "model_permaslug": "openai/gpt-4o", "multilingual_index": 0.82, "openness_index": 33.3, "pricing": {"completion": "0.00001", "prompt": "0.0000025"}, "source": "artificial-analysis", "strategy_and_ops_index": 61.7}, {"accuracy": 0.72, "accuracy_stddev": 0.03, "avg_cost_per_task": 0.002, "benchmark_type": "gpqa_diamond", "display_name": "GPT-4o", "last_run_timestamp": "2026-06-03T12:00:00Z", "model_permaslug": "openai/gpt-4o", "source": "openrouter", "total_tasks": 300}], "meta": {"as_of": "2026-06-03T12:00:00Z", "citation": null, "model_count": 1, "source": null, "source_url": null, "task_type": null, "version": "v1"}}
         "400":
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "401":
@@ -23625,4 +23625,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.batch.createBatches()`:  `response.results[].response.body.union(OpenResponsesResult).output[].union(reasoning).format.enum(googleVertexXaiResponsesV1)` **Added**\n* `openrouter.batch.getBatches()`:  `response.results[].response.body.union(class (0)).choices[].message.reasoningDetails[].union(reasoning.summary).format.enum(googleVertexXaiResponsesV1)` **Added**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.messages[].union(assistant).reasoningDetails[].union(reasoning.summary).format.enum(googleVertexXaiResponsesV1)` **Added**\n  *  `response` **Changed**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.messages[].union(assistant).reasoningDetails[].union(reasoning.summary).format.enum(googleVertexXaiResponsesV1)` **Added**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(ReasoningItem).format.enum(googleVertexXaiResponsesV1)` **Added**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(ReasoningItem).format.enum(googleVertexXaiResponsesV1)` **Added**\n  *  `response` **Changed**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.input.union(Array<>)[].union(ReasoningItem).format.enum(googleVertexXaiResponsesV1)` **Added**\n  *  `response` **Changed**\n"

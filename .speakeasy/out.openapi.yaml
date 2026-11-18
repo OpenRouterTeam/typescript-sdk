@@ -26,10 +26,10 @@ components:
         Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.
   schemas:
     AABenchmarkEntry:
-      description: 'Benchmark index scores published by Artificial Analysis (artificialanalysis.ai), one field per index. Each score is the model''s best on that index across the configurations Artificial Analysis evaluated (for example reasoning levels), so two indexes of one model can come from different configurations. The deprecated Coding and Agentic Index scores are the exception: both come from one configuration, the model''s strongest by Intelligence Index, then Coding Index, then Agentic Index. Attribute Artificial Analysis when you republish them. Omitted when Artificial Analysis has scored the model on none of them.'
+      description: 'Benchmark index scores published by Artificial Analysis (artificialanalysis.ai), one field per index. Each score is the model''s best on that index across the configurations Artificial Analysis evaluated (for example reasoning levels), so two indexes of one model can come from different configurations. The deprecated Coding Index and Agentic Index fields are null for every model: Artificial Analysis has retired those indexes. Attribute Artificial Analysis when you republish them. Omitted when Artificial Analysis has scored the model on none of them.'
       example:
-        agentic_index: 55.8
-        coding_index: 63.2
+        agentic_index: null
+        coding_index: null
         cyber_index: 36.4
         decision_index: 75.7
         economics_index: 57.2
@@ -44,16 +44,16 @@ components:
       properties:
         agentic_index:
           deprecated: true
-          description: 'Deprecated: Artificial Analysis has retired its Agentic Index and no longer publishes it. Holds the last score Artificial Analysis published for the model, on a 0-100 scale, or null; it will be null for every model once those stored scores are removed.'
-          example: 55.8
+          description: 'Deprecated: Artificial Analysis has retired its Agentic Index and no longer publishes it. Always null.'
+          example: null
           format: 'double'
           type:
             - 'number'
             - 'null'
         coding_index:
           deprecated: true
-          description: 'Deprecated: Artificial Analysis has retired its Coding Index and no longer publishes it. Holds the last score Artificial Analysis published for the model, on a 0-100 scale, or null; it will be null for every model once those stored scores are removed.'
-          example: 63.2
+          description: 'Deprecated: Artificial Analysis has retired its Coding Index and no longer publishes it. Always null.'
+          example: null
           format: 'double'
           type:
             - 'number'
@@ -22296,8 +22296,8 @@ components:
       description: 'Third-party benchmark rankings for this model. Omitted when no benchmark data is available.'
       example:
         artificial_analysis:
-          agentic_index: 55.8
-          coding_index: 63.2
+          agentic_index: null
+          coding_index: null
           cyber_index: 36.4
           decision_index: 75.7
           economics_index: 57.2
@@ -36437,10 +36437,10 @@ components:
         - 'object'
         - 'null'
     UnifiedBenchmarksAAItem:
-      description: 'One model''s Artificial Analysis index scores. Each score is the model''s best on that index across the configurations Artificial Analysis evaluated (for example reasoning levels), so two indexes of one model can come from different configurations. The deprecated Coding and Agentic Index scores are the exception: both come from one configuration, the model''s strongest by Intelligence Index, then Coding Index, then Agentic Index. With `task_type` set to `intelligence`, `coding` or `agentic`, those three indexes all come from the configuration that scores best on the one named.'
+      description: 'One model''s Artificial Analysis index scores. Each score is the model''s best on that index across the configurations Artificial Analysis evaluated (for example reasoning levels), so two indexes of one model can come from different configurations. The deprecated Coding Index and Agentic Index fields are null for every model: Artificial Analysis has retired those indexes.'
       example:
-        agentic_index: 55.8
-        coding_index: 63.2
+        agentic_index: null
+        coding_index: null
         cyber_index: 36.4
         decision_index: 75.7
         display_name: 'GPT-4o'
@@ -36461,16 +36461,16 @@ components:
       properties:
         agentic_index:
           deprecated: true
-          description: 'Deprecated: Artificial Analysis has retired its Agentic Index and no longer publishes it. Holds the last score Artificial Analysis published for the model, on a 0-100 scale, or null; it will be null for every model once those stored scores are removed.'
-          example: 55.8
+          description: 'Deprecated: Artificial Analysis has retired its Agentic Index and no longer publishes it. Always null.'
+          example: null
           format: 'double'
           type:
             - 'number'
             - 'null'
         coding_index:
           deprecated: true
-          description: 'Deprecated: Artificial Analysis has retired its Coding Index and no longer publishes it. Holds the last score Artificial Analysis published for the model, on a 0-100 scale, or null; it will be null for every model once those stored scores are removed.'
-          example: 63.2
+          description: 'Deprecated: Artificial Analysis has retired its Coding Index and no longer publishes it. Always null.'
+          example: null
           format: 'double'
           type:
             - 'number'
@@ -36822,8 +36822,8 @@ components:
     UnifiedBenchmarksResponse:
       example:
         data:
-          - agentic_index: 55.8
-            coding_index: 63.2
+          - agentic_index: null
+            coding_index: null
             cyber_index: 36.4
             decision_index: 75.7
             display_name: 'GPT-4o'
@@ -42174,12 +42174,12 @@ paths:
             example: 'artificial-analysis'
             type: 'string'
             x-speakeasy-unknown-values: allow
-        - description: 'Filter results by task type. Every value except `search` names the Artificial Analysis index of the same name and returns only models scored on it, best first (`coding` and `agentic` are deprecated: Artificial Analysis has retired those indexes). Design Arena answers only `coding`, `intelligence` and `agentic`, and OpenRouter''s own evals only `intelligence` and `agentic`. `search` returns OpenRouter search benchmark results only.'
+        - description: 'Filter results by task type. Every value except `search` names the Artificial Analysis index of the same name and returns only models scored on it, best first (`coding` and `agentic` are deprecated: Artificial Analysis has retired those indexes and returns no item for them). Design Arena answers only `coding`, `intelligence` and `agentic`, and OpenRouter''s own evals only `intelligence` and `agentic`. `search` returns OpenRouter search benchmark results only.'
           in: 'query'
           name: 'task_type'
           required: false
           schema:
-            description: 'Filter results by task type. Every value except `search` names the Artificial Analysis index of the same name and returns only models scored on it, best first (`coding` and `agentic` are deprecated: Artificial Analysis has retired those indexes). Design Arena answers only `coding`, `intelligence` and `agentic`, and OpenRouter''s own evals only `intelligence` and `agentic`. `search` returns OpenRouter search benchmark results only.'
+            description: 'Filter results by task type. Every value except `search` names the Artificial Analysis index of the same name and returns only models scored on it, best first (`coding` and `agentic` are deprecated: Artificial Analysis has retired those indexes and returns no item for them). Design Arena answers only `coding`, `intelligence` and `agentic`, and OpenRouter''s own evals only `intelligence` and `agentic`. `search` returns OpenRouter search benchmark results only.'
             enum:
               - 'intelligence'
               - 'coding'
@@ -42194,7 +42194,7 @@ paths:
               - 'multilingual'
               - 'decision'
               - 'search'
-            example: 'coding'
+            example: 'intelligence'
             type: 'string'
             x-speakeasy-unknown-values: allow
         - description: 'Return results for one exact OpenRouter benchmark. A `search_*` value narrows the response to search results only; a classic value narrows the OpenRouter items and leaves other sources'' items as they are.'
@@ -42278,8 +42278,8 @@ paths:
             application/json:
               example:
                 data:
-                  - agentic_index: 55.8
-                    coding_index: 63.2
+                  - agentic_index: null
+                    coding_index: null
                     cyber_index: 36.4
                     decision_index: 75.7
                     display_name: 'GPT-4o'
@@ -52916,12 +52916,12 @@ paths:
             description: 'Filter models by output modality. Accepts a comma-separated list of modalities (text, image, embeddings, audio, video, rerank, decisions, speech, transcription) or "all" to include all models. Defaults to "text".'
             example: 'text'
             type: 'string'
-        - description: 'Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), <index>-high-to-low for each Artificial Analysis index (the coding and agentic sorts are deprecated: Artificial Analysis has retired those indexes), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. The decision sort ranks decision models, so pass output_modalities=decisions or all with it. When omitted, the existing default ordering is preserved.'
+        - description: 'Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), <index>-high-to-low for each Artificial Analysis index (the coding and agentic sorts are deprecated: Artificial Analysis has retired those indexes, so they order by canonical slug and variant alone), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. The decision sort ranks decision models, so pass output_modalities=decisions or all with it. When omitted, the existing default ordering is preserved.'
           in: 'query'
           name: 'sort'
           required: false
           schema:
-            description: 'Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), <index>-high-to-low for each Artificial Analysis index (the coding and agentic sorts are deprecated: Artificial Analysis has retired those indexes), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. The decision sort ranks decision models, so pass output_modalities=decisions or all with it. When omitted, the existing default ordering is preserved.'
+            description: 'Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), <index>-high-to-low for each Artificial Analysis index (the coding and agentic sorts are deprecated: Artificial Analysis has retired those indexes, so they order by canonical slug and variant alone), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. The decision sort ranks decision models, so pass output_modalities=decisions or all with it. When omitted, the existing default ordering is preserved.'
             enum:
               - 'most-popular'
               - 'newest'
@@ -53128,48 +53128,48 @@ paths:
               - 'number'
               - 'null'
         - deprecated: true
-          description: 'Deprecated: Artificial Analysis has retired its Coding Index. Minimum score (0-100); unscored models are excluded.'
+          description: 'Deprecated: Artificial Analysis has retired its Coding Index; no model has a score, so this matches no model.'
           in: 'query'
           name: 'min_coding_index'
           required: false
           schema:
-            description: 'Deprecated: Artificial Analysis has retired its Coding Index. Minimum score (0-100); unscored models are excluded.'
+            description: 'Deprecated: Artificial Analysis has retired its Coding Index; no model has a score, so this matches no model.'
             example: 50
             minimum: 0
             type:
               - 'number'
               - 'null'
         - deprecated: true
-          description: 'Deprecated: Artificial Analysis has retired its Coding Index. Maximum score (0-100); unscored models are excluded.'
+          description: 'Deprecated: Artificial Analysis has retired its Coding Index; no model has a score, so this matches no model.'
           in: 'query'
           name: 'max_coding_index'
           required: false
           schema:
-            description: 'Deprecated: Artificial Analysis has retired its Coding Index. Maximum score (0-100); unscored models are excluded.'
+            description: 'Deprecated: Artificial Analysis has retired its Coding Index; no model has a score, so this matches no model.'
             example: 100
             minimum: 0
             type:
               - 'number'
               - 'null'
         - deprecated: true
-          description: 'Deprecated: Artificial Analysis has retired its Agentic Index. Minimum score (0-100); unscored models are excluded.'
+          description: 'Deprecated: Artificial Analysis has retired its Agentic Index; no model has a score, so this matches no model.'
           in: 'query'
           name: 'min_agentic_index'
           required: false
           schema:
-            description: 'Deprecated: Artificial Analysis has retired its Agentic Index. Minimum score (0-100); unscored models are excluded.'
+            description: 'Deprecated: Artificial Analysis has retired its Agentic Index; no model has a score, so this matches no model.'
             example: 50
             minimum: 0
             type:
               - 'number'
               - 'null'
         - deprecated: true
-          description: 'Deprecated: Artificial Analysis has retired its Agentic Index. Maximum score (0-100); unscored models are excluded.'
+          description: 'Deprecated: Artificial Analysis has retired its Agentic Index; no model has a score, so this matches no model.'
           in: 'query'
           name: 'max_agentic_index'
           required: false
           schema:
-            description: 'Deprecated: Artificial Analysis has retired its Agentic Index. Maximum score (0-100); unscored models are excluded.'
+            description: 'Deprecated: Artificial Analysis has retired its Agentic Index; no model has a score, so this matches no model.'
             example: 100
             minimum: 0
             type:
@@ -53829,12 +53829,12 @@ paths:
             description: 'Filter models by output modality. Accepts a comma-separated list of modalities (text, image, embeddings, audio, video, rerank, decisions, speech, transcription) or "all" to include all models. Defaults to "text".'
             example: 'text'
             type: 'string'
-        - description: 'Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), <index>-high-to-low for each Artificial Analysis index (the coding and agentic sorts are deprecated: Artificial Analysis has retired those indexes), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. The decision sort ranks decision models, so pass output_modalities=decisions or all with it. When omitted, the existing default ordering is preserved.'
+        - description: 'Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), <index>-high-to-low for each Artificial Analysis index (the coding and agentic sorts are deprecated: Artificial Analysis has retired those indexes, so they order by canonical slug and variant alone), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. The decision sort ranks decision models, so pass output_modalities=decisions or all with it. When omitted, the existing default ordering is preserved.'
           in: 'query'
           name: 'sort'
           required: false
           schema:
-            description: 'Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), <index>-high-to-low for each Artificial Analysis index (the coding and agentic sorts are deprecated: Artificial Analysis has retired those indexes), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. The decision sort ranks decision models, so pass output_modalities=decisions or all with it. When omitted, the existing default ordering is preserved.'
+            description: 'Sort the returned models server-side. Prefer this over fetching the full list and sorting client-side. Options: pricing-low-to-high, pricing-high-to-low (average prompt/completion price), context-high-to-low (context length), throughput-high-to-low, latency-low-to-high (recent median performance), most-popular, top-weekly (tokens processed in the last week), newest (creation date), <index>-high-to-low for each Artificial Analysis index (the coding and agentic sorts are deprecated: Artificial Analysis has retired those indexes, so they order by canonical slug and variant alone), design-arena-elo-high-to-low (best Design Arena ELO across arenas). Models without a score for the chosen benchmark are placed last. The decision sort ranks decision models, so pass output_modalities=decisions or all with it. When omitted, the existing default ordering is preserved.'
             enum:
               - 'most-popular'
               - 'newest'
