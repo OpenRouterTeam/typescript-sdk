@@ -51,15 +51,15 @@ export type CreateWorkspaceRequest = {
     | null
     | undefined;
   /**
-   * Optional array of API key IDs to filter I/O logging
+   * Optional array of API key IDs to filter I/O logging. Read-only for management keys: any value other than the default returns 403. Change it in the OpenRouter dashboard.
    */
   ioLoggingApiKeyIds?: Array<number> | null | undefined;
   /**
-   * Sampling rate for I/O logging (0.0001-1)
+   * Sampling rate for I/O logging (0.0001-1). Read-only for management keys: any value other than the default returns 403. Change it in the OpenRouter dashboard.
    */
   ioLoggingSamplingRate?: number | undefined;
   /**
-   * Whether data discount logging is enabled. Enabling it requires the account to allow workspace data-discount logging; otherwise the request returns 403.
+   * Whether data discount logging is enabled. Read-only for management keys: any value other than the default returns 403. Change it in the OpenRouter dashboard.
    */
   isDataDiscountLoggingEnabled?: boolean | undefined;
   /**
@@ -67,7 +67,7 @@ export type CreateWorkspaceRequest = {
    */
   isObservabilityBroadcastEnabled?: boolean | undefined;
   /**
-   * Whether private logging is enabled
+   * Whether private logging is enabled. Read-only for management keys: any value other than the default returns 403. Change it in the OpenRouter dashboard.
    */
   isObservabilityIoLoggingEnabled?: boolean | undefined;
   /**

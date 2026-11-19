@@ -18,9 +18,9 @@ import {
 
 export type ImageGenerationResponseData = {
   /**
-   * Base64-encoded image bytes
+   * Base64-encoded image bytes. Present unless the request asked for `response_format: "url"` and `url` was issued.
    */
-  b64Json: string;
+  b64Json?: string | undefined;
   /**
    * Layer metadata, present when the request asked the provider to split the image into layers (Seedream: `provider.options.seed.layer_decomposition: true` with the required `layer_decomposition_options.max_images`, 2 to 16). Decomposition requires `n` to be 1 or omitted; the response returns up to `max_images` images (the base image plus its layers).
    */
@@ -29,6 +29,10 @@ export type ImageGenerationResponseData = {
    * Media type (MIME type) of the image, e.g. `image/png`, `image/jpeg`, `image/webp`, `image/svg+xml`. May be omitted if the format could not be determined.
    */
   mediaType?: string | undefined;
+  /**
+   * Signed download URL for the image bytes, issued for `response_format: "url"` requests. Valid until `expires_at`. Absent when the response fell back to `b64_json`.
+   */
+  url?: string | undefined;
 };
 
 /**
@@ -44,6 +48,10 @@ export type ImageGenerationResponse = {
    */
   data: Array<ImageGenerationResponseData>;
   /**
+   * Unix timestamp (seconds) of the earliest expiry among the `url`s in `data`; treat every URL as expired after it. Present only when URLs were issued.
+   */
+  expiresAt?: number | undefined;
+  /**
    * Token and cost usage for the image generation request, when available
    */
   usage?: ImageGenerationUsage | undefined;
@@ -54,9 +62,10 @@ export const ImageGenerationResponseData$inboundSchema: z.ZodType<
   ImageGenerationResponseData,
   unknown
 > = z.object({
-  b64_json: z.string(),
+  b64_json: z.string().optional(),
   layer: ImageGenerationLayer$inboundSchema.optional(),
   media_type: z.string().optional(),
+  url: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     "b64_json": "b64Json",
@@ -81,7 +90,12 @@ export const ImageGenerationResponse$inboundSchema: z.ZodType<
 > = z.object({
   created: z.int(),
   data: z.array(z.lazy(() => ImageGenerationResponseData$inboundSchema)),
+  expires_at: z.int().optional(),
   usage: ImageGenerationUsage$inboundSchema.optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "expires_at": "expiresAt",
+  });
 });
 
 export function imageGenerationResponseFromJSON(

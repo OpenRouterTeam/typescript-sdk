@@ -150,6 +150,20 @@ export type ImageGenerationRequestResolution = OpenEnum<
 >;
 
 /**
+ * `b64_json` (default) returns the image bytes inline. `url` stores each output in OpenRouter storage and returns a signed download URL in place of the bytes. The URL is a bearer link: anyone holding it can download the image until it expires, up to 24 hours after the image was stored (use `expires_at`); the stored copy is deleted by the storage lifecycle within the following day. The response falls back to `b64_json` when a URL cannot be issued: streaming responses, zero-data-retention requests (account settings, guardrails or `provider.zdr`) or endpoints, or storage being unavailable.
+ */
+export const ImageGenerationRequestResponseFormat = {
+  B64Json: "b64_json",
+  Url: "url",
+} as const;
+/**
+ * `b64_json` (default) returns the image bytes inline. `url` stores each output in OpenRouter storage and returns a signed download URL in place of the bytes. The URL is a bearer link: anyone holding it can download the image until it expires, up to 24 hours after the image was stored (use `expires_at`); the stored copy is deleted by the storage lifecycle within the following day. The response falls back to `b64_json` when a URL cannot be issued: streaming responses, zero-data-retention requests (account settings, guardrails or `provider.zdr`) or endpoints, or storage being unavailable.
+ */
+export type ImageGenerationRequestResponseFormat = OpenEnum<
+  typeof ImageGenerationRequestResponseFormat
+>;
+
+/**
  * Image generation request input
  */
 export type ImageGenerationRequest = {
@@ -209,6 +223,10 @@ export type ImageGenerationRequest = {
    * Normalized resolution tier of the generated image. Concrete pixel dimensions are derived per-provider.
    */
   resolution?: ImageGenerationRequestResolution | undefined;
+  /**
+   * `b64_json` (default) returns the image bytes inline. `url` stores each output in OpenRouter storage and returns a signed download URL in place of the bytes. The URL is a bearer link: anyone holding it can download the image until it expires, up to 24 hours after the image was stored (use `expires_at`); the stored copy is deleted by the storage lifecycle within the following day. The response falls back to `b64_json` when a URL cannot be issued: streaming responses, zero-data-retention requests (account settings, guardrails or `provider.zdr`) or endpoints, or storage being unavailable.
+   */
+  responseFormat?: ImageGenerationRequestResponseFormat | undefined;
   /**
    * If specified, the generation will sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed for all providers.
    */
@@ -315,6 +333,12 @@ export const ImageGenerationRequestResolution$outboundSchema: z.ZodType<
 > = openEnums.outboundSchema(ImageGenerationRequestResolution);
 
 /** @internal */
+export const ImageGenerationRequestResponseFormat$outboundSchema: z.ZodType<
+  string,
+  ImageGenerationRequestResponseFormat
+> = openEnums.outboundSchema(ImageGenerationRequestResponseFormat);
+
+/** @internal */
 export type ImageGenerationRequest$Outbound = {
   aspect_ratio?: string | undefined;
   background?: string | undefined;
@@ -330,6 +354,7 @@ export type ImageGenerationRequest$Outbound = {
   provider?: ImageGenerationProviderPreferences$Outbound | undefined;
   quality?: string | undefined;
   resolution?: string | undefined;
+  response_format?: string | undefined;
   seed?: number | undefined;
   session_id?: string | undefined;
   size?: string | undefined;
@@ -357,6 +382,8 @@ export const ImageGenerationRequest$outboundSchema: z.ZodType<
   provider: ImageGenerationProviderPreferences$outboundSchema.optional(),
   quality: ImageGenerationRequestQuality$outboundSchema.optional(),
   resolution: ImageGenerationRequestResolution$outboundSchema.optional(),
+  responseFormat: ImageGenerationRequestResponseFormat$outboundSchema
+    .optional(),
   seed: z.int().optional(),
   sessionId: z.string().optional(),
   size: z.string().optional(),
@@ -371,6 +398,7 @@ export const ImageGenerationRequest$outboundSchema: z.ZodType<
     inputReferences: "input_references",
     outputCompression: "output_compression",
     outputFormat: "output_format",
+    responseFormat: "response_format",
     sessionId: "session_id",
   });
 });
