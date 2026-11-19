@@ -26,6 +26,20 @@ export type VideoGenerationResponseStatus = OpenEnum<
   typeof VideoGenerationResponseStatus
 >;
 
+/**
+ * The step within `status` for a job that is not finished: `submitting` and `queued_at_provider` under `pending`, `generating` and `finalizing` under `in_progress`. When present, it only moves forward, and steps may be skipped between polls. It is absent once the job is finished and can also be absent mid-job when the step is unknown, so use `status` to tell whether the job is finished.
+ */
+export const StatusDetail = {
+  Submitting: "submitting",
+  QueuedAtProvider: "queued_at_provider",
+  Generating: "generating",
+  Finalizing: "finalizing",
+} as const;
+/**
+ * The step within `status` for a job that is not finished: `submitting` and `queued_at_provider` under `pending`, `generating` and `finalizing` under `in_progress`. When present, it only moves forward, and steps may be skipped between polls. It is absent once the job is finished and can also be absent mid-job when the step is unknown, so use `status` to tell whether the job is finished.
+ */
+export type StatusDetail = OpenEnum<typeof StatusDetail>;
+
 export type VideoGenerationResponse = {
   error?: string | undefined;
   /**
@@ -41,7 +55,15 @@ export type VideoGenerationResponse = {
    */
   id: string;
   pollingUrl: string;
+  /**
+   * Percent complete, from 0 to 100 and possibly fractional, reported by the provider while `status_detail` is `generating`. Present only for providers that report it, and absent once the job moves to `finalizing`.
+   */
+  progress?: number | undefined;
   status: VideoGenerationResponseStatus;
+  /**
+   * The step within `status` for a job that is not finished: `submitting` and `queued_at_provider` under `pending`, `generating` and `finalizing` under `in_progress`. When present, it only moves forward, and steps may be skipped between polls. It is absent once the job is finished and can also be absent mid-job when the step is unknown, so use `status` to tell whether the job is finished.
+   */
+  statusDetail?: StatusDetail | undefined;
   /**
    * OpenRouter content URLs for each output. They need your API key in the `Authorization` header and keep working for as long as the output is available.
    */
@@ -63,6 +85,10 @@ export const VideoGenerationResponseStatus$inboundSchema: z.ZodType<
 > = openEnums.inboundSchema(VideoGenerationResponseStatus);
 
 /** @internal */
+export const StatusDetail$inboundSchema: z.ZodType<StatusDetail, unknown> =
+  openEnums.inboundSchema(StatusDetail);
+
+/** @internal */
 export const VideoGenerationResponse$inboundSchema: z.ZodType<
   VideoGenerationResponse,
   unknown
@@ -72,7 +98,9 @@ export const VideoGenerationResponse$inboundSchema: z.ZodType<
   generation_id: z.string().optional(),
   id: z.string(),
   polling_url: z.string(),
+  progress: z.number().optional(),
   status: VideoGenerationResponseStatus$inboundSchema,
+  status_detail: StatusDetail$inboundSchema.optional(),
   unsigned_urls: z.array(z.string()).optional(),
   urls: z.array(z.string()).optional(),
   usage: VideoGenerationUsage$inboundSchema.optional(),
@@ -81,6 +109,7 @@ export const VideoGenerationResponse$inboundSchema: z.ZodType<
     "expires_at": "expiresAt",
     "generation_id": "generationId",
     "polling_url": "pollingUrl",
+    "status_detail": "statusDetail",
     "unsigned_urls": "unsignedUrls",
   });
 });
