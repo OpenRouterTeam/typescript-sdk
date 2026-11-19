@@ -30,7 +30,9 @@ import { Result } from "../types/fp.js";
  * Start a SCIM directory sync
  *
  * @remarks
- * Start a SCIM directory sync. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Start a SCIM directory sync. Disabled: no API key can perform this write, including management keys. Use the organization settings in the dashboard, which require step-up verification. A valid management key for an organization with SCIM access receives 403; an invalid key still receives 401 and an organization without SCIM access receives 404.
+ *
+ * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
  */
 export function scimCreateSyncJob(
   client: OpenRouterCore,

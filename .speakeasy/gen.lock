@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 5c891fa410eb14d16ee4a3827a9e1b8d
+  docChecksum: 0b435f6cd5bae488cb0bc2dec6a15459
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.116
-  configChecksum: d0811d56c486512b59020d3d2170635d
+  releaseVersion: 1.5.117
+  configChecksum: 71181a65bcae09c0fdce7655c7c4467f
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -5396,6 +5396,7 @@ trackedFiles:
   docs/models/imagegenerationrequestresolution.mdx:
     id: af414d7f0420
     pristine_git_object: 5621bde5975e15e3e492485dae981ee34a39ccc9
+  docs/models/imagegenerationrequestresponseformat.mdx: {}
   docs/models/imagegenerationrequesttype.mdx:
     id: 5629c1fbcdae
     pristine_git_object: 8891662d61424d08e0abcf507badb1c693453c9f
@@ -20269,7 +20270,7 @@ examples:
         application/json: {"model": "bytedance-seed/seedream-4.5", "prompt": "a red panda astronaut floating in space, studio lighting"}
       responses:
         "200":
-          application/json: {"created": 1748372400, "data": [{"b64_json": "<base64-encoded-image>"}]}
+          application/json: {"created": 1748372400, "data": [{}]}
         "400":
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "401":
@@ -23629,4 +23630,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.privateEndpoints.create()`: \n  *  `request.createPrivateEndpointRequest.settings.promptCaching` **Added**\n* `openrouter.privateEndpoints.get()`:  `response.data.settings.promptCaching` **Added**\n* `openrouter.privateEndpoints.update()`: \n  *  `request.updatePrivateEndpointRequest.settings.promptCaching` **Added**\n  *  `response.data.settings.promptCaching` **Added**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest.responseFormat` **Added**\n  *  `response` **Changed**\n* `openrouter.scim.create()`: **Deprecated**\n* `openrouter.scim.delete()`: **Deprecated**\n* `openrouter.scim.update()`: **Deprecated**\n* `openrouter.scim.createSyncJob()`: **Deprecated**\n"

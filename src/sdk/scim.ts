@@ -40,7 +40,9 @@ export class Scim extends ClientSDK {
    * Create a SCIM group mapping
    *
    * @remarks
-   * Create a SCIM group-to-workspace role mapping. Creating a mapping that already exists with the same role succeeds and re-applies the mapping to the group members. Requesting a different role for an existing mapping returns 409. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Create a SCIM group-to-workspace role mapping. Disabled: no API key can perform this write, including management keys. Use the organization settings in the dashboard, which require step-up verification. A valid management key for an organization with SCIM access receives 403; an invalid key still receives 401 and an organization without SCIM access receives 404.
+   *
+   * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   async create(
     request: operations.CreateScimGroupMappingRequest,
@@ -57,7 +59,9 @@ export class Scim extends ClientSDK {
    * Delete a SCIM group mapping
    *
    * @remarks
-   * Delete a SCIM group-to-workspace mapping. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Delete a SCIM group-to-workspace mapping. Disabled: no API key can perform this write, including management keys. Use the organization settings in the dashboard, which require step-up verification. A valid management key for an organization with SCIM access receives 403; an invalid key still receives 401 and an organization without SCIM access receives 404.
+   *
+   * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   async delete(
     request: operations.DeleteScimGroupMappingRequest,
@@ -91,7 +95,9 @@ export class Scim extends ClientSDK {
    * Update a SCIM group mapping
    *
    * @remarks
-   * Update a SCIM group mapping role. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Update a SCIM group mapping role. Disabled: no API key can perform this write, including management keys. Use the organization settings in the dashboard, which require step-up verification. A valid management key for an organization with SCIM access receives 403; an invalid key still receives 401 and an organization without SCIM access receives 404.
+   *
+   * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   async update(
     request: operations.UpdateScimGroupMappingRequest,
@@ -127,7 +133,9 @@ export class Scim extends ClientSDK {
    * Start a SCIM directory sync
    *
    * @remarks
-   * Start a SCIM directory sync. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+   * Start a SCIM directory sync. Disabled: no API key can perform this write, including management keys. Use the organization settings in the dashboard, which require step-up verification. A valid management key for an organization with SCIM access receives 403; an invalid key still receives 401 and an organization without SCIM access receives 404.
+   *
+   * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   async createSyncJob(
     request?: operations.CreateScimSyncJobRequest | undefined,
