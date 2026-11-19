@@ -34004,6 +34004,25 @@ components:
       oneOf:
         - $ref: '#/components/schemas/ContainerAutoEnvironment'
         - $ref: '#/components/schemas/ContainerReferenceEnvironment'
+    SpeechEnumParameter:
+      example:
+        type: 'enum'
+        values:
+          - 'alloy'
+          - 'coral'
+      properties:
+        type:
+          enum:
+            - 'enum'
+          type: 'string'
+        values:
+          items:
+            type: 'string'
+          type: 'array'
+      required:
+        - 'type'
+        - 'values'
+      type: 'object'
     SpeechInput:
       anyOf:
         - type: 'string'
@@ -34013,6 +34032,65 @@ components:
           type: 'array'
       description: 'Text to synthesize, or a list of turns for multi-speaker input. Each turn has its own text, voice, and instructions. Multi-speaker input is supported by Gemini TTS models, by Fish Audio models other than S1, and by Speechify dialogue models.'
       example: 'Hello world'
+    SpeechInputModality:
+      description: 'An input the model accepts. `audio` and `image` are `input_references` for voice cloning and voice design.'
+      example:
+        type: 'text'
+      oneOf:
+        - description: 'The `input` text.'
+          properties:
+            turns:
+              description: '`optional`: `input` may also be a multi-speaker turn array, which cannot be combined with `input_references`. `required`: `input` must be a turn array with at least two distinct voices. Absent: `input` is a string.'
+              enum:
+                - 'required'
+                - 'optional'
+              type: 'string'
+            type:
+              enum:
+                - 'text'
+              type: 'string'
+          required:
+            - 'type'
+          type: 'object'
+        - properties:
+            supported_inputs:
+              description: '`references` is how many audio clips a request may send. With more than one, some providers require the text to address every clip with an `@AudioN` placeholder.'
+              properties:
+                references:
+                  $ref: '#/components/schemas/SpeechReferenceCount'
+              required:
+                - 'references'
+              type: 'object'
+            type:
+              enum:
+                - 'audio'
+              type: 'string'
+          required:
+            - 'type'
+            - 'supported_inputs'
+          type: 'object'
+        - properties:
+            supported_inputs:
+              properties:
+                audio:
+                  description: '`required`: an image reference is accepted only together with an audio reference. `excluded`: only without one. Absent: either.'
+                  enum:
+                    - 'required'
+                    - 'excluded'
+                  type: 'string'
+                references:
+                  $ref: '#/components/schemas/SpeechReferenceCount'
+              required:
+                - 'references'
+              type: 'object'
+            type:
+              enum:
+                - 'image'
+              type: 'string'
+          required:
+            - 'type'
+            - 'supported_inputs'
+          type: 'object'
     SpeechInputReference:
       description: 'Reference content part for stateless voice cloning or voice design'
       discriminator:
@@ -34117,6 +34195,263 @@ components:
       required:
         - 'type'
         - 'text'
+      type: 'object'
+    SpeechModelEndpoint:
+      description: 'One endpoint serving a speech model, with the inputs and parameters it accepts.'
+      example:
+        input_modalities:
+          - type: 'text'
+        output_modalities:
+          - supported_parameters:
+              instructions:
+                type: 'unknown'
+              response_format:
+                type: 'enum'
+                values:
+                  - 'mp3'
+                  - 'pcm'
+              speed:
+                max: 4
+                min: 0.25
+                type: 'range'
+              voice:
+                type: 'enum'
+                values:
+                  - 'alloy'
+                  - 'coral'
+            type: 'speech'
+        provider_name: 'OpenAI'
+        provider_slug: 'openai'
+      properties:
+        input_modalities:
+          items:
+            $ref: '#/components/schemas/SpeechInputModality'
+          type: 'array'
+        output_modalities:
+          items:
+            $ref: '#/components/schemas/SpeechOutputModality'
+          type: 'array'
+        provider_name:
+          description: 'Provider display name'
+          example: 'OpenAI'
+          type: 'string'
+        provider_slug:
+          description: 'Provider slug'
+          example: 'openai'
+          type: 'string'
+      required:
+        - 'provider_name'
+        - 'provider_slug'
+        - 'input_modalities'
+        - 'output_modalities'
+      type: 'object'
+    SpeechModelResponse:
+      description: 'A text-to-speech model. Its members are the envelope of its endpoints'': enums are unioned and ranges widened, so a value inside a range may be accepted by no single endpoint. Each record in `endpoints` lists exactly what that endpoint accepts.'
+      example:
+        created: 1742428800
+        description: 'Text-to-speech model with steerable delivery.'
+        endpoints:
+          - input_modalities:
+              - type: 'text'
+            output_modalities:
+              - supported_parameters:
+                  instructions:
+                    type: 'unknown'
+                  response_format:
+                    type: 'enum'
+                    values:
+                      - 'mp3'
+                      - 'pcm'
+                  speed:
+                    max: 4
+                    min: 0.25
+                    type: 'range'
+                  voice:
+                    type: 'enum'
+                    values:
+                      - 'alloy'
+                      - 'coral'
+                type: 'speech'
+            provider_name: 'OpenAI'
+            provider_slug: 'openai'
+        id: 'openai/gpt-4o-mini-tts'
+        input_modalities:
+          - type: 'text'
+        name: 'OpenAI: GPT-4o mini TTS'
+        output_modalities:
+          - supported_parameters:
+              instructions:
+                type: 'unknown'
+              response_format:
+                type: 'enum'
+                values:
+                  - 'mp3'
+                  - 'pcm'
+              speed:
+                max: 4
+                min: 0.25
+                type: 'range'
+              voice:
+                type: 'enum'
+                values:
+                  - 'alloy'
+                  - 'coral'
+            type: 'speech'
+      properties:
+        created:
+          description: 'Unix timestamp (seconds) of when the model was created'
+          type: 'integer'
+        description:
+          type: 'string'
+        endpoints:
+          description: 'Each endpoint serving the model, with exactly the inputs and parameters it accepts. Some endpoints route only after the caller accepts a provider requirement such as a self-attestation; until then, a request to them is rejected with a 403 that names the requirement.'
+          items:
+            $ref: '#/components/schemas/SpeechModelEndpoint'
+          type: 'array'
+        id:
+          description: 'Model slug'
+          example: 'openai/gpt-4o-mini-tts'
+          type: 'string'
+        input_modalities:
+          items:
+            $ref: '#/components/schemas/SpeechInputModality'
+          type: 'array'
+        name:
+          example: 'OpenAI: GPT-4o mini TTS'
+          type: 'string'
+        output_modalities:
+          items:
+            $ref: '#/components/schemas/SpeechOutputModality'
+          type: 'array'
+      required:
+        - 'id'
+        - 'name'
+        - 'description'
+        - 'created'
+        - 'input_modalities'
+        - 'output_modalities'
+        - 'endpoints'
+      type: 'object'
+    SpeechModelsListResponse:
+      description: 'List of text-to-speech models, each with its endpoints.'
+      example:
+        data:
+          - created: 1742428800
+            description: 'Text-to-speech model with steerable delivery.'
+            endpoints:
+              - input_modalities:
+                  - type: 'text'
+                output_modalities:
+                  - supported_parameters:
+                      instructions:
+                        type: 'unknown'
+                      response_format:
+                        type: 'enum'
+                        values:
+                          - 'mp3'
+                          - 'pcm'
+                      speed:
+                        max: 4
+                        min: 0.25
+                        type: 'range'
+                      voice:
+                        type: 'enum'
+                        values:
+                          - 'alloy'
+                          - 'coral'
+                    type: 'speech'
+                provider_name: 'OpenAI'
+                provider_slug: 'openai'
+            id: 'openai/gpt-4o-mini-tts'
+            input_modalities:
+              - type: 'text'
+            name: 'OpenAI: GPT-4o mini TTS'
+            output_modalities:
+              - supported_parameters:
+                  instructions:
+                    type: 'unknown'
+                  response_format:
+                    type: 'enum'
+                    values:
+                      - 'mp3'
+                      - 'pcm'
+                  speed:
+                    max: 4
+                    min: 0.25
+                    type: 'range'
+                  voice:
+                    type: 'enum'
+                    values:
+                      - 'alloy'
+                      - 'coral'
+                type: 'speech'
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/SpeechModelResponse'
+          type: 'array'
+      required:
+        - 'data'
+      type: 'object'
+    SpeechOutputModality:
+      example:
+        supported_parameters:
+          voice:
+            type: 'enum'
+            values:
+              - 'alloy'
+              - 'coral'
+        type: 'speech'
+      properties:
+        supported_parameters:
+          $ref: '#/components/schemas/SpeechSupportedParameters'
+        type:
+          enum:
+            - 'speech'
+          type: 'string'
+      required:
+        - 'type'
+        - 'supported_parameters'
+      type: 'object'
+    SpeechRangeParameter:
+      description: 'The accepted `speed` range. Absent: the provider documents no range; some providers still forward `speed`.'
+      example:
+        max: 4
+        min: 0.25
+        type: 'range'
+      properties:
+        max:
+          format: 'double'
+          type: 'number'
+        min:
+          format: 'double'
+          type: 'number'
+        type:
+          enum:
+            - 'range'
+          type: 'string'
+      required:
+        - 'type'
+        - 'min'
+        - 'max'
+      type: 'object'
+    SpeechReferenceCount:
+      example:
+        max: 1
+        min: 1
+        type: 'integer'
+      properties:
+        max:
+          type: 'integer'
+        min:
+          type: 'integer'
+        type:
+          enum:
+            - 'integer'
+          type: 'string'
+      required:
+        - 'type'
+        - 'min'
       type: 'object'
     SpeechRequest:
       description: 'Text-to-speech request input'
@@ -34246,6 +34581,34 @@ components:
         - 'model'
         - 'input'
       type: 'object'
+    SpeechSupportedParameters:
+      example:
+        instructions:
+          type: 'unknown'
+        response_format:
+          type: 'enum'
+          values:
+            - 'mp3'
+            - 'pcm'
+        speed:
+          max: 4
+          min: 0.25
+          type: 'range'
+        voice:
+          type: 'enum'
+          values:
+            - 'alloy'
+            - 'coral'
+      properties:
+        instructions:
+          $ref: '#/components/schemas/SpeechUnknownParameter'
+        response_format:
+          $ref: '#/components/schemas/SpeechEnumParameter'
+        speed:
+          $ref: '#/components/schemas/SpeechRangeParameter'
+        voice:
+          $ref: '#/components/schemas/SpeechVoiceParameter'
+      type: 'object'
     SpeechTurn:
       properties:
         instructions:
@@ -34263,6 +34626,42 @@ components:
           type: 'string'
       required:
         - 'text'
+      type: 'object'
+    SpeechUnknownParameter:
+      example:
+        type: 'unknown'
+      properties:
+        type:
+          enum:
+            - 'unknown'
+          type: 'string'
+      required:
+        - 'type'
+      type: 'object'
+    SpeechVoiceParameter:
+      description: '`enum` lists the documented voices in `values`; some providers also accept voice IDs not listed there (custom or cloned voices). `unknown` means the field is accepted but no voices are listed.'
+      example:
+        type: 'enum'
+        values:
+          - 'alloy'
+          - 'coral'
+      properties:
+        references:
+          description: '`excluded`: `voice` is rejected when the request also sends a nonempty `input_references`. Absent: they can be combined.'
+          enum:
+            - 'excluded'
+          type: 'string'
+        type:
+          enum:
+            - 'enum'
+            - 'unknown'
+          type: 'string'
+        values:
+          items:
+            type: 'string'
+          type: 'array'
+      required:
+        - 'type'
       type: 'object'
     StopServerToolsWhen:
       description: 'Stop conditions for the server-tool agent loop. Any condition firing halts the loop (OR logic). When set, this overrides `max_tool_calls`. When a condition fires while the model is still emitting tool calls, the pending tool calls are executed and one final turn is made with tool calls disabled so the response ends with a natural-language answer instead of an unfinished tool call.'
@@ -40841,6 +41240,226 @@ paths:
         - 'TTS'
       x-speakeasy-max-method-params: 1
       x-speakeasy-name-override: 'createSpeech'
+  /audio/speech/models:
+    get:
+      description: 'Lists every text-to-speech model with the inputs it accepts and its speech output parameters, merged across its endpoints, plus each endpoint with its own.'
+      operationId: 'listSpeechModels'
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  - created: 1742428800
+                    description: 'Text-to-speech model with steerable delivery.'
+                    endpoints:
+                      - input_modalities:
+                          - type: 'text'
+                        output_modalities:
+                          - supported_parameters:
+                              instructions:
+                                type: 'unknown'
+                              response_format:
+                                type: 'enum'
+                                values:
+                                  - 'mp3'
+                                  - 'pcm'
+                              speed:
+                                max: 4
+                                min: 0.25
+                                type: 'range'
+                              voice:
+                                type: 'enum'
+                                values:
+                                  - 'alloy'
+                                  - 'coral'
+                            type: 'speech'
+                        provider_name: 'OpenAI'
+                        provider_slug: 'openai'
+                    id: 'openai/gpt-4o-mini-tts'
+                    input_modalities:
+                      - type: 'text'
+                    name: 'OpenAI: GPT-4o mini TTS'
+                    output_modalities:
+                      - supported_parameters:
+                          instructions:
+                            type: 'unknown'
+                          response_format:
+                            type: 'enum'
+                            values:
+                              - 'mp3'
+                              - 'pcm'
+                          speed:
+                            max: 4
+                            min: 0.25
+                            type: 'range'
+                          voice:
+                            type: 'enum'
+                            values:
+                              - 'alloy'
+                              - 'coral'
+                        type: 'speech'
+              schema:
+                $ref: '#/components/schemas/SpeechModelsListResponse'
+          description: 'List of text-to-speech models'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
+      security: []
+      summary: 'List text-to-speech models'
+      tags:
+        - 'TTS'
+      x-speakeasy-name-override: 'listModels'
+  /audio/speech/models/{author}/{slug}:
+    get:
+      description: 'Returns a text-to-speech model with each endpoint''s own inputs and speech output parameters.'
+      operationId: 'getSpeechModel'
+      parameters:
+        - description: 'Model author/organization'
+          in: 'path'
+          name: 'author'
+          required: true
+          schema:
+            description: 'Model author/organization'
+            example: 'openai'
+            type: 'string'
+        - description: 'Model slug'
+          in: 'path'
+          name: 'slug'
+          required: true
+          schema:
+            description: 'Model slug'
+            example: 'gpt-4o-mini-tts'
+            type: 'string'
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                created: 1742428800
+                description: 'Text-to-speech model with steerable delivery.'
+                endpoints:
+                  - input_modalities:
+                      - type: 'text'
+                    output_modalities:
+                      - supported_parameters:
+                          instructions:
+                            type: 'unknown'
+                          response_format:
+                            type: 'enum'
+                            values:
+                              - 'mp3'
+                              - 'pcm'
+                          speed:
+                            max: 4
+                            min: 0.25
+                            type: 'range'
+                          voice:
+                            type: 'enum'
+                            values:
+                              - 'alloy'
+                              - 'coral'
+                        type: 'speech'
+                    provider_name: 'OpenAI'
+                    provider_slug: 'openai'
+                id: 'openai/gpt-4o-mini-tts'
+                input_modalities:
+                  - type: 'text'
+                name: 'OpenAI: GPT-4o mini TTS'
+                output_modalities:
+                  - supported_parameters:
+                      instructions:
+                        type: 'unknown'
+                      response_format:
+                        type: 'enum'
+                        values:
+                          - 'mp3'
+                          - 'pcm'
+                      speed:
+                        max: 4
+                        min: 0.25
+                        type: 'range'
+                      voice:
+                        type: 'enum'
+                        values:
+                          - 'alloy'
+                          - 'coral'
+                    type: 'speech'
+              schema:
+                $ref: '#/components/schemas/SpeechModelResponse'
+          description: 'A text-to-speech model and its endpoints'
+        '403':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 403
+                  message: 'Only management keys can perform this operation'
+              schema:
+                $ref: '#/components/schemas/ForbiddenResponse'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: 'Resource not found'
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: 'Not Found - Resource does not exist'
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: 'Internal Server Error'
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: 'Internal Server Error - Unexpected server error'
+        '503':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 503
+                  message: 'Service temporarily unavailable'
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailableResponse'
+          description: 'Service Unavailable - Service temporarily unavailable'
+      security: []
+      summary: 'Get a text-to-speech model'
+      tags:
+        - 'TTS'
+      x-speakeasy-name-override: 'getModel'
   /audio/transcriptions:
     post:
       description: 'Transcribes audio into text. Accepts base64-encoded audio input as JSON, an OpenAI-style multipart/form-data file upload, or a URL the provider downloads directly, and returns the transcribed text.'
