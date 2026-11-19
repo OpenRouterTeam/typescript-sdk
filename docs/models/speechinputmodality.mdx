@@ -1,0 +1,45 @@
+---
+title: "SpeechInputModality"
+---
+
+An input the model accepts. `audio` and `image` are `input_references` for voice cloning and voice design.
+
+
+## Supported Types
+
+### `models.SpeechInputModalityText`
+
+```typescript
+const value: models.SpeechInputModalityText = {
+  type: "text",
+};
+```
+
+### `models.SpeechInputModalityAudio`
+
+```typescript
+const value: models.SpeechInputModalityAudio = {
+  supportedInputs: {
+    references: {
+      min: 1,
+      type: "integer",
+    },
+  },
+  type: "audio",
+};
+```
+
+### `models.SpeechInputModalityImage`
+
+```typescript
+const value: models.SpeechInputModalityImage = {
+  supportedInputs: {
+    references: {
+      min: 1,
+      type: "integer",
+    },
+  },
+  type: "image",
+};
+```
+

@@ -1,0 +1,21 @@
+---
+title: "AudioEnum"
+---
+
+`required`: an image reference is accepted only together with an audio reference. `excluded`: only without one. Absent: either.
+
+## Example Usage
+
+```typescript
+import { AudioEnum } from "@openrouter/sdk/models";
+
+let value: AudioEnum = "required";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"required" | "excluded" | Unrecognized<string>
+```

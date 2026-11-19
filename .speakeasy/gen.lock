@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 2ee6a936182384689390440c4f88c096
+  docChecksum: 2bff8307e4ca2a115786d30014b5ed94
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.119
-  configChecksum: d68ab8a0111782619e8781426c674eda
+  releaseVersion: 1.5.120
+  configChecksum: 94b72a50240f786331844fd071f5911c
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -1323,6 +1323,7 @@ trackedFiles:
   docs/models/audio.mdx:
     id: 78e6e2ea5144
     pristine_git_object: dd55976c0477b2e674bb002605d72c6cc3f7a603
+  docs/models/audioenum.mdx: {}
   docs/models/audiopcm1.mdx:
     id: e12687d2fbbe
     pristine_git_object: 14c4a2e52fe364f40dcaaf111534b3b7ca55c730
@@ -8991,6 +8992,8 @@ trackedFiles:
   docs/models/operations/getsessioncostresponse.mdx:
     id: 4a5ac507b601
     pristine_git_object: fd52ba8e496c4165b92e32d8ed0199f227fce80a
+  docs/models/operations/getspeechmodelglobals.mdx: {}
+  docs/models/operations/getspeechmodelrequest.mdx: {}
   docs/models/operations/gettaskclassificationsglobals.md:
     id: 39c95297a6c7
     last_write_checksum: sha1:d3cdded90a20312c4cce31776ed51a44115868e5
@@ -9556,6 +9559,8 @@ trackedFiles:
   docs/models/operations/listscimgroupsresponse.mdx:
     id: 061ed874493a
     pristine_git_object: bfd3f13fb3b8fc020f0172d2676c6b42d80e1101
+  docs/models/operations/listspeechmodelsglobals.mdx: {}
+  docs/models/operations/listspeechmodelsrequest.mdx: {}
   docs/models/operations/listtoolsglobals.mdx:
     id: 0514ca3a4bc5
     pristine_git_object: 4e12d844e4b851e0549f31ad2d18e03a28f51436
@@ -11775,6 +11780,7 @@ trackedFiles:
   docs/models/reasoningtextcontenttype.mdx:
     id: 450315b2c045
     pristine_git_object: ff3e1c81a8982cbed6b1fabe651920ed3097ec55
+  docs/models/references.mdx: {}
   docs/models/refusal.mdx:
     id: 61ec67c5c83f
     pristine_git_object: b6ec06116e68118816047485c9549edfc2348810
@@ -12393,9 +12399,15 @@ trackedFiles:
     last_write_checksum: sha1:23010c0d3928a963f8e240d593d777529b2ac5d5
     pristine_git_object: c8041aca295020df74712ec3007310283fc9ea31
     deleted: true
+  docs/models/speechenumparameter.mdx: {}
+  docs/models/speechenumparametertype.mdx: {}
   docs/models/speechinput.mdx:
     id: f78b8ca9fd6f
     pristine_git_object: 110dad757c632c74ea544ce343f987c8b1d0a983
+  docs/models/speechinputmodality.mdx: {}
+  docs/models/speechinputmodalityaudio.mdx: {}
+  docs/models/speechinputmodalityimage.mdx: {}
+  docs/models/speechinputmodalitytext.mdx: {}
   docs/models/speechinputreference.mdx:
     id: 185904811fc6
     pristine_git_object: a03f5f3401eba71192d69dc880a7c376240b2725
@@ -12414,6 +12426,15 @@ trackedFiles:
   docs/models/speechinputreferencetext.mdx:
     id: a8fcc50d87e3
     pristine_git_object: 256d90a6ce469dcf1f5627b29b78aca8afcd5a76
+  docs/models/speechmodelendpoint.mdx: {}
+  docs/models/speechmodelresponse.mdx: {}
+  docs/models/speechmodelslistresponse.mdx: {}
+  docs/models/speechoutputmodality.mdx: {}
+  docs/models/speechoutputmodalitytype.mdx: {}
+  docs/models/speechrangeparameter.mdx: {}
+  docs/models/speechrangeparametertype.mdx: {}
+  docs/models/speechreferencecount.mdx: {}
+  docs/models/speechreferencecounttype.mdx: {}
   docs/models/speechrequest.md:
     id: 1403855cf560
     last_write_checksum: sha1:a5b9df15e47f688c711938f0760f0a5de6cfd7b5
@@ -12450,9 +12471,14 @@ trackedFiles:
   docs/models/speechrequestresponseformat.mdx:
     id: 7200d4067ed4
     pristine_git_object: a1aca57e1da6af144b0eefa4bd9da2cabf1ae7aa
+  docs/models/speechsupportedparameters.mdx: {}
   docs/models/speechturn.mdx:
     id: e50c43885ce5
     pristine_git_object: ad14fbc705f437f87de6bfb830c2df6e13579050
+  docs/models/speechunknownparameter.mdx: {}
+  docs/models/speechunknownparametertype.mdx: {}
+  docs/models/speechvoiceparameter.mdx: {}
+  docs/models/speechvoiceparametertype.mdx: {}
   docs/models/speed.md:
     id: bb9f84c89a03
     last_write_checksum: sha1:5552d8f62c081d98de3274fc62419aac109d7027
@@ -12768,6 +12794,8 @@ trackedFiles:
   docs/models/supportedframeimage.mdx:
     id: 8cd3d284373c
     pristine_git_object: e0369168b0abfea971ae8119bec1de1245202299
+  docs/models/supportedinputs1.mdx: {}
+  docs/models/supportedinputs2.mdx: {}
   docs/models/supportedresolution.md:
     id: cb5130f8b15d
     last_write_checksum: sha1:8378d85b04f6e0f7b0371dab83be60df120c8ff9
@@ -13245,6 +13273,7 @@ trackedFiles:
   docs/models/turnrange.mdx:
     id: 57e075497ecd
     pristine_git_object: 5519190ef10d88a6efd1c3cc089d293663f8ddfe
+  docs/models/turns.mdx: {}
   docs/models/type.mdx:
     id: 85b193bb1b12
     pristine_git_object: 4edb17a77f2f00a26e01844f717efb0f4f4bc59a
@@ -14715,6 +14744,8 @@ trackedFiles:
   src/funcs/ttsCreateSpeech.ts:
     id: ed304f5d6ad8
     pristine_git_object: 4cea6cce545cae422b69b0bab5ecd02faa79a840
+  src/funcs/ttsGetModel.ts: {}
+  src/funcs/ttsListModels.ts: {}
   src/funcs/vaultCopyVaultSecretsToIntern.ts:
     id: 5f2c033bee20
     pristine_git_object: 9d243e38cddcb44dc7fc7d2de80b77c715bd8579
@@ -17128,6 +17159,7 @@ trackedFiles:
   src/models/operations/getsessioncost.ts:
     id: 64d7aeafa13e
     pristine_git_object: a3e95f0b6c906a547972e342eeaa74ff86baadde
+  src/models/operations/getspeechmodel.ts: {}
   src/models/operations/gettaskclassifications.ts:
     id: 8482753ddd33
     pristine_git_object: 47868501a4656f1d1cb9043d12bc503df56f62dc
@@ -17257,6 +17289,7 @@ trackedFiles:
   src/models/operations/listscimgroups.ts:
     id: f6a6cc9a951f
     pristine_git_object: 76f7457be38af733c73dd7de01d8a24bf6305b79
+  src/models/operations/listspeechmodels.ts: {}
   src/models/operations/listtools.ts:
     id: 42a61de0bc0f
     pristine_git_object: 350e2ccb3955b166236b9aed66f45e12e984aaf6
@@ -17919,9 +17952,11 @@ trackedFiles:
   src/models/shellservertoolopenrouter.ts:
     id: 6619f9fcf764
     pristine_git_object: b7e831da0a7045eea3f87f9135d9e68af797df11
+  src/models/speechenumparameter.ts: {}
   src/models/speechinput.ts:
     id: 40afc7088e49
     pristine_git_object: e03cafee00d0e2ebf58fc441da742dd9d3420797
+  src/models/speechinputmodality.ts: {}
   src/models/speechinputreference.ts:
     id: 25b19e4fa954
     pristine_git_object: cf8f0de91dfa4d54fcd6537256e8517cdca70e52
@@ -17940,12 +17975,21 @@ trackedFiles:
   src/models/speechinputreferencetext.ts:
     id: 88f12d1ebfa6
     pristine_git_object: 9736271f1eca14fc2be3d7281472b25fc79fec3e
+  src/models/speechmodelendpoint.ts: {}
+  src/models/speechmodelresponse.ts: {}
+  src/models/speechmodelslistresponse.ts: {}
+  src/models/speechoutputmodality.ts: {}
+  src/models/speechrangeparameter.ts: {}
+  src/models/speechreferencecount.ts: {}
   src/models/speechrequest.ts:
     id: 96d573d68420
     pristine_git_object: e2fd30a43aeb3892e167fb5d46b59bbc32fc3836
+  src/models/speechsupportedparameters.ts: {}
   src/models/speechturn.ts:
     id: 78beaa9d8388
     pristine_git_object: 8b7a112c702c711ce28a9feb827cea342de40b24
+  src/models/speechunknownparameter.ts: {}
+  src/models/speechvoiceparameter.ts: {}
   src/models/stopservertoolswhencondition.ts:
     id: 3c90e3993bad
     pristine_git_object: 10f8cd10d7e71c8971c5914d03db8e6b420d4c04
@@ -23629,5 +23673,36 @@ examples:
           application/json: {"error": {"code": 409, "message": "Resource conflict. Please try again later."}}
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+  listSpeechModels:
+    speakeasy-default-list-speech-models:
+      responses:
+        "200":
+          application/json: {"data": [{"created": 1742428800, "description": "Text-to-speech model with steerable delivery.", "endpoints": [{"input_modalities": [{"type": "text"}], "output_modalities": [{"supported_parameters": {}, "type": "speech"}], "provider_name": "OpenAI", "provider_slug": "openai"}], "id": "openai/gpt-4o-mini-tts", "input_modalities": [{"type": "text"}], "name": "OpenAI: GPT-4o mini TTS", "output_modalities": [{"supported_parameters": {}, "type": "speech"}]}]}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "503":
+          application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
+  getSpeechModel:
+    speakeasy-default-get-speech-model:
+      parameters:
+        path:
+          author: "openai"
+          slug: "gpt-4o-mini-tts"
+      responses:
+        "200":
+          application/json: {"created": 1742428800, "description": "Text-to-speech model with steerable delivery.", "endpoints": [{"input_modalities": [{"type": "text"}], "output_modalities": [{"supported_parameters": {}, "type": "speech"}], "provider_name": "OpenAI", "provider_slug": "openai"}], "id": "openai/gpt-4o-mini-tts", "input_modalities": [{"type": "text"}], "name": "OpenAI: GPT-4o mini TTS", "output_modalities": [{"supported_parameters": {}, "type": "speech"}]}
+        "403":
+          application/json: {"error": {"code": 403, "message": "Only management keys can perform this operation"}}
+        "404":
+          application/json: {"error": {"code": 404, "message": "Resource not found"}}
+        "500":
+          application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
+        "503":
+          application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.prompt` **Added**\n* `openrouter.stt.createTranscriptionMultipart()`: \n  *  `request.requestBody.prompt` **Added**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.tts.listModels()`: **Added**
+  * `openrouter.tts.getModel()`: **Added**

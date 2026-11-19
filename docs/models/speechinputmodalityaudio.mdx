@@ -1,0 +1,26 @@
+---
+title: "SpeechInputModalityAudio"
+---
+
+## Example Usage
+
+```typescript
+import { SpeechInputModalityAudio } from "@openrouter/sdk/models";
+
+let value: SpeechInputModalityAudio = {
+  supportedInputs: {
+    references: {
+      min: 1,
+      type: "integer",
+    },
+  },
+  type: "audio",
+};
+```
+
+## Fields
+
+| Field                                                                                                                                                             | Type                                                                                                                                                              | Required                                                                                                                                                          | Description                                                                                                                                                       |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `supportedInputs`                                                                                                                                                 | [models.SupportedInputs1](../models/supportedinputs1.mdx)                                                                                                          | ✔️                                                                                                                                                | `references` is how many audio clips a request may send. With more than one, some providers require the text to address every clip with an `@AudioN` placeholder. |
+| `type`                                                                                                                                                            | *"audio"*                                                                                                                                                         | ✔️                                                                                                                                                | N/A                                                                                                                                                               |

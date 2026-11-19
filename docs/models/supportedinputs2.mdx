@@ -1,0 +1,23 @@
+---
+title: "SupportedInputs2"
+---
+
+## Example Usage
+
+```typescript
+import { SupportedInputs2 } from "@openrouter/sdk/models";
+
+let value: SupportedInputs2 = {
+  references: {
+    min: 1,
+    type: "integer",
+  },
+};
+```
+
+## Fields
+
+| Field                                                                                                                           | Type                                                                                                                            | Required                                                                                                                        | Description                                                                                                                     | Example                                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `audio`                                                                                                                         | [models.AudioEnum](../models/audioenum.mdx)                                                                                      | ➖                                                                                                              | `required`: an image reference is accepted only together with an audio reference. `excluded`: only without one. Absent: either. |                                                                                                                                 |
+| `references`                                                                                                                    | [models.SpeechReferenceCount](../models/speechreferencecount.mdx)                                                                | ✔️                                                                                                              | N/A                                                                                                                             | \{<br/>"max": 1,<br/>"min": 1,<br/>"type": "integer"<br/>}                                                                       |
