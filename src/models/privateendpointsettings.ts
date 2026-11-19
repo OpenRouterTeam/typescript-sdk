@@ -51,6 +51,7 @@ export const PrivateEndpointSettingsExcludedParameter = {
   Seed: "seed",
   ResponseFormat: "response_format",
   StructuredOutputs: "structured_outputs",
+  StrictToolSchemas: "strict_tool_schemas",
   Stop: "stop",
   Tools: "tools",
   ToolChoice: "tool_choice",
