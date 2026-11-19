@@ -1,0 +1,21 @@
+---
+title: "StatusDetail"
+---
+
+The step within `status` for a job that is not finished: `submitting` and `queued_at_provider` under `pending`, `generating` and `finalizing` under `in_progress`. When present, it only moves forward, and steps may be skipped between polls. It is absent once the job is finished and can also be absent mid-job when the step is unknown, so use `status` to tell whether the job is finished.
+
+## Example Usage
+
+```typescript
+import { StatusDetail } from "@openrouter/sdk/models";
+
+let value: StatusDetail = "submitting";
+
+// Open enum: unrecognized values are captured as Unrecognized<string>
+```
+
+## Values
+
+```typescript
+"submitting" | "queued_at_provider" | "generating" | "finalizing" | Unrecognized<string>
+```

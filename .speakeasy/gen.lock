@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 2bff8307e4ca2a115786d30014b5ed94
+  docChecksum: 9de7f468a9258a5e435b4d12f32022fa
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.120
-  configChecksum: 94b72a50240f786331844fd071f5911c
+  releaseVersion: 1.5.121
+  configChecksum: 98a92d88a82e81c26915b96f97bd2c77
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -12498,6 +12498,7 @@ trackedFiles:
   docs/models/state.mdx:
     id: 3a6534018b78
     pristine_git_object: 2513355092fa0eda3dfca570da8316415eef9fb5
+  docs/models/statusdetail.mdx: {}
   docs/models/statusfailed.md:
     id: b058d39c35f8
     last_write_checksum: sha1:38cfd2ec09b5665c327c8074c0b385ec7366b252
@@ -23704,5 +23705,5 @@ examples:
 examplesVersion: 1.0.2
 releaseNotes: |
   ## Typescript SDK Changes:
-  * `openrouter.tts.listModels()`: **Added**
-  * `openrouter.tts.getModel()`: **Added**
+  * `openrouter.videoGeneration.generate()`:  `response` **Changed**
+  * `openrouter.videoGeneration.getGeneration()`:  `response` **Changed**
