@@ -165,6 +165,9 @@ async function $do(
   if (payload.RequestBody.language !== undefined) {
     appendForm(body, "language", payload.RequestBody.language);
   }
+  if (payload.RequestBody.prompt !== undefined) {
+    appendForm(body, "prompt", payload.RequestBody.prompt);
+  }
   if (payload.RequestBody.provider !== undefined) {
     appendForm(body, "provider", payload.RequestBody.provider);
   }
