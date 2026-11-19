@@ -1,0 +1,56 @@
+---
+title: "SpeechModelsListResponse"
+---
+
+List of text-to-speech models, each with its endpoints.
+
+## Example Usage
+
+```typescript
+import { SpeechModelsListResponse } from "@openrouter/sdk/models";
+
+let value: SpeechModelsListResponse = {
+  data: [
+    {
+      created: 1742428800,
+      description: "Text-to-speech model with steerable delivery.",
+      endpoints: [
+        {
+          inputModalities: [
+            {
+              type: "text",
+            },
+          ],
+          outputModalities: [
+            {
+              supportedParameters: {},
+              type: "speech",
+            },
+          ],
+          providerName: "OpenAI",
+          providerSlug: "openai",
+        },
+      ],
+      id: "openai/gpt-4o-mini-tts",
+      inputModalities: [
+        {
+          type: "text",
+        },
+      ],
+      name: "OpenAI: GPT-4o mini TTS",
+      outputModalities: [
+        {
+          supportedParameters: {},
+          type: "speech",
+        },
+      ],
+    },
+  ],
+};
+```
+
+## Fields
+
+| Field                                                            | Type                                                             | Required                                                         | Description                                                      |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `data`                                                           | [models.SpeechModelResponse](../models/speechmodelresponse.mdx)[] | ✔️                                               | N/A                                                              |

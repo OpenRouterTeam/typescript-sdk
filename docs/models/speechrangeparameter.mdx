@@ -1,0 +1,25 @@
+---
+title: "SpeechRangeParameter"
+---
+
+The accepted `speed` range. Absent: the provider documents no range; some providers still forward `speed`.
+
+## Example Usage
+
+```typescript
+import { SpeechRangeParameter } from "@openrouter/sdk/models";
+
+let value: SpeechRangeParameter = {
+  max: 4,
+  min: 0.25,
+  type: "range",
+};
+```
+
+## Fields
+
+| Field                                                                    | Type                                                                     | Required                                                                 | Description                                                              |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| `max`                                                                    | *number*                                                                 | ✔️                                                       | N/A                                                                      |
+| `min`                                                                    | *number*                                                                 | ✔️                                                       | N/A                                                                      |
+| `type`                                                                   | [models.SpeechRangeParameterType](../models/speechrangeparametertype.mdx) | ✔️                                                       | N/A                                                                      |

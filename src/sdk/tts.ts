@@ -3,7 +3,10 @@
  */
 
 import { ttsCreateSpeech } from "../funcs/ttsCreateSpeech.js";
+import { ttsGetModel } from "../funcs/ttsGetModel.js";
+import { ttsListModels } from "../funcs/ttsListModels.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
+import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
 
@@ -19,6 +22,40 @@ export class TTS extends ClientSDK {
     options?: RequestOptions,
   ): Promise<ReadableStream<Uint8Array>> {
     return unwrapAsync(ttsCreateSpeech(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * List text-to-speech models
+   *
+   * @remarks
+   * Lists every text-to-speech model with the inputs it accepts and its speech output parameters, merged across its endpoints, plus each endpoint with its own.
+   */
+  async listModels(
+    request?: operations.ListSpeechModelsRequest | undefined,
+    options?: RequestOptions,
+  ): Promise<models.SpeechModelsListResponse> {
+    return unwrapAsync(ttsListModels(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get a text-to-speech model
+   *
+   * @remarks
+   * Returns a text-to-speech model with each endpoint's own inputs and speech output parameters.
+   */
+  async getModel(
+    request: operations.GetSpeechModelRequest,
+    options?: RequestOptions,
+  ): Promise<models.SpeechModelResponse> {
+    return unwrapAsync(ttsGetModel(
       this,
       request,
       options,

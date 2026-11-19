@@ -1,0 +1,36 @@
+---
+title: "SpeechModelEndpoint"
+---
+
+One endpoint serving a speech model, with the inputs and parameters it accepts.
+
+## Example Usage
+
+```typescript
+import { SpeechModelEndpoint } from "@openrouter/sdk/models";
+
+let value: SpeechModelEndpoint = {
+  inputModalities: [
+    {
+      type: "text",
+    },
+  ],
+  outputModalities: [
+    {
+      supportedParameters: {},
+      type: "speech",
+    },
+  ],
+  providerName: "OpenAI",
+  providerSlug: "openai",
+};
+```
+
+## Fields
+
+| Field                                                              | Type                                                               | Required                                                           | Description                                                        | Example                                                            |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| `inputModalities`                                                  | *models.SpeechInputModality*[]                                     | ✔️                                                 | N/A                                                                |                                                                    |
+| `outputModalities`                                                 | [models.SpeechOutputModality](../models/speechoutputmodality.mdx)[] | ✔️                                                 | N/A                                                                |                                                                    |
+| `providerName`                                                     | *string*                                                           | ✔️                                                 | Provider display name                                              | OpenAI                                                             |
+| `providerSlug`                                                     | *string*                                                           | ✔️                                                 | Provider slug                                                      | openai                                                             |
