@@ -75,6 +75,10 @@ export type CreateAudioTranscriptionsMultipartRequestBody = {
    */
   model: string;
   /**
+   * Context to guide transcription on providers that support contextual prompting. Takes precedence over provider-specific prompt options, including when empty.
+   */
+  prompt?: string | undefined;
+  /**
    * JSON-encoded provider preferences object, the same shape as the JSON body field: { "zdr": true, "data_collection": "deny", "options": { "<provider-slug>": { ... } } }. Only options for the matched provider are forwarded. Must decode to a JSON object.
    */
   provider?: string | undefined;
@@ -179,6 +183,7 @@ export type CreateAudioTranscriptionsMultipartRequestBody$Outbound = {
   "keyterms[]"?: Array<string> | undefined;
   language?: string | undefined;
   model: string;
+  prompt?: string | undefined;
   provider?: string | undefined;
   response_format?: string | undefined;
   session_id?: string | undefined;
@@ -201,6 +206,7 @@ export const CreateAudioTranscriptionsMultipartRequestBody$outboundSchema:
     keyterms: z.array(z.string()).optional(),
     language: z.string().optional(),
     model: z.string(),
+    prompt: z.string().optional(),
     provider: z.string().optional(),
     responseFormat: ResponseFormat$outboundSchema.optional(),
     sessionId: z.string().optional(),

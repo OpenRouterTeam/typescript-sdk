@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 40672dc008afc801b90c16d89d7f5dad
+  docChecksum: 2ee6a936182384689390440c4f88c096
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.118
-  configChecksum: f03e3df85f3b21708eecaf01e3409add
+  releaseVersion: 1.5.119
+  configChecksum: d68ab8a0111782619e8781426c674eda
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -23630,3 +23630,4 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.prompt` **Added**\n* `openrouter.stt.createTranscriptionMultipart()`: \n  *  `request.requestBody.prompt` **Added**\n"

@@ -139,6 +139,10 @@ export type STTRequest = {
    */
   model: string;
   /**
+   * Context to guide transcription, such as domain vocabulary or a previous segment. Honored by OpenAI (except gpt-4o-transcribe-diarize), Azure OpenAI, Groq, Together, Alibaba, and AssemblyAI endpoints with prompted pricing configured. Other providers ignore it; use keyterms for supported keyword boosting. Takes precedence over provider-specific prompt options, including when empty.
+   */
+  prompt?: string | undefined;
+  /**
    * Provider configuration: provider routing preferences (`order`, `only`, `ignore`, `allow_fallbacks`), data policy routing preferences (`zdr`, `data_collection`) and provider-specific passthrough options
    */
   provider?: STTRequestProvider | undefined;
@@ -275,6 +279,7 @@ export type STTRequest$Outbound = {
   keyterms?: Array<string> | undefined;
   language?: string | undefined;
   model: string;
+  prompt?: string | undefined;
   provider?: STTRequestProvider$Outbound | undefined;
   response_format?: string | undefined;
   session_id?: string | undefined;
@@ -294,6 +299,7 @@ export const STTRequest$outboundSchema: z.ZodType<
   keyterms: z.array(z.string()).optional(),
   language: z.string().optional(),
   model: z.string(),
+  prompt: z.string().optional(),
   provider: z.lazy(() => STTRequestProvider$outboundSchema).optional(),
   responseFormat: STTRequestResponseFormat$outboundSchema.optional(),
   sessionId: z.string().optional(),
