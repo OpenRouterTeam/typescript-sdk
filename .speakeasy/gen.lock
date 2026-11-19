@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 0b435f6cd5bae488cb0bc2dec6a15459
+  docChecksum: 40672dc008afc801b90c16d89d7f5dad
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.117
-  configChecksum: 71181a65bcae09c0fdce7655c7c4467f
+  releaseVersion: 1.5.118
+  configChecksum: f03e3df85f3b21708eecaf01e3409add
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -23630,4 +23630,3 @@ examples:
         "500":
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest.responseFormat` **Added**\n  *  `response` **Changed**\n* `openrouter.scim.create()`: **Deprecated**\n* `openrouter.scim.delete()`: **Deprecated**\n* `openrouter.scim.update()`: **Deprecated**\n* `openrouter.scim.createSyncJob()`: **Deprecated**\n"
