@@ -11481,7 +11481,7 @@ components:
             - 'array'
             - 'null'
         io_logging_api_key_ids:
-          description: 'Optional array of API key IDs to filter I/O logging'
+          description: 'Optional array of API key IDs to filter I/O logging. Read-only for management keys: any value other than the default returns 403. Change it in the OpenRouter dashboard.'
           example: null
           items:
             type: 'integer'
@@ -11489,20 +11489,20 @@ components:
             - 'array'
             - 'null'
         io_logging_sampling_rate:
-          description: 'Sampling rate for I/O logging (0.0001-1)'
+          description: 'Sampling rate for I/O logging (0.0001-1). Read-only for management keys: any value other than the default returns 403. Change it in the OpenRouter dashboard.'
           example: 1
           format: 'double'
           type: 'number'
         is_data_discount_logging_enabled:
-          description: 'Whether data discount logging is enabled. Enabling it requires the account to allow workspace data-discount logging; otherwise the request returns 403.'
-          example: true
+          description: 'Whether data discount logging is enabled. Read-only for management keys: any value other than the default returns 403. Change it in the OpenRouter dashboard.'
+          example: false
           type: 'boolean'
         is_observability_broadcast_enabled:
           description: 'Whether broadcast is enabled'
           example: false
           type: 'boolean'
         is_observability_io_logging_enabled:
-          description: 'Whether private logging is enabled'
+          description: 'Whether private logging is enabled. Read-only for management keys: any value other than the default returns 403. Change it in the OpenRouter dashboard.'
           example: false
           type: 'boolean'
         name:
@@ -17118,6 +17118,13 @@ components:
             - '4K'
           example: '2K'
           type: 'string'
+        response_format:
+          description: '`b64_json` (default) returns the image bytes inline. `url` stores each output in OpenRouter storage and returns a signed download URL in place of the bytes. The URL is a bearer link: anyone holding it can download the image until it expires, up to 24 hours after the image was stored (use `expires_at`); the stored copy is deleted by the storage lifecycle within the following day. The response falls back to `b64_json` when a URL cannot be issued: streaming responses, zero-data-retention requests (account settings, guardrails or `provider.zdr`) or endpoints, or storage being unavailable.'
+          enum:
+            - 'b64_json'
+            - 'url'
+          example: 'b64_json'
+          type: 'string'
         seed:
           description: 'If specified, the generation will sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed for all providers.'
           type: 'integer'
@@ -17165,7 +17172,7 @@ components:
           items:
             properties:
               b64_json:
-                description: 'Base64-encoded image bytes'
+                description: 'Base64-encoded image bytes. Present unless the request asked for `response_format: "url"` and `url` was issued.'
                 type: 'string'
               layer:
                 $ref: '#/components/schemas/ImageGenerationLayer'
@@ -17173,10 +17180,16 @@ components:
                 description: 'Media type (MIME type) of the image, e.g. `image/png`, `image/jpeg`, `image/webp`, `image/svg+xml`. May be omitted if the format could not be determined.'
                 example: 'image/png'
                 type: 'string'
-            required:
-              - 'b64_json'
+              url:
+                description: 'Signed download URL for the image bytes, issued for `response_format: "url"` requests. Valid until `expires_at`. Absent when the response fell back to `b64_json`.'
+                example: 'https://storage.googleapis.com/openrouter-generated-media-us/v1/...'
+                type: 'string'
             type: 'object'
           type: 'array'
+        expires_at:
+          description: 'Unix timestamp (seconds) of the earliest expiry among the `url`s in `data`; treat every URL as expired after it. Present only when URLs were issued.'
+          example: 1748458800
+          type: 'integer'
         usage:
           $ref: '#/components/schemas/ImageGenerationUsage'
       required:
@@ -37670,7 +37683,7 @@ components:
             - 'array'
             - 'null'
         io_logging_api_key_ids:
-          description: 'Optional array of API key IDs to filter I/O logging'
+          description: 'Optional array of API key IDs to filter I/O logging. Read-only for management keys: any value other than the stored one returns 403. Change it in the OpenRouter dashboard.'
           example: null
           items:
             type: 'integer'
@@ -37678,20 +37691,20 @@ components:
             - 'array'
             - 'null'
         io_logging_sampling_rate:
-          description: 'Sampling rate for I/O logging (0.0001-1)'
+          description: 'Sampling rate for I/O logging (0.0001-1). Read-only for management keys: any value other than the stored one returns 403. Change it in the OpenRouter dashboard.'
           example: 1
           format: 'double'
           type: 'number'
         is_data_discount_logging_enabled:
-          description: 'Whether data discount logging is enabled. Enabling it requires the account to allow workspace data-discount logging; otherwise the request returns 403.'
-          example: true
+          description: 'Whether data discount logging is enabled. Read-only for management keys: any value other than the stored one returns 403. Change it in the OpenRouter dashboard.'
+          example: false
           type: 'boolean'
         is_observability_broadcast_enabled:
           description: 'Whether broadcast is enabled'
           example: false
           type: 'boolean'
         is_observability_io_logging_enabled:
-          description: 'Whether private logging is enabled'
+          description: 'Whether private logging is enabled. Read-only for management keys: any value other than the stored one returns 403. Change it in the OpenRouter dashboard.'
           example: false
           type: 'boolean'
         name:
@@ -58112,7 +58125,8 @@ paths:
           results: '$.data'
         type: 'offsetLimit'
     post:
-      description: 'Create a SCIM group-to-workspace role mapping. Creating a mapping that already exists with the same role succeeds and re-applies the mapping to the group members. Requesting a different role for an existing mapping returns 409. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      deprecated: true
+      description: 'Create a SCIM group-to-workspace role mapping. Disabled: no API key can perform this write, including management keys. Use the organization settings in the dashboard, which require step-up verification. A valid management key for an organization with SCIM access receives 403; an invalid key still receives 401 and an organization without SCIM access receives 404.'
       operationId: 'createScimGroupMapping'
       requestBody:
         content:
@@ -58126,7 +58140,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateScimGroupMappingResponse'
-          description: 'SCIM group mapping created'
+          description: 'SCIM group mapping created. Not returned: this operation is disabled. The schema is kept for SDK compatibility.'
         '400':
           content:
             application/json:
@@ -58153,10 +58167,10 @@ paths:
               example:
                 error:
                   code: 403
-                  message: 'Only management keys can perform this operation'
+                  message: 'Management keys cannot change SCIM group mappings or start syncs. Use the organization settings in the dashboard.'
               schema:
                 $ref: '#/components/schemas/ForbiddenResponse'
-          description: 'Forbidden - Authentication successful but insufficient permissions'
+          description: 'Forbidden - SCIM writes are dashboard-only'
         '404':
           content:
             application/json:
@@ -58193,7 +58207,8 @@ paths:
       x-speakeasy-name-override: 'create'
   /scim/group-mappings/{id}:
     delete:
-      description: 'Delete a SCIM group-to-workspace mapping. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      deprecated: true
+      description: 'Delete a SCIM group-to-workspace mapping. Disabled: no API key can perform this write, including management keys. Use the organization settings in the dashboard, which require step-up verification. A valid management key for an organization with SCIM access receives 403; an invalid key still receives 401 and an organization without SCIM access receives 404.'
       operationId: 'deleteScimGroupMapping'
       parameters:
         - in: 'path'
@@ -58221,7 +58236,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DeleteScimGroupMappingResponse'
-          description: 'SCIM group mapping deleted'
+          description: 'SCIM group mapping deleted. Not returned: this operation is disabled. The schema is kept for SDK compatibility.'
         '400':
           content:
             application/json:
@@ -58248,10 +58263,10 @@ paths:
               example:
                 error:
                   code: 403
-                  message: 'Only management keys can perform this operation'
+                  message: 'Management keys cannot change SCIM group mappings or start syncs. Use the organization settings in the dashboard.'
               schema:
                 $ref: '#/components/schemas/ForbiddenResponse'
-          description: 'Forbidden - Authentication successful but insufficient permissions'
+          description: 'Forbidden - SCIM writes are dashboard-only'
         '404':
           content:
             application/json:
@@ -58338,7 +58353,8 @@ paths:
         - 'SCIM'
       x-speakeasy-name-override: 'read'
     patch:
-      description: 'Update a SCIM group mapping role. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      deprecated: true
+      description: 'Update a SCIM group mapping role. Disabled: no API key can perform this write, including management keys. Use the organization settings in the dashboard, which require step-up verification. A valid management key for an organization with SCIM access receives 403; an invalid key still receives 401 and an organization without SCIM access receives 404.'
       operationId: 'updateScimGroupMapping'
       parameters:
         - in: 'path'
@@ -58359,7 +58375,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UpdateScimGroupMappingResponse'
-          description: 'SCIM group mapping updated'
+          description: 'SCIM group mapping updated. Not returned: this operation is disabled. The schema is kept for SDK compatibility.'
         '400':
           content:
             application/json:
@@ -58386,10 +58402,10 @@ paths:
               example:
                 error:
                   code: 403
-                  message: 'Only management keys can perform this operation'
+                  message: 'Management keys cannot change SCIM group mappings or start syncs. Use the organization settings in the dashboard.'
               schema:
                 $ref: '#/components/schemas/ForbiddenResponse'
-          description: 'Forbidden - Authentication successful but insufficient permissions'
+          description: 'Forbidden - SCIM writes are dashboard-only'
         '404':
           content:
             application/json:
@@ -58522,7 +58538,8 @@ paths:
         type: 'offsetLimit'
   /scim/sync-jobs:
     post:
-      description: 'Start a SCIM directory sync. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      deprecated: true
+      description: 'Start a SCIM directory sync. Disabled: no API key can perform this write, including management keys. Use the organization settings in the dashboard, which require step-up verification. A valid management key for an organization with SCIM access receives 403; an invalid key still receives 401 and an organization without SCIM access receives 404.'
       operationId: 'createScimSyncJob'
       responses:
         '202':
@@ -58530,7 +58547,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateScimSyncJobResponse'
-          description: 'SCIM directory sync job queued'
+          description: 'SCIM directory sync job queued. Not returned: this operation is disabled. The schema is kept for SDK compatibility.'
           headers:
             Location:
               description: 'Poll URL for the created sync job.'
@@ -58554,10 +58571,10 @@ paths:
               example:
                 error:
                   code: 403
-                  message: 'Only management keys can perform this operation'
+                  message: 'Management keys cannot change SCIM group mappings or start syncs. Use the organization settings in the dashboard.'
               schema:
                 $ref: '#/components/schemas/ForbiddenResponse'
-          description: 'Forbidden - Authentication successful but insufficient permissions'
+          description: 'Forbidden - SCIM writes are dashboard-only'
         '404':
           content:
             application/json:
