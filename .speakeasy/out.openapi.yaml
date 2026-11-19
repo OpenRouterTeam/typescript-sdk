@@ -43969,7 +43969,7 @@ paths:
       x-hidden: true
       x-speakeasy-ignore: true
     post:
-      description: 'Starts an agent credit purchase paid with a Machine Payments Protocol (MPP) credential: USDC on Tempo, or a card when one is offered. The first call answers `402` with one `WWW-Authenticate: Payment ...` challenge per payment option; pay one of them and retry the same request, same `Idempotency-Key`, with the signed credential in `Payment-Authorization: Payment ...` (or in `Authorization: Payment ...` when the management key is sent as `X-Api-Key`). A paid request answers `202`: the transfer was broadcast or the card was charged, and the payment is still being confirmed, so credits arrive asynchronously. Poll the URL in the `Location` header, `GET /api/v1/credits/purchases/{id}`, until `status` is `credited` or `failed`.'
+      description: 'Starts an agent credit purchase paid with a Machine Payments Protocol (MPP) credential: Bridged USDC (USDC.e) or Open USD (OUSD) on Tempo, with USDC.e offered first, or a card when one is offered. Discover currencies in `x-payment-info.offers`; select a runtime challenge by its `request.currency` contract address, not a purchase-body field. Production currently refuses OUSD selections. The first call answers `402` with one `WWW-Authenticate: Payment ...` challenge per payment option; pay one of them and retry the same request, same `Idempotency-Key`, with the signed credential in `Payment-Authorization: Payment ...` (or in `Authorization: Payment ...` when the management key is sent as `X-Api-Key`). A paid request answers `202`: the transfer was broadcast or the card was charged, and the payment is still being confirmed, so credits arrive asynchronously. Poll the URL in the `Location` header, `GET /api/v1/credits/purchases/{id}`, until `status` is `credited` or `failed`.'
       operationId: 'createCreditsPurchases'
       parameters:
         - description: 'Identifies the purchase. Send the same value on the unpaid request and on the paid retry; use a new value for a new purchase.'
@@ -44004,10 +44004,10 @@ paths:
                 example: '/api/v1/credits/purchases/pi_3PqXyZ2eZvKYlo2C0abc1234'
                 type: 'string'
             Payment-Receipt:
-              description: 'The payment reference, on the request that paid: the Tempo transaction hash for USDC, or the PaymentIntent ID for a card. Absent when an earlier request already paid this purchase.'
+              description: 'The payment reference, on the request that paid: the transaction hash for a Tempo payment, or the PaymentIntent ID for a card. Absent when an earlier request already paid this purchase.'
               required: false
               schema:
-                description: 'The payment reference, on the request that paid: the Tempo transaction hash for USDC, or the PaymentIntent ID for a card. Absent when an earlier request already paid this purchase.'
+                description: 'The payment reference, on the request that paid: the transaction hash for a Tempo payment, or the PaymentIntent ID for a card. Absent when an earlier request already paid this purchase.'
                 example: '0x8f3c2b1a9e7d6c5b4a39281706f5e4d3c2b1a09f8e7d6c5b4a39281706f5e4d3'
                 type: 'string'
         '400':
@@ -44045,10 +44045,10 @@ paths:
                 example: '<https://openrouter.ai/api/v1/credits/purchases/setup>; rel="help"'
                 type: 'string'
             WWW-Authenticate:
-              description: 'The MPP challenges, one per way to pay: `Payment id="...", method="tempo", intent="charge", ...` for USDC on Tempo and, when cards are offered, `Payment id="...", method="stripe", intent="charge", ...` for a card. Pay one of them.'
+              description: 'The MPP challenges, one per way to pay: `Payment id="...", method="tempo", intent="charge", ...` for the selected stablecoin on Tempo and, when cards are offered, `Payment id="...", method="stripe", intent="charge", ...` for a card. Pay one of them.'
               required: true
               schema:
-                description: 'The MPP challenges, one per way to pay: `Payment id="...", method="tempo", intent="charge", ...` for USDC on Tempo and, when cards are offered, `Payment id="...", method="stripe", intent="charge", ...` for a card. Pay one of them.'
+                description: 'The MPP challenges, one per way to pay: `Payment id="...", method="tempo", intent="charge", ...` for the selected stablecoin on Tempo and, when cards are offered, `Payment id="...", method="stripe", intent="charge", ...` for a card. Pay one of them.'
                 type: 'string'
         '403':
           content:
@@ -44121,6 +44121,20 @@ paths:
         - 'Credits'
       x-fern-ignore: true
       x-hidden: true
+      x-payment-info:
+        offers:
+          - amount: null
+            currency: '0x20c000000000000000000000b9537d11c60e8b50'
+            intent: 'charge'
+            method: 'tempo'
+          - amount: null
+            currency: '0x20c0000000000000000000006a37DA5C996874BE'
+            intent: 'charge'
+            method: 'tempo'
+          - amount: null
+            currency: 'usd'
+            intent: 'charge'
+            method: 'stripe'
       x-speakeasy-ignore: true
     parameters:
       - $ref: "#/components/parameters/AppIdentifier"
