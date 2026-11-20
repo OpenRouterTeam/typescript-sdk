@@ -71,7 +71,7 @@ export type PublicEndpoint = {
   status?: EndpointStatus | undefined;
   supportedParameters: Array<Parameter>;
   /**
-   * Whether this STT endpoint can label each transcript segment with a speaker (speaker diarization). False when the endpoint has not declared support.
+   * Whether this STT endpoint can label each transcript segment with a speaker (speaker diarization). For transcription endpoints, derived from the serving STT adapter: true when that adapter supports `diarize: true` for this model. Diarized requests also need `response_format: verbose_json`.
    */
   supportsDiarization: boolean;
   /**
