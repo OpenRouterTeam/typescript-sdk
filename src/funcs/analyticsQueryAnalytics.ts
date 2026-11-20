@@ -30,7 +30,7 @@ import { Result } from "../types/fp.js";
  * Query analytics data
  *
  * @remarks
- * Execute an analytics query with specified metrics, dimensions, filters, and time range. A workspace-scoped management key needs `activity:view_all` on its own workspace and reads only that workspace: it is refused a `workspace` filter naming another workspace, it excludes legacy rows with no workspace (including for the default workspace), and possible-cache metrics such as `possible_cached_tokens` return 400. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Execute an analytics query with specified metrics, dimensions, filters, and time range. Custom access requires an organization-scoped key with `analytics:view`; grouping or filtering by `api_key_id` or `api_key_tag` also requires `api_keys:view_all`, and by `user` requires `org_members:view`. Key hash filters resolve only non-deleted ordinary keys. Workspace-scoped keys with base Read Only or Read Write access can query only their own workspace: a `workspace` filter naming another workspace is refused, legacy rows with no workspace are excluded (including for the default workspace), and possible-cache metrics such as `possible_cached_tokens` return 400. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function analyticsQueryAnalytics(
   client: OpenRouterCore,

@@ -8,6 +8,9 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+/**
+ * Workspace metadata. Configuration fields are omitted without permission to view workspace settings.
+ */
 export type Workspace = {
   /**
    * ISO 8601 timestamp of when the workspace was created
@@ -24,15 +27,15 @@ export type Workspace = {
   /**
    * Default image model for this workspace
    */
-  defaultImageModel: string | null;
+  defaultImageModel?: string | null | undefined;
   /**
    * Default provider sort preference (price, throughput, latency, exacto)
    */
-  defaultProviderSort: string | null;
+  defaultProviderSort?: string | null | undefined;
   /**
    * Default text model for this workspace
    */
-  defaultTextModel: string | null;
+  defaultTextModel?: string | null | undefined;
   /**
    * Description of the workspace
    */
@@ -46,29 +49,29 @@ export type Workspace = {
    */
   id: string;
   /**
-   * Whether BYOK (bring-your-own-key) spend counts toward this workspace's budgets. Set it via the workspace budget endpoints.
+   * Whether BYOK (bring-your-own-key) spend counts toward this workspace's budgets. Omitted without settings and budget visibility. Set it via the workspace budget endpoints.
    */
   includeByokInBudgets?: boolean | undefined;
   /**
-   * Optional array of API key IDs to filter I/O logging. Null means all keys are logged.
+   * API key IDs used to filter I/O logging. Null means all keys are logged. Omitted without access to workspace settings and API key identifiers.
    */
-  ioLoggingApiKeyIds: Array<number> | null;
+  ioLoggingApiKeyIds?: Array<number> | null | undefined;
   /**
    * Sampling rate for I/O logging (0.0001-1). 1 means 100% of requests are logged.
    */
-  ioLoggingSamplingRate: number;
+  ioLoggingSamplingRate?: number | undefined;
   /**
    * Whether data discount logging is enabled for this workspace
    */
-  isDataDiscountLoggingEnabled: boolean;
+  isDataDiscountLoggingEnabled?: boolean | undefined;
   /**
    * Whether broadcast is enabled for this workspace
    */
-  isObservabilityBroadcastEnabled: boolean;
+  isObservabilityBroadcastEnabled?: boolean | undefined;
   /**
    * Whether private logging is enabled for this workspace
    */
-  isObservabilityIoLoggingEnabled: boolean;
+  isObservabilityIoLoggingEnabled?: boolean | undefined;
   /**
    * Name of the workspace
    */
@@ -88,18 +91,18 @@ export const Workspace$inboundSchema: z.ZodType<Workspace, unknown> = z.object({
   created_at: z.string(),
   created_by: z.nullable(z.string()),
   default_guardrail_id: z.string(),
-  default_image_model: z.nullable(z.string()),
-  default_provider_sort: z.nullable(z.string()),
-  default_text_model: z.nullable(z.string()),
+  default_image_model: z.nullable(z.string()).optional(),
+  default_provider_sort: z.nullable(z.string()).optional(),
+  default_text_model: z.nullable(z.string()).optional(),
   description: z.nullable(z.string()),
   disabled_server_tools: z.nullable(z.array(z.string())).optional(),
   id: z.string(),
   include_byok_in_budgets: z.boolean().optional(),
-  io_logging_api_key_ids: z.nullable(z.array(z.int())),
-  io_logging_sampling_rate: z.number(),
-  is_data_discount_logging_enabled: z.boolean(),
-  is_observability_broadcast_enabled: z.boolean(),
-  is_observability_io_logging_enabled: z.boolean(),
+  io_logging_api_key_ids: z.nullable(z.array(z.int())).optional(),
+  io_logging_sampling_rate: z.number().optional(),
+  is_data_discount_logging_enabled: z.boolean().optional(),
+  is_observability_broadcast_enabled: z.boolean().optional(),
+  is_observability_io_logging_enabled: z.boolean().optional(),
   name: z.string(),
   slug: z.string(),
   updated_at: z.nullable(z.string()),
