@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: c7ef9efa550c2e36f03827822e1bf8f6
+  docChecksum: 8d41fae3ac88ac3214e773eaa5f66040
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.122
-  configChecksum: 201071609f10824787f9fab9f31d1d7a
+  releaseVersion: 1.5.123
+  configChecksum: 82e2beaf91612f154777963df1162030
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -23703,4 +23703,3 @@ examples:
         "503":
           application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.embeddings.listModels()`:  `response.data[].supportedParameters[].enum(strictToolSchemas)` **Added**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].supportedParameters[].enum(strictToolSchemas)` **Added**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].supportedParameters[].enum(strictToolSchemas)` **Added**\n* `openrouter.models.get()`:  `response.data.supportedParameters[].enum(strictToolSchemas)` **Added**\n* `openrouter.models.list()`:  `response.data[].supportedParameters[].enum(strictToolSchemas)` **Added**\n* `openrouter.models.listForUser()`:  `response.data[].supportedParameters[].enum(strictToolSchemas)` **Added**\n* `openrouter.privateEndpoints.create()`: \n  *  `request.createPrivateEndpointRequest` **Changed**\n* `openrouter.privateEndpoints.get()`:  `response.data.settings.excludedParameters[].enum(strictToolSchemas)` **Added**\n* `openrouter.privateEndpoints.update()`: \n  *  `request.updatePrivateEndpointRequest` **Changed**\n  *  `response.data.settings.excludedParameters[].enum(strictToolSchemas)` **Added**\n"
