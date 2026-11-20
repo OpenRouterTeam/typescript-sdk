@@ -39893,6 +39893,7 @@ components:
           type: 'string'
       type: 'object'
     Workspace:
+      description: 'Workspace metadata. Configuration fields are omitted without permission to view workspace settings.'
       example:
         created_at: '2025-08-24T10:30:00Z'
         created_by: 'user_abc123'
@@ -39966,11 +39967,11 @@ components:
           format: 'uuid'
           type: 'string'
         include_byok_in_budgets:
-          description: 'Whether BYOK (bring-your-own-key) spend counts toward this workspace''s budgets. Set it via the workspace budget endpoints.'
+          description: 'Whether BYOK (bring-your-own-key) spend counts toward this workspace''s budgets. Omitted without settings and budget visibility. Set it via the workspace budget endpoints.'
           example: false
           type: 'boolean'
         io_logging_api_key_ids:
-          description: 'Optional array of API key IDs to filter I/O logging. Null means all keys are logged.'
+          description: 'API key IDs used to filter I/O logging. Null means all keys are logged. Omitted without access to workspace settings and API key identifiers.'
           example: null
           items:
             type: 'integer'
@@ -40014,14 +40015,6 @@ components:
         - 'name'
         - 'slug'
         - 'description'
-        - 'default_text_model'
-        - 'default_image_model'
-        - 'default_provider_sort'
-        - 'is_observability_io_logging_enabled'
-        - 'is_observability_broadcast_enabled'
-        - 'is_data_discount_logging_enabled'
-        - 'io_logging_sampling_rate'
-        - 'io_logging_api_key_ids'
         - 'created_at'
         - 'updated_at'
         - 'created_by'
@@ -40196,7 +40189,7 @@ openapi: '3.1.0'
 paths:
   /activity:
     get:
-      description: 'Returns user activity data grouped by endpoint for the last 30 (completed) UTC days. Pass `workspace_id` to scope the response to a single workspace. Pass `group_by=workspace` to split each row per workspace and include `workspace_id` on every item; by default rows are aggregated across workspaces and `workspace_id` is not returned. Activity recorded before workspace resolution existed is permanently attributed to the account default workspace (no backfill is possible). A workspace-scoped management key needs `activity:view_all` on its own workspace and reads only that workspace: an omitted `workspace_id` defaults to it, a `workspace_id` naming any other workspace returns 403, `api_key_hash` and `user_id` resolve only keys and members of that workspace, and legacy activity with no workspace is excluded (including for the default workspace). [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Returns user activity data grouped by endpoint for the last 30 (completed) UTC days. Pass `workspace_id` to scope the response to a single workspace. Pass `group_by=workspace` to split each row per workspace and include `workspace_id` on every item; by default rows are aggregated across workspaces and `workspace_id` is not returned. Activity recorded before workspace resolution existed is permanently attributed to the account default workspace (no backfill is possible). A workspace-scoped management key needs `activity:view_all` on its own workspace and reads only that workspace: an omitted `workspace_id` defaults to it, a `workspace_id` naming any other workspace returns 403, `api_key_hash` and `user_id` resolve only keys and members of that workspace, and legacy activity with no workspace is excluded (including for the default workspace). For Custom keys, `api_key_hash` also requires `api_keys:view_all` and does not resolve deleted keys. `user_id` also requires `workspace_members:view` on an explicit non-default workspace; organization and default-workspace member filtering requires `org_members:view`, which is not available as a Custom grant. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'getUserActivity'
       parameters:
         - description: 'Filter by a single UTC date in the last 30 days (YYYY-MM-DD format).'
@@ -40318,7 +40311,7 @@ paths:
       x-speakeasy-max-method-params: 5
   /analytics/meta:
     get:
-      description: 'Returns the available metrics, dimensions, filter operators, and granularities for the analytics query endpoint. Workspace-scoped management keys are accepted. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Returns the available metrics, dimensions, filter operators, and granularities for the analytics query endpoint. Custom access requires an organization-scoped key with `analytics:view`. Workspace-scoped keys with base Read Only or Read Write access are also accepted. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'getAnalyticsMeta'
       responses:
         '200':
@@ -40462,7 +40455,7 @@ paths:
         - 'Analytics'
   /analytics/query:
     post:
-      description: 'Execute an analytics query with specified metrics, dimensions, filters, and time range. A workspace-scoped management key needs `activity:view_all` on its own workspace and reads only that workspace: it is refused a `workspace` filter naming another workspace, it excludes legacy rows with no workspace (including for the default workspace), and possible-cache metrics such as `possible_cached_tokens` return 400. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Execute an analytics query with specified metrics, dimensions, filters, and time range. Custom access requires an organization-scoped key with `analytics:view`; grouping or filtering by `api_key_id` or `api_key_tag` also requires `api_keys:view_all`, and by `user` requires `org_members:view`. Key hash filters resolve only non-deleted ordinary keys. Workspace-scoped keys with base Read Only or Read Write access can query only their own workspace: a `workspace` filter naming another workspace is refused, legacy rows with no workspace are excluded (including for the default workspace), and possible-cache metrics such as `possible_cached_tokens` return 400. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'queryAnalytics'
       requestBody:
         content:
@@ -54291,7 +54284,7 @@ paths:
           results: '$.data'
         type: 'offsetLimit'
     post:
-      description: 'Create a new observability destination. A maximum of 5 destinations per type is allowed. Defaults to the authenticated entity''s default workspace, or a workspace-scoped management key''s own workspace; use the `workspace_id` body field to scope to a different workspace. A workspace-scoped management key can only create in its own workspace; any other `workspace_id` returns 403. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Create a new observability destination. A maximum of 5 enabled destinations per workspace, across all types, is allowed; disabled destinations do not count. A workspace already above the cap keeps its enabled destinations but cannot create or enable more until fewer than 5 are enabled. Defaults to the authenticated entity''s default workspace, or a workspace-scoped management key''s own workspace; use the `workspace_id` body field to scope to a different workspace. A workspace-scoped management key can only create in its own workspace; any other `workspace_id` returns 403. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'createObservabilityDestination'
       requestBody:
         content:
@@ -54545,7 +54538,7 @@ paths:
         - 'Observability'
       x-speakeasy-name-override: 'get'
     patch:
-      description: 'Update an existing observability destination. Only the fields provided in the request body are updated. A workspace-scoped management key only reaches destinations in its own workspace; any other `id` returns 404. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Update an existing observability destination. Only the fields provided in the request body are updated. Enabling a disabled destination returns 400 while the workspace already has 5 enabled destinations. A workspace-scoped management key only reaches destinations in its own workspace; any other `id` returns 404. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'updateObservabilityDestination'
       parameters:
         - description: 'The destination ID (UUID).'
