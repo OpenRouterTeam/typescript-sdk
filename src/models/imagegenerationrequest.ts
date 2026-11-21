@@ -141,6 +141,7 @@ export const ImageGenerationRequestResolution = {
   OneDot5K: "1.5K",
   TwoK: "2K",
   FourK: "4K",
+  EightK: "8K",
 } as const;
 /**
  * Normalized resolution tier of the generated image. Concrete pixel dimensions are derived per-provider.

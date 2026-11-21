@@ -125,6 +125,7 @@ export const ProviderResponseProviderName = {
   Parallel: "Parallel",
   Parasail: "Parasail",
   ParetoAlpha: "ParetoAlpha",
+  ParetoInference: "Pareto Inference",
   ParticleAI: "Particle AI",
   PearlResearch: "Pearl Research",
   Poolside: "Poolside",

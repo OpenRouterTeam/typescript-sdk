@@ -183,6 +183,7 @@ export type VideoGenerationRequestOptions = {
   parallel?: { [k: string]: any } | undefined;
   parasail?: { [k: string]: any } | undefined;
   paretoAlpha?: { [k: string]: any } | undefined;
+  paretoInference?: { [k: string]: any } | undefined;
   particleAi?: { [k: string]: any } | undefined;
   pearlResearch?: { [k: string]: any } | undefined;
   perceptron?: { [k: string]: any } | undefined;
@@ -518,6 +519,7 @@ export type VideoGenerationRequestOptions$Outbound = {
   parallel?: { [k: string]: any } | undefined;
   parasail?: { [k: string]: any } | undefined;
   "pareto-alpha"?: { [k: string]: any } | undefined;
+  "pareto-inference"?: { [k: string]: any } | undefined;
   "particle-ai"?: { [k: string]: any } | undefined;
   "pearl-research"?: { [k: string]: any } | undefined;
   perceptron?: { [k: string]: any } | undefined;
@@ -682,6 +684,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
   parallel: z.record(z.string(), z.any()).optional(),
   parasail: z.record(z.string(), z.any()).optional(),
   paretoAlpha: z.record(z.string(), z.any()).optional(),
+  paretoInference: z.record(z.string(), z.any()).optional(),
   particleAi: z.record(z.string(), z.any()).optional(),
   pearlResearch: z.record(z.string(), z.any()).optional(),
   perceptron: z.record(z.string(), z.any()).optional(),
@@ -760,6 +763,7 @@ export const VideoGenerationRequestOptions$outboundSchema: z.ZodType<
     nexAgi: "nex-agi",
     openInference: "open-inference",
     paretoAlpha: "pareto-alpha",
+    paretoInference: "pareto-inference",
     particleAi: "particle-ai",
     pearlResearch: "pearl-research",
     sailResearch: "sail-research",

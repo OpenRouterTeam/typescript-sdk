@@ -120,6 +120,7 @@ export const Provider = {
   Parallel: "parallel",
   Parasail: "parasail",
   ParetoAlpha: "pareto-alpha",
+  ParetoInference: "pareto-inference",
   ParticleAi: "particle-ai",
   PearlResearch: "pearl-research",
   Perceptron: "perceptron",
