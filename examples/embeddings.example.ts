@@ -26,8 +26,10 @@ async function singleTextEmbedding() {
   console.log("=== Single Text Embedding ===\n");
 
   const response = await openRouter.embeddings.generate({
-    input: "The quick brown fox jumps over the lazy dog",
-    model: "openai/text-embedding-3-small",
+    requestBody: {
+      input: "The quick brown fox jumps over the lazy dog",
+      model: "openai/text-embedding-3-small",
+    },
   });
 
   if (typeof response === "object" && "data" in response) {
@@ -63,8 +65,10 @@ async function batchEmbeddings() {
   ];
 
   const response = await openRouter.embeddings.generate({
-    input: texts,
-    model: "openai/text-embedding-3-small",
+    requestBody: {
+      input: texts,
+      model: "openai/text-embedding-3-small",
+    },
   });
 
   if (typeof response === "object" && "data" in response) {
@@ -93,9 +97,11 @@ async function customDimensionsEmbedding() {
   console.log("=== Custom Dimensions Embedding ===\n");
 
   const response = await openRouter.embeddings.generate({
-    input: "This text will be embedded with reduced dimensions.",
-    model: "openai/text-embedding-3-small",
-    dimensions: 256, // Request smaller embedding size
+    requestBody: {
+      input: "This text will be embedded with reduced dimensions.",
+      model: "openai/text-embedding-3-small",
+      dimensions: 256, // Request smaller embedding size
+    },
   });
 
   if (typeof response === "object" && "data" in response) {
@@ -117,19 +123,21 @@ async function listEmbeddingModels() {
 
   const response = await openRouter.embeddings.listModels();
 
-  if (response.data) {
-    console.log(`Found ${response.data.length} embedding models:\n`);
+  const models = response.result.data;
+
+  if (models.length > 0) {
+    console.log(`Found ${models.length} embedding models:\n`);
 
     // Show first 5 models
-    response.data.slice(0, 5).forEach((model) => {
+    models.slice(0, 5).forEach((model) => {
       console.log(`  - ${model.id}`);
       if (model.pricing) {
         console.log(`    Pricing: $${model.pricing.prompt}/1M prompt tokens`);
       }
     });
 
-    if (response.data.length > 5) {
-      console.log(`  ... and ${response.data.length - 5} more`);
+    if (models.length > 5) {
+      console.log(`  ... and ${models.length - 5} more`);
     }
   }
 
@@ -147,9 +155,11 @@ function cosineSimilarity(a: number[], b: number[]): number {
   let normB = 0;
 
   for (let i = 0; i < a.length; i++) {
-    dotProduct += a[i] * b[i];
-    normA += a[i] * a[i];
-    normB += b[i] * b[i];
+    const x = a[i] ?? 0;
+    const y = b[i] ?? 0;
+    dotProduct += x * y;
+    normA += x * x;
+    normB += y * y;
   }
 
   return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
@@ -168,8 +178,10 @@ async function semanticSimilarity() {
   ];
 
   const response = await openRouter.embeddings.generate({
-    input: texts,
-    model: "openai/text-embedding-3-small",
+    requestBody: {
+      input: texts,
+      model: "openai/text-embedding-3-small",
+    },
   });
 
   if (typeof response === "object" && "data" in response) {
@@ -177,10 +189,12 @@ async function semanticSimilarity() {
       .map((item) => (Array.isArray(item?.embedding) ? item.embedding : null))
       .filter((e): e is number[] => e !== null);
 
-    if (embeddings.length === 3) {
-      const sim01 = cosineSimilarity(embeddings[0], embeddings[1]);
-      const sim02 = cosineSimilarity(embeddings[0], embeddings[2]);
-      const sim12 = cosineSimilarity(embeddings[1], embeddings[2]);
+    const [first, second, third] = embeddings;
+
+    if (first && second && third) {
+      const sim01 = cosineSimilarity(first, second);
+      const sim02 = cosineSimilarity(first, third);
+      const sim12 = cosineSimilarity(second, third);
 
       console.log("Comparing semantic similarity:\n");
       console.log(`  "${texts[0]}"`);
