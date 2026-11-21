@@ -36,7 +36,7 @@ export const KeepMembersEnum = {
 export type KeepMembersEnum = OpenEnum<typeof KeepMembersEnum>;
 
 /**
- * Required. Whether to keep workspace members after deleting the mapping. `false` **removes** the members this mapping granted access to; `true` deletes the mapping while leaving membership intact as manually-managed. There is deliberately no default — omitting it returns `400` so the destructive path cannot be reached by accident. Mirrors the dashboard, whose `DeleteMappingSchema.keepMembers` is likewise required.
+ * Required. Whether to keep workspace members after deleting the mapping. `false` **removes** the members this mapping granted access to; `true` deletes the mapping while leaving membership intact as manually-managed. Exception: for an `admin` mapping, `keep_members=true` returns `403` and leaves the mapping in place — management keys cannot preserve members as workspace admins, so do not plan an admin mapping rotation around preserving members through this endpoint (use the dashboard instead). There is deliberately no default — omitting it returns `400` so the destructive path cannot be reached by accident. Mirrors the dashboard, whose `DeleteMappingSchema.keepMembers` is likewise required.
  */
 export type KeepMembers = KeepMembersEnum | boolean;
 
@@ -62,7 +62,7 @@ export type DeleteScimGroupMappingRequest = {
   appCategories?: string | undefined;
   id: string;
   /**
-   * Required. Whether to keep workspace members after deleting the mapping. `false` **removes** the members this mapping granted access to; `true` deletes the mapping while leaving membership intact as manually-managed. There is deliberately no default — omitting it returns `400` so the destructive path cannot be reached by accident. Mirrors the dashboard, whose `DeleteMappingSchema.keepMembers` is likewise required.
+   * Required. Whether to keep workspace members after deleting the mapping. `false` **removes** the members this mapping granted access to; `true` deletes the mapping while leaving membership intact as manually-managed. Exception: for an `admin` mapping, `keep_members=true` returns `403` and leaves the mapping in place — management keys cannot preserve members as workspace admins, so do not plan an admin mapping rotation around preserving members through this endpoint (use the dashboard instead). There is deliberately no default — omitting it returns `400` so the destructive path cannot be reached by accident. Mirrors the dashboard, whose `DeleteMappingSchema.keepMembers` is likewise required.
    */
   keepMembers: KeepMembersEnum | boolean;
 };

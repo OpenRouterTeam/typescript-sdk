@@ -31,7 +31,7 @@ import { Result } from "../types/fp.js";
  * Update a SCIM group mapping
  *
  * @remarks
- * Update a SCIM group mapping role. [Management key](/docs/guides/overview/auth/management-api-keys) required.
+ * Update a SCIM group mapping role. Assigning the `admin` role is dashboard-only and returns 403 for management keys. [Management key](/docs/guides/overview/auth/management-api-keys) required.
  */
 export function scimUpdate(
   client: OpenRouterCore,

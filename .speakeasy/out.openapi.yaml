@@ -7733,6 +7733,7 @@ components:
         - 'parallel'
         - 'parasail'
         - 'pareto-alpha'
+        - 'pareto-inference'
         - 'particle-ai'
         - 'pearl-research'
         - 'perceptron'
@@ -17286,6 +17287,7 @@ components:
             - '1.5K'
             - '2K'
             - '4K'
+            - '8K'
           example: '2K'
           type: 'string'
           x-speakeasy-unknown-values: allow
@@ -21472,6 +21474,7 @@ components:
                 - 'Parallel'
                 - 'Parasail'
                 - 'ParetoAlpha'
+                - 'Pareto Inference'
                 - 'Particle AI'
                 - 'Pearl Research'
                 - 'Poolside'
@@ -30987,6 +30990,7 @@ components:
         - 'Parallel'
         - 'Parasail'
         - 'ParetoAlpha'
+        - 'Pareto Inference'
         - 'Particle AI'
         - 'Pearl Research'
         - 'Poolside'
@@ -31351,6 +31355,9 @@ components:
           additionalProperties: {}
           type: 'object'
         pareto-alpha:
+          additionalProperties: {}
+          type: 'object'
+        pareto-inference:
           additionalProperties: {}
           type: 'object'
         particle-ai:
@@ -31813,6 +31820,7 @@ components:
             - 'Parallel'
             - 'Parasail'
             - 'ParetoAlpha'
+            - 'Pareto Inference'
             - 'Particle AI'
             - 'Pearl Research'
             - 'Poolside'
@@ -43197,6 +43205,7 @@ paths:
               - 'parallel'
               - 'parasail'
               - 'pareto-alpha'
+              - 'pareto-inference'
               - 'particle-ai'
               - 'pearl-research'
               - 'perceptron'
@@ -59529,8 +59538,7 @@ paths:
           results: '$.data'
         type: 'offsetLimit'
     post:
-      deprecated: true
-      description: 'Create a SCIM group-to-workspace role mapping. Disabled: no API key can perform this write, including management keys. Use the organization settings in the dashboard, which require step-up verification. A valid management key for an organization with SCIM access receives 403; an invalid key still receives 401 and an organization without SCIM access receives 404.'
+      description: 'Create a SCIM group-to-workspace role mapping. Creating a mapping that already exists with the same role succeeds and re-applies the mapping to the group members. Requesting a different role for an existing mapping returns 409. Assigning the `admin` role is dashboard-only and returns 403 for management keys. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'createScimGroupMapping'
       requestBody:
         content:
@@ -59544,7 +59552,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateScimGroupMappingResponse'
-          description: 'SCIM group mapping created. Not returned: this operation is disabled. The schema is kept for SDK compatibility.'
+          description: 'SCIM group mapping created'
         '400':
           content:
             application/json:
@@ -59571,10 +59579,10 @@ paths:
               example:
                 error:
                   code: 403
-                  message: 'Management keys cannot change SCIM group mappings or start syncs. Use the organization settings in the dashboard.'
+                  message: 'Only management keys can perform this operation'
               schema:
                 $ref: '#/components/schemas/ForbiddenResponse'
-          description: 'Forbidden - SCIM writes are dashboard-only'
+          description: 'Forbidden - Authentication successful but insufficient permissions'
         '404':
           content:
             application/json:
@@ -59615,7 +59623,7 @@ paths:
       - $ref: "#/components/parameters/AppCategories"
   /scim/group-mappings/{id}:
     delete:
-      description: 'Delete a SCIM group-to-workspace mapping. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Delete a SCIM group-to-workspace mapping. For an `admin` mapping, `keep_members=true` returns `403` and leaves the mapping in place — preserving members as workspace admins is dashboard-only. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'deleteScimGroupMapping'
       parameters:
         - in: 'path'
@@ -59624,7 +59632,7 @@ paths:
           schema:
             format: 'uuid'
             type: 'string'
-        - description: 'Required. Whether to keep workspace members after deleting the mapping. `false` **removes** the members this mapping granted access to; `true` deletes the mapping while leaving membership intact as manually-managed. There is deliberately no default — omitting it returns `400` so the destructive path cannot be reached by accident. Mirrors the dashboard, whose `DeleteMappingSchema.keepMembers` is likewise required.'
+        - description: 'Required. Whether to keep workspace members after deleting the mapping. `false` **removes** the members this mapping granted access to; `true` deletes the mapping while leaving membership intact as manually-managed. Exception: for an `admin` mapping, `keep_members=true` returns `403` and leaves the mapping in place — management keys cannot preserve members as workspace admins, so do not plan an admin mapping rotation around preserving members through this endpoint (use the dashboard instead). There is deliberately no default — omitting it returns `400` so the destructive path cannot be reached by accident. Mirrors the dashboard, whose `DeleteMappingSchema.keepMembers` is likewise required.'
           in: 'query'
           name: 'keep_members'
           required: true
@@ -59636,7 +59644,7 @@ paths:
                 type: 'string'
                 x-speakeasy-unknown-values: allow
               - type: 'boolean'
-            description: 'Required. Whether to keep workspace members after deleting the mapping. `false` **removes** the members this mapping granted access to; `true` deletes the mapping while leaving membership intact as manually-managed. There is deliberately no default — omitting it returns `400` so the destructive path cannot be reached by accident. Mirrors the dashboard, whose `DeleteMappingSchema.keepMembers` is likewise required.'
+            description: 'Required. Whether to keep workspace members after deleting the mapping. `false` **removes** the members this mapping granted access to; `true` deletes the mapping while leaving membership intact as manually-managed. Exception: for an `admin` mapping, `keep_members=true` returns `403` and leaves the mapping in place — management keys cannot preserve members as workspace admins, so do not plan an admin mapping rotation around preserving members through this endpoint (use the dashboard instead). There is deliberately no default — omitting it returns `400` so the destructive path cannot be reached by accident. Mirrors the dashboard, whose `DeleteMappingSchema.keepMembers` is likewise required.'
             example: false
       responses:
         '200':
@@ -59761,7 +59769,7 @@ paths:
         - 'SCIM'
       x-speakeasy-name-override: 'read'
     patch:
-      description: 'Update a SCIM group mapping role. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
+      description: 'Update a SCIM group mapping role. Assigning the `admin` role is dashboard-only and returns 403 for management keys. [Management key](/docs/guides/overview/auth/management-api-keys) required.'
       operationId: 'updateScimGroupMapping'
       parameters:
         - in: 'path'
