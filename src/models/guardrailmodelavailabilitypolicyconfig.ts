@@ -9,6 +9,7 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type GuardrailModelAvailabilityPolicyConfig = {
+  allowProvisionalProviders?: boolean | null | undefined;
   allowSafetyRetentionGoogle?: boolean | null | undefined;
   allowSafetyRetentionOther?: boolean | null | undefined;
   allowedDataRegions?: Array<string> | null | undefined;
@@ -37,6 +38,7 @@ export const GuardrailModelAvailabilityPolicyConfig$inboundSchema: z.ZodType<
   GuardrailModelAvailabilityPolicyConfig,
   unknown
 > = z.object({
+  allow_provisional_providers: z.nullable(z.boolean()).optional(),
   allow_safety_retention_google: z.nullable(z.boolean()).optional(),
   allow_safety_retention_other: z.nullable(z.boolean()).optional(),
   allowed_data_regions: z.nullable(z.array(z.string())).optional(),
@@ -60,6 +62,7 @@ export const GuardrailModelAvailabilityPolicyConfig$inboundSchema: z.ZodType<
   require_eu_data_region: z.nullable(z.boolean()).optional(),
 }).transform((v) => {
   return remap$(v, {
+    "allow_provisional_providers": "allowProvisionalProviders",
     "allow_safety_retention_google": "allowSafetyRetentionGoogle",
     "allow_safety_retention_other": "allowSafetyRetentionOther",
     "allowed_data_regions": "allowedDataRegions",
