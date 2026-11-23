@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: b2adeba39fde80667c60b5db6313cf27
+  docChecksum: 453c31d386f308288ff886b368df68af
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.129
-  configChecksum: 9a38361b3e2cc168952da5f1aa568805
+  releaseVersion: 1.5.130
+  configChecksum: 9a31214dd205a253176b5d5598757ae6
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -23716,4 +23716,3 @@ examples:
         "503":
           application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.messages[].content.union(Array<>)[].union(tool_search_tool_result)` **Added**\n"
