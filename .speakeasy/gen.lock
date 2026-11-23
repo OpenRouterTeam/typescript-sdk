@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: bfdfc3f5a80437cd6024ce4acba54431
+  docChecksum: 5ea6fc53704191aec7bd494ad27b4fe0
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.131
-  configChecksum: ddbc0a9fbfcadd7b4b42225d1dc8b5fc
+  releaseVersion: 1.5.132
+  configChecksum: 49e2e2ef0084b975f7f51082b8bd9bd1
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -23716,4 +23716,3 @@ examples:
         "503":
           application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.guardrails.list()`:  `response.data[].allowProvisionalProviders` **Added**\n* `openrouter.guardrails.create()`: \n  *  `request.createGuardrailRequest.allowProvisionalProviders` **Added**\n  *  `response.data.allowProvisionalProviders` **Added**\n* `openrouter.guardrails.get()`:  `response.data.allowProvisionalProviders` **Added**\n* `openrouter.guardrails.update()`: \n  *  `request.updateGuardrailRequest.allowProvisionalProviders` **Added**\n  *  `response.data.allowProvisionalProviders` **Added**\n* `openrouter.guardrailPolicies.listAccountPolicies()`:  `response.data[].union(model_availability).config.allowProvisionalProviders` **Added**\n* `openrouter.guardrailPolicies.createAccountPolicy()`: \n  *  `request.accountGuardrailPolicyRequest.union(model_availability).config.allowProvisionalProviders` **Added**\n  *  `response.data.union(model_availability).config.allowProvisionalProviders` **Added**\n* `openrouter.guardrailPolicies.updateAccountPolicy()`: \n  *  `request.accountGuardrailPolicyRequest.union(model_availability).config.allowProvisionalProviders` **Added**\n  *  `response.data.union(model_availability).config.allowProvisionalProviders` **Added**\n* `openrouter.guardrailPolicies.listModelAvailabilityPolicies()`:  `response.data[].config.allowProvisionalProviders` **Added**\n* `openrouter.guardrailPolicies.createModelAvailabilityPolicy()`: \n  *  `request.createModelAvailabilityGuardrailPolicyRequest.config.allowProvisionalProviders` **Added**\n  *  `response.data.config.allowProvisionalProviders` **Added**\n* `openrouter.guardrailPolicies.getModelAvailabilityPolicy()`:  `response.data.config.allowProvisionalProviders` **Added**\n* `openrouter.guardrailPolicies.updateModelAvailabilityPolicy()`: \n  *  `request.updateModelAvailabilityGuardrailPolicyRequest.config.allowProvisionalProviders` **Added**\n  *  `response.data.config.allowProvisionalProviders` **Added**\n"
