@@ -6,6 +6,7 @@ import * as z from "zod/v4";
 import { remap as remap$ } from "../lib/primitives.js";
 
 export type GuardrailModelAvailabilityPolicyAuthoringConfig = {
+  allowProvisionalProviders?: boolean | null | undefined;
   allowSafetyRetentionGoogle?: boolean | null | undefined;
   allowSafetyRetentionOther?: boolean | null | undefined;
   allowedDataRegions?: Array<string> | null | undefined;
@@ -31,6 +32,7 @@ export type GuardrailModelAvailabilityPolicyAuthoringConfig = {
 
 /** @internal */
 export type GuardrailModelAvailabilityPolicyAuthoringConfig$Outbound = {
+  allow_provisional_providers?: boolean | null | undefined;
   allow_safety_retention_google?: boolean | null | undefined;
   allow_safety_retention_other?: boolean | null | undefined;
   allowed_data_regions?: Array<string> | null | undefined;
@@ -60,6 +62,7 @@ export const GuardrailModelAvailabilityPolicyAuthoringConfig$outboundSchema:
     GuardrailModelAvailabilityPolicyAuthoringConfig$Outbound,
     GuardrailModelAvailabilityPolicyAuthoringConfig
   > = z.object({
+    allowProvisionalProviders: z.nullable(z.boolean()).optional(),
     allowSafetyRetentionGoogle: z.nullable(z.boolean()).optional(),
     allowSafetyRetentionOther: z.nullable(z.boolean()).optional(),
     allowedDataRegions: z.nullable(z.array(z.string())).optional(),
@@ -83,6 +86,7 @@ export const GuardrailModelAvailabilityPolicyAuthoringConfig$outboundSchema:
     requireEuDataRegion: z.nullable(z.boolean()).optional(),
   }).transform((v) => {
     return remap$(v, {
+      allowProvisionalProviders: "allow_provisional_providers",
       allowSafetyRetentionGoogle: "allow_safety_retention_google",
       allowSafetyRetentionOther: "allow_safety_retention_other",
       allowedDataRegions: "allowed_data_regions",

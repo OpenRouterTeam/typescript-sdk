@@ -25,6 +25,10 @@ import {
 
 export type CreateGuardrailRequest = {
   /**
+   * Whether requests may use provisional providers, whose security practices have not been reviewed by OpenRouter. false excludes them. true and null never override an account that excludes them. Inherits the account setting when not provided.
+   */
+  allowProvisionalProviders?: boolean | null | undefined;
+  /**
    * Whether ZDR-only requests to google/* models may also use Safety Retention endpoints, which may retain prompts and responses from any request, only to prevent abuse, and do not use them for training. false allows only ZDR endpoints. A guardrail can only be more restrictive than the account setting. Inherits the account setting when not provided.
    */
   allowSafetyRetentionGoogle?: boolean | null | undefined;
@@ -133,6 +137,7 @@ export type CreateGuardrailRequest = {
 
 /** @internal */
 export type CreateGuardrailRequest$Outbound = {
+  allow_provisional_providers?: boolean | null | undefined;
   allow_safety_retention_google?: boolean | null | undefined;
   allow_safety_retention_other?: boolean | null | undefined;
   allowed_data_regions?: Array<string> | null | undefined;
@@ -168,6 +173,7 @@ export const CreateGuardrailRequest$outboundSchema: z.ZodType<
   CreateGuardrailRequest$Outbound,
   CreateGuardrailRequest
 > = z.object({
+  allowProvisionalProviders: z.nullable(z.boolean()).optional(),
   allowSafetyRetentionGoogle: z.nullable(z.boolean()).optional(),
   allowSafetyRetentionOther: z.nullable(z.boolean()).optional(),
   allowedDataRegions: z.nullable(z.array(GuardrailDataRegion$outboundSchema))
@@ -199,6 +205,7 @@ export const CreateGuardrailRequest$outboundSchema: z.ZodType<
   workspaceId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
+    allowProvisionalProviders: "allow_provisional_providers",
     allowSafetyRetentionGoogle: "allow_safety_retention_google",
     allowSafetyRetentionOther: "allow_safety_retention_other",
     allowedDataRegions: "allowed_data_regions",
