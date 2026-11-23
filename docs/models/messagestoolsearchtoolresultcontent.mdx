@@ -1,0 +1,32 @@
+---
+title: "MessagesToolSearchToolResultContent"
+---
+
+What a tool search returned: the tools it found, or an error.
+
+
+## Supported Types
+
+### `models.MessagesToolSearchToolResultError`
+
+```typescript
+const value: models.MessagesToolSearchToolResultError = {
+  errorCode: "unavailable",
+  type: "tool_search_tool_result_error",
+};
+```
+
+### `models.MessagesToolSearchToolSearchResult`
+
+```typescript
+const value: models.MessagesToolSearchToolSearchResult = {
+  toolReferences: [
+    {
+      toolName: "get_weather",
+      type: "tool_reference",
+    },
+  ],
+  type: "tool_search_tool_search_result",
+};
+```
+

@@ -1,0 +1,28 @@
+---
+title: "MessagesToolSearchToolSearchResult"
+---
+
+The tools a tool search found, by name, in match order.
+
+## Example Usage
+
+```typescript
+import { MessagesToolSearchToolSearchResult } from "@openrouter/sdk/models";
+
+let value: MessagesToolSearchToolSearchResult = {
+  toolReferences: [
+    {
+      toolName: "get_weather",
+      type: "tool_reference",
+    },
+  ],
+  type: "tool_search_tool_search_result",
+};
+```
+
+## Fields
+
+| Field                                                                                    | Type                                                                                     | Required                                                                                 | Description                                                                              |
+| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `toolReferences`                                                                         | [models.MessagesToolSearchToolReference](../models/messagestoolsearchtoolreference.mdx)[] | ✔️                                                                       | N/A                                                                                      |
+| `type`                                                                                   | *"tool_search_tool_search_result"*                                                       | ✔️                                                                       | N/A                                                                                      |

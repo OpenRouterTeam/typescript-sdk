@@ -1,0 +1,24 @@
+---
+title: "MessagesToolSearchToolResultError"
+---
+
+A tool search that returned an error in place of tools.
+
+## Example Usage
+
+```typescript
+import { MessagesToolSearchToolResultError } from "@openrouter/sdk/models";
+
+let value: MessagesToolSearchToolResultError = {
+  errorCode: "unavailable",
+  type: "tool_search_tool_result_error",
+};
+```
+
+## Fields
+
+| Field                                                                                              | Type                                                                                               | Required                                                                                           | Description                                                                                        | Example                                                                                            |
+| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `errorCode`                                                                                        | [models.MessagesToolSearchToolResultErrorCode](../models/messagestoolsearchtoolresulterrorcode.mdx) | ✔️                                                                                 | Why a tool search returned no result.                                                              | unavailable                                                                                        |
+| `errorMessage`                                                                                     | *string*                                                                                           | ➖                                                                                 | N/A                                                                                                |                                                                                                    |
+| `type`                                                                                             | *"tool_search_tool_result_error"*                                                                  | ✔️                                                                                 | N/A                                                                                                |                                                                                                    |

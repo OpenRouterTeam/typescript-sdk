@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: b9fe98f3502f77b89846cefa3d4a1072
+  docChecksum: b2adeba39fde80667c60b5db6313cf27
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.128
-  configChecksum: 80310f62dbb9263450b5beb2924cdfd6
+  releaseVersion: 1.5.129
+  configChecksum: 9a38361b3e2cc168952da5f1aa568805
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -6774,6 +6774,13 @@ trackedFiles:
     last_write_checksum: sha1:c53b51a1d70ad9a66b1d29257ff9a0e3e767d5fa
     pristine_git_object: cf26b0662ab7b9c3a929c87e05785ca5ba681a6e
     deleted: true
+  docs/models/messagestoolsearchtoolreference.mdx: {}
+  docs/models/messagestoolsearchtoolreferencetype.mdx: {}
+  docs/models/messagestoolsearchtoolresultblock.mdx: {}
+  docs/models/messagestoolsearchtoolresultcontent.mdx: {}
+  docs/models/messagestoolsearchtoolresulterror.mdx: {}
+  docs/models/messagestoolsearchtoolresulterrorcode.mdx: {}
+  docs/models/messagestoolsearchtoolsearchresult.mdx: {}
   docs/models/metadata.md:
     id: ad63dba5a4f8
     last_write_checksum: sha1:321ca37d526c7527188ae279bab450e1fcc5b042
@@ -16638,6 +16645,12 @@ trackedFiles:
   src/models/messagestoolremovalblock.ts:
     id: dd4f25f389a0
     pristine_git_object: 3f810214ff8c87340d0c0c5a4b072c21275d34b1
+  src/models/messagestoolsearchtoolreference.ts: {}
+  src/models/messagestoolsearchtoolresultblock.ts: {}
+  src/models/messagestoolsearchtoolresultcontent.ts: {}
+  src/models/messagestoolsearchtoolresulterror.ts: {}
+  src/models/messagestoolsearchtoolresulterrorcode.ts: {}
+  src/models/messagestoolsearchtoolsearchresult.ts: {}
   src/models/metadatalevel.ts:
     id: d3f8399ef138
     pristine_git_object: fe01365b2f672e05779601a08c80f7e8eee154e7
@@ -23703,4 +23716,4 @@ examples:
         "503":
           application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.alpha.decisions.create()`: \n  *  `request.decisionsRequest.provider` **Changed**\n* `openrouter.alpha.extractions.create()`: \n  *  `request.extractionsRequest.provider` **Changed**\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.provider` **Changed**\n* `openrouter.stt.createTranscription()`: \n  *  `request.sttRequest.provider` **Changed**\n* `openrouter.batch.createBatches()`: \n  *  `request.batchSubmitBody.provider.only[].union(ProviderName).enum(paretoInference)` **Added**\n* `openrouter.byok.list()`: \n  *  `request.provider` **Changed**\n  *  `response.data[].provider.enum(paretoInference)` **Added**\n* `openrouter.byok.create()`: \n  *  `request.createByokKeyRequest.provider.enum(paretoInference)` **Added**\n  *  `response.data.provider.enum(paretoInference)` **Added**\n* `openrouter.byok.get()`:  `response.data.provider.enum(paretoInference)` **Added**\n* `openrouter.byok.update()`:  `response.data.provider.enum(paretoInference)` **Added**\n* `openrouter.chat.send()`: \n  *  `request.chatRequest.provider` **Changed**\n* `openrouter.embeddings.generate()`: \n  *  `request.requestBody.provider` **Changed**\n* `openrouter.endpoints.listZdrEndpoints()`:  `response.data[].providerName.enum(paretoInference)` **Added**\n* `openrouter.endpoints.list()`:  `response.data.endpoints[].providerName.enum(paretoInference)` **Added**\n* `openrouter.generations.getGeneration()`:  `response.data.providerResponses[].providerName.enum(paretoInference)` **Added**\n* `openrouter.images.generate()`: \n  *  `request.imageGenerationRequest` **Changed**\n* `openrouter.presets.createPresetsChatCompletions()`: \n  *  `request.chatRequest.provider` **Changed**\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.provider` **Changed**\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.provider` **Changed**\n* `openrouter.rerank.rerank()`: \n  *  `request.requestBody.provider` **Changed**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.provider` **Changed**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.provider` **Changed**\n* `openrouter.systemOne.create()`: \n  *  `request.decisionsRequest.provider` **Changed**\n* `openrouter.videoGeneration.generate()`: \n  *  `request.videoGenerationRequest.provider` **Changed**\n"
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.presets.createPresetsMessages()`: \n  *  `request.messagesRequest.messages[].content.union(Array<>)[].union(tool_search_tool_result)` **Added**\n"
