@@ -33,6 +33,10 @@ export type CreateGuardrailRequest = {
    */
   allowSafetyRetentionGoogle?: boolean | null | undefined;
   /**
+   * Whether ZDR-only requests to openai/* models may also use Safety Retention endpoints, which may retain prompts and responses from any request, only to prevent abuse, and do not use them for training. false allows only ZDR endpoints. Applies only while OpenAI ZDR is on for the account or this guardrail; otherwise allow_safety_retention_other applies. Follows allow_safety_retention_other when null; on update, null clears a saved choice and omitting the field leaves it unchanged. While the account enforces ZDR for OpenAI or for other models, a guardrail can only be more restrictive than that account setting.
+   */
+  allowSafetyRetentionOpenai?: boolean | null | undefined;
+  /**
    * Whether ZDR-only requests to models outside the named providers (for example open-weight models on Vertex) may also use Safety Retention endpoints, which may retain prompts and responses from any request, only to prevent abuse, and do not use them for training. false allows only ZDR endpoints. A guardrail can only be more restrictive than the account setting. Inherits the account setting when not provided.
    */
   allowSafetyRetentionOther?: boolean | null | undefined;
@@ -139,6 +143,7 @@ export type CreateGuardrailRequest = {
 export type CreateGuardrailRequest$Outbound = {
   allow_provisional_providers?: boolean | null | undefined;
   allow_safety_retention_google?: boolean | null | undefined;
+  allow_safety_retention_openai?: boolean | null | undefined;
   allow_safety_retention_other?: boolean | null | undefined;
   allowed_data_regions?: Array<string> | null | undefined;
   allowed_models?: Array<string> | null | undefined;
@@ -175,6 +180,7 @@ export const CreateGuardrailRequest$outboundSchema: z.ZodType<
 > = z.object({
   allowProvisionalProviders: z.nullable(z.boolean()).optional(),
   allowSafetyRetentionGoogle: z.nullable(z.boolean()).optional(),
+  allowSafetyRetentionOpenai: z.nullable(z.boolean()).optional(),
   allowSafetyRetentionOther: z.nullable(z.boolean()).optional(),
   allowedDataRegions: z.nullable(z.array(GuardrailDataRegion$outboundSchema))
     .optional(),
@@ -207,6 +213,7 @@ export const CreateGuardrailRequest$outboundSchema: z.ZodType<
   return remap$(v, {
     allowProvisionalProviders: "allow_provisional_providers",
     allowSafetyRetentionGoogle: "allow_safety_retention_google",
+    allowSafetyRetentionOpenai: "allow_safety_retention_openai",
     allowSafetyRetentionOther: "allow_safety_retention_other",
     allowedDataRegions: "allowed_data_regions",
     allowedModels: "allowed_models",
