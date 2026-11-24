@@ -15,7 +15,7 @@ export class TTS extends ClientSDK {
    * Create speech
    *
    * @remarks
-   * Synthesizes audio from the input text. Returns a raw audio bytestream in the requested format (e.g. mp3, pcm, wav).
+   * Synthesizes audio from the input text. Returns a raw audio bytestream in the requested format (e.g. mp3, pcm) by default, or a JSON response with a 24-hour signed download URL when `output_delivery` is set to `"url"`.
    */
   async createSpeech(
     request: operations.CreateAudioSpeechRequest,
