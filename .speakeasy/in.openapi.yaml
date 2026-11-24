@@ -32829,6 +32829,26 @@ components:
         - 'code'
         - 'message'
       type: 'object'
+    ResponsesContextManagement:
+      additionalProperties: {}
+      description: 'A server-side context management entry. With `compaction`, the provider compacts the conversation once input exceeds `compact_threshold` and returns a `compaction` output item; pass that item back in `input` on later turns.'
+      example:
+        compact_threshold: 200000
+        type: 'compaction'
+      properties:
+        compact_threshold:
+          description: 'Input token count at which server-side compaction is triggered.'
+          example: 200000
+          type:
+            - 'integer'
+            - 'null'
+        type:
+          description: 'The context management strategy. Currently only `compaction` is supported.'
+          example: 'compaction'
+          type: 'string'
+      required:
+        - 'type'
+      type: 'object'
     ResponsesErrorField:
       description: 'Error information returned from the API'
       example:
@@ -32930,6 +32950,16 @@ components:
             - 'null'
         cache_control:
           $ref: '#/components/schemas/AnthropicCacheControlDirective'
+        context_management:
+          description: 'Server-side context management (compaction). Supported for OpenAI models served by OpenAI or Azure, which return `compaction` output items. Providers translated to another API format drop it. Replay returned `compaction` items in `input` on later turns.'
+          example:
+            - compact_threshold: 200000
+              type: 'compaction'
+          items:
+            $ref: '#/components/schemas/ResponsesContextManagement'
+          type:
+            - 'array'
+            - 'null'
         debug:
           $ref: '#/components/schemas/ChatDebugOptions'
         deferred_tools:
