@@ -1,0 +1,24 @@
+---
+title: "GetBatchResultsResponse"
+---
+
+## Example Usage
+
+```typescript
+import { GetBatchResultsResponse } from "@openrouter/sdk/models/operations";
+
+let value: GetBatchResultsResponse = {
+  result: {
+    data: [],
+    hasMore: false,
+    nextCursor: null,
+    object: "list",
+  },
+};
+```
+
+## Fields
+
+| Field                                                                       | Type                                                                        | Required                                                                    | Description                                                                 | Example                                                                     |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `result`                                                                    | [models.BatchResultsPageResponse](../../models/batchresultspageresponse.mdx) | ✔️                                                          | N/A                                                                         | \{<br/>"data": [],<br/>"has_more": false,<br/>"next_cursor": null,<br/>"object": "list"<br/>} |

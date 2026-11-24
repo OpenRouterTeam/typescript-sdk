@@ -1,19 +1,15 @@
 ---
-title: "Result"
+title: "BatchResult"
 ---
 
 ## Example Usage
 
 ```typescript
-import { Result } from "@openrouter/sdk/models";
+import { BatchResult } from "@openrouter/sdk/models";
 
-let value: Result = {
+let value: BatchResult = {
   customId: "<id>",
-  error: {
-    message: "<value>",
-    param: "<value>",
-    type: "<value>",
-  },
+  error: null,
   id: "<id>",
   response: {
     body: {
@@ -49,7 +45,7 @@ let value: Result = {
       topP: null,
     },
     requestId: "<id>",
-    statusCode: 170920,
+    statusCode: 192973,
   },
 };
 ```
@@ -59,6 +55,6 @@ let value: Result = {
 | Field                                                          | Type                                                           | Required                                                       | Description                                                    |
 | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- |
 | `customId`                                                     | *string*                                                       | ✔️                                             | N/A                                                            |
-| `error`                                                        | [models.ResultError](../models/resulterror.mdx)                 | ✔️                                             | N/A                                                            |
+| `error`                                                        | [models.BatchResultError](../models/batchresulterror.mdx)       | ✔️                                             | N/A                                                            |
 | `id`                                                           | *string*                                                       | ✔️                                             | N/A                                                            |
-| `response`                                                     | [models.BatchObjectResponse](../models/batchobjectresponse.mdx) | ✔️                                             | N/A                                                            |
+| `response`                                                     | [models.BatchResultResponse](../models/batchresultresponse.mdx) | ✔️                                             | N/A                                                            |
