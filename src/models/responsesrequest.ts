@@ -230,6 +230,11 @@ import {
   ResponseIncludesEnum$outboundSchema,
 } from "./responseincludesenum.js";
 import {
+  ResponsesContextManagement,
+  ResponsesContextManagement$Outbound,
+  ResponsesContextManagement$outboundSchema,
+} from "./responsescontextmanagement.js";
+import {
   SearchModelsServerToolOpenRouter,
   SearchModelsServerToolOpenRouter$Outbound,
   SearchModelsServerToolOpenRouter$outboundSchema,
@@ -453,6 +458,10 @@ export type ResponsesRequest = {
    * Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format.
    */
   cacheControl?: AnthropicCacheControlDirective | undefined;
+  /**
+   * Server-side context management (compaction). Supported for OpenAI models served by OpenAI or Azure, which return `compaction` output items. Providers translated to another API format drop it. Replay returned `compaction` items in `input` on later turns.
+   */
+  contextManagement?: Array<ResponsesContextManagement> | null | undefined;
   /**
    * Debug options for inspecting request transformations (streaming only)
    */
@@ -930,6 +939,10 @@ export type ResponsesRequest$Outbound = {
   access_programs?: ResponsesRequestAccessPrograms$Outbound | undefined;
   background?: boolean | null | undefined;
   cache_control?: AnthropicCacheControlDirective$Outbound | undefined;
+  context_management?:
+    | Array<ResponsesContextManagement$Outbound>
+    | null
+    | undefined;
   debug?: ChatDebugOptions$Outbound | undefined;
   deferred_tools?: DeferredToolsControl$Outbound | undefined;
   frequency_penalty?: number | null | undefined;
@@ -1043,6 +1056,9 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
     .optional(),
   background: z.nullable(z.boolean()).optional(),
   cacheControl: AnthropicCacheControlDirective$outboundSchema.optional(),
+  contextManagement: z.nullable(
+    z.array(ResponsesContextManagement$outboundSchema),
+  ).optional(),
   debug: ChatDebugOptions$outboundSchema.optional(),
   deferredTools: DeferredToolsControl$outboundSchema.optional(),
   frequencyPenalty: z.nullable(z.number()).optional(),
@@ -1191,6 +1207,7 @@ export const ResponsesRequest$outboundSchema: z.ZodType<
   return remap$(v, {
     accessPrograms: "access_programs",
     cacheControl: "cache_control",
+    contextManagement: "context_management",
     deferredTools: "deferred_tools",
     frequencyPenalty: "frequency_penalty",
     imageConfig: "image_config",

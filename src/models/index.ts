@@ -790,6 +790,7 @@ export * from "./responsehealingplugin.js";
 export * from "./responseincludesenum.js";
 export * from "./responseoutputtext.js";
 export * from "./responsesbadrequestresponseerrordata.js";
+export * from "./responsescontextmanagement.js";
 export * from "./responsesinputtransformation.js";
 export * from "./responsesrequest.js";
 export * from "./responsesstreamingresponse.js";

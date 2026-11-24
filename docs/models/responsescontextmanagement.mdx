@@ -1,0 +1,23 @@
+---
+title: "ResponsesContextManagement"
+---
+
+A server-side context management entry. With `compaction`, the provider compacts the conversation once input exceeds `compact_threshold` and returns a `compaction` output item; pass that item back in `input` on later turns.
+
+## Example Usage
+
+```typescript
+import { ResponsesContextManagement } from "@openrouter/sdk/models";
+
+let value: ResponsesContextManagement = {
+  type: "compaction",
+};
+```
+
+## Fields
+
+| Field                                                                      | Type                                                                       | Required                                                                   | Description                                                                | Example                                                                    |
+| -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `compactThreshold`                                                         | *number*                                                                   | ➖                                                         | Input token count at which server-side compaction is triggered.            | 200000                                                                     |
+| `type`                                                                     | *string*                                                                   | ✔️                                                         | The context management strategy. Currently only `compaction` is supported. | compaction                                                                 |
+| `additionalProperties`                                                     | Record\<string, *any*>                                                      | ➖                                                         | N/A                                                                        | \{<br/>"compact_threshold": 200000,<br/>"type": "compaction"<br/>}          |
