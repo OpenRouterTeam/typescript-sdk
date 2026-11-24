@@ -8,6 +8,7 @@ import { remap as remap$ } from "../lib/primitives.js";
 export type GuardrailModelAvailabilityPolicyAuthoringConfig = {
   allowProvisionalProviders?: boolean | null | undefined;
   allowSafetyRetentionGoogle?: boolean | null | undefined;
+  allowSafetyRetentionOpenai?: boolean | null | undefined;
   allowSafetyRetentionOther?: boolean | null | undefined;
   allowedDataRegions?: Array<string> | null | undefined;
   allowedModels?: Array<string> | null | undefined;
@@ -34,6 +35,7 @@ export type GuardrailModelAvailabilityPolicyAuthoringConfig = {
 export type GuardrailModelAvailabilityPolicyAuthoringConfig$Outbound = {
   allow_provisional_providers?: boolean | null | undefined;
   allow_safety_retention_google?: boolean | null | undefined;
+  allow_safety_retention_openai?: boolean | null | undefined;
   allow_safety_retention_other?: boolean | null | undefined;
   allowed_data_regions?: Array<string> | null | undefined;
   allowed_models?: Array<string> | null | undefined;
@@ -64,6 +66,7 @@ export const GuardrailModelAvailabilityPolicyAuthoringConfig$outboundSchema:
   > = z.object({
     allowProvisionalProviders: z.nullable(z.boolean()).optional(),
     allowSafetyRetentionGoogle: z.nullable(z.boolean()).optional(),
+    allowSafetyRetentionOpenai: z.nullable(z.boolean()).optional(),
     allowSafetyRetentionOther: z.nullable(z.boolean()).optional(),
     allowedDataRegions: z.nullable(z.array(z.string())).optional(),
     allowedModels: z.nullable(z.array(z.string())).optional(),
@@ -88,6 +91,7 @@ export const GuardrailModelAvailabilityPolicyAuthoringConfig$outboundSchema:
     return remap$(v, {
       allowProvisionalProviders: "allow_provisional_providers",
       allowSafetyRetentionGoogle: "allow_safety_retention_google",
+      allowSafetyRetentionOpenai: "allow_safety_retention_openai",
       allowSafetyRetentionOther: "allow_safety_retention_other",
       allowedDataRegions: "allowed_data_regions",
       allowedModels: "allowed_models",

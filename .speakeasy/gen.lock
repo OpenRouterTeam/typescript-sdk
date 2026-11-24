@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 27fa7793f61c78c5259ee1a2c76f16b4
+  docChecksum: 3787d3610911455fa87d73ffacb3f102
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.137
-  configChecksum: 77bdd9433e3f322fe01c9ece663facb1
+  releaseVersion: 1.5.138
+  configChecksum: 241da40d4ca46657f72762ed479482f0
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -23688,6 +23688,4 @@ examples:
         "500":
           application/json: {"error": {"code": 400, "message": "custom_id is required on requests[0]."}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `openrouter.batch.getResults()`: **Added**
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.guardrails.list()`:  `response.data[].allowSafetyRetentionOpenai` **Added**\n* `openrouter.guardrails.create()`: \n  *  `request.createGuardrailRequest.allowSafetyRetentionOpenai` **Added**\n  *  `response.data.allowSafetyRetentionOpenai` **Added**\n* `openrouter.guardrails.get()`:  `response.data.allowSafetyRetentionOpenai` **Added**\n* `openrouter.guardrails.update()`: \n  *  `request.updateGuardrailRequest.allowSafetyRetentionOpenai` **Added**\n  *  `response.data.allowSafetyRetentionOpenai` **Added**\n* `openrouter.guardrailPolicies.listAccountPolicies()`:  `response.data[].union(model_availability).config.allowSafetyRetentionOpenai` **Added**\n* `openrouter.guardrailPolicies.createAccountPolicy()`: \n  *  `request.accountGuardrailPolicyRequest.union(model_availability).config.allowSafetyRetentionOpenai` **Added**\n  *  `response.data.union(model_availability).config.allowSafetyRetentionOpenai` **Added**\n* `openrouter.guardrailPolicies.updateAccountPolicy()`: \n  *  `request.accountGuardrailPolicyRequest.union(model_availability).config.allowSafetyRetentionOpenai` **Added**\n  *  `response.data.union(model_availability).config.allowSafetyRetentionOpenai` **Added**\n* `openrouter.guardrailPolicies.listModelAvailabilityPolicies()`:  `response.data[].config.allowSafetyRetentionOpenai` **Added**\n* `openrouter.guardrailPolicies.createModelAvailabilityPolicy()`: \n  *  `request.createModelAvailabilityGuardrailPolicyRequest.config.allowSafetyRetentionOpenai` **Added**\n  *  `response.data.config.allowSafetyRetentionOpenai` **Added**\n* `openrouter.guardrailPolicies.getModelAvailabilityPolicy()`:  `response.data.config.allowSafetyRetentionOpenai` **Added**\n* `openrouter.guardrailPolicies.updateModelAvailabilityPolicy()`: \n  *  `request.updateModelAvailabilityGuardrailPolicyRequest.config.allowSafetyRetentionOpenai` **Added**\n  *  `response.data.config.allowSafetyRetentionOpenai` **Added**\n"
