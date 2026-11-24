@@ -174,6 +174,8 @@ export * from "./batchobject.js";
 export * from "./batchoutputreference.js";
 export * from "./batchpaymentrequiredresponseerror.js";
 export * from "./batchproviderpreferences.js";
+export * from "./batchresult.js";
+export * from "./batchresultspageresponse.js";
 export * from "./batchsubmitbody.js";
 export * from "./booleancapability.js";
 export * from "./budgetaccountguardrailpolicy.js";

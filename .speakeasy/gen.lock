@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 605581b486429f55e12aede981ee2671
+  docChecksum: 27fa7793f61c78c5259ee1a2c76f16b4
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.136
-  configChecksum: ba08da3058e7728c17cf9e976aabf395
+  releaseVersion: 1.5.137
+  configChecksum: 77bdd9433e3f322fe01c9ece663facb1
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -1690,66 +1690,22 @@ trackedFiles:
   docs/models/batchobjectcompletionwindow.mdx:
     id: 3f633d535e48
     pristine_git_object: 027894894098a9376931bc0d0a3de01aa475a99d
-  docs/models/batchobjectdata.mdx:
-    id: 2cef408f944f
-    pristine_git_object: b9e4d0c0647fbe686e77049043e61d0542d7b115
-  docs/models/batchobjectdebug.mdx:
-    id: 93df2434648d
-    pristine_git_object: 1db6450c56e89b5236425cacaee8fe30ebfb064c
   docs/models/batchobjecterror.mdx:
     id: 5d913d93ef88
     pristine_git_object: 8c1279584ec91a8a538d9422cef9bc84ad889a89
-  docs/models/batchobjectevent.mdx:
-    id: d1a2b3f0e932
-    pristine_git_object: 118d16f134197dd356615357884cbfdd2980da4e
-  docs/models/batchobjectfile.mdx:
-    id: d8c535ccecc1
-    pristine_git_object: 32714bc0f724a65f2080b2a219b5007941eb40cf
-  docs/models/batchobjectformat1.mdx:
-    id: 9e0743d0f31d
-    pristine_git_object: 2156ce48eca3e8f2a613d0a1d3ac4a164945fc45
-  docs/models/batchobjectformat2.mdx:
-    id: cfcc75463250
-    pristine_git_object: 3b24d46b2ad46c559eff0a172d7f7596913c4f5d
-  docs/models/batchobjectfunction.mdx:
-    id: 220d9adb5a44
-    pristine_git_object: f6a074f0599fdda533779f23dbeb78ebf1119587
-  docs/models/batchobjectimageurl.mdx:
-    id: 95f0991f56d4
-    pristine_git_object: f1b32abcafa6dd5d6419fd2299498f7191c7ca35
-  docs/models/batchobjectobjectbatch.mdx:
-    id: 143a3dd37e1c
-    pristine_git_object: f2832d02e3abbc146c5a8065abb6ce53a7746c15
+  docs/models/batchobjectobject.mdx: {}
   docs/models/batchobjectprompttokensdetails.mdx:
     id: bbbe224085dd
     pristine_git_object: 1c8817c9d44ba992d5b4a88d04f187acbf832343
   docs/models/batchobjectrequestcounts.mdx:
     id: 59bfb324208a
     pristine_git_object: cd7494f5112d09eb22870e7ffbc90e1d9700b1e1
-  docs/models/batchobjectresponse.mdx:
-    id: 0609ea4f5701
-    pristine_git_object: bb25e20fbe9fdf15bc95277bcf0ba4c5efe44ecd
-  docs/models/batchobjectrole.mdx:
-    id: 8da336aedc6c
-    pristine_git_object: d5731fe7345338faeeac4cadbecf892f73208f77
   docs/models/batchobjectservertooluse.mdx:
     id: 5b702203afe4
     pristine_git_object: e0989ffe3f4855d4b6757990f4286e16305f22c5
-  docs/models/batchobjectservertoolusedetails.mdx:
-    id: 77f27390bec7
-    pristine_git_object: 3b91a1e0fe23d1904d277bce4413f3136a0c2566
   docs/models/batchobjectstatus.mdx:
     id: 5c7c7a3047ee
     pristine_git_object: 59e3c79f6b7eb8c2d92703238fcd9769cca75c06
-  docs/models/batchobjecttimings.mdx:
-    id: 7c008d5868d8
-    pristine_git_object: 84050de14578d6eef47efc8489484be7dfcf0404
-  docs/models/batchobjecttypemessage.mdx:
-    id: 2c71a69fa887
-    pristine_git_object: 356ebd0e29b4406248d1d5b4c80e89fc56a4d73e
-  docs/models/batchobjecturlcitation.mdx:
-    id: ec50e95c0dc4
-    pristine_git_object: cf1ba97bba40dd2d229f57c21533385211296564
   docs/models/batchobjectusage.mdx:
     id: 83a126a5d105
     pristine_git_object: 5a00d07cdecb713ffd2787f3d618a3abb6739eaa
@@ -1789,6 +1745,34 @@ trackedFiles:
   docs/models/batchproviderpreferencesonly.mdx:
     id: 58199a87fd92
     pristine_git_object: ce374dff4e452599c5f3e2d962aae653e3bbda29
+  docs/models/batchresult.mdx: {}
+  docs/models/batchresultcompletiontokensdetails.mdx: {}
+  docs/models/batchresultdata.mdx: {}
+  docs/models/batchresultdebug.mdx: {}
+  docs/models/batchresulterror.mdx: {}
+  docs/models/batchresultevent.mdx: {}
+  docs/models/batchresultfile.mdx: {}
+  docs/models/batchresultformat1.mdx: {}
+  docs/models/batchresultformat2.mdx: {}
+  docs/models/batchresultfunction.mdx: {}
+  docs/models/batchresultimageurl.mdx: {}
+  docs/models/batchresultobjectchatcompletion.mdx: {}
+  docs/models/batchresultobjectlist.mdx: {}
+  docs/models/batchresultprompttokensdetails1.mdx: {}
+  docs/models/batchresultprompttokensdetails2.mdx: {}
+  docs/models/batchresultresponse.mdx: {}
+  docs/models/batchresultrole.mdx: {}
+  docs/models/batchresultservertooluse.mdx: {}
+  docs/models/batchresultservertoolusedetails.mdx: {}
+  docs/models/batchresultspageresponse.mdx: {}
+  docs/models/batchresultspageresponseobject.mdx: {}
+  docs/models/batchresulttimings.mdx: {}
+  docs/models/batchresulttypemessage.mdx: {}
+  docs/models/batchresulturlcitation.mdx: {}
+  docs/models/batchresultusage1.mdx: {}
+  docs/models/batchresultusage2.mdx: {}
+  docs/models/batchresultusage3.mdx: {}
+  docs/models/batchresultusage4.mdx: {}
   docs/models/batchsubmitbody.mdx:
     id: 113c1c833017
     pristine_git_object: 37383751802b8ece5e1114f79feeab3cc344b317
@@ -1877,42 +1861,12 @@ trackedFiles:
   docs/models/bodychatcompletion.mdx:
     id: 2810adc22232
     pristine_git_object: ef5dcc3f00355c84302dde44fc6713c6ab0c6a1b
-  docs/models/bodycompletiontokensdetails.mdx:
-    id: 9132c0897711
-    pristine_git_object: 477470fb89ffcc0d2a3cf1805e338edce0a92f08
   docs/models/bodylist.mdx:
     id: 89d34bb7b053
     pristine_git_object: 476fd275516579f2fe8d7d43437c6a03aa8c7132
   docs/models/bodymessage.mdx:
     id: fd8ac33c186f
     pristine_git_object: 6bbd07ea90cf2a3cd6760211d83a013e10d75eb4
-  docs/models/bodyobjectchatcompletion.mdx:
-    id: afd039f7dbcd
-    pristine_git_object: 269a1f59c2846a1bc2f680405f1ba715b5cf5740
-  docs/models/bodyobjectlist.mdx:
-    id: da98e77f96c2
-    pristine_git_object: 48db49d1be5ed63c4639bcebef96bfabe6463dc6
-  docs/models/bodyprompttokensdetails1.mdx:
-    id: 4c60eb4124d8
-    pristine_git_object: 51e823171be5c5bca4f9ba1c4eddb27aa6774bac
-  docs/models/bodyprompttokensdetails2.mdx:
-    id: 71d896372e51
-    pristine_git_object: a9db458341ca667dea491210bf3613d2880158f5
-  docs/models/bodyservertooluse.mdx:
-    id: 01a0c65db182
-    pristine_git_object: e8c255851f1c35e46b27a8aa3bc894281e7dd5c3
-  docs/models/bodyusage1.mdx:
-    id: 570eee144e62
-    pristine_git_object: 16ca9e24736c7803055556dc797d9551651b679b
-  docs/models/bodyusage2.mdx:
-    id: bad2ef12604f
-    pristine_git_object: 9fe65349ba9077d57c94afcd2370837fd2feb169
-  docs/models/bodyusage3.mdx:
-    id: 2bebb4d73181
-    pristine_git_object: 7f123957e89868e3b27338c6cd6fb1aac2712b76
-  docs/models/bodyusage4.mdx:
-    id: 0886114b1a05
-    pristine_git_object: 68e0ce054185a9b7049b469507d1dd7d36fc4641
   docs/models/booleancapability.md:
     id: 7e7d64d5a817
     last_write_checksum: sha1:c7066bd2a82e8bc98e024fff369f5d1ca546a763
@@ -8691,6 +8645,9 @@ trackedFiles:
   docs/models/operations/getbatchesrequest.mdx:
     id: 97da7277a41c
     pristine_git_object: 75e24e2add22ff33ff2838cc81c74a349994626e
+  docs/models/operations/getbatchresultsglobals.mdx: {}
+  docs/models/operations/getbatchresultsrequest.mdx: {}
+  docs/models/operations/getbatchresultsresponse.mdx: {}
   docs/models/operations/getbenchmarksartificialanalysisglobals.md:
     id: 242f09d6c648
     last_write_checksum: sha1:7d385f94f18fd51ec4e47322ea4e9f1c30b602e2
@@ -12041,12 +11998,6 @@ trackedFiles:
     last_write_checksum: sha1:d255dff78371645a7803af8e1235ba77b59206d7
     pristine_git_object: cc3dc9b3fc9b6bf0282f244431113c93b89058c5
     deleted: true
-  docs/models/result.mdx:
-    id: cdd8d4e179fb
-    pristine_git_object: 4e9ecd982d3f4f39ecde3eb3c68c378790f635ee
-  docs/models/resulterror.mdx:
-    id: 57a1e1258c52
-    pristine_git_object: 12eae3b1d19e55f45f8d8215e7d7a599be78316a
   docs/models/route.mdx:
     id: 805008f47450
     pristine_git_object: 37b35483c9dfd58d3dfec5c1c85e01b33f37c0c2
@@ -14367,6 +14318,7 @@ trackedFiles:
   src/funcs/batchGetBatches.ts:
     id: d4804b94cd90
     pristine_git_object: 31a68016a503e8c5744e212d5c3812fa13bdf326
+  src/funcs/batchGetResults.ts: {}
   src/funcs/batchList.ts:
     id: 8709844813ac
     pristine_git_object: 62fca7b354f13e8022fd6b57c929af15bde99c38
@@ -15411,6 +15363,8 @@ trackedFiles:
   src/models/batchproviderpreferences.ts:
     id: 250964898edb
     pristine_git_object: 86c08d8df8d05bf7359a2fbac201d73b019067d8
+  src/models/batchresult.ts: {}
+  src/models/batchresultspageresponse.ts: {}
   src/models/batchsubmitbody.ts:
     id: ae38a7f7eb9d
     pristine_git_object: 6f8c521d10d28a3a5ea7f97fc95063750b31a569
@@ -17097,6 +17051,7 @@ trackedFiles:
   src/models/operations/getbatches.ts:
     id: 25fcdd59c2f1
     pristine_git_object: 2d75b6d2d23238cf449d6b373c111185a9b530fa
+  src/models/operations/getbatchresults.ts: {}
   src/models/operations/getbenchmarks.ts:
     id: 52eb1eb063ae
     pristine_git_object: f87dfc2ef47eb08cdb0ce2ae571994906b431724
@@ -23718,5 +23673,21 @@ examples:
           application/json: {"error": {"code": 500, "message": "Internal Server Error"}}
         "503":
           application/json: {"error": {"code": 503, "message": "Service temporarily unavailable"}}
+  getBatchResults:
+    speakeasy-default-get-batch-results:
+      parameters:
+        path:
+          id: "batch_abc123"
+      responses:
+        "200":
+          application/json: {"data": [], "has_more": false, "next_cursor": null, "object": "list"}
+        "402":
+          application/json: {"completion_window": "24h", "created_at": 408348, "endpoint": "<value>", "error": {"code": 455974, "message": "<value>"}, "expires_at": 419566, "finalized_at": 282040, "id": "<id>", "model": "Model S", "object": "batch", "provider": "<value>", "request_counts": {"completed": 944277, "failed": 227610, "total": 745536}, "results": "<value>", "status": "completed", "usage": {"completion_tokens": 648763, "prompt_tokens": 865459, "total_tokens": 861032}}
+        "400":
+          application/json: {"error": {"code": 400, "message": "custom_id is required on requests[0]."}}
+        "500":
+          application/json: {"error": {"code": 400, "message": "custom_id is required on requests[0]."}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.presets.createPresetsResponses()`: \n  *  `request.responsesRequest.contextManagement` **Added**\n* `openrouter.responses.send()`: \n  *  `request.responsesRequest.contextManagement` **Added**\n* `openrouter.beta.responses.send()`: \n  *  `request.responsesRequest.contextManagement` **Added**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.batch.getResults()`: **Added**

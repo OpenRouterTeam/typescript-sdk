@@ -1,0 +1,27 @@
+---
+title: "BatchResultsPageResponse"
+---
+
+A cursor-paginated page of normalized batch result rows.
+
+## Example Usage
+
+```typescript
+import { BatchResultsPageResponse } from "@openrouter/sdk/models";
+
+let value: BatchResultsPageResponse = {
+  data: [],
+  hasMore: false,
+  nextCursor: null,
+  object: "list",
+};
+```
+
+## Fields
+
+| Field                                                                                | Type                                                                                 | Required                                                                             | Description                                                                          |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `data`                                                                               | [models.BatchResult](../models/batchresult.mdx)[]                                     | ✔️                                                                   | N/A                                                                                  |
+| `hasMore`                                                                            | *boolean*                                                                            | ✔️                                                                   | N/A                                                                                  |
+| `nextCursor`                                                                         | *string*                                                                             | ✔️                                                                   | N/A                                                                                  |
+| `object`                                                                             | [models.BatchResultsPageResponseObject](../models/batchresultspageresponseobject.mdx) | ✔️                                                                   | N/A                                                                                  |

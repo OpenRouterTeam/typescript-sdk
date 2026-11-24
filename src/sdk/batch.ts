@@ -5,6 +5,7 @@
 import { batchCreateBatches } from "../funcs/batchCreateBatches.js";
 import { batchDelete } from "../funcs/batchDelete.js";
 import { batchGetBatches } from "../funcs/batchGetBatches.js";
+import { batchGetResults } from "../funcs/batchGetResults.js";
 import { batchList } from "../funcs/batchList.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
@@ -75,6 +76,25 @@ export class Batch extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.BatchObject> {
     return unwrapAsync(batchGetBatches(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Get batch results
+   *
+   * @remarks
+   * Returns a cursor-paginated page of normalized OpenRouter-format results for a finished batch. Pass the previous page's `next_cursor` as `cursor` to read the next page. Pages are stable across retries for the 30-day artifact retention window. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart).
+   */
+  async getResults(
+    request: operations.GetBatchResultsRequest,
+    options?: RequestOptions,
+  ): Promise<
+    PageIterator<operations.GetBatchResultsResponse, { cursor: string }>
+  > {
+    return unwrapResultIterator(batchGetResults(
       this,
       request,
       options,

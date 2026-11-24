@@ -1,0 +1,27 @@
+---
+title: "BatchResultUsage1"
+---
+
+## Example Usage
+
+```typescript
+import { BatchResultUsage1 } from "@openrouter/sdk/models";
+
+let value: BatchResultUsage1 = {
+  completionTokens: 780823,
+  promptTokens: 242868,
+  totalTokens: 507558,
+};
+```
+
+## Fields
+
+| Field                                                                                        | Type                                                                                         | Required                                                                                     | Description                                                                                  |
+| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `completionTokens`                                                                           | *number*                                                                                     | ✔️                                                                           | The tokens generated                                                                         |
+| `completionTokensDetails`                                                                    | [models.BatchResultCompletionTokensDetails](../models/batchresultcompletiontokensdetails.mdx) | ➖                                                                           | N/A                                                                                          |
+| `promptTokens`                                                                               | *number*                                                                                     | ✔️                                                                           | Including images, input audio, and tools if any                                              |
+| `promptTokensDetails`                                                                        | [models.BatchResultPromptTokensDetails1](../models/batchresultprompttokensdetails1.mdx)       | ➖                                                                           | Breakdown of tokens used in the prompt.                                                      |
+| `serverToolUse`                                                                              | [models.BatchResultServerToolUse](../models/batchresultservertooluse.mdx)                     | ➖                                                                           | Usage for server-side tool execution (e.g., web search)                                      |
+| `serverToolUseDetails`                                                                       | [models.BatchResultServerToolUseDetails](../models/batchresultservertoolusedetails.mdx)       | ➖                                                                           | Usage for server-side tool execution (e.g., web search)                                      |
+| `totalTokens`                                                                                | *number*                                                                                     | ✔️                                                                           | Sum of the above two fields                                                                  |

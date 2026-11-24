@@ -71,6 +71,7 @@ export * from "./getanalyticsmeta.js";
 export * from "./getapikeypolicyassignment.js";
 export * from "./getapprankings.js";
 export * from "./getbatches.js";
+export * from "./getbatchresults.js";
 export * from "./getbenchmarks.js";
 export * from "./getbudgetpolicy.js";
 export * from "./getbyokkey.js";
