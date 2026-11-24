@@ -29,6 +29,18 @@ import {
 } from "./traceconfig.js";
 
 /**
+ * `stream` (default) streams the audio bytes directly in the response body. `url` stores the generated audio in OpenRouter storage and returns a JSON response with a signed download `url`, `expires_at`, and `media_type`. The URL is a bearer link: anyone holding it can download the audio until it expires, up to 24 hours after the audio was stored (use `expires_at`); the stored copy is deleted by the storage lifecycle within the following day. Falls back to streaming raw audio bytes when a URL cannot be issued because zero-data-retention applies (account settings, guardrails, `provider.zdr`, or a ZDR endpoint) or the request has no workspace.
+ */
+export const OutputDelivery = {
+  Stream: "stream",
+  Url: "url",
+} as const;
+/**
+ * `stream` (default) streams the audio bytes directly in the response body. `url` stores the generated audio in OpenRouter storage and returns a JSON response with a signed download `url`, `expires_at`, and `media_type`. The URL is a bearer link: anyone holding it can download the audio until it expires, up to 24 hours after the audio was stored (use `expires_at`); the stored copy is deleted by the storage lifecycle within the following day. Falls back to streaming raw audio bytes when a URL cannot be issued because zero-data-retention applies (account settings, guardrails, `provider.zdr`, or a ZDR endpoint) or the request has no workspace.
+ */
+export type OutputDelivery = OpenEnum<typeof OutputDelivery>;
+
+/**
  * Data collection setting. If no available model provider meets the requirement, your request will return an error.
  *
  * @remarks
@@ -136,6 +148,10 @@ export type SpeechRequest = {
    */
   model: string;
   /**
+   * `stream` (default) streams the audio bytes directly in the response body. `url` stores the generated audio in OpenRouter storage and returns a JSON response with a signed download `url`, `expires_at`, and `media_type`. The URL is a bearer link: anyone holding it can download the audio until it expires, up to 24 hours after the audio was stored (use `expires_at`); the stored copy is deleted by the storage lifecycle within the following day. Falls back to streaming raw audio bytes when a URL cannot be issued because zero-data-retention applies (account settings, guardrails, `provider.zdr`, or a ZDR endpoint) or the request has no workspace.
+   */
+  outputDelivery?: OutputDelivery | undefined;
+  /**
    * Provider configuration: provider routing preferences (`order`, `only`, `ignore`, `allow_fallbacks`), data policy routing preferences (`zdr`, `data_collection`) and provider-specific passthrough options
    */
   provider?: SpeechRequestProvider | undefined;
@@ -164,6 +180,10 @@ export type SpeechRequest = {
    */
   voice?: string | undefined;
 };
+
+/** @internal */
+export const OutputDelivery$outboundSchema: z.ZodType<string, OutputDelivery> =
+  openEnums.outboundSchema(OutputDelivery);
 
 /** @internal */
 export const SpeechRequestDataCollection$outboundSchema: z.ZodType<
@@ -277,6 +297,7 @@ export type SpeechRequest$Outbound = {
   input_references?: Array<SpeechInputReference$Outbound> | undefined;
   instructions?: string | undefined;
   model: string;
+  output_delivery?: string | undefined;
   provider?: SpeechRequestProvider$Outbound | undefined;
   response_format: string;
   session_id?: string | undefined;
@@ -295,6 +316,7 @@ export const SpeechRequest$outboundSchema: z.ZodType<
   inputReferences: z.array(SpeechInputReference$outboundSchema).optional(),
   instructions: z.string().optional(),
   model: z.string(),
+  outputDelivery: OutputDelivery$outboundSchema.optional(),
   provider: z.lazy(() => SpeechRequestProvider$outboundSchema).optional(),
   responseFormat: SpeechRequestResponseFormat$outboundSchema.default("pcm"),
   sessionId: z.string().optional(),
@@ -305,6 +327,7 @@ export const SpeechRequest$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     inputReferences: "input_references",
+    outputDelivery: "output_delivery",
     responseFormat: "response_format",
     sessionId: "session_id",
   });
