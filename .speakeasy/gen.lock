@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 3787d3610911455fa87d73ffacb3f102
+  docChecksum: ffcd5a088f64a1257d9ab8ea2b2b50f8
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.138
-  configChecksum: 241da40d4ca46657f72762ed479482f0
+  releaseVersion: 1.5.139
+  configChecksum: 6bdc2ee5b419164b32ddf301c16ecaa7
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -19365,7 +19365,7 @@ examples:
     speakeasy-default-list-videos-models:
       responses:
         "200":
-          application/json: {"data": [{"allowed_passthrough_parameters": [], "canonical_slug": "google/veo-3.1", "created": 1700000000, "creativity": [], "generate_audio": true, "id": "google/veo-3.1", "name": "Veo 3.1", "seed": null, "supported_aspect_ratios": ["16:9"], "supported_durations": [5, 8], "supported_frame_images": ["first_frame", "last_frame"], "supported_resolutions": ["720p"], "supported_sizes": null, "upscale_factor": {}}]}
+          application/json: {"data": [{"allowed_passthrough_parameters": ["personGeneration", "aspectRatio", "negativePrompt", "conditioningScale", "enhancePrompt"], "canonical_slug": "google/veo-3.1-20260320", "created": 1774277148, "creativity": null, "generate_audio": true, "id": "google/veo-3.1", "name": "Google: Veo 3.1", "seed": true, "supported_aspect_ratios": ["16:9", "9:16"], "supported_durations": [4, 6, 8], "supported_frame_images": ["first_frame", "last_frame"], "supported_resolutions": ["720p", "1080p", "4K"], "supported_sizes": ["1280x720", "1080x1920", "1920x1080", "720x1280", "3840x2160", "2160x3840"], "upscale_factor": null}]}
         "400":
           application/json: {"error": {"code": 400, "message": "Invalid request parameters"}}
         "500":
@@ -23688,4 +23688,3 @@ examples:
         "500":
           application/json: {"error": {"code": 400, "message": "custom_id is required on requests[0]."}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.guardrails.list()`:  `response.data[].allowSafetyRetentionOpenai` **Added**\n* `openrouter.guardrails.create()`: \n  *  `request.createGuardrailRequest.allowSafetyRetentionOpenai` **Added**\n  *  `response.data.allowSafetyRetentionOpenai` **Added**\n* `openrouter.guardrails.get()`:  `response.data.allowSafetyRetentionOpenai` **Added**\n* `openrouter.guardrails.update()`: \n  *  `request.updateGuardrailRequest.allowSafetyRetentionOpenai` **Added**\n  *  `response.data.allowSafetyRetentionOpenai` **Added**\n* `openrouter.guardrailPolicies.listAccountPolicies()`:  `response.data[].union(model_availability).config.allowSafetyRetentionOpenai` **Added**\n* `openrouter.guardrailPolicies.createAccountPolicy()`: \n  *  `request.accountGuardrailPolicyRequest.union(model_availability).config.allowSafetyRetentionOpenai` **Added**\n  *  `response.data.union(model_availability).config.allowSafetyRetentionOpenai` **Added**\n* `openrouter.guardrailPolicies.updateAccountPolicy()`: \n  *  `request.accountGuardrailPolicyRequest.union(model_availability).config.allowSafetyRetentionOpenai` **Added**\n  *  `response.data.union(model_availability).config.allowSafetyRetentionOpenai` **Added**\n* `openrouter.guardrailPolicies.listModelAvailabilityPolicies()`:  `response.data[].config.allowSafetyRetentionOpenai` **Added**\n* `openrouter.guardrailPolicies.createModelAvailabilityPolicy()`: \n  *  `request.createModelAvailabilityGuardrailPolicyRequest.config.allowSafetyRetentionOpenai` **Added**\n  *  `response.data.config.allowSafetyRetentionOpenai` **Added**\n* `openrouter.guardrailPolicies.getModelAvailabilityPolicy()`:  `response.data.config.allowSafetyRetentionOpenai` **Added**\n* `openrouter.guardrailPolicies.updateModelAvailabilityPolicy()`: \n  *  `request.updateModelAvailabilityGuardrailPolicyRequest.config.allowSafetyRetentionOpenai` **Added**\n  *  `response.data.config.allowSafetyRetentionOpenai` **Added**\n"

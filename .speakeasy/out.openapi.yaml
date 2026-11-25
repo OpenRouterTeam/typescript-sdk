@@ -39545,7 +39545,7 @@ components:
           example: 'A serene mountain landscape at sunset'
           type: 'string'
         provider:
-          description: 'Provider routing preferences (order, only, ignore), request-level data policy (zdr, data_collection) and provider-specific passthrough configuration. No video endpoint currently offers Zero Data Retention, so `zdr: true` fails routing.'
+          description: 'Provider routing preferences (order, only, ignore), request-level data policy (zdr, data_collection) and provider-specific passthrough configuration. Sorting by price, latency, or throughput and automatic provider fallbacks are not supported. No video endpoint currently offers Zero Data Retention, so `zdr: true` fails routing.'
           properties:
             data_collection:
               description: "Data collection setting. If no available model provider meets the requirement, your request will return an error.\n- allow: (default) allow providers that may train on user data\n\n- deny: use only providers that do not train on user data. Providers may still retain prompts; set `zdr: true` to exclude retention."
@@ -39591,10 +39591,9 @@ components:
                       output_config:
                         effort: 'low'
             order:
-              description: 'An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.'
+              description: 'An ordered list of provider slugs to prefer when choosing an eligible video endpoint. The request is submitted to one endpoint and is not retried on another provider if submission fails.'
               example:
-                - 'openai'
-                - 'anthropic'
+                - 'minimax'
               items:
                 anyOf:
                   - $ref: '#/components/schemas/ProviderName'
@@ -39733,27 +39732,48 @@ components:
       type: 'object'
     VideoModel:
       example:
-        allowed_passthrough_parameters: []
-        canonical_slug: 'google/veo-3.1'
-        created: 1700000000
+        allowed_passthrough_parameters:
+          - 'personGeneration'
+          - 'aspectRatio'
+          - 'negativePrompt'
+          - 'conditioningScale'
+          - 'enhancePrompt'
+        canonical_slug: 'google/veo-3.1-20260320'
+        created: 1774277148
+        creativity: null
         description: 'Google video generation model'
         generate_audio: true
+        hugging_face_id: null
         id: 'google/veo-3.1'
-        name: 'Veo 3.1'
+        name: 'Google: Veo 3.1'
         pricing_skus:
-          generate: '0.50'
-        seed: null
+          duration_seconds_with_audio: '0.40'
+          duration_seconds_with_audio_4k: '0.60'
+          duration_seconds_without_audio: '0.20'
+          duration_seconds_without_audio_4k: '0.40'
+        seed: true
         supported_aspect_ratios:
           - '16:9'
+          - '9:16'
         supported_durations:
-          - 5
+          - 4
+          - 6
           - 8
         supported_frame_images:
           - 'first_frame'
           - 'last_frame'
         supported_resolutions:
           - '720p'
-        supported_sizes: null
+          - '1080p'
+          - '4K'
+        supported_sizes:
+          - '1280x720'
+          - '1080x1920'
+          - '1920x1080'
+          - '720x1280'
+          - '3840x2160'
+          - '2160x3840'
+        upscale_factor: null
       properties:
         allowed_passthrough_parameters:
           description: 'List of parameters that are allowed to be passed through to the provider'
@@ -39996,27 +40016,48 @@ components:
     VideoModelsListResponse:
       example:
         data:
-          - allowed_passthrough_parameters: []
-            canonical_slug: 'google/veo-3.1'
-            created: 1700000000
+          - allowed_passthrough_parameters:
+              - 'personGeneration'
+              - 'aspectRatio'
+              - 'negativePrompt'
+              - 'conditioningScale'
+              - 'enhancePrompt'
+            canonical_slug: 'google/veo-3.1-20260320'
+            created: 1774277148
+            creativity: null
             description: 'Google video generation model'
             generate_audio: true
+            hugging_face_id: null
             id: 'google/veo-3.1'
-            name: 'Veo 3.1'
+            name: 'Google: Veo 3.1'
             pricing_skus:
-              generate: '0.50'
-            seed: null
+              duration_seconds_with_audio: '0.40'
+              duration_seconds_with_audio_4k: '0.60'
+              duration_seconds_without_audio: '0.20'
+              duration_seconds_without_audio_4k: '0.40'
+            seed: true
             supported_aspect_ratios:
               - '16:9'
+              - '9:16'
             supported_durations:
-              - 5
+              - 4
+              - 6
               - 8
             supported_frame_images:
               - 'first_frame'
               - 'last_frame'
             supported_resolutions:
               - '720p'
-            supported_sizes: null
+              - '1080p'
+              - '4K'
+            supported_sizes:
+              - '1280x720'
+              - '1080x1920'
+              - '1920x1080'
+              - '720x1280'
+              - '3840x2160'
+              - '2160x3840'
+            upscale_factor: null
       properties:
         data:
           items:
@@ -63210,27 +63251,48 @@ paths:
             application/json:
               example:
                 data:
-                  - allowed_passthrough_parameters: []
-                    canonical_slug: 'google/veo-3.1'
-                    created: 1700000000
+                  - allowed_passthrough_parameters:
+                      - 'personGeneration'
+                      - 'aspectRatio'
+                      - 'negativePrompt'
+                      - 'conditioningScale'
+                      - 'enhancePrompt'
+                    canonical_slug: 'google/veo-3.1-20260320'
+                    created: 1774277148
+                    creativity: null
                     description: 'Google video generation model'
                     generate_audio: true
+                    hugging_face_id: null
                     id: 'google/veo-3.1'
-                    name: 'Veo 3.1'
+                    name: 'Google: Veo 3.1'
                     pricing_skus:
-                      generate: '0.50'
-                    seed: null
+                      duration_seconds_with_audio: '0.40'
+                      duration_seconds_with_audio_4k: '0.60'
+                      duration_seconds_without_audio: '0.20'
+                      duration_seconds_without_audio_4k: '0.40'
+                    seed: true
                     supported_aspect_ratios:
                       - '16:9'
+                      - '9:16'
                     supported_durations:
-                      - 5
+                      - 4
+                      - 6
                       - 8
                     supported_frame_images:
                       - 'first_frame'
                       - 'last_frame'
                     supported_resolutions:
                       - '720p'
-                    supported_sizes: null
+                      - '1080p'
+                      - '4K'
+                    supported_sizes:
+                      - '1280x720'
+                      - '1080x1920'
+                      - '1920x1080'
+                      - '720x1280'
+                      - '3840x2160'
+                      - '2160x3840'
+                    upscale_factor: null
               schema:
                 $ref: '#/components/schemas/VideoModelsListResponse'
           description: 'Returns a list of video generation models'
