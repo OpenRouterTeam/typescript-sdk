@@ -119,6 +119,7 @@ export type SpeechRequestProvider = {
 export const SpeechRequestResponseFormat = {
   Mp3: "mp3",
   Pcm: "pcm",
+  Wav: "wav",
 } as const;
 /**
  * Audio output format
