@@ -10,19 +10,27 @@ import { VideoModelsListResponse } from "@openrouter/sdk/models";
 let value: VideoModelsListResponse = {
   data: [
     {
-      allowedPassthroughParameters: [],
-      canonicalSlug: "google/veo-3.1",
-      created: 1700000000,
-      creativity: [],
+      allowedPassthroughParameters: [
+        "personGeneration",
+        "aspectRatio",
+        "negativePrompt",
+        "conditioningScale",
+        "enhancePrompt",
+      ],
+      canonicalSlug: "google/veo-3.1-20260320",
+      created: 1774277148,
+      creativity: null,
       generateAudio: true,
       id: "google/veo-3.1",
-      name: "Veo 3.1",
-      seed: null,
+      name: "Google: Veo 3.1",
+      seed: true,
       supportedAspectRatios: [
         "16:9",
+        "9:16",
       ],
       supportedDurations: [
-        5,
+        4,
+        6,
         8,
       ],
       supportedFrameImages: [
@@ -31,9 +39,18 @@ let value: VideoModelsListResponse = {
       ],
       supportedResolutions: [
         "720p",
+        "1080p",
+        "4K",
       ],
-      supportedSizes: null,
-      upscaleFactor: {},
+      supportedSizes: [
+        "1280x720",
+        "1080x1920",
+        "1920x1080",
+        "720x1280",
+        "3840x2160",
+        "2160x3840",
+      ],
+      upscaleFactor: null,
     },
   ],
 };

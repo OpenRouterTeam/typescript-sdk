@@ -241,7 +241,7 @@ export type VideoGenerationRequestOptions = {
 export type VideoGenerationRequestOrder = ProviderName | string;
 
 /**
- * Provider routing preferences (order, only, ignore), request-level data policy (zdr, data_collection) and provider-specific passthrough configuration. No video endpoint currently offers Zero Data Retention, so `zdr: true` fails routing.
+ * Provider routing preferences (order, only, ignore), request-level data policy (zdr, data_collection) and provider-specific passthrough configuration. Sorting by price, latency, or throughput and automatic provider fallbacks are not supported. No video endpoint currently offers Zero Data Retention, so `zdr: true` fails routing.
  */
 export type VideoGenerationRequestProvider = {
   /**
@@ -263,7 +263,7 @@ export type VideoGenerationRequestProvider = {
   only?: Array<ProviderName | string> | null | undefined;
   options?: VideoGenerationRequestOptions | undefined;
   /**
-   * An ordered list of provider slugs. The router will attempt to use the first provider in the subset of this list that supports your requested model, and fall back to the next if it is unavailable. If no providers are available, the request will fail with an error message.
+   * An ordered list of provider slugs to prefer when choosing an eligible video endpoint. The request is submitted to one endpoint and is not retried on another provider if submission fails.
    */
   order?: Array<ProviderName | string> | null | undefined;
   /**
@@ -331,7 +331,7 @@ export type VideoGenerationRequest = {
    */
   prompt?: string | undefined;
   /**
-   * Provider routing preferences (order, only, ignore), request-level data policy (zdr, data_collection) and provider-specific passthrough configuration. No video endpoint currently offers Zero Data Retention, so `zdr: true` fails routing.
+   * Provider routing preferences (order, only, ignore), request-level data policy (zdr, data_collection) and provider-specific passthrough configuration. Sorting by price, latency, or throughput and automatic provider fallbacks are not supported. No video endpoint currently offers Zero Data Retention, so `zdr: true` fails routing.
    */
   provider?: VideoGenerationRequestProvider | undefined;
   /**
