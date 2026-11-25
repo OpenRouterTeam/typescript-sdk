@@ -191,7 +191,7 @@ async function $do(
   >(
     M.json(200, models.BatchDeletedObject$inboundSchema),
     M.jsonErr([401, 404, 409, 429], errors.BatchErrorResponse$inboundSchema),
-    M.jsonErr([500, 502], errors.BatchErrorResponse$inboundSchema),
+    M.jsonErr([500, 502, 503], errors.BatchErrorResponse$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });
