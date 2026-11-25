@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: a240ad0504dd3f5e38bb6ea40a9ace4b
+  docChecksum: 48ce28dc985e5675d1df0f583b9698af
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.141
-  configChecksum: 698ba3d583267f0692e9ed61a647832a
+  releaseVersion: 1.5.142
+  configChecksum: f8eec305cc3ffb7d0ae6f400a6a9b247
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -23688,6 +23688,4 @@ examples:
         "500":
           application/json: {"error": {"code": 400, "message": "custom_id is required on requests[0]."}}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `openrouter.batch.delete()`:  `error.status[503]` **Added**
+releaseNotes: "## Typescript SDK Changes:\n* `openrouter.apiKeys.list()`: \n  *  `request.creatorUserId` **Added**\n"
