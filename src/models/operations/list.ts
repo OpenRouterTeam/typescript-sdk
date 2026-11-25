@@ -66,6 +66,10 @@ export type ListRequest = {
    * Filter API keys by workspace ID. By default an organization-scoped management key gets the default workspace; a workspace-scoped management key always gets its own workspace and cannot list another.
    */
   workspaceId?: string | undefined;
+  /**
+   * Only return API keys created by this user ID (the `creator_user_id` on each key). Requires a management key that can view key creators.
+   */
+  creatorUserId?: string | undefined;
 };
 
 export type ListData = {
@@ -186,6 +190,7 @@ export type ListRequest$Outbound = {
   include_expired?: boolean | undefined;
   offset?: number | null | undefined;
   workspace_id?: string | undefined;
+  creator_user_id?: string | undefined;
 };
 
 /** @internal */
@@ -200,12 +205,14 @@ export const ListRequest$outboundSchema: z.ZodType<
   includeExpired: z.boolean().optional(),
   offset: z.nullable(z.int()).optional(),
   workspaceId: z.string().optional(),
+  creatorUserId: z.string().optional(),
 }).transform((v) => {
   return remap$(v, {
     httpReferer: "HTTP-Referer",
     includeDisabled: "include_disabled",
     includeExpired: "include_expired",
     workspaceId: "workspace_id",
+    creatorUserId: "creator_user_id",
   });
 });
 

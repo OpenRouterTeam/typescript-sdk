@@ -52285,6 +52285,16 @@ paths:
             example: '0df9e665-d932-5740-b2c7-b52af166bc11'
             format: 'uuid'
             type: 'string'
+        - description: 'Only return API keys created by this user ID (the `creator_user_id` on each key). Requires a management key that can view key creators.'
+          in: 'query'
+          name: 'creator_user_id'
+          required: false
+          schema:
+            description: 'Only return API keys created by this user ID (the `creator_user_id` on each key). Requires a management key that can view key creators.'
+            example: 'user_2dHFtVWx2n56w6HkM0000000000'
+            maxLength: 255
+            minLength: 1
+            type: 'string'
       responses:
         '200':
           content:
@@ -52580,7 +52590,7 @@ paths:
       summary: 'List API keys'
       tags:
         - 'API Keys'
-      x-speakeasy-max-method-params: 5
+      x-speakeasy-max-method-params: 6
       x-speakeasy-name-override: 'list'
       x-speakeasy-pagination:
         inputs:

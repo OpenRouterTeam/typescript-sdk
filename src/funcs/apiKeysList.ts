@@ -114,6 +114,7 @@ async function $do(
   const path = pathToFunc("/keys")();
 
   const query = encodeFormQuery({
+    "creator_user_id": payload?.creator_user_id,
     "include_disabled": payload?.include_disabled,
     "include_expired": payload?.include_expired,
     "offset": payload?.offset,
