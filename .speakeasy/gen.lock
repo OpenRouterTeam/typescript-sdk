@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 3695f787ac5885c8883ee486313d7bf1
+  docChecksum: a240ad0504dd3f5e38bb6ea40a9ace4b
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.140
-  configChecksum: ac9e1a2f841356b9f018a6f77d24c9ee
+  releaseVersion: 1.5.141
+  configChecksum: 698ba3d583267f0692e9ed61a647832a
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -23688,4 +23688,6 @@ examples:
         "500":
           application/json: {"error": {"code": 400, "message": "custom_id is required on requests[0]."}}
 examplesVersion: 1.0.2
-releaseNotes: "## Typescript SDK Changes:\n* `openrouter.tts.createSpeech()`: \n  *  `request.speechRequest.responseFormat.enum(wav)` **Added**\n"
+releaseNotes: |
+  ## Typescript SDK Changes:
+  * `openrouter.batch.delete()`:  `error.status[503]` **Added**
