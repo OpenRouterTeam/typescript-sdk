@@ -1,12 +1,12 @@
 lockVersion: ""
 id: ""
 management:
-  docChecksum: 8b5e6e7c4db91d2ba4084c47e9760721
+  docChecksum: 51a732e7a6355f3ab7e8ebeffed131aa
   docVersion: 1.0.0
   speakeasyVersion: 1.808.1
   generationVersion: 2.960.8
-  releaseVersion: 1.5.143
-  configChecksum: a7c375bd515652c5db7272daaf99b2b1
+  releaseVersion: 1.5.144
+  configChecksum: 6e2dd99b4435d2413d26fcffe69cf1c8
   repoURL: https://github.com/OpenRouterTeam/typescript-sdk.git
   installationURL: https://github.com/OpenRouterTeam/typescript-sdk
   published: true
@@ -315,9 +315,6 @@ trackedFiles:
     last_write_checksum: sha1:50f9b708005344c386c27341926257fb1fb08491
     pristine_git_object: 48b2cd837ae453021bc146bde4669ffd6e11ee90
     deleted: true
-  docs/models/annotation.mdx:
-    id: 239ba919d957
-    pristine_git_object: 5748c04fb261e9b537d22c34bb1f1f3b4790ccd3
   docs/models/annotationaddedevent.md:
     id: 1d604076bb55
     last_write_checksum: sha1:787168d345b8bf4cc60ce56e4fbfe9c9985ba2c2
@@ -326,18 +323,6 @@ trackedFiles:
   docs/models/annotationaddedevent.mdx:
     id: 5647a6bd8c75
     pristine_git_object: ac3365f971091283ea29c58dd9cb48c9bbd9d59b
-  docs/models/annotationcontentunion.mdx:
-    id: c03776be833a
-    pristine_git_object: 7c1a6a11566a0471ed2e543a857315e86eca162f
-  docs/models/annotationfile.mdx:
-    id: dac9ff2411ae
-    pristine_git_object: 3f4bff10cbe177c6832afdf33ffe6f260c970b7a
-  docs/models/annotationurlcitation.mdx:
-    id: f356a786018d
-    pristine_git_object: 67f926e26b8f1d8b9cd73b6a82b58609ca49d4b7
-  docs/models/annotationwebsearchcitation.mdx:
-    id: 572268d1df8b
-    pristine_git_object: 51511c33e9117612bd1d1238797178d9bd188fb5
   docs/models/anthropicadvisormessageusageiteration.md:
     id: 42f357aa06ea
     last_write_checksum: sha1:3cf3d897195b125f9fbf4e7c512fdc235ef44f32
@@ -1747,11 +1732,11 @@ trackedFiles:
     pristine_git_object: ce374dff4e452599c5f3e2d962aae653e3bbda29
   docs/models/batchresult.mdx: {}
   docs/models/batchresultcompletiontokensdetails.mdx: {}
+  docs/models/batchresultcontent.mdx: {}
   docs/models/batchresultdata.mdx: {}
   docs/models/batchresultdebug.mdx: {}
   docs/models/batchresulterror.mdx: {}
   docs/models/batchresultevent.mdx: {}
-  docs/models/batchresultfile.mdx: {}
   docs/models/batchresultformat1.mdx: {}
   docs/models/batchresultformat2.mdx: {}
   docs/models/batchresultfunction.mdx: {}
@@ -1768,7 +1753,6 @@ trackedFiles:
   docs/models/batchresultspageresponseobject.mdx: {}
   docs/models/batchresulttimings.mdx: {}
   docs/models/batchresulttypemessage.mdx: {}
-  docs/models/batchresulturlcitation.mdx: {}
   docs/models/batchresultusage1.mdx: {}
   docs/models/batchresultusage2.mdx: {}
   docs/models/batchresultusage3.mdx: {}
@@ -2065,6 +2049,7 @@ trackedFiles:
   docs/models/changeguardrailpolicyassignmentresponse.mdx:
     id: 1ce454879091
     pristine_git_object: 09e7d9405633d2459bcd79b4d4d0a2960bb48198
+  docs/models/chatannotation.mdx: {}
   docs/models/chatassistantimages.md:
     id: c09d51959fbd
     last_write_checksum: sha1:ea0718a3034d9112be91f6829a0a94d531935b7a
@@ -2283,6 +2268,10 @@ trackedFiles:
   docs/models/chatdynamicservertool.mdx:
     id: cdcd9816ce2c
     pristine_git_object: 55a48ba9232a28b8ca4db8ffd4a0c4c1ad3e394c
+  docs/models/chatfileannotation.mdx: {}
+  docs/models/chatfileannotationcontentunion.mdx: {}
+  docs/models/chatfileannotationfile.mdx: {}
+  docs/models/chatfileannotationimageurl.mdx: {}
   docs/models/chatfinishreasonenum.md:
     id: e1505acc0b8e
     last_write_checksum: sha1:ec0b406a290f6e5b6341b9b2355cefbab082c47a
@@ -2820,6 +2809,8 @@ trackedFiles:
   docs/models/chattoolmessagecontent.mdx:
     id: 70dd4fd68f52
     pristine_git_object: 9d5df6ebc9605fb8ba37a79723a098ff04ad22a5
+  docs/models/chaturlcitationannotation.mdx: {}
+  docs/models/chaturlcitationannotationurlcitation.mdx: {}
   docs/models/chatusage.md:
     id: 53822f0d32d9
     last_write_checksum: sha1:0706f9ec0883f6ca2647663bda06bcd269a15370
@@ -2860,6 +2851,7 @@ trackedFiles:
   docs/models/chatusermessagecontent.mdx:
     id: f73d27770dee
     pristine_git_object: 8f1942813a3086bbf32a2b7c30cddc27393d8593
+  docs/models/chatwebsearchcitationannotation.mdx: {}
   docs/models/chatwebsearchservertool.md:
     id: 1ecbc02eded3
     last_write_checksum: sha1:4ada6d5cd701199dcdd59302f93a19f3bd22798b
@@ -2965,9 +2957,7 @@ trackedFiles:
   docs/models/choicetypefunction.mdx:
     id: b79cfd3ef1a9
     pristine_git_object: c1e9f2b0b7f79c3b52c9769a48b916004fb7d5cf
-  docs/models/choicetypeimageurlenum.mdx:
-    id: 2f7a6b350f47
-    pristine_git_object: 1a7c795f1096add84dd73bfd514d7fec9ced7871
+  docs/models/choicetypeimageurl.mdx: {}
   docs/models/citation.md:
     id: 25f48534d6bc
     last_write_checksum: sha1:b7781f3d0b63f799635bf7beb901a6ae049d62df
@@ -3277,9 +3267,6 @@ trackedFiles:
   docs/models/contentimageurl.mdx:
     id: fb086ec08fcc
     pristine_git_object: 8e9a8cfbe36be71d65cb45edde67a493928c44b5
-  docs/models/contentimageurlimageurl.mdx:
-    id: decd7bce6453
-    pristine_git_object: dc557309dff5cd5971164946e99b4b214704e08d
   docs/models/contentpartaddedevent.md:
     id: 9b321cdad488
     last_write_checksum: sha1:b02768fc94a9754644fc2d84d5b6630af1214516
@@ -6250,9 +6237,6 @@ trackedFiles:
   docs/models/logprobs.mdx:
     id: 9df7afbfa280
     pristine_git_object: faa16c737ec60805898c35752fa6813295f29e49
-  docs/models/logprobscontent.mdx:
-    id: 10d27dd0dc00
-    pristine_git_object: 26972043bc4ea8ab9d4c07501985f0245c97ddf1
   docs/models/managedprivateendpoint.mdx:
     id: fdba71af7e3e
     pristine_git_object: 53ad0d824dfbb09109943f7e84cb2981f1445012
@@ -15443,6 +15427,7 @@ trackedFiles:
   src/models/changeguardrailpolicyassignmentresponse.ts:
     id: a5309ae0c3c4
     pristine_git_object: 785edc6e11ff88bf2c8379943eceb119ba12ab3f
+  src/models/chatannotation.ts: {}
   src/models/chatassistantimages.ts:
     id: 31fb8a4309f9
     pristine_git_object: 058e3f29f7ec7fbc3c10b293a82dd7e44a4c7e2c
@@ -15488,6 +15473,7 @@ trackedFiles:
   src/models/chatdynamicservertool.ts:
     id: 883a1e1c541b
     pristine_git_object: b2cbe85bd6c69825483905314633bd1fbcc68062
+  src/models/chatfileannotation.ts: {}
   src/models/chatfinishreasonenum.ts:
     id: 699f385aa2f8
     pristine_git_object: 38b22a3ebe5f38fcf0cff10aaa5cb4396ad9c6d0
@@ -15569,12 +15555,14 @@ trackedFiles:
   src/models/chattoolmessage.ts:
     id: 446b465db30a
     pristine_git_object: 0ecb42a7c1f2bf45b22bb2a5327a477ddbc92cc3
+  src/models/chaturlcitationannotation.ts: {}
   src/models/chatusage.ts:
     id: 1e677d1ed4fc
     pristine_git_object: 18d2ce6f5e8985bc912437dd554f203d68f1bc42
   src/models/chatusermessage.ts:
     id: bc892e4ebadf
     pristine_git_object: 682f02b885e2e8d2ef5a8a5c1af8d6b0189d51b1
+  src/models/chatwebsearchcitationannotation.ts: {}
   src/models/chatwebsearchshorthand.ts:
     id: a67d6bbce478
     pristine_git_object: cce448221b795e92fca06a9b28766fdb596487c1

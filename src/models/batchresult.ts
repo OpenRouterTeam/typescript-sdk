@@ -55,6 +55,10 @@ import {
   ArmorSafeguardResult,
   ArmorSafeguardResult$inboundSchema,
 } from "./armorsafeguardresult.js";
+import {
+  ChatAnnotation,
+  ChatAnnotation$inboundSchema,
+} from "./chatannotation.js";
 import { CostDetails, CostDetails$inboundSchema } from "./costdetails.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import { FinishReason, FinishReason$inboundSchema } from "./finishreason.js";
@@ -311,7 +315,7 @@ export type ContentTopLogprob = {
   token: string;
 };
 
-export type LogprobsContent = {
+export type BatchResultContent = {
   bytes: Array<number> | null;
   logprob: number;
   token: string;
@@ -332,86 +336,22 @@ export type Refusal = {
 };
 
 export type Logprobs = {
-  content: Array<LogprobsContent> | null;
+  content: Array<BatchResultContent> | null;
   refusal?: Array<Refusal> | null | undefined;
 };
-
-export type WebSearchCitation = {
-  citedText?: string | undefined;
-  encryptedIndex?: string | undefined;
-  title: string | null;
-  url: string;
-};
-
-export type AnnotationWebSearchCitation = {
-  type: "web_search_citation";
-  webSearchCitation: WebSearchCitation;
-};
-
-export type BatchResultUrlCitation = {
-  content?: string | undefined;
-  endIndex: number;
-  startIndex: number;
-  title: string;
-  uncited?: true | undefined;
-  url: string;
-};
-
-export type AnnotationURLCitation = {
-  type: "url_citation";
-  urlCitation: BatchResultUrlCitation;
-};
-
-export type ContentImageUrlImageUrl = {
-  url: string;
-};
-
-export type ContentImageURL = {
-  imageUrl: ContentImageUrlImageUrl;
-  type: "image_url";
-};
-
-export type ContentText = {
-  text: string;
-  type: "text";
-};
-
-export type AnnotationContentUnion =
-  | ContentText
-  | ContentImageURL
-  | discriminatedUnionTypes.Unknown<"type">;
-
-export type BatchResultFile = {
-  content: Array<
-    ContentText | ContentImageURL | discriminatedUnionTypes.Unknown<"type">
-  >;
-  hash: string;
-  name?: string | undefined;
-};
-
-export type AnnotationFile = {
-  file: BatchResultFile;
-  type: "file";
-};
-
-export type Annotation =
-  | AnnotationFile
-  | AnnotationURLCitation
-  | AnnotationWebSearchCitation
-  | discriminatedUnionTypes.Unknown<"type">;
 
 export type BatchResultImageUrl = {
   url: string;
 };
 
-export const ChoiceTypeImageURLEnum = {
+export const ChoiceTypeImageURL = {
   ImageUrl: "image_url",
 } as const;
-export type ChoiceTypeImageURLEnum = ClosedEnum<typeof ChoiceTypeImageURLEnum>;
+export type ChoiceTypeImageURL = ClosedEnum<typeof ChoiceTypeImageURL>;
 
 export type Image = {
   imageUrl: BatchResultImageUrl;
-  type: ChoiceTypeImageURLEnum;
+  type: ChoiceTypeImageURL;
 };
 
 export type ReasoningDetail =
@@ -444,14 +384,7 @@ export type ToolCall = {
 };
 
 export type Message = {
-  annotations?:
-    | Array<
-      | AnnotationFile
-      | AnnotationURLCitation
-      | AnnotationWebSearchCitation
-      | discriminatedUnionTypes.Unknown<"type">
-    >
-    | undefined;
+  annotations?: Array<ChatAnnotation> | undefined;
   content: string | null;
   images?: Array<Image> | null | undefined;
   reasoning?: string | null | undefined;
@@ -1054,8 +987,8 @@ export function contentTopLogprobFromJSON(
 }
 
 /** @internal */
-export const LogprobsContent$inboundSchema: z.ZodType<
-  LogprobsContent,
+export const BatchResultContent$inboundSchema: z.ZodType<
+  BatchResultContent,
   unknown
 > = z.object({
   bytes: z.nullable(z.array(z.int())),
@@ -1068,13 +1001,13 @@ export const LogprobsContent$inboundSchema: z.ZodType<
   });
 });
 
-export function logprobsContentFromJSON(
+export function batchResultContentFromJSON(
   jsonString: string,
-): SafeParseResult<LogprobsContent, SDKValidationError> {
+): SafeParseResult<BatchResultContent, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => LogprobsContent$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'LogprobsContent' from JSON`,
+    (x) => BatchResultContent$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'BatchResultContent' from JSON`,
   );
 }
 
@@ -1122,7 +1055,7 @@ export function refusalFromJSON(
 
 /** @internal */
 export const Logprobs$inboundSchema: z.ZodType<Logprobs, unknown> = z.object({
-  content: z.nullable(z.array(z.lazy(() => LogprobsContent$inboundSchema))),
+  content: z.nullable(z.array(z.lazy(() => BatchResultContent$inboundSchema))),
   refusal: z.nullable(z.array(z.lazy(() => Refusal$inboundSchema))).optional(),
 });
 
@@ -1133,245 +1066,6 @@ export function logprobsFromJSON(
     jsonString,
     (x) => Logprobs$inboundSchema.parse(JSON.parse(x)),
     `Failed to parse 'Logprobs' from JSON`,
-  );
-}
-
-/** @internal */
-export const WebSearchCitation$inboundSchema: z.ZodType<
-  WebSearchCitation,
-  unknown
-> = z.object({
-  cited_text: z.string().optional(),
-  encrypted_index: z.string().optional(),
-  title: z.nullable(z.string()),
-  url: z.string(),
-}).transform((v) => {
-  return remap$(v, {
-    "cited_text": "citedText",
-    "encrypted_index": "encryptedIndex",
-  });
-});
-
-export function webSearchCitationFromJSON(
-  jsonString: string,
-): SafeParseResult<WebSearchCitation, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => WebSearchCitation$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'WebSearchCitation' from JSON`,
-  );
-}
-
-/** @internal */
-export const AnnotationWebSearchCitation$inboundSchema: z.ZodType<
-  AnnotationWebSearchCitation,
-  unknown
-> = z.object({
-  type: z.literal("web_search_citation"),
-  web_search_citation: z.lazy(() => WebSearchCitation$inboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    "web_search_citation": "webSearchCitation",
-  });
-});
-
-export function annotationWebSearchCitationFromJSON(
-  jsonString: string,
-): SafeParseResult<AnnotationWebSearchCitation, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => AnnotationWebSearchCitation$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'AnnotationWebSearchCitation' from JSON`,
-  );
-}
-
-/** @internal */
-export const BatchResultUrlCitation$inboundSchema: z.ZodType<
-  BatchResultUrlCitation,
-  unknown
-> = z.object({
-  content: z.string().optional(),
-  end_index: z.int(),
-  start_index: z.int(),
-  title: z.string(),
-  uncited: z.literal(true).optional(),
-  url: z.string(),
-}).transform((v) => {
-  return remap$(v, {
-    "end_index": "endIndex",
-    "start_index": "startIndex",
-  });
-});
-
-export function batchResultUrlCitationFromJSON(
-  jsonString: string,
-): SafeParseResult<BatchResultUrlCitation, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => BatchResultUrlCitation$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'BatchResultUrlCitation' from JSON`,
-  );
-}
-
-/** @internal */
-export const AnnotationURLCitation$inboundSchema: z.ZodType<
-  AnnotationURLCitation,
-  unknown
-> = z.object({
-  type: z.literal("url_citation"),
-  url_citation: z.lazy(() => BatchResultUrlCitation$inboundSchema),
-}).transform((v) => {
-  return remap$(v, {
-    "url_citation": "urlCitation",
-  });
-});
-
-export function annotationURLCitationFromJSON(
-  jsonString: string,
-): SafeParseResult<AnnotationURLCitation, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => AnnotationURLCitation$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'AnnotationURLCitation' from JSON`,
-  );
-}
-
-/** @internal */
-export const ContentImageUrlImageUrl$inboundSchema: z.ZodType<
-  ContentImageUrlImageUrl,
-  unknown
-> = z.object({
-  url: z.string(),
-});
-
-export function contentImageUrlImageUrlFromJSON(
-  jsonString: string,
-): SafeParseResult<ContentImageUrlImageUrl, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ContentImageUrlImageUrl$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ContentImageUrlImageUrl' from JSON`,
-  );
-}
-
-/** @internal */
-export const ContentImageURL$inboundSchema: z.ZodType<
-  ContentImageURL,
-  unknown
-> = z.object({
-  image_url: z.lazy(() => ContentImageUrlImageUrl$inboundSchema),
-  type: z.literal("image_url"),
-}).transform((v) => {
-  return remap$(v, {
-    "image_url": "imageUrl",
-  });
-});
-
-export function contentImageURLFromJSON(
-  jsonString: string,
-): SafeParseResult<ContentImageURL, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ContentImageURL$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ContentImageURL' from JSON`,
-  );
-}
-
-/** @internal */
-export const ContentText$inboundSchema: z.ZodType<ContentText, unknown> = z
-  .object({
-    text: z.string(),
-    type: z.literal("text"),
-  });
-
-export function contentTextFromJSON(
-  jsonString: string,
-): SafeParseResult<ContentText, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ContentText$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ContentText' from JSON`,
-  );
-}
-
-/** @internal */
-export const AnnotationContentUnion$inboundSchema: z.ZodType<
-  AnnotationContentUnion,
-  unknown
-> = discriminatedUnion("type", {
-  text: z.lazy(() => ContentText$inboundSchema),
-  image_url: z.lazy(() => ContentImageURL$inboundSchema),
-});
-
-export function annotationContentUnionFromJSON(
-  jsonString: string,
-): SafeParseResult<AnnotationContentUnion, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => AnnotationContentUnion$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'AnnotationContentUnion' from JSON`,
-  );
-}
-
-/** @internal */
-export const BatchResultFile$inboundSchema: z.ZodType<
-  BatchResultFile,
-  unknown
-> = z.object({
-  content: z.array(
-    discriminatedUnion("type", {
-      text: z.lazy(() => ContentText$inboundSchema),
-      image_url: z.lazy(() => ContentImageURL$inboundSchema),
-    }),
-  ),
-  hash: z.string(),
-  name: z.string().optional(),
-});
-
-export function batchResultFileFromJSON(
-  jsonString: string,
-): SafeParseResult<BatchResultFile, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => BatchResultFile$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'BatchResultFile' from JSON`,
-  );
-}
-
-/** @internal */
-export const AnnotationFile$inboundSchema: z.ZodType<AnnotationFile, unknown> =
-  z.object({
-    file: z.lazy(() => BatchResultFile$inboundSchema),
-    type: z.literal("file"),
-  });
-
-export function annotationFileFromJSON(
-  jsonString: string,
-): SafeParseResult<AnnotationFile, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => AnnotationFile$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'AnnotationFile' from JSON`,
-  );
-}
-
-/** @internal */
-export const Annotation$inboundSchema: z.ZodType<Annotation, unknown> =
-  discriminatedUnion("type", {
-    file: z.lazy(() => AnnotationFile$inboundSchema),
-    url_citation: z.lazy(() => AnnotationURLCitation$inboundSchema),
-    web_search_citation: z.lazy(() =>
-      AnnotationWebSearchCitation$inboundSchema
-    ),
-  });
-
-export function annotationFromJSON(
-  jsonString: string,
-): SafeParseResult<Annotation, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => Annotation$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'Annotation' from JSON`,
   );
 }
 
@@ -1394,14 +1088,14 @@ export function batchResultImageUrlFromJSON(
 }
 
 /** @internal */
-export const ChoiceTypeImageURLEnum$inboundSchema: z.ZodEnum<
-  typeof ChoiceTypeImageURLEnum
-> = z.enum(ChoiceTypeImageURLEnum);
+export const ChoiceTypeImageURL$inboundSchema: z.ZodEnum<
+  typeof ChoiceTypeImageURL
+> = z.enum(ChoiceTypeImageURL);
 
 /** @internal */
 export const Image$inboundSchema: z.ZodType<Image, unknown> = z.object({
   image_url: z.lazy(() => BatchResultImageUrl$inboundSchema),
-  type: ChoiceTypeImageURLEnum$inboundSchema,
+  type: ChoiceTypeImageURL$inboundSchema,
 }).transform((v) => {
   return remap$(v, {
     "image_url": "imageUrl",
@@ -1488,13 +1182,7 @@ export function toolCallFromJSON(
 
 /** @internal */
 export const Message$inboundSchema: z.ZodType<Message, unknown> = z.object({
-  annotations: z.array(discriminatedUnion("type", {
-    file: z.lazy(() => AnnotationFile$inboundSchema),
-    url_citation: z.lazy(() => AnnotationURLCitation$inboundSchema),
-    web_search_citation: z.lazy(() =>
-      AnnotationWebSearchCitation$inboundSchema
-    ),
-  })).optional(),
+  annotations: z.array(ChatAnnotation$inboundSchema).optional(),
   content: z.nullable(z.string()),
   images: z.nullable(z.array(z.lazy(() => Image$inboundSchema))).optional(),
   reasoning: z.nullable(z.string()).optional(),

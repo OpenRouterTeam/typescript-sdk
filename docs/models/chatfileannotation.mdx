@@ -1,0 +1,33 @@
+---
+title: "ChatFileAnnotation"
+---
+
+File annotation with the parsed file content
+
+## Example Usage
+
+```typescript
+import { ChatFileAnnotation } from "@openrouter/sdk/models";
+
+let value: ChatFileAnnotation = {
+  file: {
+    content: [
+      {
+        imageUrl: {
+          url: "https://glass-complication.name/",
+        },
+        type: "image_url",
+      },
+    ],
+    hash: "<value>",
+  },
+  type: "file",
+};
+```
+
+## Fields
+
+| Field                                                                | Type                                                                 | Required                                                             | Description                                                          |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `file`                                                               | [models.ChatFileAnnotationFile](../models/chatfileannotationfile.mdx) | ✔️                                                   | N/A                                                                  |
+| `type`                                                               | *"file"*                                                             | ✔️                                                   | N/A                                                                  |
