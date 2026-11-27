@@ -1,0 +1,54 @@
+---
+title: "ChatAnnotation"
+---
+
+Citation or file annotation on an assistant message
+
+
+## Supported Types
+
+### `models.ChatFileAnnotation`
+
+```typescript
+const value: models.ChatFileAnnotation = {
+  file: {
+    content: [
+      {
+        imageUrl: {
+          url: "https://glass-complication.name/",
+        },
+        type: "image_url",
+      },
+    ],
+    hash: "<value>",
+  },
+  type: "file",
+};
+```
+
+### `models.ChatUrlCitationAnnotation`
+
+```typescript
+const value: models.ChatUrlCitationAnnotation = {
+  type: "url_citation",
+  urlCitation: {
+    endIndex: 42,
+    startIndex: 0,
+    title: "OpenRouter docs",
+    url: "https://openrouter.ai/docs",
+  },
+};
+```
+
+### `models.ChatWebSearchCitationAnnotation`
+
+```typescript
+const value: models.ChatWebSearchCitationAnnotation = {
+  type: "web_search_citation",
+  webSearchCitation: {
+    title: "<value>",
+    url: "https://long-term-platter.biz",
+  },
+};
+```
+

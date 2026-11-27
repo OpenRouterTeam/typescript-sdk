@@ -1,0 +1,28 @@
+---
+title: "ChatUrlCitationAnnotation"
+---
+
+URL citation annotation
+
+## Example Usage
+
+```typescript
+import { ChatUrlCitationAnnotation } from "@openrouter/sdk/models";
+
+let value: ChatUrlCitationAnnotation = {
+  type: "url_citation",
+  urlCitation: {
+    endIndex: 42,
+    startIndex: 0,
+    title: "OpenRouter docs",
+    url: "https://openrouter.ai/docs",
+  },
+};
+```
+
+## Fields
+
+| Field                                                                                            | Type                                                                                             | Required                                                                                         | Description                                                                                      |
+| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| `type`                                                                                           | *"url_citation"*                                                                                 | ✔️                                                                               | N/A                                                                                              |
+| `urlCitation`                                                                                    | [models.ChatUrlCitationAnnotationUrlCitation](../models/chaturlcitationannotationurlcitation.mdx) | ✔️                                                                               | N/A                                                                                              |
