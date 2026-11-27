@@ -310,15 +310,15 @@ export type VideoGenerationRequest = {
    */
   duration?: number | undefined;
   /**
-   * Images to use as the first and/or last frame of the generated video. Each image must specify a frame_type of first_frame or last_frame.
+   * Images to use as the first and/or last frame of the generated video. Each image must specify a frame_type of first_frame or last_frame, and each frame_type may appear at most once. Combining frame_images with input_references is provider-specific: some models reject the combination (as a 400 on submit or as a failed job), some use the frame images alone, and some use both (e.g. Runway applies image references as style/guidance alongside the frame anchors).
    */
   frameImages?: Array<FrameImage> | undefined;
   /**
-   * Whether to generate audio alongside the video. Defaults to the endpoint's generate_audio capability flag, false if not set. When neither is set, some providers (such as xAI) apply their own default and generate audio, so send false to request a silent video. Some models always include audio and ignore false.
+   * Whether to generate audio alongside the video. Defaults to the endpoint's generate_audio capability flag, false if not set. When neither is set, some providers (such as xAI) apply their own default and generate audio, so send false to request a silent video. Some models always include audio and ignore false. POST /videos returns 400 for true if every otherwise eligible endpoint explicitly disables audio generation.
    */
   generateAudio?: boolean | undefined;
   /**
-   * Reference assets to guide video generation. Accepts image, audio, and video references. Audio and video references are only honored by providers that support them (including BytePlus Seedance generation 2 and newer); other providers use image references and ignore the rest.
+   * Reference assets to guide video generation. Accepts image, audio, and video references. POST /videos rejects the request with a 400 when the model or its provider integration does not support a supplied reference modality. Combining input_references with frame_images is provider-specific: some models reject the combination (as a 400 on submit or as a failed job), some use the frame images alone, and some use both (e.g. Runway applies image references as style/guidance alongside the frame anchors).
    */
   inputReferences?: Array<InputReference> | undefined;
   model: string;
@@ -339,7 +339,7 @@ export type VideoGenerationRequest = {
    */
   resolution?: VideoGenerationRequestResolution | undefined;
   /**
-   * If specified, the generation will sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed for all providers.
+   * If specified, the generation will sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed for all providers. POST /videos returns 400 if every otherwise eligible endpoint explicitly declares seed unsupported.
    */
   seed?: number | undefined;
   /**
