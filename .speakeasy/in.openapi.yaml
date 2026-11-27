@@ -6166,112 +6166,7 @@ components:
                             properties:
                               annotations:
                                 items:
-                                  oneOf:
-                                    - properties:
-                                        file:
-                                          properties:
-                                            content:
-                                              items:
-                                                oneOf:
-                                                  - properties:
-                                                      text:
-                                                        type: 'string'
-                                                      type:
-                                                        enum:
-                                                          - 'text'
-                                                        type: 'string'
-                                                    required:
-                                                      - 'type'
-                                                      - 'text'
-                                                    type: 'object'
-                                                  - properties:
-                                                      image_url:
-                                                        properties:
-                                                          url:
-                                                            type: 'string'
-                                                        required:
-                                                          - 'url'
-                                                        type: 'object'
-                                                      type:
-                                                        enum:
-                                                          - 'image_url'
-                                                        type: 'string'
-                                                    required:
-                                                      - 'type'
-                                                      - 'image_url'
-                                                    type: 'object'
-                                              type: 'array'
-                                            hash:
-                                              type: 'string'
-                                            name:
-                                              type: 'string'
-                                          required:
-                                            - 'hash'
-                                            - 'content'
-                                          type: 'object'
-                                        type:
-                                          enum:
-                                            - 'file'
-                                          type: 'string'
-                                      required:
-                                        - 'type'
-                                        - 'file'
-                                      type: 'object'
-                                    - properties:
-                                        type:
-                                          enum:
-                                            - 'url_citation'
-                                          type: 'string'
-                                        url_citation:
-                                          properties:
-                                            content:
-                                              type: 'string'
-                                            end_index:
-                                              type: 'integer'
-                                            start_index:
-                                              type: 'integer'
-                                            title:
-                                              type: 'string'
-                                            uncited:
-                                              const: true
-                                              type: 'boolean'
-                                            url:
-                                              type: 'string'
-                                          required:
-                                            - 'url'
-                                            - 'start_index'
-                                            - 'end_index'
-                                            - 'title'
-                                          type: 'object'
-                                      required:
-                                        - 'type'
-                                        - 'url_citation'
-                                      type: 'object'
-                                    - properties:
-                                        type:
-                                          enum:
-                                            - 'web_search_citation'
-                                          type: 'string'
-                                        web_search_citation:
-                                          properties:
-                                            cited_text:
-                                              type: 'string'
-                                            encrypted_index:
-                                              type: 'string'
-                                            title:
-                                              type:
-                                                - 'string'
-                                                - 'null'
-                                            url:
-                                              type: 'string'
-                                          required:
-                                            - 'url'
-                                            - 'title'
-                                          type: 'object'
-                                      required:
-                                        - 'type'
-                                        - 'web_search_citation'
-                                      type: 'object'
+                                  $ref: '#/components/schemas/ChatAnnotation'
                                 type: 'array'
                               content:
                                 type:
@@ -7794,6 +7689,25 @@ components:
       required:
         - 'data'
       type: 'object'
+    ChatAnnotation:
+      description: 'Citation or file annotation on an assistant message'
+      discriminator:
+        mapping:
+          file: '#/components/schemas/ChatFileAnnotation'
+          url_citation: '#/components/schemas/ChatUrlCitationAnnotation'
+          web_search_citation: '#/components/schemas/ChatWebSearchCitationAnnotation'
+        propertyName: 'type'
+      example:
+        type: 'url_citation'
+        url_citation:
+          end_index: 42
+          start_index: 0
+          title: 'OpenRouter docs'
+          url: 'https://openrouter.ai/docs'
+      oneOf:
+        - $ref: '#/components/schemas/ChatFileAnnotation'
+        - $ref: '#/components/schemas/ChatUrlCitationAnnotation'
+        - $ref: '#/components/schemas/ChatWebSearchCitationAnnotation'
     ChatAssistantImages:
       description: 'Generated images from image generation models'
       example:
@@ -8140,6 +8054,66 @@ components:
           type: 'string'
       required:
         - 'type'
+      type: 'object'
+    ChatFileAnnotation:
+      description: 'File annotation with the parsed file content'
+      example:
+        file:
+          content:
+            - text: 'Quarterly revenue grew 12%.'
+              type: 'text'
+          hash: 'abc123'
+          name: 'report.pdf'
+        type: 'file'
+      properties:
+        file:
+          properties:
+            content:
+              items:
+                oneOf:
+                  - properties:
+                      text:
+                        type: 'string'
+                      type:
+                        enum:
+                          - 'text'
+                        type: 'string'
+                    required:
+                      - 'type'
+                      - 'text'
+                    type: 'object'
+                  - properties:
+                      image_url:
+                        properties:
+                          url:
+                            type: 'string'
+                        required:
+                          - 'url'
+                        type: 'object'
+                      type:
+                        enum:
+                          - 'image_url'
+                        type: 'string'
+                    required:
+                      - 'type'
+                      - 'image_url'
+                    type: 'object'
+              type: 'array'
+            hash:
+              type: 'string'
+            name:
+              type: 'string'
+          required:
+            - 'hash'
+            - 'content'
+          type: 'object'
+        type:
+          enum:
+            - 'file'
+          type: 'string'
+      required:
+        - 'type'
+        - 'file'
       type: 'object'
     ChatFinishReasonEnum:
       enum:
@@ -9310,6 +9284,45 @@ components:
         - 'content'
         - 'tool_call_id'
       type: 'object'
+    ChatUrlCitationAnnotation:
+      description: 'URL citation annotation'
+      example:
+        type: 'url_citation'
+        url_citation:
+          end_index: 42
+          start_index: 0
+          title: 'OpenRouter docs'
+          url: 'https://openrouter.ai/docs'
+      properties:
+        type:
+          enum:
+            - 'url_citation'
+          type: 'string'
+        url_citation:
+          properties:
+            content:
+              type: 'string'
+            end_index:
+              type: 'integer'
+            start_index:
+              type: 'integer'
+            title:
+              type: 'string'
+            uncited:
+              const: true
+              type: 'boolean'
+            url:
+              type: 'string'
+          required:
+            - 'url'
+            - 'start_index'
+            - 'end_index'
+            - 'title'
+          type: 'object'
+      required:
+        - 'type'
+        - 'url_citation'
+      type: 'object'
     ChatUsage:
       description: 'Token usage statistics'
       example:
@@ -9428,6 +9441,39 @@ components:
       required:
         - 'role'
         - 'content'
+      type: 'object'
+    ChatWebSearchCitationAnnotation:
+      description: 'Web search citation annotation'
+      example:
+        type: 'web_search_citation'
+        web_search_citation:
+          cited_text: 'OpenRouter provides a unified API.'
+          title: 'OpenRouter docs'
+          url: 'https://openrouter.ai/docs'
+      properties:
+        type:
+          enum:
+            - 'web_search_citation'
+          type: 'string'
+        web_search_citation:
+          properties:
+            cited_text:
+              type: 'string'
+            encrypted_index:
+              type: 'string'
+            title:
+              type:
+                - 'string'
+                - 'null'
+            url:
+              type: 'string'
+          required:
+            - 'url'
+            - 'title'
+          type: 'object'
+      required:
+        - 'type'
+        - 'web_search_citation'
       type: 'object'
     ChatWebSearchShorthand:
       description: 'Web search tool using OpenAI Responses API syntax. Automatically converted to openrouter:web_search.'
