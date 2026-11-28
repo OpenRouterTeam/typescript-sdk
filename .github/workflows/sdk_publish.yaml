@@ -14,7 +14,7 @@ permissions:
   workflow_dispatch: {}
 jobs:
   publish:
-    uses: speakeasy-api/sdk-generation-action/.github/workflows/sdk-publish.yaml@68f3bfefb79354d39358bf4699863dabd2cea0f6 # v15.60.11
+    uses: speakeasy-api/sdk-generation-action/.github/workflows/sdk-publish.yaml@cd98f1a34dd76e2f14b6adfa48ea661fb44bceef # v15.61.0
     with:
       target: openrouter
     secrets:
